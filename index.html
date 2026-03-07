@@ -72,44 +72,42 @@ risk of losing your entire bankroll.
 </p>
 
 </section>
-      <h2>Calculator</h2>
-      <div class="card">
-<h3>Game Presets</h3>
+<h2>Calculator</h2>
 
-<button onclick="setPreset(0.5)">Blackjack</button>
-<button onclick="setPreset(5.26)">Roulette</button>
-<button onclick="setPreset(4)">Slots</button>
-<button onclick="setPreset(1.06)">Baccarat</button>
+<div class="card">
+  <h3>Game Presets</h3>
 
+  <button type="button" onclick="setPreset('blackjack')">Blackjack</button>
+  <button type="button" onclick="setPreset('roulette')">Roulette</button>
+  <button type="button" onclick="setPreset('slots')">Slots</button>
+  <button type="button" onclick="setPreset('baccarat')">Baccarat</button>
 </div>
 
-      <form id="bankrollForm">
-        <div class="grid">
-          <div class="field">
-            <label for="bankroll">Starting Bankroll ($)</label>
-            <input type="number" id="bankroll" min="1" step="1" value="200" required />
-          </div>
+<form id="bankrollForm">
+  <div class="grid">
+    <div class="field">
+      <label for="bankroll">Starting Bankroll ($)</label>
+      <input type="number" id="bankroll" min="1" step="1" value="200" required />
+    </div>
 
-          <div class="field">
-            <label for="betSize">Bet Size Per Round ($)</label>
-            <input type="number" id="betSize" min="0.01" step="0.01" value="5" required />
-          </div>
+    <div class="field">
+      <label for="betSize">Bet Size Per Round ($)</label>
+      <input type="number" id="betSize" min="0.01" step="0.01" value="5" required />
+    </div>
 
-          <div class="field">
-            <label for="houseEdge">House Edge (%)</label>
-            <input type="number" id="houseEdge" min="0" max="100" step="0.01" value="2" required />
-          </div>
+    <div class="field">
+      <label for="houseEdge">House Edge (%)</label>
+      <input type="number" id="houseEdge" min="0" max="100" step="0.01" value="2" required />
+    </div>
 
-          <div class="field">
-            <label for="bets">Number of Bets</label>
-            <input type="number" id="bets" min="1" step="1" value="100" required />
-          </div>
+    <div class="field">
+      <label for="bets">Number of Bets</label>
+      <input type="number" id="bets" min="1" step="1" value="100" required />
+    </div>
+  </div>
 
-          </div>
-        </div>
-
-        <button type="submit">Calculate</button>
-      </form>
+  <button type="submit">Calculate</button>
+</form>
     </section>
 
     <section class="card results" id="results" aria-live="polite">
