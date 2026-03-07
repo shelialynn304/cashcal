@@ -1,23 +1,31 @@
 let resultsChart;
 let sessionChart;
 
+
 function setPreset(game) {
+  const houseEdgeInput = document.getElementById("houseEdge");
+  const betSizeInput = document.getElementById("betSize");
+  const form = document.getElementById("bankrollForm");
+
+  if (!houseEdgeInput || !betSizeInput || !form) {
+    return;
+  }
 
   if (game === "blackjack") {
-    document.getElementById("houseEdge").value = 0.5;
-    document.getElementById("betSize").value = 5;
+    houseEdgeInput.value = 0.5;
+    betSizeInput.value = 5;
+  } else if (game === "roulette") {
+    houseEdgeInput.value = 5.26;
+    betSizeInput.value = 5;
+  } else if (game === "slots") {
+    houseEdgeInput.value = 4;
+    betSizeInput.value = 3;
+  } else if (game === "baccarat") {
+    houseEdgeInput.value = 1.06;
+    betSizeInput.value = 5;
   }
 
-  if (game === "roulette") {
-    document.getElementById("houseEdge").value = 5.26;
-    document.getElementById("betSize").value = 5;
-  }
-
-  if (game === "slots") {
-    document.getElementById("houseEdge").value = 4;
-    document.getElementById("betSize").value = 3;
-  }
-
+  form.dispatchEvent(new Event("submit"));
 }
 
 function clamp(value, min, max) {
