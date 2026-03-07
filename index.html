@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>$200 WV Casino Bankroll Calculator</title>
+  <meta
+    name="description"
+    content="Test how long a $200 bankroll could last on online casinos in WV with this simple bankroll calculator."
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <h1>$200 WV Casino Bankroll Calculator</h1>
+      <p>
+        See how long your bankroll might last based on bet size, house edge,
+        and number of bets. This is an estimate — casinos still chew people up
+        for breakfast.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Calculator</h2>
+
+      <form id="bankrollForm">
+        <div class="grid">
+          <div class="field">
+            <label for="bankroll">Starting Bankroll ($)</label>
+            <input type="number" id="bankroll" min="1" step="1" value="200" required />
+          </div>
+
+          <div class="field">
+            <label for="betSize">Bet Size Per Round ($)</label>
+            <input type="number" id="betSize" min="0.01" step="0.01" value="5" required />
+          </div>
+
+          <div class="field">
+            <label for="houseEdge">House Edge (%)</label>
+            <input type="number" id="houseEdge" min="0" max="100" step="0.01" value="2" required />
+          </div>
+
+          <div class="field">
+            <label for="bets">Number of Bets</label>
+            <input type="number" id="bets" min="1" step="1" value="100" required />
+          </div>
+
+          <div class="field">
+            <label for="volatility">Volatility</label>
+            <select id="volatility">
+              <option value="0.8">Low (Blackjack-ish)</option>
+              <option value="1.2" selected>Medium</option>
+              <option value="1.8">High (Slots-ish)</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit">Calculate</button>
+      </form>
+    </section>
+
+    <section class="card results" id="results" aria-live="polite">
+      <h2>Results</h2>
+      <div class="result-list">
+        <div class="result-item">
+          <span>Expected Loss</span>
+          <strong id="expectedLoss">$0.00</strong>
+        </div>
+        <div class="result-item">
+          <span>Expected Ending Bankroll</span>
+          <strong id="endingBankroll">$0.00</strong>
+        </div>
+        <div class="result-item">
+          <span>Estimated Bust Risk</span>
+          <strong id="bustRisk">0%</strong>
+        </div>
+        <div class="result-item">
+          <span>Estimated Chance of Profit</span>
+          <strong id="profitChance">0%</strong>
+        </div>
+      </div>
+
+      <p id="summary" class="summary"></p>
+    </section>
+
+    <section class="card">
+      <h2>What this means</h2>
+      <p>
+        This tool gives a rough estimate using expected value and simplified variance.
+        It is not a promise, a prediction, or a magic money printer. It’s just math
+        trying to stop people from walking into a buzzsaw blind.
+      </p>
+    </section>
+
+    <section class="card cta">
+      <h2>Legal WV Casino Options</h2>
+      <p>
+        If you’re comparing legal online casino options in West Virginia, this is where
+        you’d put your affiliate buttons or comparison table.
+      </p>
+      <div class="cta-buttons">
+        <a href="#" class="btn">Claim Bonus</a>
+        <a href="#" class="btn secondary">Compare WV Casinos</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
