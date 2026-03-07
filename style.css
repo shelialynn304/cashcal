@@ -127,3 +127,21 @@ button:hover,
   flex-wrap: wrap;
   gap: 12px;
 }
+.presets{
+  margin-bottom:15px;
+}
+
+.presets button{
+  background:#1e293b;
+  color:white;
+  border:none;
+  padding:6px 12px;
+  margin:4px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.presets button:hover{
+  background:#334155;
+}
