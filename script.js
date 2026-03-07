@@ -1,3 +1,5 @@
+let resultsChart;
+
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
@@ -6,18 +8,13 @@ function formatMoney(num) {
   return `$${num.toFixed(2)}`;
 }
 
-// Monte Carlo simulation for a simple even-money style game
 function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
   let balance = bankroll;
-
-  // Rough even-money game model:
-  // 50% win chance would be fair.
-  // House edge lowers actual win chance slightly.
   const winProbability = clamp(0.5 - (houseEdgePercent / 200), 0.01, 0.99);
 
   for (let i = 0; i < bets; i++) {
     if (balance < betSize) {
-      break; // busted, can't keep betting
+      break;
     }
 
     const roll = Math.random();
@@ -36,17 +33,18 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
   const endings = [];
   let bustCount = 0;
   let profitCount = 0;
+  let lossCount = 0;
 
   for (let i = 0; i < simulations; i++) {
     const ending = simulateSession(bankroll, betSize, houseEdgePercent, bets);
     endings.push(ending);
 
-    if (ending < betSize) {
+    if (ending <= 0) {
       bustCount++;
-    }
-
-    if (ending > bankroll) {
+    } else if (ending > bankroll) {
       profitCount++;
+    } else {
+      lossCount++;
     }
   }
 
@@ -55,15 +53,15 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
   const minEnding = Math.min(...endings);
   const maxEnding = Math.max(...endings);
 
-  const bustRisk = (bustCount / simulations) * 100;
-  const profitChance = (profitCount / simulations) * 100;
-
   return {
     averageEnding,
     minEnding,
     maxEnding,
-    bustRisk,
-    profitChance
+    bustRisk: (bustCount / simulations) * 100,
+    profitChance: (profitCount / simulations) * 100,
+    bustCount,
+    profitCount,
+    lossCount
   };
 }
 
@@ -74,6 +72,7 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
   const betSize = parseFloat(document.getElementById("betSize").value);
   const houseEdge = parseFloat(document.getElementById("houseEdge").value);
   const bets = parseInt(document.getElementById("bets").value, 10);
+  const simulations = 5000;
 
   if (
     !Number.isFinite(bankroll) ||
@@ -89,7 +88,6 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
     return;
   }
 
-  const simulations = 5000;
   const results = runMonteCarlo(bankroll, betSize, houseEdge, bets, simulations);
 
   document.getElementById("expectedLoss").textContent = formatMoney(bankroll - results.averageEnding);
@@ -97,14 +95,45 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
   document.getElementById("bustRisk").textContent = `${results.bustRisk.toFixed(1)}%`;
   document.getElementById("profitChance").textContent = `${results.profitChance.toFixed(1)}%`;
 
-  const summary = `
-    Based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}.
-    The estimated chance of busting was ${results.bustRisk.toFixed(1)}%, and the chance of finishing ahead was ${results.profitChance.toFixed(1)}%.
-    The worst simulated result was ${formatMoney(results.minEnding)}, and the best was ${formatMoney(results.maxEnding)}.
-  `;
+  document.getElementById("summary").textContent =
+    `Based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}. ` +
+    `The estimated chance of busting was ${results.bustRisk.toFixed(1)}%, and the chance of finishing ahead was ${results.profitChance.toFixed(1)}%. ` +
+    `The worst simulated result was ${formatMoney(results.minEnding)}, and the best was ${formatMoney(results.maxEnding)}.`;
 
-  document.getElementById("summary").textContent = summary.trim();
+  const canvas = document.getElementById("resultsChart");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  if (resultsChart) {
+    resultsChart.destroy();
+  }
+
+  resultsChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Bust", "Lost Money", "Profit"],
+      datasets: [
+        {
+          label: "Simulation Outcomes",
+          data: [results.bustCount, results.lossCount, results.profitCount]
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
 });
 
-// Auto-run on load
 document.getElementById("bankrollForm").dispatchEvent(new Event("submit"));
