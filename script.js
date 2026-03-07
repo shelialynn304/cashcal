@@ -1,4 +1,5 @@
 let resultsChart;
+let sessionChart;
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
@@ -17,9 +18,7 @@ function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
       break;
     }
 
-    const roll = Math.random();
-
-    if (roll < winProbability) {
+    if (Math.random() < winProbability) {
       balance += betSize;
     } else {
       balance -= betSize;
@@ -27,6 +26,30 @@ function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
   }
 
   return balance;
+}
+
+function generateSession(bankroll, betSize, houseEdgePercent, bets) {
+  const balances = [];
+  let balance = bankroll;
+  const winProbability = clamp(0.5 - (houseEdgePercent / 200), 0.01, 0.99);
+
+  balances.push(balance);
+
+  for (let i = 0; i < bets; i++) {
+    if (balance < betSize) {
+      break;
+    }
+
+    if (Math.random() < winProbability) {
+      balance += betSize;
+    } else {
+      balance -= betSize;
+    }
+
+    balances.push(balance);
+  }
+
+  return balances;
 }
 
 function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
@@ -100,40 +123,79 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
     `The estimated chance of busting was ${results.bustRisk.toFixed(1)}%, and the chance of finishing ahead was ${results.profitChance.toFixed(1)}%. ` +
     `The worst simulated result was ${formatMoney(results.minEnding)}, and the best was ${formatMoney(results.maxEnding)}.`;
 
-  const canvas = document.getElementById("resultsChart");
-  if (!canvas) return;
+  const resultsCanvas = document.getElementById("resultsChart");
+  if (resultsCanvas) {
+    const resultsCtx = resultsCanvas.getContext("2d");
 
-  const ctx = canvas.getContext("2d");
+    if (resultsChart) {
+      resultsChart.destroy();
+    }
 
-  if (resultsChart) {
-    resultsChart.destroy();
-  }
-
-  resultsChart = new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: ["Bust", "Lost Money", "Profit"],
-      datasets: [
-        {
-          label: "Simulation Outcomes",
-          data: [results.bustCount, results.lossCount, results.profitCount]
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          display: false
-        }
+    resultsChart = new Chart(resultsCtx, {
+      type: "bar",
+      data: {
+        labels: ["Bust", "Lost Money", "Profit"],
+        datasets: [
+          {
+            label: "Simulation Outcomes",
+            data: [results.bustCount, results.lossCount, results.profitCount]
+          }
+        ]
       },
-      scales: {
-        y: {
-          beginAtZero: true
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
         }
       }
+    });
+  }
+
+  const sessionCanvas = document.getElementById("sessionChart");
+  if (sessionCanvas) {
+    const sessionData = generateSession(bankroll, betSize, houseEdge, bets);
+    const sessionCtx = sessionCanvas.getContext("2d");
+
+    if (sessionChart) {
+      sessionChart.destroy();
     }
-  });
+
+    sessionChart = new Chart(sessionCtx, {
+      type: "line",
+      data: {
+        labels: sessionData.map((_, i) => i),
+        datasets: [
+          {
+            label: "Bankroll",
+            data: sessionData,
+            borderWidth: 2,
+            tension: 0.2,
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: false
+          }
+        }
+      }
+    });
+  }
 });
 
 document.getElementById("bankrollForm").dispatchEvent(new Event("submit"));
