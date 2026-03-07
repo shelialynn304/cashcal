@@ -1,6 +1,25 @@
 let resultsChart;
 let sessionChart;
 
+function setPreset(game) {
+
+  if (game === "blackjack") {
+    document.getElementById("houseEdge").value = 0.5;
+    document.getElementById("betSize").value = 5;
+  }
+
+  if (game === "roulette") {
+    document.getElementById("houseEdge").value = 5.26;
+    document.getElementById("betSize").value = 5;
+  }
+
+  if (game === "slots") {
+    document.getElementById("houseEdge").value = 4;
+    document.getElementById("betSize").value = 3;
+  }
+
+}
+
 function setPreset(edge) {
   document.getElementById("houseEdge").value = edge;
 }
