@@ -6,32 +6,62 @@ function formatMoney(num) {
   return `$${num.toFixed(2)}`;
 }
 
-function calculateResults(bankroll, betSize, houseEdgePercent, bets, volatility) {
-  const edge = houseEdgePercent / 100;
+// Monte Carlo simulation for a simple even-money style game
+function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
+  let balance = bankroll;
 
-  // Expected loss = total wagered * house edge
-  const totalWagered = betSize * bets;
-  const expectedLoss = totalWagered * edge;
-  const expectedEndingBankroll = bankroll - expectedLoss;
+  // Rough even-money game model:
+  // 50% win chance would be fair.
+  // House edge lowers actual win chance slightly.
+  const winProbability = clamp(0.5 - (houseEdgePercent / 200), 0.01, 0.99);
 
-  // Simple variance estimate, not casino-grade modeling
-  const stdDev = Math.sqrt(bets) * betSize * volatility;
+  for (let i = 0; i < bets; i++) {
+    if (balance < betSize) {
+      break; // busted, can't keep betting
+    }
 
-  // Approximate bust/profit using normal-ish estimate
-  // Bust occurs if losses exceed bankroll
-  const zBust = (bankroll - expectedLoss) / (stdDev || 1);
-  let bustRisk = 50 - (zBust * 18);
+    const roll = Math.random();
 
-  // Profit occurs if actual result > 0 net result
-  const zProfit = expectedLoss / (stdDev || 1);
-  let profitChance = 50 - (zProfit * 18);
+    if (roll < winProbability) {
+      balance += betSize;
+    } else {
+      balance -= betSize;
+    }
+  }
 
-  bustRisk = clamp(bustRisk, 1, 99);
-  profitChance = clamp(profitChance, 1, 99);
+  return balance;
+}
+
+function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
+  const endings = [];
+  let bustCount = 0;
+  let profitCount = 0;
+
+  for (let i = 0; i < simulations; i++) {
+    const ending = simulateSession(bankroll, betSize, houseEdgePercent, bets);
+    endings.push(ending);
+
+    if (ending < betSize) {
+      bustCount++;
+    }
+
+    if (ending > bankroll) {
+      profitCount++;
+    }
+  }
+
+  const total = endings.reduce((sum, value) => sum + value, 0);
+  const averageEnding = total / endings.length;
+  const minEnding = Math.min(...endings);
+  const maxEnding = Math.max(...endings);
+
+  const bustRisk = (bustCount / simulations) * 100;
+  const profitChance = (profitCount / simulations) * 100;
 
   return {
-    expectedLoss,
-    expectedEndingBankroll: Math.max(expectedEndingBankroll, 0),
+    averageEnding,
+    minEnding,
+    maxEnding,
     bustRisk,
     profitChance
   };
@@ -44,7 +74,6 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
   const betSize = parseFloat(document.getElementById("betSize").value);
   const houseEdge = parseFloat(document.getElementById("houseEdge").value);
   const bets = parseInt(document.getElementById("bets").value, 10);
-  const volatility = parseFloat(document.getElementById("volatility").value);
 
   if (
     !Number.isFinite(bankroll) ||
@@ -60,22 +89,22 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
     return;
   }
 
-  const results = calculateResults(bankroll, betSize, houseEdge, bets, volatility);
+  const simulations = 5000;
+  const results = runMonteCarlo(bankroll, betSize, houseEdge, bets, simulations);
 
-  document.getElementById("expectedLoss").textContent = formatMoney(results.expectedLoss);
-  document.getElementById("endingBankroll").textContent = formatMoney(results.expectedEndingBankroll);
+  document.getElementById("expectedLoss").textContent = formatMoney(bankroll - results.averageEnding);
+  document.getElementById("endingBankroll").textContent = formatMoney(results.averageEnding);
   document.getElementById("bustRisk").textContent = `${results.bustRisk.toFixed(1)}%`;
   document.getElementById("profitChance").textContent = `${results.profitChance.toFixed(1)}%`;
 
   const summary = `
-    With a starting bankroll of ${formatMoney(bankroll)} and ${bets} bets at ${formatMoney(betSize)}
-    each, the expected loss is ${formatMoney(results.expectedLoss)} at a ${houseEdge.toFixed(2)}% house edge.
-    Your estimated chance of losing the full bankroll is about ${results.bustRisk.toFixed(1)}%, while
-    the rough chance of finishing ahead is about ${results.profitChance.toFixed(1)}%.
+    Based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}.
+    The estimated chance of busting was ${results.bustRisk.toFixed(1)}%, and the chance of finishing ahead was ${results.profitChance.toFixed(1)}%.
+    The worst simulated result was ${formatMoney(results.minEnding)}, and the best was ${formatMoney(results.maxEnding)}.
   `;
 
   document.getElementById("summary").textContent = summary.trim();
 });
 
-// Auto-run once on page load
+// Auto-run on load
 document.getElementById("bankrollForm").dispatchEvent(new Event("submit"));
