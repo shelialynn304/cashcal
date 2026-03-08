@@ -227,7 +227,39 @@ body {
   letter-spacing: -0.5px;
 }
 
+.search-box{
+  max-width:600px;
+  margin:40px auto;
+}
 
+#q{
+  width:100%;
+  padding:12px;
+  border-radius:8px;
+  border:none;
+  background:#111;
+  color:white;
+  font-size:16px;
+}
+
+#results{
+  list-style:none;
+  padding:0;
+  margin-top:10px;
+}
+
+.result{
+  background:#1b1b1b;
+  padding:10px;
+  border-radius:6px;
+  margin-bottom:6px;
+}
+
+.tag{
+  color:#aaa;
+  margin-left:8px;
+  font-size:12px;
+}
 
 
 
