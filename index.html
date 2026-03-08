@@ -43,44 +43,7 @@
       </p>
     </section>
 
-   <div class="search-box">
-  <input id="q" placeholder="🔎 Search projects, tools, tags..." />
-  <ul id="results"></ul>
-</div>
-
-<script type="module">
-import MiniSearch from './assets/vendor/minisearch/minisearch.esm.js';
-
-const docs = [
-  { id:'p1', title:'My Simulator', text:'WebGL physics simulator', tags:'webgl simulation graphics' },
-  { id:'p2', title:'CLI Tool', text:'Rust automation CLI', tags:'rust cli devtool' },
-  { id:'p3', title:'Casino Bankroll Simulator', text:'Calculate risk of ruin', tags:'casino gambling math' }
-];
-
-const ms = new MiniSearch({
-  fields: ['title','text','tags'],
-  storeFields: ['title','tags']
-});
-
-ms.addAll(docs);
-
-const q = document.getElementById('q');
-const ul = document.getElementById('results');
-
-q.addEventListener('input', () => {
-  const hits = q.value
-    ? ms.search(q.value, { prefix:true, fuzzy:0.2 })
-    : [];
-
-  ul.innerHTML = hits.map(h => `
-    <li class="result">
-      <strong>${h.title}</strong>
-      <span class="tag">${h.tags}</span>
-    </li>
-  `).join('');
-});
-</script>
-
+  
     <section class="card">
       <h2>$200 Casino Bankroll Simulator</h2>
 
