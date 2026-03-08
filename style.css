@@ -80,6 +80,7 @@ button,
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 button:hover,
@@ -87,10 +88,20 @@ button:hover,
   opacity: 0.92;
 }
 
+button,
+.btn {
+  background: #f2b300;
+}
+
 .btn.secondary {
   background: #2d2d2d;
   color: #fff;
   border: 1px solid #444;
+}
+
+button:hover,
+.btn:hover {
+  transform: translateY(-1px);
 }
 
 .results .result-list {
