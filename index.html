@@ -297,5 +297,38 @@
   </main>
 
   <script src="script.js"></script>
+
+ <script type="module">
+import MiniSearch from './assets/vendor/minisearch/minisearch.esm.js';
+
+const docs = [
+  { id:'p1', title:'My Simulator', text:'WebGL physics simulator', tags:'webgl' },
+  { id:'p2', title:'CLI Tool', text:'Rust automation CLI', tags:'rust' }
+];
+
+const ms = new MiniSearch({
+  fields: ['title','text','tags'],
+  storeFields: ['title','tags']
+});
+
+ms.addAll(docs);
+
+const q = document.getElementById('q');
+const ul = document.getElementById('results');
+
+q.addEventListener('input', () => {
+  const hits = q.value
+    ? ms.search(q.value, { prefix:true, fuzzy:0.2 })
+    : [];
+
+  ul.innerHTML = hits.map(h => `
+    <li class="result">
+      <strong>${h.title}</strong>
+      <span class="tag">${h.tags}</span>
+    </li>
+  `).join('');
+});
+</script>
+  
 </body>
 </html>
