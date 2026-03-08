@@ -58,8 +58,7 @@ function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
 function generateSession(bankroll, betSize, houseEdgePercent, bets) {
   const balances = [];
   let balance = bankroll;
-  const winProbability = clamp(0.5 - (houseEdgePercent / 200), 0.01, 0.99);
-
+  const winProbability = clamp(0.49 - (houseEdgePercent / 200), 0.01, 0.99);
   balances.push(balance);
 
   for (let i = 0; i < bets; i++) {
@@ -67,11 +66,16 @@ function generateSession(bankroll, betSize, houseEdgePercent, bets) {
       break;
     }
 
-    if (Math.random() < winProbability) {
-      balance += betSize;
-    } else {
-      balance -= betSize;
-    }
+    const pushProbability = 0.08;
+const r = Math.random();
+
+if (r < pushProbability) {
+  // push: no bankroll change
+} else if (r < pushProbability + winProbability) {
+  balance += betSize;
+} else {
+  balance -= betSize;
+}
 
     balances.push(balance);
   }
