@@ -1,107 +1,73 @@
-
 let betTotal = 0;
 let bankroll = 100;
 
-document.querySelectorAll(".chip").forEach(chip => {
+const betTotalEl = document.getElementById("betTotal");
+const bankrollEl = document.getElementById("bankroll");
+const diceResultEl = document.getElementById("diceResult");
+const rollBtn = document.getElementById("rollBtn");
+const resetBtn = document.getElementById("resetGame");
+const chipSound = document.getElementById("chipSound");
+const chips = document.querySelectorAll(".chip");
 
+chips.forEach((chip) => {
   chip.addEventListener("click", () => {
-
     const value = Number(chip.dataset.value);
 
-    if(betTotal + value > bankroll){
-      alert("Not enough bankroll!");
-      return;
-    }
-
-    betTotal += value;
-
-    document.getElementById("betTotal").textContent = betTotal;
-
-  });
-
-});
-
-document.getElementById("rollBtn").onclick = () => {
-
-  if(betTotal === 0){
-    alert("Place a bet first");
-    return;
-  }
-
-  const dice =
-    Math.floor(Math.random()*6 + 1) +
-    Math.floor(Math.random()*6 + 1);
-
-  document.getElementById("diceResult").textContent = dice;
-
-  if(dice === 7){
-    bankroll += betTotal;
-  } else {
-    bankroll -= betTotal;
-  }
-
-  if(bankroll <= 0){
-
-    bankroll = 0;
-
-    document.getElementById("bankroll").textContent = bankroll;
-
-    alert("Bankroll busted!");
-
-    document.getElementById("rollBtn").disabled = true;
-
-    return;
-  }
-
-  document.getElementById("bankroll").textContent = bankroll;
-
-  betTotal = 0;
-
-  document.getElementById("betTotal").textContent = 0;
-
-};
-
-document.getElementById("resetGame").onclick = () => {
-
-  bankroll = 100;
-
-  betTotal = 0;
-
-  document.getElementById("bankroll").textContent = bankroll;
-
-  document.getElementById("betTotal").textContent = 0;
-
-  document.getElementById("diceResult").textContent = "-";
-
-  document.getElementById("rollBtn").disabled = false;
-
-};
-
-let betTotal = 0;
-let bankroll = 100;
-
-document.querySelectorAll(".chip").forEach(chip => {
-
-  chip.addEventListener("click", () => {
-
-    const value = Number(chip.dataset.value);
-
-    // prevent betting more than bankroll
     if (betTotal + value > bankroll) {
       alert("Not enough bankroll!");
       return;
     }
 
-    // add bet
     betTotal += value;
+    betTotalEl.textContent = betTotal;
 
-    document.getElementById("betTotal").textContent = betTotal;
-
-    // play chip click sound
-    const sound = document.getElementById("chipSound");
-    sound.currentTime = 0;
-    sound.play();
-
+    if (chipSound) {
+      chipSound.currentTime = 0;
+      chipSound.play().catch(() => {});
+    }
   });
-
 });
+
+rollBtn.addEventListener("click", () => {
+  if (betTotal === 0) {
+    alert("Place a bet first");
+    return;
+  }
+
+  const die1 = Math.floor(Math.random() * 6) + 1;
+  const die2 = Math.floor(Math.random() * 6) + 1;
+  const dice = die1 + die2;
+
+  diceResultEl.textContent = dice;
+
+  if (dice === 7) {
+    bankroll += betTotal;
+  } else {
+    bankroll -= betTotal;
+  }
+
+  if (bankroll <= 0) {
+    bankroll = 0;
+    bankrollEl.textContent = bankroll;
+    betTotal = 0;
+    betTotalEl.textContent = 0;
+    alert("Bankroll busted!");
+    rollBtn.disabled = true;
+    return;
+  }
+
+  bankrollEl.textContent = bankroll;
+  betTotal = 0;
+  betTotalEl.textContent = 0;
+});
+
+resetBtn.addEventListener("click", () => {
+  betTotal = 0;
+  bankroll = 100;
+
+  betTotalEl.textContent = 0;
+  bankrollEl.textContent = 100;
+  diceResultEl.textContent = "-";
+  rollBtn.disabled = false;
+});
+
