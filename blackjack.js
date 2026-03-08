@@ -197,3 +197,31 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
       type: "line",
       data: {
         labels: sessionData.map((_, i) => i),
+   datasets: [
+          {
+            label: "Bankroll",
+            data: sessionData,
+            borderWidth: 2,
+            tension: 0.2,
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: false
+          }
+        }
+      }
+    });
+  }
+});
+
+document.getElementById("bankrollForm").dispatchEvent(new Event("submit"));
