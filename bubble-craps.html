@@ -1,1 +1,91 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bubble Craps Simulator</title>
+
+  <style>
+    .chip-row{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      margin:20px 0;
+    }
+
+    .chip{
+      width:64px;
+      cursor:pointer;
+      transition:transform .15s;
+    }
+
+    .chip:hover{
+      transform:scale(1.1);
+    }
+
+    button{
+      padding:10px 20px;
+      font-size:16px;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Bubble Craps Simulator</h1>
+  <p>Test common craps bets and see how your bankroll changes over time.</p>
+
+  <div class="chip-row">
+    <img src="images/chips/chip-1.png" class="chip" data-value="1">
+    <img src="images/chips/chip-5.png" class="chip" data-value="5">
+    <img src="images/chips/chip-10.png" class="chip" data-value="10">
+    <img src="images/chips/chip-25.png" class="chip" data-value="25">
+    <img src="images/chips/chip-100.png" class="chip" data-value="100">
+  </div>
+
+  <h3>Current Bet: $<span id="betTotal">0</span></h3>
+
+  <button id="rollBtn">Roll Dice</button>
+
+  <h3>Results</h3>
+  <p>Dice Roll: <span id="diceResult">-</span></p>
+  <p>Bankroll: $<span id="bankroll">100</span></p>
+
+  <script>
+    let betTotal = 0;
+    let bankroll = 100;
+
+    document.querySelectorAll(".chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        const value = Number(chip.dataset.value);
+        betTotal += value;
+        document.getElementById("betTotal").textContent = betTotal;
+      });
+    });
+
+    document.getElementById("rollBtn").onclick = () => {
+      if (betTotal === 0) {
+        alert("Place a bet first");
+        return;
+      }
+
+      const dice = Math.floor(Math.random() * 6 + 1) + Math.floor(Math.random() * 6 + 1);
+
+      document.getElementById("diceResult").textContent = dice;
+
+      if (dice === 7) {
+        bankroll += betTotal;
+      } else {
+        bankroll -= betTotal;
+      }
+
+      document.getElementById("bankroll").textContent = bankroll;
+
+      betTotal = 0;
+      document.getElementById("betTotal").textContent = 0;
+    };
+  </script>
+
+</body>
+</html>
