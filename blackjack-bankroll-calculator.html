@@ -1,1 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
+  <meta name="robots" content="index, follow">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+<link rel="stylesheet" href="style.css">
+  
+ <title>Blackjack Bankroll Calculator | CashCal</title>
+  
+<meta name="description" content="Interactive $200 casino bankroll simulator. Test bet size, house edge, and session length to see bust risk, profit chance, and realistic bankroll outcomes." />
+  <link rel="stylesheet" href="style.css" />
 
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "CashCal Casino Bankroll Simulator",
+  "url": "https://shelialynn304.github.io/cashcal/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "description": "Interactive casino bankroll simulator that models bust probability, profit chance, and bankroll outcomes based on bet size and house edge."
+}
+</script>
+</head>
+<body>
+  <main class="container">
+
+    <section class="hero">
+
+<h1 style="text-align:center;">Blackjack Bankroll Calculator</h1>
+
+<img src="images/casino-calculator.webp"
+alt="Blackjack bankroll calculator concept"
+style="max-width:600px;width:100%;height:auto;display:block;margin:20px auto;">
+
+<p>
+Use this blackjack bankroll calculator to estimate how long a bankroll might last over a series of hands. Blackjack has one of the lowest house edges in the casino when played with solid basic strategy, but bankroll size and bet size still have a huge effect on survival.
+</p>
+
+</section>
+      
+
+<section class="card">
+<h2>$200 Online Casino Bankroll Simulator</h2>
+
+<p>
+Many players start online casinos with a small bankroll,
+often around $200. But how long does that money realistically last?
+</p>
+
+<p>
+This simulator runs thousands of probability simulations to estimate
+how often a bankroll survives, loses money, or ends in profit.
+</p>
+
+</section>
+    <section class="card">
+         <section class="card">
+
+<h2>$200 Casino Bankroll Simulator</h2>
+
+<p>
+Many players start online casino sessions with a small bankroll —
+often around $200. But how long can that bankroll realistically last?
+The answer depends on several factors including bet size, house edge,
+and simple probability.
+</p>
+
+<p>
+This interactive simulator models thousands of casino sessions using
+probability-based simulations. By adjusting the starting bankroll,
+bet size, and house edge, you can see how likely it is for a bankroll
+to survive, shrink, or grow over a series of bets.
+</p>
+
+<p>
+Instead of relying on lucky streaks or gambling myths, the tool uses
+Monte Carlo simulations to estimate realistic outcomes over many
+sessions. The charts below show the distribution of possible results
+and an example session illustrating how a bankroll might rise and fall
+during play.
+</p>
+
+<p>
+Use the calculator to experiment with different scenarios and see how
+small changes in bet size or house edge can dramatically affect the
+risk of losing your entire bankroll.
+</p>
+
+</section>
+<h2>Calculator</h2>
+
+<div class="presets">
+  
+  <p><strong>Try a Game:</strong></p>
+
+  <button type="button" onclick="setPreset('blackjack')">Blackjack</button>
+  <button type="button" onclick="setPreset('roulette')">Roulette</button>
+  <button type="button" onclick="setPreset('slots')">Slots</button>
+  <button type="button" onclick="setPreset('baccarat')">Baccarat</button>
+</div>
+
+<form id="bankrollForm">
+  <div class="grid">
+    <div class="field">
+      <label for="bankroll">Starting Bankroll ($)</label>
+      <input type="number" id="bankroll" min="1" step="1" value="200" required />
+    </div>
+
+    <div class="field">
+      <label for="betSize">Bet Size Per Round ($)</label>
+      <input type="number" id="betSize" min="0.01" step="0.01" value="5" required />
+    </div>
+
+    <div class="field">
+      <label for="houseEdge">House Edge (%)</label>
+      <input type="number" id="houseEdge" min="0" max="100" step="0.01" value="2" required />
+    </div>
+
+    <div class="field">
+      <label for="bets">Number of Bets</label>
+      <input type="number" id="bets" min="1" step="1" value="100" required />
+    </div>
+  </div>
+
+  <button type="submit">Calculate</button>
+</form>
+    </section>
+
+    <section class="card results" id="results" aria-live="polite">
+      <h2>Results</h2>
+      <div class="result-list">
+       <div class="result-item">
+  <span>Average Loss</span>
+  <strong id="expectedLoss">$0.00</strong>
+</div>
+<div class="result-item">
+  <span>Average Ending Bankroll</span>
+  <strong id="endingBankroll">$0.00</strong>
+</div>
+<div class="result-item">
+  <span>Bust Risk</span>
+  <strong id="bustRisk">0%</strong>
+</div>
+<div class="result-item">
+  <span>Chance of Profit</span>
+  <strong id="profitChance">0%</strong>
+</div>
+      </div>
+
+      <p id="summary" class="summary"></p>
+    </section>
+<div class="card">
+  <h2>Simulation Outcome Distribution</h2>
+  <canvas id="resultsChart" height="120"></canvas>
+</div>
+
+<div class="card">
+  <h2>Example Bankroll Session</h2>
+  <canvas id="sessionChart" height="120"></canvas>
+</div>
+
+<section class="card">
+  <h2>What this means</h2>
+  <p>
+        This tool gives a rough estimate using expected value and simplified variance.
+        It is not a promise, a prediction, or a magic money printer. It’s just math
+        trying to stop people from walking into a buzzsaw blind.
+      </p>
+    </section>
+    <section class="card">
+
+<h2>How Casino Bankroll Simulation Works</h2>
+
+<p>
+Every casino game has a mathematical advantage called the
+<strong>house edge</strong>. This edge represents the percentage
+of each bet the casino expects to keep over time.
+</p>
+
+<p>
+Even games with a small house edge, such as blackjack, slowly
+tilt the odds in favor of the casino. Over hundreds or thousands
+of bets, the expected value of the house edge becomes more
+predictable.
+</p>
+
+<p>
+The simulator above uses probability models to estimate what
+might happen over many simulated casino sessions. Instead of
+running one single outcome, it performs thousands of simulations
+to show how often a bankroll survives, busts, or finishes with
+a profit.
+</p>
+
+</section>
+    <section class="card">
+
+<h2>How Long Will $200 Last at a Casino?</h2>
+
+<p>
+Many players start with a $200 bankroll when trying online
+casinos. The amount of time that bankroll lasts depends heavily
+on bet size and game odds.
+</p>
+
+<p>
+For example, betting $5 per round allows the bankroll to survive
+many more rounds compared to betting $20 per round. Larger bets
+increase volatility and dramatically raise the risk of losing
+the entire bankroll quickly.
+</p>
+
+<p>
+By adjusting the bet size and house edge in the simulator above,
+you can test different strategies and see how likely it is for
+a bankroll to survive a given number of bets.
+</p>
+
+</section>
+    <section class="card">
+
+<h2>Understanding Casino Variance</h2>
+
+<p>
+Short-term gambling results are heavily influenced by
+<strong>variance</strong>. Players can experience winning streaks
+or losing streaks purely due to randomness.
+</p>
+
+<p>
+While luck can dominate in the short term, the long-term
+mathematics of the house edge usually determines the overall
+outcome.
+</p>
+
+<p>
+This simulator helps visualize that concept by generating
+thousands of simulated sessions. The outcome distribution chart
+shows how frequently each result occurs, while the session graph
+illustrates how a bankroll might rise and fall during play.
+</p>
+
+</section>
+    <section class="card">
+<h2>Casino Bankroll Strategy Basics</h2>
+
+<p>
+Managing a casino bankroll is one of the most important aspects
+of gambling responsibly. Players who wager too large a percentage
+of their bankroll on each bet dramatically increase the risk of
+losing everything quickly.
+</p>
+
+<p>
+Many bankroll strategies recommend betting between 1% and 5%
+of the total bankroll per round. Smaller bets allow a bankroll
+to survive longer and reduce the chance of early bust.
+</p>
+</section>
+
+ <section class="card cta">
+<h2>Legal WV Online Casinos</h2>
+
+<p>
+This simulator models probability and bankroll risk.
+If you choose to play online, make sure you only use
+licensed and regulated casinos available in West Virginia.
+</p>
+
+<p>
+We will be adding a comparison of legal casino options soon.
+</p>
+
+</section>
+    <section class="card">
+<section class="card">
+<h2>Casino House Edge Explained</h2>
+
+<p>
+Every casino game has a mathematical advantage called the house edge.
+Even small edges slowly reduce the expected value of a player's bankroll
+over time.
+</p>
+
+<p>
+This simulator shows how that edge affects bankroll survival by running
+thousands of simulated sessions using probability models.
+</p>
+
+</section>
+      
+<h2>About This Tool</h2>
+<p>
+CashCal is a simple probability simulator designed to show how
+casino house edge and bet size affect bankroll survival.
+It is intended for educational purposes and to illustrate
+basic gambling math concepts.
+</p>
+</section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
