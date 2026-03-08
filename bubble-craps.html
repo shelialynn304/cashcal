@@ -1,108 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Bubble Craps Simulator</title>
-
+  <meta charset="UTF-8">
+  <title>Bubble Craps Simulator</title>
   <link rel="stylesheet" href="style.css">
-  
-<style>
 
-body{
-  font-family: Arial, sans-serif;
-  text-align:center;
-  background:#1b1b1b;
-  color:white;
-}
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      text-align:center;
+      background:#1b1b1b;
+      color:white;
+    }
 
-.chip-row{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  margin:20px 0;
-}
+    .chip-row{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      margin:20px 0;
+      flex-wrap:wrap;
+    }
 
-.chip{
-  width:64px;
-  cursor:pointer;
-  transition:transform .15s;
-}
+    .chip{
+      width:64px;
+      cursor:pointer;
+      transition:transform .15s;
+    }
 
-.chip:hover{
-  transform:scale(1.1);
-}
+    .chip:hover{
+      transform:scale(1.1);
+    }
 
-button{
-  padding:10px 20px;
-  font-size:16px;
-  margin:10px;
-  cursor:pointer;
-  border:none;
-  border-radius:6px;
-}
+    button{
+      padding:10px 20px;
+      font-size:16px;
+      margin:10px;
+      cursor:pointer;
+      border:none;
+      border-radius:6px;
+    }
 
-.roll-btn{
-  background:#2e8b57;
-  color:white;
-}
+    .roll-btn{
+      background:#2e8b57;
+      color:white;
+    }
 
-.reset-btn{
-  background:#444;
-  color:white;
-}
+    .reset-btn{
+      background:#444;
+      color:white;
+    }
 
-.results{
-  margin-top:25px;
-}
-
-</style>
+    .results{
+      margin-top:25px;
+    }
+  </style>
 </head>
 
 <body>
 
   <div class="navbar">
-  <a href="index.html">Home</a>
-  <a href="blackjack-bankroll-calculator.html">Blackjack</a>
-  <a href="bubble-craps.html" class="active">Bubble Craps</a>
-</div>
+    <a href="index.html">Home</a>
+    <a href="blackjack-bankroll-calculator.html">Blackjack</a>
+    <a href="bubble-craps.html" class="active">Bubble Craps</a>
+  </div>
 
   <audio id="chipSound" src="sounds/chip-click.mp3" preload="auto"></audio>
-  
-<h1>Bubble Craps Simulator</h1>
 
-<p>
-Test common craps bets and see how your bankroll changes.
-</p>
+  <h1>Bubble Craps Simulator</h1>
 
-<div class="chip-row">
+  <p>
+    Test common craps bets and see how your bankroll changes.
+  </p>
 
-<img src="images/chips/chip-1.png" class="chip" data-value="1">
-<img src="images/chips/chip-5.png" class="chip" data-value="5">
-<img src="images/chips/chip-10.png" class="chip" data-value="10">
-<img src="images/chips/chip-25.png" class="chip" data-value="25">
-<img src="images/chips/chip-100.png" class="chip" data-value="100">
+  <div class="chip-row">
+    <img src="images/chips/chip-1.png" class="chip" data-value="1" alt="$1 chip">
+    <img src="images/chips/chip-5.png" class="chip" data-value="5" alt="$5 chip">
+    <img src="images/chips/chip-10.png" class="chip" data-value="10" alt="$10 chip">
+    <img src="images/chips/chip-25.png" class="chip" data-value="25" alt="$25 chip">
+    <img src="images/chips/chip-100.png" class="chip" data-value="100" alt="$100 chip">
+  </div>
 
-</div>
+  <h3>Current Bet: $<span id="betTotal">0</span></h3>
 
-<h3>Current Bet: $<span id="betTotal">0</span></h3>
+  <button id="rollBtn" class="roll-btn">Roll Dice</button>
+  <button id="resetGame" class="reset-btn">Reset Game</button>
 
-<button id="rollBtn" class="roll-btn">Roll Dice</button>
+  <div class="results">
+    <h3>Results</h3>
+    <p>Dice Roll: <span id="diceResult">-</span></p>
+    <p>Bankroll: $<span id="bankroll">100</span></p>
+  </div>
 
-<button id="resetGame" class="reset-btn">Reset Game</button>
-
-<div class="results">
-
-<h3>Results</h3>
-
-<p>Dice Roll: <span id="diceResult">-</span></p>
-
-<p>Bankroll: $<span id="bankroll">100</span></p>
-
-</div>
-
-<audio id="chipSound" src="sounds/chip-click.mp3" preload="auto"></audio>
-<script src="bubble-craps.js"></script>
-
-
+  <script src="bubble-craps.js"></script>
 </body>
 </html>
