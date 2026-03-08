@@ -281,21 +281,6 @@ transition:.2s;
 .navbar a:hover{
 background:#333;
 }
-.site-footer{
-margin-top:60px;
-padding:30px 20px;
-background:#111;
-color:#bbb;
-font-size:14px;
-
-text-align:center;     /* centers the text */
-
-max-width:900px;       /* keeps it from stretching too wide */
-margin-left:auto;      /* centers the block */
-margin-right:auto;
-
-border-top:1px solid #333;
-}
 
 .site-footer p{
 max-width:700px;
@@ -303,5 +288,48 @@ margin:10px auto;      /* centers each paragraph */
 line-height:1.6;
 }
 
+.site-footer{
+margin-top:70px;
+padding:40px 20px;
+background:#111;
+color:#bbb;
+text-align:center;
+border-top:1px solid #333;
+font-size:14px;
+}
 
+.footer-links{
+margin-bottom:20px;
+}
+
+.footer-links a{
+color:#ccc;
+text-decoration:none;
+margin:0 12px;
+font-size:15px;
+}
+
+.footer-links a:hover{
+color:white;
+}
+
+.site-footer p{
+max-width:700px;
+margin:10px auto;
+line-height:1.6;
+}
+
+.gambling-warning{
+color:#f2c94c;
+}
+
+.responsible a{
+color:#4ea3ff;
+}
+
+.copyright{
+color:#777;
+font-size:12px;
+margin-top:20px;
+}
 
