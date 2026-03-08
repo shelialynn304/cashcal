@@ -1,91 +1,176 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bubble Craps Simulator</title>
+<meta charset="UTF-8">
+<title>Bubble Craps Simulator</title>
 
-  <style>
-    .chip-row{
-      display:flex;
-      justify-content:center;
-      gap:12px;
-      margin:20px 0;
-    }
+<style>
 
-    .chip{
-      width:64px;
-      cursor:pointer;
-      transition:transform .15s;
-    }
+body{
+  font-family: Arial, sans-serif;
+  text-align:center;
+  background:#1b1b1b;
+  color:white;
+}
 
-    .chip:hover{
-      transform:scale(1.1);
-    }
+.chip-row{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin:20px 0;
+}
 
-    button{
-      padding:10px 20px;
-      font-size:16px;
-      cursor:pointer;
-    }
-  </style>
+.chip{
+  width:64px;
+  cursor:pointer;
+  transition:transform .15s;
+}
+
+.chip:hover{
+  transform:scale(1.1);
+}
+
+button{
+  padding:10px 20px;
+  font-size:16px;
+  margin:10px;
+  cursor:pointer;
+  border:none;
+  border-radius:6px;
+}
+
+.roll-btn{
+  background:#2e8b57;
+  color:white;
+}
+
+.reset-btn{
+  background:#444;
+  color:white;
+}
+
+.results{
+  margin-top:25px;
+}
+
+</style>
 </head>
+
 <body>
 
-  <h1>Bubble Craps Simulator</h1>
-  <p>Test common craps bets and see how your bankroll changes over time.</p>
+<h1>Bubble Craps Simulator</h1>
 
-  <div class="chip-row">
-    <img src="images/chips/chip-1.png" class="chip" data-value="1">
-    <img src="images/chips/chip-5.png" class="chip" data-value="5">
-    <img src="images/chips/chip-10.png" class="chip" data-value="10">
-    <img src="images/chips/chip-25.png" class="chip" data-value="25">
-    <img src="images/chips/chip-100.png" class="chip" data-value="100">
-  </div>
+<p>
+Test common craps bets and see how your bankroll changes.
+</p>
 
-  <h3>Current Bet: $<span id="betTotal">0</span></h3>
+<div class="chip-row">
 
-  <button id="rollBtn">Roll Dice</button>
+<img src="images/chips/chip-1.png" class="chip" data-value="1">
+<img src="images/chips/chip-5.png" class="chip" data-value="5">
+<img src="images/chips/chip-10.png" class="chip" data-value="10">
+<img src="images/chips/chip-25.png" class="chip" data-value="25">
+<img src="images/chips/chip-100.png" class="chip" data-value="100">
 
-  <h3>Results</h3>
-  <p>Dice Roll: <span id="diceResult">-</span></p>
-  <p>Bankroll: $<span id="bankroll">100</span></p>
+</div>
 
-  <script>
-    let betTotal = 0;
-    let bankroll = 100;
+<h3>Current Bet: $<span id="betTotal">0</span></h3>
 
-    document.querySelectorAll(".chip").forEach(chip => {
-      chip.addEventListener("click", () => {
-        const value = Number(chip.dataset.value);
-        betTotal += value;
-        document.getElementById("betTotal").textContent = betTotal;
-      });
-    });
+<button id="rollBtn" class="roll-btn">Roll Dice</button>
 
-    document.getElementById("rollBtn").onclick = () => {
-      if (betTotal === 0) {
-        alert("Place a bet first");
-        return;
-      }
+<button id="resetGame" class="reset-btn">Reset Game</button>
 
-      const dice = Math.floor(Math.random() * 6 + 1) + Math.floor(Math.random() * 6 + 1);
+<div class="results">
 
-      document.getElementById("diceResult").textContent = dice;
+<h3>Results</h3>
 
-      if (dice === 7) {
-        bankroll += betTotal;
-      } else {
-        bankroll -= betTotal;
-      }
+<p>Dice Roll: <span id="diceResult">-</span></p>
 
-      document.getElementById("bankroll").textContent = bankroll;
+<p>Bankroll: $<span id="bankroll">100</span></p>
 
-      betTotal = 0;
-      document.getElementById("betTotal").textContent = 0;
-    };
-  </script>
+</div>
+
+<script>
+
+let betTotal = 0;
+let bankroll = 100;
+
+document.querySelectorAll(".chip").forEach(chip => {
+
+  chip.addEventListener("click", () => {
+
+    const value = Number(chip.dataset.value);
+
+    if(betTotal + value > bankroll){
+      alert("Not enough bankroll!");
+      return;
+    }
+
+    betTotal += value;
+
+    document.getElementById("betTotal").textContent = betTotal;
+
+  });
+
+});
+
+document.getElementById("rollBtn").onclick = () => {
+
+  if(betTotal === 0){
+    alert("Place a bet first");
+    return;
+  }
+
+  const dice =
+    Math.floor(Math.random()*6 + 1) +
+    Math.floor(Math.random()*6 + 1);
+
+  document.getElementById("diceResult").textContent = dice;
+
+  if(dice === 7){
+    bankroll += betTotal;
+  } else {
+    bankroll -= betTotal;
+  }
+
+  if(bankroll <= 0){
+
+    bankroll = 0;
+
+    document.getElementById("bankroll").textContent = bankroll;
+
+    alert("Bankroll busted!");
+
+    document.getElementById("rollBtn").disabled = true;
+
+    return;
+  }
+
+  document.getElementById("bankroll").textContent = bankroll;
+
+  betTotal = 0;
+
+  document.getElementById("betTotal").textContent = 0;
+
+};
+
+document.getElementById("resetGame").onclick = () => {
+
+  bankroll = 100;
+
+  betTotal = 0;
+
+  document.getElementById("bankroll").textContent = bankroll;
+
+  document.getElementById("betTotal").textContent = 0;
+
+  document.getElementById("diceResult").textContent = "-";
+
+  document.getElementById("rollBtn").disabled = false;
+
+};
+
+</script>
 
 </body>
 </html>
