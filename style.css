@@ -26,11 +26,11 @@ body {
 }
 
 .card {
-  background: #1b1b1b;
-  border: 1px solid #2a2a2a;
-  border-radius: 14px;
+  background: #1e293b;
+  border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
 h2 {
@@ -208,6 +208,7 @@ body {
   color: #e5e7eb;
   font-family: system-ui, -apple-system, Arial, sans-serif;
 }
+
 
 
 
