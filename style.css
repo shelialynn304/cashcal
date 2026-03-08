@@ -260,6 +260,26 @@ body {
   margin-left:8px;
   font-size:12px;
 }
+.navbar{
+background:#111;
+padding:15px;
+display:flex;
+justify-content:center;
+gap:30px;
+border-bottom:1px solid #333;
+}
 
+.navbar a{
+color:white;
+text-decoration:none;
+font-size:18px;
+padding:6px 12px;
+border-radius:6px;
+transition:.2s;
+}
+
+.navbar a:hover{
+background:#333;
+}
 
 
