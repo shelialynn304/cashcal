@@ -37,7 +37,10 @@ alt="Casino bankroll simulator concept"
 style="max-width:600px;width:100%;height:auto;display:block;margin:20px auto;">
       
     <p>
-
+See how long a casino bankroll might last based on bet size,
+house edge, and number of bets. This simulator runs thousands
+of probability simulations to estimate bust risk, profit chance,
+and average ending bankroll.
 </p>
     </section>
     
@@ -75,45 +78,49 @@ risk of losing your entire bankroll.
 </p>
 
 </section>
-<h2>Calculator</h2>
 
-<div class="presets">
-  
-  <p><strong>Try a Game:</strong></p>
-
-  <button type="button" onclick="setPreset('blackjack')">Blackjack</button>
-  <button type="button" onclick="setPreset('roulette')">Roulette</button>
-  <button type="button" onclick="setPreset('slots')">Slots</button>
-  <button type="button" onclick="setPreset('baccarat')">Baccarat</button>
-</div>
+<h2>Bankroll Calculator</h2>
 
 <form id="bankrollForm">
-  <div class="grid">
-    <div class="field">
-      <label for="bankroll">Starting Bankroll ($)</label>
-      <input type="number" id="bankroll" min="1" step="1" value="200" required />
-    </div>
 
-    <div class="field">
-      <label for="betSize">Bet Size Per Round ($)</label>
-      <input type="number" id="betSize" min="0.01" step="0.01" value="5" required />
-    </div>
+<div class="grid">
 
-    <div class="field">
-      <label for="houseEdge">House Edge (%)</label>
-      <input type="number" id="houseEdge" min="0" max="100" step="0.01" value="2" required />
-    </div>
+<div class="field">
+<label for="bankroll">Starting Bankroll ($)</label>
+<input type="number" id="bankroll" min="1" step="1" value="200" required />
+</div>
 
-    <div class="field">
-      <label for="bets">Number of Bets</label>
-      <input type="number" id="bets" min="1" step="1" value="100" required />
-    </div>
-  </div>
+<div class="field">
+<label for="betSize">Bet Size Per Round ($)</label>
+<input type="number" id="betSize" min="0.01" step="0.01" value="5" required />
+</div>
 
-  <button type="submit">Calculate</button>
+<div class="field">
+<label for="houseEdge">House Edge (%)</label>
+<input type="number" id="houseEdge" min="0" max="100" step="0.01" value="2" required />
+</div>
+
+<div class="field">
+<label for="bets">Number of Bets</label>
+<input type="number" id="bets" min="1" step="1" value="100" required />
+</div>
+
+<div class="field">
+<label for="volatility">Volatility</label>
+<select id="volatility">
+<option value="0.8">Low</option>
+<option value="1.2" selected>Medium</option>
+<option value="1.8">High</option>
+</select>
+</div>
+
+</div>
+
+<button type="submit">Calculate</button>
+
 </form>
-    </section>
 
+</section>
     <section class="card results" id="results" aria-live="polite">
       <h2>Results</h2>
       <div class="result-list">
