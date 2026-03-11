@@ -442,3 +442,9 @@ margin-top:20px;
   background: #9b59b6;
   color: white;
 }
+.legend span {
+  padding:4px 8px;
+  border-radius:4px;
+  margin-right:6px;
+  display:inline-block;
+}
