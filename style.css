@@ -377,3 +377,27 @@ margin-top:20px;
 .strategy-table tr:hover {
   background: #1a1a1a;
 }
+
+.strategy-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.strategy-table th,
+.strategy-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #333;
+}
+
+.strategy-table th {
+  background: #222;
+}
+
+.strategy-table tr:hover {
+  background: #202020;
+}
