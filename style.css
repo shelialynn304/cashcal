@@ -401,3 +401,44 @@ margin-top:20px;
 .strategy-table tr:hover {
   background: #202020;
 }
+
+
+.strategy-chart {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  text-align: center;
+  font-weight: bold;
+}
+
+.strategy-chart th,
+.strategy-chart td {
+  padding: 10px;
+  border: 1px solid #333;
+}
+
+.strategy-chart th {
+  background: #222;
+}
+
+/* move colors */
+
+.hit {
+  background: #1f77b4;
+  color: white;
+}
+
+.stand {
+  background: #2ecc71;
+  color: black;
+}
+
+.double {
+  background: #f1c40f;
+  color: black;
+}
+
+.split {
+  background: #9b59b6;
+  color: white;
+}
