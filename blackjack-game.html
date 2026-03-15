@@ -419,17 +419,12 @@
       return move.toLowerCase();
     }
 
-    function showStrategyPopup(move, text) {
-      strategyMoveEl.textContent = move.toUpperCase();
-      strategyMoveEl.className = `strategy-move ${getMoveClass(move)}`;
-      strategyTextEl.textContent = text;
-      strategyPopup.classList.remove("hidden");
-
-      clearTimeout(strategyTimer);
-      strategyTimer = setTimeout(() => {
-        strategyPopup.classList.add("hidden");
-      }, 4200);
-    }
+  function showStrategyPopup(move, text) {
+  strategyMoveEl.textContent = move.toUpperCase();
+  strategyMoveEl.className = `strategy-move ${getMoveClass(move)}`;
+  strategyTextEl.textContent = text;
+  strategyPopup.classList.remove("hidden");
+}
 
     function hideStrategyPopup() {
       strategyPopup.classList.add("hidden");
