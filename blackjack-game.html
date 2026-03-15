@@ -154,6 +154,101 @@ button {
   opacity: 0.75;
   font-size: 0.8rem;
 }
+
+    @keyframes dealCard {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.chip:hover {
+  transform: scale(1.12);
+}
+
+.chip.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+#dealBtn { background: #1f7ae0; }
+#hitBtn { background: #21a35b; }
+#standBtn { background: #d64545; }
+#doubleBtn { background: #8b5cf6; }
+#clearBetBtn { background: #6b7280; }
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.strategy-popup {
+  position: fixed;
+  top: 90px;
+  right: 14px;
+  width: min(340px, calc(100vw - 30px));
+  background: rgba(15, 15, 15, 0.97);
+  border: 2px solid #ffd54a;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+  z-index: 9999;
+  text-align: left;
+  overflow: hidden;
+}
+
+.hidden {
+  display: none;
+}
+
+.strategy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(255, 213, 74, 0.12);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.strategy-title {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #ffd54a;
+}
+
+.strategy-close {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.4rem;
+  line-height: 1;
+  min-width: auto;
+  padding: 0;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.strategy-body {
+  padding: 14px;
+}
+
+.strategy-move {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.strategy-move.hit { color: #61d96b; }
+.strategy-move.stand { color: #ff6b6b; }
+.strategy-move.double { color: #67b7ff; }
+.strategy-move.split { color: #d48cff; }
+
+.strategy-text {
+  font-size: 0.98rem;
+  line-height: 1.45;
+  opacity: 0.96;
+}
   </style>
 </head>
 <body>
