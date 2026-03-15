@@ -1,58 +1,503 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blackjack Trainer</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at top, #0f7a3a 0%, #0a5c2b 55%, #073d1d 100%);
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+    }
 
-<title>Blackjack Training Game | Practice Basic Strategy</title>
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-<meta name="description" content="Practice blackjack basic strategy with our upcoming blackjack training game. Learn when to hit, stand, split, or double with interactive hands and improve your blackjack skills.">
+    h1 {
+      margin: 12px 0 6px;
+      font-size: 2.4rem;
+    }
 
-<link rel="stylesheet" href="style.css">
+    .topbar {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin: 14px 0 10px;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
 
+    .message {
+      min-height: 28px;
+      margin: 12px 0 18px;
+      font-size: 1.1rem;
+    }
+
+    .table-area {
+      background: rgba(0, 0, 0, 0.15);
+      border: 2px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 20px 12px 28px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    }
+
+    .section-title {
+      margin: 8px 0 4px;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .total {
+      margin-bottom: 8px;
+      opacity: 0.95;
+    }
+
+    .hand {
+      min-height: 150px;
+      margin: 10px 0 22px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .card {
+      width: 95px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.55);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .betting-area {
+      margin: 24px 0 8px;
+    }
+
+    .chips {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      width: 62px;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+      user-select: none;
+    }
+
+    .chip:hover {
+      transform: scale(1.12);
+    }
+
+    .chip.disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .controls {
+      margin-top: 22px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: white;
+      min-width: 110px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    #dealBtn { background: #1f7ae0; }
+    #hitBtn { background: #21a35b; }
+    #standBtn { background: #d64545; }
+    #clearBetBtn { background: #6b7280; }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      opacity: 0.8;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 700px) {
+      .card {
+        width: 78px;
+      }
+
+      .chip {
+        width: 54px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <h1>Blackjack Trainer</h1>
 
-<div class="navbar">
+    <div class="topbar">
+      <div>Bankroll: $<span id="bankroll">1000</span></div>
+      <div>Current Bet: $<span id="bet">0</span></div>
+    </div>
 
-<a href="index.html">Home</a>
+    <div id="message" class="message">Pick some chips, then click Deal.</div>
 
-<a href="blackjack-strategy.html">Blackjack Strategy</a>
+    <div class="table-area">
+      <div class="section-title">Dealer</div>
+      <div class="total">Total: <span id="dealer-total">0</span></div>
+      <div id="dealer-hand" class="hand"></div>
 
-<a href="blackjack-game.html">Blackjack Training Game</a>
+      <div class="section-title">Player</div>
+      <div class="total">Total: <span id="player-total">0</span></div>
+      <div id="player-hand" class="hand"></div>
 
-<a href="blackjack-bankroll-calculator.html">Bankroll Calculator</a>
+      <div class="betting-area">
+        <div>Click chips to place your bet</div>
+        <div class="chips" id="chips">
+          <img src="images/chips/chip-1.png" class="chip" data-amount="1" alt="$1 chip">
+          <img src="images/chips/chip-5.png" class="chip" data-amount="5" alt="$5 chip">
+          <img src="images/chips/chip-10.png" class="chip" data-amount="10" alt="$10 chip">
+          <img src="images/chips/chip-25.png" class="chip" data-amount="25" alt="$25 chip">
+          <img src="images/chips/chip-100.png" class="chip" data-amount="100" alt="$100 chip">
+        </div>
+      </div>
 
-<a href="bubble-craps.html">Bubble Craps</a>
+      <div class="controls">
+        <button id="dealBtn">Deal</button>
+        <button id="hitBtn" disabled>Hit</button>
+        <button id="standBtn" disabled>Stand</button>
+        <button id="clearBetBtn">Clear Bet</button>
+      </div>
+    </div>
 
-</div>
+    <div class="footer-note">Blackjack pays even money in this version for now.</div>
+  </div>
 
-<main class="container">
+  <audio id="chipSound" src="sounds/chip-click.mp3" preload="auto"></audio>
 
-<h1>Blackjack Training Game</h1>
+  <script>
+    let deck = [];
+    let player = [];
+    let dealer = [];
+    let bankroll = 1000;
+    let bet = 0;
+    let gameOver = true;
 
-<p>
-We're currently building an interactive blackjack training game designed to help players learn and practice basic strategy.
-</p>
+    const suits = ["spades", "hearts", "diamonds", "clubs"];
+    const ranks = ["A", "02", "03", "04", "05", "06", "07", "08", "09", "10", "J", "Q", "K"];
 
-<p>
-The game will present real blackjack scenarios where you'll decide whether to hit, stand, double, or split. Each decision will be scored so you can see how well you follow optimal strategy.
-</p>
+    const bankrollEl = document.getElementById("bankroll");
+    const betEl = document.getElementById("bet");
+    const dealerHandEl = document.getElementById("dealer-hand");
+    const playerHandEl = document.getElementById("player-hand");
+    const dealerTotalEl = document.getElementById("dealer-total");
+    const playerTotalEl = document.getElementById("player-total");
+    const messageEl = document.getElementById("message");
+    const dealBtn = document.getElementById("dealBtn");
+    const hitBtn = document.getElementById("hitBtn");
+    const standBtn = document.getElementById("standBtn");
+    const clearBetBtn = document.getElementById("clearBetBtn");
+    const chipSound = document.getElementById("chipSound");
+    const chipEls = document.querySelectorAll(".chip");
 
-<p>
-This tool will be useful for beginners learning blackjack and experienced players who want to sharpen their decision-making at the table.
-</p>
+    function buildDeck() {
+      deck = [];
+      for (const suit of suits) {
+        for (const rank of ranks) {
+          deck.push({ suit, rank });
+        }
+      }
+    }
 
-<p><strong>Coming soon.</strong></p>
+    function shuffleDeck() {
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+      }
+    }
 
-<p>
-In the meantime, you can review our <a href="blackjack-strategy.html">Blackjack Strategy Guide</a> or try the
-<a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>.
-</p>
+    function drawCard() {
+      return deck.pop();
+    }
 
-</main>
+    function cardValue(rank) {
+      if (rank === "A") return 11;
+      if (["K", "Q", "J"].includes(rank)) return 10;
+      return parseInt(rank, 10);
+    }
 
+    function handValue(hand) {
+      let total = 0;
+      let aces = 0;
+
+      for (const card of hand) {
+        total += cardValue(card.rank);
+        if (card.rank === "A") aces++;
+      }
+
+      while (total > 21 && aces > 0) {
+        total -= 10;
+        aces--;
+      }
+
+      return total;
+    }
+
+    function isBlackjack(hand) {
+      return hand.length === 2 && handValue(hand) === 21;
+    }
+
+    function setMessage(text) {
+      messageEl.textContent = text;
+    }
+
+    function updateMoneyDisplay() {
+      bankrollEl.textContent = bankroll;
+      betEl.textContent = bet;
+    }
+
+    function renderHand(hand, element, hideHoleCard = false) {
+      element.innerHTML = "";
+
+      hand.forEach((card, index) => {
+        const img = document.createElement("img");
+        img.className = "card";
+
+        if (hideHoleCard && index === 1) {
+          img.src = "images/cards/card_back.png";
+          img.alt = "Hidden card";
+        } else {
+          img.src = `images/cards/card_${card.suit}_${card.rank}.png`;
+          img.alt = `${card.rank} of ${card.suit}`;
+        }
+
+        element.appendChild(img);
+      });
+    }
+
+    function render(showDealerHoleCard = false) {
+      renderHand(player, playerHandEl, false);
+      renderHand(dealer, dealerHandEl, !showDealerHoleCard && !gameOver);
+
+      playerTotalEl.textContent = handValue(player);
+
+      if (!gameOver && dealer.length >= 2 && !showDealerHoleCard) {
+        dealerTotalEl.textContent = cardValue(dealer[0].rank);
+      } else {
+        dealerTotalEl.textContent = handValue(dealer);
+      }
+    }
+
+    function updateButtons() {
+      dealBtn.disabled = !gameOver;
+      hitBtn.disabled = gameOver;
+      standBtn.disabled = gameOver;
+      clearBetBtn.disabled = !gameOver || bet === 0;
+    }
+
+    function updateChipState() {
+      chipEls.forEach(chip => {
+        if (!gameOver) {
+          chip.classList.add("disabled");
+        } else {
+          chip.classList.remove("disabled");
+        }
+      });
+    }
+
+    function playChipSound() {
+      chipSound.currentTime = 0;
+      chipSound.play().catch(() => {});
+    }
+
+    function addBet(amount) {
+      if (!gameOver) return;
+
+      if (bankroll < amount) {
+        setMessage("You don't have enough bankroll for that chip.");
+        return;
+      }
+
+      bankroll -= amount;
+      bet += amount;
+      updateMoneyDisplay();
+      updateButtons();
+      playChipSound();
+      setMessage("Bet placed. Click Deal when ready.");
+    }
+
+    function clearBet() {
+      if (!gameOver || bet === 0) return;
+
+      bankroll += bet;
+      bet = 0;
+      updateMoneyDisplay();
+      updateButtons();
+      setMessage("Bet cleared.");
+    }
+
+    function endRound(message) {
+      gameOver = true;
+      render(true);
+      updateButtons();
+      updateChipState();
+      setMessage(message);
+    }
+
+    function deal() {
+      if (!gameOver) return;
+
+      if (bet <= 0) {
+        setMessage("Place a bet first, you degenerate.");
+        return;
+      }
+
+      buildDeck();
+      shuffleDeck();
+
+      player = [drawCard(), drawCard()];
+      dealer = [drawCard(), drawCard()];
+      gameOver = false;
+
+      render(false);
+      updateButtons();
+      updateChipState();
+
+      const playerBJ = isBlackjack(player);
+      const dealerBJ = isBlackjack(dealer);
+
+      if (playerBJ && dealerBJ) {
+        bankroll += bet;
+        bet = 0;
+        updateMoneyDisplay();
+        endRound("Both have blackjack. Push.");
+        return;
+      }
+
+      if (playerBJ) {
+        bankroll += bet * 2;
+        bet = 0;
+        updateMoneyDisplay();
+        endRound("Blackjack. You win.");
+        return;
+      }
+
+      if (dealerBJ) {
+        bet = 0;
+        updateMoneyDisplay();
+        endRound("Dealer has blackjack. You lose.");
+        return;
+      }
+
+      setMessage("Your move.");
+    }
+
+    function hit() {
+      if (gameOver) return;
+
+      player.push(drawCard());
+      render(false);
+
+      const total = handValue(player);
+
+      if (total > 21) {
+        bet = 0;
+        updateMoneyDisplay();
+        endRound("Bust. Dealer wins.");
+        return;
+      }
+
+      if (total === 21) {
+        stand();
+        return;
+      }
+
+      setMessage("Hit or stand?");
+    }
+
+    function stand() {
+      if (gameOver) return;
+
+      while (handValue(dealer) < 17) {
+        dealer.push(drawCard());
+      }
+
+      const playerTotal = handValue(player);
+      const dealerTotal = handValue(dealer);
+
+      if (dealerTotal > 21) {
+        bankroll += bet * 2;
+        bet = 0;
+        updateMoneyDisplay();
+        endRound("Dealer busts. You win.");
+        return;
+      }
+
+      if (playerTotal > dealerTotal) {
+        bankroll += bet * 2;
+        bet = 0;
+        updateMoneyDisplay();
+        endRound("You win.");
+        return;
+      }
+
+      if (playerTotal < dealerTotal) {
+        bet = 0;
+        updateMoneyDisplay();
+        endRound("Dealer wins.");
+        return;
+      }
+
+      bankroll += bet;
+      bet = 0;
+      updateMoneyDisplay();
+      endRound("Push.");
+    }
+
+    chipEls.forEach(chip => {
+      chip.addEventListener("click", () => {
+        const amount = Number(chip.dataset.amount);
+        addBet(amount);
+      });
+    });
+
+    dealBtn.addEventListener("click", deal);
+    hitBtn.addEventListener("click", hit);
+    standBtn.addEventListener("click", stand);
+    clearBetBtn.addEventListener("click", clearBet);
+
+    updateMoneyDisplay();
+    updateButtons();
+    updateChipState();
+    render(true);
+  </script>
 </body>
 </html>
