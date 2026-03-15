@@ -76,10 +76,36 @@
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.55);
       background: rgba(255,255,255,0.08);
+      opacity: 0;
+      transform: translateY(-30px) scale(0.9);
+      animation: dealCard 0.35s ease forwards;
+    }
+
+    @keyframes dealCard {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .betting-area {
       margin: 24px 0 8px;
+    }
+
+    .bet-spot {
+      height: 80px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      position: relative;
+    }
+
+    .bet-chip {
+      width: 50px;
+      position: absolute;
+      transition: transform 0.2s ease;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45));
     }
 
     .chips {
@@ -131,6 +157,7 @@
     #dealBtn { background: #1f7ae0; }
     #hitBtn { background: #21a35b; }
     #standBtn { background: #d64545; }
+    #doubleBtn { background: #8b5cf6; }
     #clearBetBtn { background: #6b7280; }
 
     button:disabled {
@@ -144,7 +171,6 @@
       font-size: 0.95rem;
     }
 
-    /* Strategy popup */
     .strategy-popup {
       position: fixed;
       top: 20px;
@@ -265,6 +291,8 @@
       <div id="player-hand" class="hand"></div>
 
       <div class="betting-area">
+        <div class="bet-spot" id="betSpot"></div>
+
         <div>Click chips to place your bet</div>
         <div class="chips" id="chips">
           <img src="images/chips/chip-1.png" class="chip" data-amount="1" alt="$1 chip">
@@ -275,22 +303,21 @@
         </div>
       </div>
 
-     <div class="controls">
-  <button id="dealBtn">Deal</button>
-  <button id="hitBtn" disabled>Hit</button>
-  <button id="standBtn" disabled>Stand</button>
-  <button id="doubleBtn" disabled>Double</button>
-  <button id="clearBetBtn">Clear Bet</button>
-</div> 
+      <div class="controls">
+        <button id="dealBtn">Deal</button>
+        <button id="hitBtn" disabled>Hit</button>
+        <button id="standBtn" disabled>Stand</button>
+        <button id="doubleBtn" disabled>Double</button>
+        <button id="clearBetBtn">Clear Bet</button>
+      </div>
     </div>
 
     <div class="footer-note">Blackjack pays even money in this version for now.</div>
   </div>
 
-  <!-- Strategy popup -->
   <div id="strategyPopup" class="strategy-popup hidden">
     <div class="strategy-header">
-      <div class="strategy-title">Blackjack Coach</div>
+      <div class="strategy-title">Basic Strategy Coach</div>
       <button id="strategyClose" class="strategy-close" aria-label="Close popup">&times;</button>
     </div>
     <div class="strategy-body">
@@ -323,14 +350,21 @@
     const dealBtn = document.getElementById("dealBtn");
     const hitBtn = document.getElementById("hitBtn");
     const standBtn = document.getElementById("standBtn");
+    const doubleBtn = document.getElementById("doubleBtn");
     const clearBetBtn = document.getElementById("clearBetBtn");
     const chipSound = document.getElementById("chipSound");
     const chipEls = document.querySelectorAll(".chip");
+    const betSpot = document.getElementById("betSpot");
 
     const strategyPopup = document.getElementById("strategyPopup");
     const strategyMoveEl = document.getElementById("strategyMove");
     const strategyTextEl = document.getElementById("strategyText");
     const strategyCloseBtn = document.getElementById("strategyClose");
+
+    strategyCloseBtn.addEventListener("click", () => {
+      strategyPopup.classList.add("hidden");
+      clearTimeout(strategyTimer);
+    });
 
     function buildDeck() {
       deck = [];
@@ -354,7 +388,7 @@
 
     function normalizeRank(rank) {
       if (["J", "Q", "K"].includes(rank)) return "10";
-      return rank;
+      return String(parseInt(rank, 10));
     }
 
     function prettyRank(rank) {
@@ -420,12 +454,17 @@
       return move.toLowerCase();
     }
 
-  function showStrategyPopup(move, text) {
-  strategyMoveEl.textContent = move.toUpperCase();
-  strategyMoveEl.className = `strategy-move ${getMoveClass(move)}`;
-  strategyTextEl.textContent = text;
-  strategyPopup.classList.remove("hidden");
-}
+    function showStrategyPopup(move, text) {
+      strategyMoveEl.textContent = move.toUpperCase();
+      strategyMoveEl.className = `strategy-move ${getMoveClass(move)}`;
+      strategyTextEl.textContent = text;
+      strategyPopup.classList.remove("hidden");
+
+      clearTimeout(strategyTimer);
+      strategyTimer = setTimeout(() => {
+        strategyPopup.classList.add("hidden");
+      }, 12000);
+    }
 
     function hideStrategyPopup() {
       strategyPopup.classList.add("hidden");
@@ -495,10 +534,10 @@
 
       let extra = "";
 
-      if (move === "Hit") extra = "Take another card. Standing here is how people donate rent money to casinos.";
-      if (move === "Stand") extra = "Sit on it. Don’t get cute and blow up a decent hand.";
+      if (move === "Hit") extra = "Take another card.";
+      if (move === "Stand") extra = "Sit tight and don't torch a decent hand.";
       if (move === "Double") extra = "Best math spot to press the bet.";
-      if (move === "Split") extra = "Play the two cards as separate hands.";
+      if (move === "Split") extra = "In real blackjack, you'd split this hand.";
 
       return {
         move,
@@ -523,12 +562,28 @@
       betEl.textContent = bet;
     }
 
+    function addChipToStack(amount) {
+      const chip = document.createElement("img");
+      chip.src = `images/chips/chip-${amount}.png`;
+      chip.className = "bet-chip";
+
+      const stackHeight = betSpot.children.length;
+      chip.style.bottom = `${stackHeight * 6}px`;
+
+      betSpot.appendChild(chip);
+    }
+
+    function clearBetSpot() {
+      betSpot.innerHTML = "";
+    }
+
     function renderHand(hand, element, hideHoleCard = false) {
       element.innerHTML = "";
 
       hand.forEach((card, index) => {
         const img = document.createElement("img");
         img.className = "card";
+        img.style.animationDelay = `${index * 0.15}s`;
 
         if (hideHoleCard && index === 1) {
           img.src = "images/cards/card_back.png";
@@ -559,6 +614,12 @@
       dealBtn.disabled = !gameOver;
       hitBtn.disabled = gameOver;
       standBtn.disabled = gameOver;
+
+      doubleBtn.disabled =
+        gameOver ||
+        player.length !== 2 ||
+        bankroll < bet;
+
       clearBetBtn.disabled = !gameOver || bet === 0;
     }
 
@@ -587,6 +648,7 @@
 
       bankroll -= amount;
       bet += amount;
+      addChipToStack(amount);
       updateMoneyDisplay();
       updateButtons();
       playChipSound();
@@ -598,6 +660,7 @@
 
       bankroll += bet;
       bet = 0;
+      clearBetSpot();
       updateMoneyDisplay();
       updateButtons();
       setMessage("Bet cleared.");
@@ -609,6 +672,7 @@
       updateButtons();
       updateChipState();
       hideStrategyPopup();
+      clearBetSpot();
       setMessage(message);
     }
 
@@ -666,6 +730,7 @@
 
       player.push(drawCard());
       render(false);
+      updateButtons();
 
       const total = handValue(player);
 
@@ -724,6 +789,36 @@
       endRound("Push.");
     }
 
+    function doubleDown() {
+      if (gameOver) return;
+
+      if (player.length !== 2) return;
+
+      if (bankroll < bet) {
+        setMessage("Not enough bankroll to double.");
+        return;
+      }
+
+      bankroll -= bet;
+      bet *= 2;
+      addChipToStack(bet / 2);
+      updateMoneyDisplay();
+
+      player.push(drawCard());
+      render(false);
+
+      const total = handValue(player);
+
+      if (total > 21) {
+        bet = 0;
+        updateMoneyDisplay();
+        endRound("Bust after doubling. Dealer wins.");
+        return;
+      }
+
+      stand();
+    }
+
     chipEls.forEach(chip => {
       chip.addEventListener("click", () => {
         const amount = Number(chip.dataset.amount);
@@ -731,10 +826,10 @@
       });
     });
 
-    strategyCloseBtn.addEventListener("click", hideStrategyPopup);
     dealBtn.addEventListener("click", deal);
     hitBtn.addEventListener("click", hit);
     standBtn.addEventListener("click", stand);
+    doubleBtn.addEventListener("click", doubleDown);
     clearBetBtn.addEventListener("click", clearBet);
 
     updateMoneyDisplay();
