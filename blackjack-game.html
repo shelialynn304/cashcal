@@ -144,6 +144,86 @@
       font-size: 0.95rem;
     }
 
+    /* Strategy popup */
+    .strategy-popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: min(340px, calc(100vw - 30px));
+      background: rgba(15, 15, 15, 0.97);
+      border: 2px solid #ffd54a;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+      z-index: 9999;
+      text-align: left;
+      overflow: hidden;
+      animation: popupIn 0.22s ease;
+    }
+
+    .strategy-popup.hidden {
+      display: none;
+    }
+
+    .strategy-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: rgba(255, 213, 74, 0.12);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .strategy-title {
+      font-weight: bold;
+      font-size: 1rem;
+      color: #ffd54a;
+    }
+
+    .strategy-close {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1.4rem;
+      line-height: 1;
+      min-width: auto;
+      padding: 0;
+      box-shadow: none;
+      cursor: pointer;
+    }
+
+    .strategy-body {
+      padding: 14px;
+    }
+
+    .strategy-move {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .strategy-move.hit { color: #61d96b; }
+    .strategy-move.stand { color: #ff6b6b; }
+    .strategy-move.double { color: #67b7ff; }
+    .strategy-move.split { color: #d48cff; }
+
+    .strategy-text {
+      font-size: 0.98rem;
+      line-height: 1.45;
+      opacity: 0.96;
+    }
+
+    @keyframes popupIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
     @media (max-width: 700px) {
       .card {
         width: 78px;
@@ -155,6 +235,11 @@
 
       h1 {
         font-size: 2rem;
+      }
+
+      .strategy-popup {
+        top: 12px;
+        right: 12px;
       }
     }
   </style>
@@ -201,6 +286,18 @@
     <div class="footer-note">Blackjack pays even money in this version for now.</div>
   </div>
 
+  <!-- Strategy popup -->
+  <div id="strategyPopup" class="strategy-popup hidden">
+    <div class="strategy-header">
+      <div class="strategy-title">Blackjack Coach</div>
+      <button id="strategyClose" class="strategy-close" aria-label="Close popup">&times;</button>
+    </div>
+    <div class="strategy-body">
+      <div id="strategyMove" class="strategy-move">HIT</div>
+      <div id="strategyText" class="strategy-text">Waiting for cards...</div>
+    </div>
+  </div>
+
   <audio id="chipSound" src="sounds/chip-click.mp3" preload="auto"></audio>
 
   <script>
@@ -210,6 +307,7 @@
     let bankroll = 1000;
     let bet = 0;
     let gameOver = true;
+    let strategyTimer = null;
 
     const suits = ["spades", "hearts", "diamonds", "clubs"];
     const ranks = ["A", "02", "03", "04", "05", "06", "07", "08", "09", "10", "J", "Q", "K"];
@@ -227,6 +325,11 @@
     const clearBetBtn = document.getElementById("clearBetBtn");
     const chipSound = document.getElementById("chipSound");
     const chipEls = document.querySelectorAll(".chip");
+
+    const strategyPopup = document.getElementById("strategyPopup");
+    const strategyMoveEl = document.getElementById("strategyMove");
+    const strategyTextEl = document.getElementById("strategyText");
+    const strategyCloseBtn = document.getElementById("strategyClose");
 
     function buildDeck() {
       deck = [];
@@ -246,6 +349,17 @@
 
     function drawCard() {
       return deck.pop();
+    }
+
+    function normalizeRank(rank) {
+      if (["J", "Q", "K"].includes(rank)) return "10";
+      return rank;
+    }
+
+    function prettyRank(rank) {
+      if (rank === "A") return "A";
+      if (["J", "Q", "K"].includes(rank)) return rank;
+      return String(parseInt(rank, 10));
     }
 
     function cardValue(rank) {
@@ -273,6 +387,135 @@
 
     function isBlackjack(hand) {
       return hand.length === 2 && handValue(hand) === 21;
+    }
+
+    function isSoftHand(hand) {
+      let total = 0;
+      let aces = 0;
+
+      for (const card of hand) {
+        total += cardValue(card.rank);
+        if (card.rank === "A") aces++;
+      }
+
+      while (total > 21 && aces > 0) {
+        total -= 10;
+        aces--;
+      }
+
+      return hand.some(card => card.rank === "A") && total <= 21;
+    }
+
+    function isPair(hand) {
+      if (hand.length !== 2) return false;
+      return normalizeRank(hand[0].rank) === normalizeRank(hand[1].rank);
+    }
+
+    function dealerUpValue(card) {
+      return cardValue(card.rank);
+    }
+
+    function getMoveClass(move) {
+      return move.toLowerCase();
+    }
+
+    function showStrategyPopup(move, text) {
+      strategyMoveEl.textContent = move.toUpperCase();
+      strategyMoveEl.className = `strategy-move ${getMoveClass(move)}`;
+      strategyTextEl.textContent = text;
+      strategyPopup.classList.remove("hidden");
+
+      clearTimeout(strategyTimer);
+      strategyTimer = setTimeout(() => {
+        strategyPopup.classList.add("hidden");
+      }, 4200);
+    }
+
+    function hideStrategyPopup() {
+      strategyPopup.classList.add("hidden");
+      clearTimeout(strategyTimer);
+    }
+
+    function getBasicStrategy(playerHand, dealerCard) {
+      const total = handValue(playerHand);
+      const dealerUp = dealerUpValue(dealerCard);
+      const soft = isSoftHand(playerHand);
+      const pair = isPair(playerHand);
+
+      if (pair && playerHand.length === 2) {
+        const pairRank = normalizeRank(playerHand[0].rank);
+
+        if (pairRank === "A" || pairRank === "8") return "Split";
+        if (pairRank === "10") return "Stand";
+        if (pairRank === "9") return [2, 3, 4, 5, 6, 8, 9].includes(dealerUp) ? "Split" : "Stand";
+        if (pairRank === "7") return dealerUp >= 2 && dealerUp <= 7 ? "Split" : "Hit";
+        if (pairRank === "6") return dealerUp >= 2 && dealerUp <= 6 ? "Split" : "Hit";
+        if (pairRank === "5") return dealerUp >= 2 && dealerUp <= 9 ? "Double" : "Hit";
+        if (pairRank === "4") return dealerUp === 5 || dealerUp === 6 ? "Split" : "Hit";
+        if (pairRank === "3" || pairRank === "2") return dealerUp >= 2 && dealerUp <= 7 ? "Split" : "Hit";
+      }
+
+      if (soft && playerHand.length >= 2) {
+        if (total === 13 || total === 14) return (dealerUp === 5 || dealerUp === 6) ? "Double" : "Hit";
+        if (total === 15 || total === 16) return (dealerUp >= 4 && dealerUp <= 6) ? "Double" : "Hit";
+        if (total === 17) return (dealerUp >= 3 && dealerUp <= 6) ? "Double" : "Hit";
+
+        if (total === 18) {
+          if (dealerUp >= 3 && dealerUp <= 6) return "Double";
+          if ([2, 7, 8].includes(dealerUp)) return "Stand";
+          return "Hit";
+        }
+
+        if (total >= 19) return "Stand";
+      }
+
+      if (total <= 8) return "Hit";
+      if (total === 9) return (dealerUp >= 3 && dealerUp <= 6) ? "Double" : "Hit";
+      if (total === 10) return (dealerUp >= 2 && dealerUp <= 9) ? "Double" : "Hit";
+      if (total === 11) return dealerUp === 11 ? "Hit" : "Double";
+      if (total === 12) return (dealerUp >= 4 && dealerUp <= 6) ? "Stand" : "Hit";
+      if (total >= 13 && total <= 16) return (dealerUp >= 2 && dealerUp <= 6) ? "Stand" : "Hit";
+      return "Stand";
+    }
+
+    function getHandLabel(hand) {
+      const total = handValue(hand);
+
+      if (isPair(hand) && hand.length === 2) {
+        return `pair of ${prettyRank(hand[0].rank)}s`;
+      }
+
+      if (isSoftHand(hand) && hand.length >= 2) {
+        return `soft ${total}`;
+      }
+
+      return `${total}`;
+    }
+
+    function getStrategyExplanation(playerHand, dealerCard) {
+      const move = getBasicStrategy(playerHand, dealerCard);
+      const handLabel = getHandLabel(playerHand);
+      const dealerLabel = prettyRank(dealerCard.rank);
+
+      let extra = "";
+
+      if (move === "Hit") extra = "Take another card. Standing here is how people donate rent money to casinos.";
+      if (move === "Stand") extra = "Sit on it. Don’t get cute and blow up a decent hand.";
+      if (move === "Double") extra = "Best math spot to press the bet.";
+      if (move === "Split") extra = "Play the two cards as separate hands.";
+
+      return {
+        move,
+        text: `You have ${handLabel} vs dealer ${dealerLabel}. Basic strategy says: ${move}. ${extra}`
+      };
+    }
+
+    function maybeShowStrategy() {
+      if (gameOver) return;
+      if (player.length < 2 || dealer.length < 1) return;
+
+      const advice = getStrategyExplanation(player, dealer[0]);
+      showStrategyPopup(advice.move, advice.text);
     }
 
     function setMessage(text) {
@@ -369,6 +612,7 @@
       render(true);
       updateButtons();
       updateChipState();
+      hideStrategyPopup();
       setMessage(message);
     }
 
@@ -418,6 +662,7 @@
       }
 
       setMessage("Your move.");
+      maybeShowStrategy();
     }
 
     function hit() {
@@ -441,6 +686,7 @@
       }
 
       setMessage("Hit or stand?");
+      maybeShowStrategy();
     }
 
     function stand() {
@@ -489,6 +735,7 @@
       });
     });
 
+    strategyCloseBtn.addEventListener("click", hideStrategyPopup);
     dealBtn.addEventListener("click", deal);
     hitBtn.addEventListener("click", hit);
     standBtn.addEventListener("click", stand);
