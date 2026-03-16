@@ -183,40 +183,46 @@ opacity:.5;
 cursor:not-allowed;
 }
 
+
 .strategy-popup{
-position:fixed;
-top:90px;
-right:14px;
-width:320px;
-background:#111;
-border:2px solid #ffd54a;
-border-radius:14px;
-z-index:999;
-text-align:left;
+  position: fixed;
+  top: 90px;
+  right: 14px;
+  width: 320px;
+  background: #111;
+  border: 2px solid #ffd54a;
+  border-radius: 14px;
+  z-index: 9999;
+  text-align: left;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,.45);
 }
 
 .strategy-header{
-display:flex;
-justify-content:space-between;
-padding:8px;
-background:rgba(255,213,74,.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  background: rgba(255,213,74,.15);
 }
 
 .strategy-body{
-padding:10px;
+  padding: 10px;
 }
 
 .strategy-move{
-font-weight:bold;
-margin-bottom:4px;
+  font-weight: bold;
+  margin-bottom: 4px;
 }
 
-.strategy-move.hit{color:#61d96b}
-.strategy-move.stand{color:#ff6b6b}
-.strategy-move.double{color:#67b7ff}
-.strategy-move.split{color:#d48cff}
+.strategy-move.hit{ color:#61d96b; }
+.strategy-move.stand{ color:#ff6b6b; }
+.strategy-move.double{ color:#67b7ff; }
+.strategy-move.split{ color:#d48cff; }
 
-.hidden{display:none}
+.hidden{
+  display: none;
+}
 
 .wrong-bubble{
 position:fixed;
@@ -408,11 +414,6 @@ for(let r of ranks)
 deck.push({suit:s,rank:r})
 }
 
-  function playChipSound(){
-if(!chipSound) return
-chipSound.currentTime=0
-chipSound.play().catch(()=>{})
-}
 
 function shuffle(){
 for(let i=deck.length-1;i>0;i--){
@@ -629,17 +630,32 @@ maybeShowStrategy()
 }
 
 function hit(){
-if(gameOver)return
-checkMove("Hit")
-player.push(draw())
-render()
-if(handValue(player)>21){
-bet=0
-gameOver=true
-setMessage("Bust")
-maybeShowStrategy()
+  if(gameOver) return
+
+  checkMove("Hit")
+  player.push(draw())
+  render()
+
+  if(handValue(player) > 21){
+    bet = 0
+    gameOver = true
+    hideStrategyPopup()
+    updateMoney()
+    updateButtons()
+    setMessage("Bust")
+    return
+  }
+
+  if(handValue(player) === 21){
+    stand()
+    return
+  }
+
+  setMessage("Hit or stand?")
+  maybeShowStrategy()
 }
-}
+
+  
 
 
   
