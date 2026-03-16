@@ -125,13 +125,32 @@ h1 {
 }
 
 .bet-spot {
-  height: 48px;
-  margin-bottom: 4px;
+  height: 60px;
+  width: 160px;
+  margin: 10px auto;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   position: relative;
+
+  border: 2px dashed rgba(255,255,255,0.5);
+  border-radius: 50px;
+
+  background: rgba(0,0,0,0.15);
+
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.5);
 }
+    .bet-spot::before {
+  content: "BET";
+  position: absolute;
+  top: -10px;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 2px;
+}
+    
 
 .bet-chip {
   width: 36px;
