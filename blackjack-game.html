@@ -354,6 +354,13 @@ const accuracyEl=document.getElementById("accuracy")
 const strategyPopup=document.getElementById("strategyPopup")
 const strategyMoveEl=document.getElementById("strategyMove")
 const strategyTextEl=document.getElementById("strategyText")
+const strategyCloseBtn=document.getElementById("strategyClose")
+let strategyTimer=null
+
+  strategyCloseBtn.addEventListener("click",()=>{
+  strategyPopup.classList.add("hidden")
+  clearTimeout(strategyTimer)
+})
 
 const wrongBubble=document.getElementById("wrongBubble")
 
@@ -463,6 +470,130 @@ splitBtn.disabled=true
 clearBetBtn.disabled=!gameOver||bet===0
 }
 
+  function playChipSound(){
+  if(!chipSound) return
+  chipSound.pause()
+  chipSound.currentTime=0
+  chipSound.play().catch(()=>{})
+}
+
+  function getMoveClass(move){
+  return move.toLowerCase()
+}
+
+function showStrategyPopup(move,text){
+  lastStrategyMove=move
+  strategyMoveEl.textContent=move.toUpperCase()
+  strategyMoveEl.className=`strategy-move ${getMoveClass(move)}`
+  strategyTextEl.textContent=text
+  strategyPopup.classList.remove("hidden")
+
+  clearTimeout(strategyTimer)
+  strategyTimer=setTimeout(()=>{
+    strategyPopup.classList.add("hidden")
+  },12000)
+}
+
+function hideStrategyPopup(){
+  strategyPopup.classList.add("hidden")
+  clearTimeout(strategyTimer)
+}
+
+  
+function normalizeRank(rank){
+  if(["J","Q","K"].includes(rank)) return "10"
+  if(rank==="A") return "A"
+  return String(parseInt(rank,10))
+}
+
+function isSoftHand(hand){
+  let total=0
+  let aces=0
+
+  for(const card of hand){
+    total+=cardValue(card.rank)
+    if(card.rank==="A") aces++
+  }
+
+  while(total>21 && aces>0){
+    total-=10
+    aces--
+  }
+
+  return hand.some(card=>card.rank==="A") && total<=21
+}
+
+function isPair(hand){
+  return hand.length===2 &&
+    normalizeRank(hand[0].rank)===normalizeRank(hand[1].rank)
+}
+
+function getBasicStrategy(playerHand,dealerCard){
+  const total=handValue(playerHand)
+  const dealerUp=cardValue(dealerCard.rank)
+  const soft=isSoftHand(playerHand)
+  const pair=isPair(playerHand)
+
+  if(pair){
+    const pairRank=normalizeRank(playerHand[0].rank)
+
+    if(pairRank==="A" || pairRank==="8") return "Split"
+    if(pairRank==="10") return "Stand"
+    if(pairRank==="9") return [2,3,4,5,6,8,9].includes(dealerUp) ? "Split" : "Stand"
+    if(pairRank==="7") return dealerUp>=2 && dealerUp<=7 ? "Split" : "Hit"
+    if(pairRank==="6") return dealerUp>=2 && dealerUp<=6 ? "Split" : "Hit"
+    if(pairRank==="5") return dealerUp>=2 && dealerUp<=9 ? "Double" : "Hit"
+    if(pairRank==="4") return (dealerUp===5 || dealerUp===6) ? "Split" : "Hit"
+    if(pairRank==="3" || pairRank==="2") return dealerUp>=2 && dealerUp<=7 ? "Split" : "Hit"
+  }
+
+  if(soft){
+    if(total===13 || total===14) return (dealerUp===5 || dealerUp===6) ? "Double" : "Hit"
+    if(total===15 || total===16) return (dealerUp>=4 && dealerUp<=6) ? "Double" : "Hit"
+    if(total===17) return (dealerUp>=3 && dealerUp<=6) ? "Double" : "Hit"
+
+    if(total===18){
+      if(dealerUp>=3 && dealerUp<=6) return "Double"
+      if([2,7,8].includes(dealerUp)) return "Stand"
+      return "Hit"
+    }
+
+    if(total>=19) return "Stand"
+  }
+
+  if(total<=8) return "Hit"
+  if(total===9) return (dealerUp>=3 && dealerUp<=6) ? "Double" : "Hit"
+  if(total===10) return (dealerUp>=2 && dealerUp<=9) ? "Double" : "Hit"
+  if(total===11) return dealerUp===11 ? "Hit" : "Double"
+  if(total===12) return (dealerUp>=4 && dealerUp<=6) ? "Stand" : "Hit"
+  if(total>=13 && total<=16) return (dealerUp>=2 && dealerUp<=6) ? "Stand" : "Hit"
+  return "Stand"
+}
+
+function getStrategyExplanation(playerHand,dealerCard){
+  const move=getBasicStrategy(playerHand,dealerCard)
+  const total=handValue(playerHand)
+  const dealerLabel=normalizeRank(dealerCard.rank)
+
+  let handLabel=`${total}`
+  if(isPair(playerHand)) handLabel=`pair of ${normalizeRank(playerHand[0].rank)}s`
+  else if(isSoftHand(playerHand)) handLabel=`soft ${total}`
+
+  return {
+    move,
+    text:`You have ${handLabel} vs dealer ${dealerLabel}. Basic strategy says: ${move}.`
+  }
+}
+
+function maybeShowStrategy(){
+  if(gameOver) return
+  if(player.length<2 || dealer.length<1) return
+
+  const advice=getStrategyExplanation(player,dealer[0])
+  showStrategyPopup(advice.move,advice.text)
+}
+
+  
 function addBet(a){
 if(!gameOver)return
 if(bankroll<a)return
@@ -494,6 +625,7 @@ gameOver=false
 render()
 updateButtons()
 setMessage("Your move")
+maybeShowStrategy()
 }
 
 function hit(){
@@ -505,18 +637,27 @@ if(handValue(player)>21){
 bet=0
 gameOver=true
 setMessage("Bust")
+maybeShowStrategy()
 }
 }
 
+
+  
 function stand(){
 if(gameOver)return
+
 checkMove("Stand")
-while(handValue(dealer)<17)
+
+while(handValue(dealer)<17){
 dealer.push(draw())
+}
+
 render()
+
 let pt=handValue(player)
 let dt=handValue(dealer)
-if(dt>21||pt>dt){
+
+if(dt>21 || pt>dt){
 bankroll+=bet*2
 setMessage("You win")
 }else if(pt===dt){
@@ -525,12 +666,17 @@ setMessage("Push")
 }else{
 setMessage("Dealer wins")
 }
+
 bet=0
 gameOver=true
+
+hideStrategyPopup()
+
 updateMoney()
 updateButtons()
 }
 
+  
 function doubleDown(){
 checkMove("Double")
 if(bankroll<bet)return
