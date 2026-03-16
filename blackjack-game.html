@@ -6,17 +6,25 @@
   <title>Blackjack Trainer</title>
 
   <style>
-   body {
+ body {
   margin: 0;
   padding: 0;
-  background: radial-gradient(circle at top, #0f7a3a 0%, #0a5c2b 55%, #073d1d 100%);
+  background:
+    radial-gradient(circle at top, #0f7a3a 0%, #0a5c2b 55%, #073d1d 100%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.02),
+      rgba(255,255,255,0.02) 2px,
+      transparent 2px,
+      transparent 4px
+    );
   font-family: Arial, sans-serif;
   color: white;
   text-align: center;
   min-height: 100vh;
   overflow: hidden;
 }
-
+    
 .wrap {
   max-width: 1100px;
   height: 100vh;
