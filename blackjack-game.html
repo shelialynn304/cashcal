@@ -388,16 +388,19 @@ accuracyEl.textContent=acc
 }
 
 function checkMove(action){
-if(!lastStrategyMove)return
-if(action===lastStrategyMove){
-correctMoves++
-}else{
-wrongMoves++
-showWrong()
-}
-updateAccuracy()
-}
+  if(!lastStrategyMove) return
 
+  if(action === lastStrategyMove){
+    correctMoves++
+    showCorrect()
+  }else{
+    wrongMoves++
+    showWrong()
+  }
+
+  updateAccuracy()
+}
+  
 function setMessage(t){messageEl.textContent=t}
 
 function updateMoney(){
@@ -444,23 +447,44 @@ aces--
 return total
 }
 
-function renderHand(hand,el){
+function renderHand(hand,el,hideHole=false){
 el.innerHTML=""
+
 hand.forEach((c,i)=>{
 let img=document.createElement("img")
 img.className="card"
+
+if(hideHole && i===1){
+img.src="images/cards/card_back.png"
+}else{
 img.src=`images/cards/card_${c.suit}_${c.rank}.png`
+}
+
 img.style.animationDelay=`${i*.15}s`
 el.appendChild(img)
 })
 }
-
-function render(){
-renderHand(player,playerHandEl)
-renderHand(dealer,dealerHandEl)
+  
+function render(showDealer=false){
+renderHand(player,playerHandEl,false)
+renderHand(dealer,dealerHandEl,!showDealer)
 playerTotalEl.textContent=handValue(player)
-dealerTotalEl.textContent=handValue(dealer)
+dealerTotalEl.textContent=showDealer
+  ? handValue(dealer)
+  : cardValue(dealer[0].rank)
 }
+  
+  
+function showCorrect(){
+let bubble=document.createElement("div")
+bubble.className="wrong-bubble"
+bubble.style.background="#2e9e44"
+bubble.textContent="CORRECT!"
+document.body.appendChild(bubble)
+
+setTimeout(()=>bubble.remove(),900)
+}
+  
 
 function updateButtons(){
 dealBtn.disabled=!gameOver
@@ -655,43 +679,55 @@ function hit(){
   maybeShowStrategy()
 }
 
-  
+function showImage(src){
+  let img=document.createElement("img")
+  img.src=src
+  img.style.position="fixed"
+  img.style.left="50%"
+  img.style.top="40%"
+  img.style.transform="translate(-50%,-50%)"
+  img.style.zIndex="2000"
+  img.style.width="260px"
 
+  document.body.appendChild(img)
 
-  
+  setTimeout(()=>img.remove(),1800)
+}  
+
 function stand(){
-if(gameOver)return
+if(gameOver) return
 
 checkMove("Stand")
 
-while(handValue(dealer)<17){
-dealer.push(draw())
+while(handValue(dealer) < 17){
+  dealer.push(draw())
 }
 
-render()
+render(true)
 
-let pt=handValue(player)
-let dt=handValue(dealer)
+let pt = handValue(player)
+let dt = handValue(dealer)
 
-if(dt>21 || pt>dt){
-bankroll+=bet*2
-setMessage("You win")
-}else if(pt===dt){
-bankroll+=bet
-setMessage("Push")
-}else{
-setMessage("Dealer wins")
+if(dt > 21 || pt > dt){
+  bankroll += bet * 2
+  setMessage("You win")
+}
+else if(pt === dt){
+  bankroll += bet
+  setMessage("Push")
+}
+else{
+  setMessage("Dealer wins")
 }
 
-bet=0
-gameOver=true
+bet = 0
+gameOver = true
 
 hideStrategyPopup()
 
 updateMoney()
 updateButtons()
 }
-
   
 function doubleDown(){
 checkMove("Double")
