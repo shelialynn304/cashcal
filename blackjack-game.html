@@ -50,16 +50,27 @@ h1 {
 }
 
 .table-area {
-  background: rgba(0, 0, 0, 0.15);
-  border: 2px solid rgba(255,255,255,0.12);
-  border-radius: 18px;
-  padding: 10px 10px 14px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  background: radial-gradient(circle at center, #0c6b35 0%, #084d26 70%, #053319 100%);
+  border: 4px solid #d4af37;
+  border-radius: 30px;
+  padding: 14px 10px 16px;
+  box-shadow:
+    inset 0 0 40px rgba(0,0,0,0.6),
+    0 10px 25px rgba(0,0,0,0.5);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
 }
+
+    .table-area::before {
+  content: "BLACKJACK";
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 4px;
+}
+    
 
 .section-title {
   margin: 4px 0 2px;
@@ -83,6 +94,14 @@ h1 {
   gap: 6px;
 }
 
+.hand img {
+  margin-left: -25px;
+}
+
+.hand img:first-child {
+  margin-left: 0;
+}
+    
 .card {
   width: 68px;
   border-radius: 8px;
