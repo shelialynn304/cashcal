@@ -335,6 +335,7 @@ const playerHandEl=document.getElementById("player-hand")
 const dealerTotalEl=document.getElementById("dealer-total")
 const playerTotalEl=document.getElementById("player-total")
 const messageEl=document.getElementById("message")
+const chipSound=document.getElementById("chipSound")
 
 const dealBtn=document.getElementById("dealBtn")
 const hitBtn=document.getElementById("hitBtn")
@@ -400,6 +401,12 @@ for(let r of ranks)
 deck.push({suit:s,rank:r})
 }
 
+  function playChipSound(){
+if(!chipSound) return
+chipSound.currentTime=0
+chipSound.play().catch(()=>{})
+}
+
 function shuffle(){
 for(let i=deck.length-1;i>0;i--){
 let j=Math.floor(Math.random()*(i+1))
@@ -461,6 +468,7 @@ if(!gameOver)return
 if(bankroll<a)return
 bankroll-=a
 bet+=a
+  playChipSound()
 updateMoney()
 let chip=document.createElement("img")
 chip.src=`images/chips/chip-${a}.png`
