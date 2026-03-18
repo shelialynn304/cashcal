@@ -865,6 +865,163 @@ function deal(){
   dealer=[draw(),draw()]
   gameOver=false
 
-  
+  render()
+  updateButtons()
+  setMessage("Your move")
 
+  if(handValue(player)===21){
+    render(false)
+    setReason("🎉 Blackjack. You hit 21 immediately, which is the dream before the casino remembers whose building this is.")
+    showImage(IMAGES.blackjack)
+  }else{
+    setReason(trainerHintsEnabled
+      ? "Hints are ON. The coach is showing the recommended move."
+      : "Hints are OFF. Make your choice and I’ll explain it after.")
+  }
 
+  maybeShowStrategy()
+}
+
+function hit(){
+  if(gameOver) return
+if(bankroll<=0){
+      setTimeout(()=>{
+        setReason("Bankroll gone. The dealer’s chip tray is empty because your money has spiritually left the building.")
+        showImage(IMAGES.broke)
+      },700)
+    }
+    return
+  }
+
+  if(handValue(player) === 21){
+    setReason("You made 21. Now the dealer gets their turn.")
+    stand(true)
+    return
+  }
+
+  setMessage("Hit or stand?")
+  maybeShowStrategy()
+}
+
+function stand(fromAuto=false){
+  if(gameOver) return
+
+  if(!fromAuto){
+    explainMove("Stand")
+  }
+
+  while(handValue(dealer) < 17){
+    dealer.push(draw())
+  }
+
+  render(true)
+
+  let pt = handValue(player)
+  let dt = handValue(dealer)
+
+  if(dt > 21){
+    bankroll += bet * 2
+    setMessage("Dealer busts. You win.")
+    setReason("✅ Dealer busted by going over 21. Sometimes the house punches itself in the throat.")
+    showImage(IMAGES.correct)
+  }
+  else if(pt > dt){
+    bankroll += bet * 2
+    setMessage("You win")
+    setReason(`✅ Your ${pt} beat the dealer’s ${dt}.`)
+    showImage(IMAGES.correct)
+  }
+else if(pt === dt){
+    bankroll += bet
+    setMessage("Push")
+    setReason(`🤝 Push. You and the dealer both finished with ${pt}, so your bet comes back.`)
+  }
+  else{
+    setMessage("Dealer wins")
+    setReason(`❌ Dealer ${dt} beats your ${pt}.`)
+    showImage(IMAGES.dealerLaugh)
+  }
+
+  bet = 0
+  gameOver = true
+  hideStrategyPopup()
+  updateMoney()
+  updateButtons()
+
+  if(bankroll<=0){
+    setTimeout(()=>{
+      setMessage("Out of money")
+      setReason("💸 Bankroll wiped out. The dealer shrugging at an empty tray feels about right.")
+      showImage(IMAGES.broke)
+    },700)
+  }
+}
+function doubleDown(){
+  if(gameOver) return
+
+  explainMove("Double")
+
+  if(bankroll < bet){
+    setMessage("Not enough bankroll to double.")
+    return
+  }
+
+  bankroll -= bet
+  bet *= 2
+  player.push(draw())
+  render()
+
+  if(handValue(player) > 21){
+    bet = 0
+    gameOver = true
+    hideStrategyPopup()
+    updateMoney()
+    updateButtons()
+    setMessage("Bust after double")
+    setReason("💥 You doubled and busted. Aggressive, educational, and financially unfortunate.")
+    showImage(IMAGES.playerBust)
+
+    if(bankroll<=0){
+      setTimeout(()=>{
+        setMessage("Out of money")
+        setReason("The bankroll has flatlined. Dealer’s got the empty tray look now.")
+        showImage(IMAGES.broke)
+      },700)
+    }
+    return
+  }
+stand(true)
+}
+
+chipEls.forEach(c=>{
+  c.onclick=()=>addBet(Number(c.dataset.amount))
+})
+
+dealBtn.onclick=deal
+hitBtn.onclick=hit
+standBtn.onclick=stand
+doubleBtn.onclick=doubleDown
+splitBtn.onclick=()=>setMessage("Split coming soon")
+clearBetBtn.onclick=clearBet
+
+updateMoney()
+updateButtons()
+render()
+</script>
+
+</body>
+</html>
+
+  explainMove("Hit")
+  player.push(draw())
+  render()
+
+  if(handValue(player) > 21){
+    bet = 0
+    gameOver = true
+    hideStrategyPopup()
+    updateMoney()
+    updateButtons()
+    setMessage("Bust")
+    setReason("💥 You busted. Once you go over 21, your hand is dead no matter what the dealer does.")
+    showImage(IMAGES.playerBust)
