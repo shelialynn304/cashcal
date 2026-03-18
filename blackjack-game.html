@@ -6,7 +6,6 @@
 <title>Blackjack Trainer</title>
 
 <style>
-
 body{
 margin:0;
 padding:0;
@@ -48,6 +47,7 @@ justify-content:center;
 gap:18px;
 margin:4px 0;
 font-weight:bold;
+flex-wrap:wrap;
 }
 
 .trainer-stats{
@@ -60,6 +60,49 @@ margin-bottom:4px;
 min-height:18px;
 margin:2px 0 4px;
 font-size:.9rem;
+}
+
+.trainer-options{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
+margin:6px 0 10px;
+font-size:.95rem;
+flex-wrap:wrap;
+}
+
+.toggle-wrap{
+display:flex;
+align-items:center;
+gap:8px;
+background:rgba(0,0,0,.2);
+padding:8px 12px;
+border-radius:999px;
+border:1px solid rgba(255,255,255,.18);
+}
+
+.toggle-wrap input{
+transform:scale(1.15);
+cursor:pointer;
+}
+
+.reason-box{
+max-width:760px;
+margin:0 auto 10px;
+padding:12px 14px;
+background:rgba(0,0,0,.28);
+border:1px solid rgba(255,255,255,.14);
+border-radius:14px;
+text-align:left;
+font-size:.95rem;
+min-height:46px;
+}
+
+.reason-title{
+font-weight:900;
+margin-bottom:4px;
+color:#ffd54a;
 }
 
 .table-area{
@@ -146,6 +189,7 @@ display:flex;
 justify-content:center;
 gap:8px;
 margin-top:4px;
+flex-wrap:wrap;
 }
 
 .chip{
@@ -183,36 +227,35 @@ opacity:.5;
 cursor:not-allowed;
 }
 
-
 .strategy-popup{
-  position: fixed;
-  top: 90px;
-  right: 14px;
-  width: 320px;
-  background: #111;
-  border: 2px solid #ffd54a;
-  border-radius: 14px;
-  z-index: 9999;
-  text-align: left;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,.45);
+position: fixed;
+top: 110px;
+right: 14px;
+width: 320px;
+background: #111;
+border: 2px solid #ffd54a;
+border-radius: 14px;
+z-index: 9999;
+text-align: left;
+overflow: hidden;
+box-shadow: 0 10px 30px rgba(0,0,0,.45);
 }
 
 .strategy-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 10px;
-  background: rgba(255,213,74,.15);
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 8px 10px;
+background: rgba(255,213,74,.15);
 }
 
 .strategy-body{
-  padding: 10px;
+padding: 10px;
 }
 
 .strategy-move{
-  font-weight: bold;
-  margin-bottom: 4px;
+font-weight: bold;
+margin-bottom: 4px;
 }
 
 .strategy-move.hit{ color:#61d96b; }
@@ -221,15 +264,14 @@ cursor:not-allowed;
 .strategy-move.split{ color:#d48cff; }
 
 .hidden{
-  display: none;
+display: none;
 }
 
-.wrong-bubble{
+.result-bubble{
 position:fixed;
 left:50%;
 top:18%;
 transform:translateX(-50%);
-background:#d11;
 font-weight:900;
 font-size:2rem;
 padding:14px 24px;
@@ -238,7 +280,15 @@ z-index:1000;
 box-shadow:0 10px 30px rgba(0,0,0,.6);
 }
 
-.wrong-bubble.show{
+.result-bubble.wrong{
+background:#d11;
+}
+
+.result-bubble.correct{
+background:#2e9e44;
+}
+
+.result-bubble.show{
 animation:wrongPop .25s ease,wrongFloat 1.2s ease forwards;
 }
 
@@ -252,6 +302,40 @@ animation:wrongPop .25s ease,wrongFloat 1.2s ease forwards;
 100%{opacity:0;top:12%}
 }
 
+.feedback-image{
+position:fixed;
+left:50%;
+top:40%;
+transform:translate(-50%,-50%);
+z-index:2000;
+width:260px;
+max-width:72vw;
+border-radius:16px;
+box-shadow:0 14px 40px rgba(0,0,0,.55);
+}
+
+@media (max-width: 800px){
+.wrap{
+height:auto;
+min-height:100vh;
+overflow:auto;
+}
+body{
+overflow:auto;
+}
+.strategy-popup{
+position:static;
+width:auto;
+max-width:760px;
+margin:8px auto 0;
+}
+.hand img{
+margin-left:-18px;
+}
+.card{
+width:56px;
+}
+}
 </style>
 </head>
 
@@ -262,67 +346,79 @@ animation:wrongPop .25s ease,wrongFloat 1.2s ease forwards;
 <h1>Blackjack Trainer</h1>
 
 <div class="topbar">
-<div>Bankroll: $<span id="bankroll">1000</span></div>
-<div>Bet: $<span id="bet">0</span></div>
+  <div>Bankroll: $<span id="bankroll">1000</span></div>
+  <div>Bet: $<span id="bet">0</span></div>
 </div>
 
 <div class="trainer-stats">
-Correct: <span id="correctMoves">0</span> |
-Mistakes: <span id="wrongMoves">0</span> |
-Accuracy: <span id="accuracy">100</span>%
+  Correct: <span id="correctMoves">0</span> |
+  Mistakes: <span id="wrongMoves">0</span> |
+  Accuracy: <span id="accuracy">100</span>%
 </div>
 
 <div id="message" class="message">Place a bet.</div>
 
+<div class="trainer-options">
+  <div class="toggle-wrap">
+    <label for="trainerToggle"><strong>Trainer Hints</strong></label>
+    <input type="checkbox" id="trainerToggle" checked>
+    <span id="trainerToggleText">ON</span>
+  </div>
+</div>
+
+<div id="reasonBox" class="reason-box">
+  <div class="reason-title">Why this move?</div>
+  <div id="reasonText">Turn trainer hints on for pre-move advice, or keep them off and get the explanation after your choice.</div>
+</div>
+
 <div class="table-area">
 
-<div class="section-title">Dealer</div>
-<div class="total">Total: <span id="dealer-total">0</span></div>
-<div id="dealer-hand" class="hand"></div>
+  <div class="section-title">Dealer</div>
+  <div class="total">Total: <span id="dealer-total">0</span></div>
+  <div id="dealer-hand" class="hand"></div>
 
-<div id="betSpot" class="bet-spot"></div>
+  <div id="betSpot" class="bet-spot"></div>
 
-<div class="section-title">Player</div>
-<div class="total">Total: <span id="player-total">0</span></div>
-<div id="player-hand" class="hand"></div>
+  <div class="section-title">Player</div>
+  <div class="total">Total: <span id="player-total">0</span></div>
+  <div id="player-hand" class="hand"></div>
 
-<div class="chips">
-<img src="images/chips/chip-1.png" class="chip" data-amount="1">
-<img src="images/chips/chip-5.png" class="chip" data-amount="5">
-<img src="images/chips/chip-10.png" class="chip" data-amount="10">
-<img src="images/chips/chip-25.png" class="chip" data-amount="25">
-<img src="images/chips/chip-100.png" class="chip" data-amount="100">
+  <div class="chips">
+    <img src="images/chips/chip-1.png" class="chip" data-amount="1">
+    <img src="images/chips/chip-5.png" class="chip" data-amount="5">
+    <img src="images/chips/chip-10.png" class="chip" data-amount="10">
+    <img src="images/chips/chip-25.png" class="chip" data-amount="25">
+    <img src="images/chips/chip-100.png" class="chip" data-amount="100">
+  </div>
+
+  <div class="controls">
+    <button id="dealBtn">Deal</button>
+    <button id="hitBtn" disabled>Hit</button>
+    <button id="standBtn" disabled>Stand</button>
+    <button id="doubleBtn" disabled>Double</button>
+    <button id="splitBtn" disabled>Split</button>
+    <button id="clearBetBtn">Clear Bet</button>
+  </div>
+
+</div>
 </div>
 
-<div class="controls">
-<button id="dealBtn">Deal</button>
-<button id="hitBtn" disabled>Hit</button>
-<button id="standBtn" disabled>Stand</button>
-<button id="doubleBtn" disabled>Double</button>
-<button id="splitBtn" disabled>Split</button>
-<button id="clearBetBtn">Clear Bet</button>
-</div>
-
-</div>
-</div>
-
-<div id="wrongBubble" class="wrong-bubble hidden">WRONG!</div>
+<div id="resultBubble" class="result-bubble hidden">WRONG!</div>
 
 <div id="strategyPopup" class="strategy-popup hidden">
-<div class="strategy-header">
-<div>Strategy Coach</div>
-<button id="strategyClose">✖</button>
-</div>
-<div class="strategy-body">
-<div id="strategyMove" class="strategy-move">HIT</div>
-<div id="strategyText"></div>
-</div>
+  <div class="strategy-header">
+    <div>Strategy Coach</div>
+    <button id="strategyClose">✖</button>
+  </div>
+  <div class="strategy-body">
+    <div id="strategyMove" class="strategy-move">HIT</div>
+    <div id="strategyText"></div>
+  </div>
 </div>
 
 <audio id="chipSound" src="sounds/chip-click.mp3"></audio>
 
 <script>
-
 let deck=[]
 let player=[]
 let dealer=[]
@@ -333,6 +429,7 @@ let gameOver=true
 let correctMoves=0
 let wrongMoves=0
 let lastStrategyMove=null
+let trainerHintsEnabled=true
 
 const bankrollEl=document.getElementById("bankroll")
 const betEl=document.getElementById("bet")
@@ -363,150 +460,167 @@ const strategyTextEl=document.getElementById("strategyText")
 const strategyCloseBtn=document.getElementById("strategyClose")
 let strategyTimer=null
 
-  strategyCloseBtn.addEventListener("click",()=>{
+const resultBubble=document.getElementById("resultBubble")
+const trainerToggle=document.getElementById("trainerToggle")
+const trainerToggleText=document.getElementById("trainerToggleText")
+const reasonTextEl=document.getElementById("reasonText")
+
+const IMAGES = {
+  correct: "images/corrextmove.png",
+  wrong: "images/wrong.png",
+  blackjack: "images/blackjackjackpot.png",
+  playerBust: "images/dealerbust.png",
+  dealerLaugh: "images/laughdealer.png",
+  broke: "images/dealershrugemptytray.png"
+}
+
+strategyCloseBtn.addEventListener("click",()=>{
   strategyPopup.classList.add("hidden")
   clearTimeout(strategyTimer)
 })
 
-const wrongBubble=document.getElementById("wrongBubble")
+trainerToggle.addEventListener("change",()=>{
+  trainerHintsEnabled=trainerToggle.checked
+  trainerToggleText.textContent=trainerHintsEnabled ? "ON" : "OFF"
+
+  if(!trainerHintsEnabled){
+    hideStrategyPopup()
+    setReason("Hints are OFF. Make your move first, then I’ll explain why it was right or wrong.")
+  }else if(!gameOver && player.length>=2 && dealer.length>=1){
+    maybeShowStrategy()
+  }
+})
+
+function showBubble(text,type="wrong"){
+  resultBubble.textContent=text
+  resultBubble.className=`result-bubble ${type}`
+  resultBubble.classList.remove("hidden")
+  resultBubble.classList.add("show")
+
+  setTimeout(()=>{
+    resultBubble.classList.add("hidden")
+    resultBubble.classList.remove("show")
+  },1200)
+}
 
 function showWrong(){
-wrongBubble.classList.remove("hidden")
-wrongBubble.classList.add("show")
-setTimeout(()=>{
-wrongBubble.classList.add("hidden")
-wrongBubble.classList.remove("show")
-},1200)
+  showBubble("WRONG!","wrong")
+}
+
+function showCorrect(){
+  showBubble("CORRECT!","correct")
 }
 
 function updateAccuracy(){
-let total=correctMoves+wrongMoves
-let acc=total?Math.round((correctMoves/total)*100):100
-correctMovesEl.textContent=correctMoves
-wrongMovesEl.textContent=wrongMoves
-accuracyEl.textContent=acc
+  let total=correctMoves+wrongMoves
+  let acc=total?Math.round((correctMoves/total)*100):100
+  correctMovesEl.textContent=correctMoves
+  wrongMovesEl.textContent=wrongMoves
+  accuracyEl.textContent=acc
 }
 
-function checkMove(action){
-  if(!lastStrategyMove) return
-
-  if(action === lastStrategyMove){
-    correctMoves++
-    showCorrect()
-  }else{
-    wrongMoves++
-    showWrong()
-  }
-
-  updateAccuracy()
+function setMessage(t){
+  messageEl.textContent=t
 }
-  
-function setMessage(t){messageEl.textContent=t}
+
+function setReason(text){
+  reasonTextEl.innerHTML=text
+}
 
 function updateMoney(){
-bankrollEl.textContent=bankroll
-betEl.textContent=bet
+  bankrollEl.textContent=bankroll
+  betEl.textContent=bet
 }
 
 function buildDeck(){
-const suits=["spades","hearts","diamonds","clubs"]
-const ranks=["A","02","03","04","05","06","07","08","09","10","J","Q","K"]
-deck=[]
-for(let s of suits)
-for(let r of ranks)
-deck.push({suit:s,rank:r})
+  const suits=["spades","hearts","diamonds","clubs"]
+  const ranks=["A","02","03","04","05","06","07","08","09","10","J","Q","K"]
+  deck=[]
+  for(let s of suits){
+    for(let r of ranks){
+      deck.push({suit:s,rank:r})
+    }
+  }
 }
-
 
 function shuffle(){
-for(let i=deck.length-1;i>0;i--){
-let j=Math.floor(Math.random()*(i+1))
-;[deck[i],deck[j]]=[deck[j],deck[i]]
-}
+  for(let i=deck.length-1;i>0;i--){
+    let j=Math.floor(Math.random()*(i+1))
+    ;[deck[i],deck[j]]=[deck[j],deck[i]]
+  }
 }
 
-function draw(){return deck.pop()}
+function draw(){
+  return deck.pop()
+}
 
 function cardValue(r){
-if(r==="A")return 11
-if(["K","Q","J"].includes(r))return 10
-return parseInt(r)
+  if(r==="A") return 11
+  if(["K","Q","J"].includes(r)) return 10
+  return parseInt(r,10)
 }
 
 function handValue(h){
-let total=0
-let aces=0
-for(let c of h){
-total+=cardValue(c.rank)
-if(c.rank==="A")aces++
-}
-while(total>21&&aces){
-total-=10
-aces--
-}
-return total
+  let total=0
+  let aces=0
+  for(let c of h){
+    total+=cardValue(c.rank)
+    if(c.rank==="A") aces++
+  }
+  while(total>21 && aces){
+    total-=10
+    aces--
+  }
+  return total
 }
 
 function renderHand(hand,el,hideHole=false){
-el.innerHTML=""
+  el.innerHTML=""
 
-hand.forEach((c,i)=>{
-let img=document.createElement("img")
-img.className="card"
+  hand.forEach((c,i)=>{
+    let img=document.createElement("img")
+    img.className="card"
 
-if(hideHole && i===1){
-img.src="images/cards/card_back.png"
-}else{
-img.src=`images/cards/card_${c.suit}_${c.rank}.png`
+    if(hideHole && i===1){
+      img.src="images/cards/card_back.png"
+    }else{
+      img.src=`images/cards/card_${c.suit}_${c.rank}.png`
+    }
+
+    img.style.animationDelay=`${i*.15}s`
+    el.appendChild(img)
+  })
 }
 
-img.style.animationDelay=`${i*.15}s`
-el.appendChild(img)
-})
-}
-  
 function render(showDealer=false){
-renderHand(player,playerHandEl,false)
-renderHand(dealer,dealerHandEl,!showDealer)
-playerTotalEl.textContent=handValue(player)
-dealerTotalEl.textContent=showDealer
-  ? handValue(dealer)
-  : cardValue(dealer[0].rank)
+  renderHand(player,playerHandEl,false)
+  renderHand(dealer,dealerHandEl,!showDealer)
+  playerTotalEl.textContent=handValue(player)
+  dealerTotalEl.textContent=showDealer ? handValue(dealer) : (dealer[0] ? cardValue(dealer[0].rank) : 0)
 }
-  
-  
-function showCorrect(){
-let bubble=document.createElement("div")
-bubble.className="wrong-bubble"
-bubble.style.background="#2e9e44"
-bubble.textContent="CORRECT!"
-document.body.appendChild(bubble)
-
-setTimeout(()=>bubble.remove(),900)
-}
-  
 
 function updateButtons(){
-dealBtn.disabled=!gameOver
-hitBtn.disabled=gameOver
-standBtn.disabled=gameOver
-doubleBtn.disabled=gameOver||player.length!==2||bankroll<bet
-splitBtn.disabled=true
-clearBetBtn.disabled=!gameOver||bet===0
+  dealBtn.disabled=!gameOver
+  hitBtn.disabled=gameOver
+  standBtn.disabled=gameOver
+  doubleBtn.disabled=gameOver || player.length!==2 || bankroll<bet
+  splitBtn.disabled=true
+  clearBetBtn.disabled=!gameOver || bet===0
 }
 
-  function playChipSound(){
+function playChipSound(){
   if(!chipSound) return
   chipSound.pause()
   chipSound.currentTime=0
   chipSound.play().catch(()=>{})
 }
 
-  function getMoveClass(move){
+function getMoveClass(move){
   return move.toLowerCase()
 }
 
 function showStrategyPopup(move,text){
+  if(!trainerHintsEnabled) return
   lastStrategyMove=move
   strategyMoveEl.textContent=move.toUpperCase()
   strategyMoveEl.className=`strategy-move ${getMoveClass(move)}`
@@ -524,14 +638,13 @@ function hideStrategyPopup(){
   clearTimeout(strategyTimer)
 }
 
-  
 function normalizeRank(rank){
   if(["J","Q","K"].includes(rank)) return "10"
   if(rank==="A") return "A"
   return String(parseInt(rank,10))
 }
 
-function isSoftHand(hand){
+function softValueInfo(hand){
   let total=0
   let aces=0
 
@@ -540,12 +653,35 @@ function isSoftHand(hand){
     if(card.rank==="A") aces++
   }
 
+  let usedAsEleven=false
   while(total>21 && aces>0){
     total-=10
     aces--
   }
 
-  return hand.some(card=>card.rank==="A") && total<=21
+  if(hand.some(card=>card.rank==="A") && total<=21){
+    let alt=0
+    let altAces=0
+    for(const card of hand){
+      if(card.rank==="A"){
+        alt+=11
+        altAces++
+      }else{
+        alt+=cardValue(card.rank)
+      }
+    }
+    while(alt>21 && altAces>0){
+      alt-=10
+      altAces--
+    }
+    usedAsEleven = hand.some(card=>card.rank==="A") && altAces>0
+  }
+
+  return { total, isSoft: usedAsEleven }
+}
+
+function isSoftHand(hand){
+  return softValueInfo(hand).isSoft
 }
 
 function isPair(hand){
@@ -599,162 +735,136 @@ function getStrategyExplanation(playerHand,dealerCard){
   const move=getBasicStrategy(playerHand,dealerCard)
   const total=handValue(playerHand)
   const dealerLabel=normalizeRank(dealerCard.rank)
+  const soft=isSoftHand(playerHand)
+  const pair=isPair(playerHand)
 
   let handLabel=`${total}`
-  if(isPair(playerHand)) handLabel=`pair of ${normalizeRank(playerHand[0].rank)}s`
-  else if(isSoftHand(playerHand)) handLabel=`soft ${total}`
+  let why=""
+
+  if(pair){
+    const pairRank=normalizeRank(playerHand[0].rank)
+    handLabel=`pair of ${pairRank}s`
+
+    if(move==="Split"){
+      why=`Splitting ${handLabel} gives you a better long-term result than playing them as one hand.`
+    }else if(move==="Stand"){
+      why=`A ${handLabel} is already strong enough that splitting would usually make it worse.`
+    }else if(move==="Double"){
+      why=`A ${handLabel} is played like a strong total, so doubling is better than splitting here.`
+    }else{
+      why=`This pair is not strong enough to split against dealer ${dealerLabel}, so basic strategy keeps the hand moving.`
+    }
+  }else if(soft){
+    handLabel=`soft ${total}`
+
+    if(move==="Double"){
+      why=`A soft hand cannot bust with one hit, so this is a good spot to press the advantage against dealer ${dealerLabel}.`
+    }else if(move==="Stand"){
+      why=`Soft ${total} is already strong enough here, so basic strategy avoids creating unnecessary chaos.`
+    }else{
+      why=`Soft ${total} is flexible, but not strong enough to stand comfortably against dealer ${dealerLabel}, so you keep improving it.`
+    }
+  }else{
+    if(move==="Hit"){
+      why = dealerCard.rank === "A" || cardValue(dealerCard.rank) >= 7
+        ? `Dealer ${dealerLabel} is strong. Standing on ${total} usually leaves you dead in the water, so you need to improve the hand.`
+        : `${total} is too weak to stand on here, so basic strategy says take another card.`
+    }else if(move==="Stand"){
+      why = cardValue(dealerCard.rank) >= 2 && cardValue(dealerCard.rank) <= 6
+        ? `Dealer ${dealerLabel} is a weak up-card. Standing lets the dealer make mistakes and possibly bust.`
+        : `${total} is strong enough that taking another card adds more danger than value.`
+    }else if(move==="Double"){
+      why=`You have a strong starting total against dealer ${dealerLabel}, so this is one of the best spots to double and maximize value.`
+    }else{
+      why=`Splitting creates better long-term outcomes than playing this as one ugly hand.`
+    }
+  }
 
   return {
     move,
-    text:`You have ${handLabel} vs dealer ${dealerLabel}. Basic strategy says: ${move}.`
+    text:`You have ${handLabel} vs dealer ${dealerLabel}. Basic strategy says: ${move}. ${why}`
   }
 }
 
 function maybeShowStrategy(){
   if(gameOver) return
+  if(!trainerHintsEnabled) return
   if(player.length<2 || dealer.length<1) return
 
   const advice=getStrategyExplanation(player,dealer[0])
   showStrategyPopup(advice.move,advice.text)
 }
 
-  
-function addBet(a){
-if(!gameOver)return
-if(bankroll<a)return
-bankroll-=a
-bet+=a
-  playChipSound()
-updateMoney()
-let chip=document.createElement("img")
-chip.src=`images/chips/chip-${a}.png`
-chip.className="bet-chip"
-chip.style.bottom=`${betSpot.children.length*4}px`
-betSpot.appendChild(chip)
-}
-
-function clearBet(){
-bankroll+=bet
-bet=0
-betSpot.innerHTML=""
-updateMoney()
-}
-
-function deal(){
-if(bet<=0){setMessage("Place bet");return}
-buildDeck()
-shuffle()
-player=[draw(),draw()]
-dealer=[draw(),draw()]
-gameOver=false
-render()
-updateButtons()
-setMessage("Your move")
-maybeShowStrategy()
-}
-
-function hit(){
-  if(gameOver) return
-
-  checkMove("Hit")
-  player.push(draw())
-  render()
-
-  if(handValue(player) > 21){
-    bet = 0
-    gameOver = true
-    hideStrategyPopup()
-    updateMoney()
-    updateButtons()
-    setMessage("Bust")
-    return
-  }
-
-  if(handValue(player) === 21){
-    stand()
-    return
-  }
-
-  setMessage("Hit or stand?")
-  maybeShowStrategy()
-}
-
 function showImage(src){
   let img=document.createElement("img")
   img.src=src
-  img.style.position="fixed"
-  img.style.left="50%"
-  img.style.top="40%"
-  img.style.transform="translate(-50%,-50%)"
-  img.style.zIndex="2000"
-  img.style.width="260px"
-
+  img.className="feedback-image"
   document.body.appendChild(img)
-
   setTimeout(()=>img.remove(),1800)
-}  
-
-function stand(){
-if(gameOver) return
-
-checkMove("Stand")
-
-while(handValue(dealer) < 17){
-  dealer.push(draw())
 }
 
-render(true)
+function explainMove(action){
+  if(!dealer[0] || player.length<2) return
 
-let pt = handValue(player)
-let dt = handValue(dealer)
+  const advice=getStrategyExplanation(player,dealer[0])
+  lastStrategyMove=advice.move
 
-if(dt > 21 || pt > dt){
-  bankroll += bet * 2
-  setMessage("You win")
+  if(action === advice.move){
+    correctMoves++
+    showCorrect()
+    setReason(`✅ <strong>Correct:</strong> ${advice.text}`)
+    showImage(IMAGES.correct)
+  }else{
+    wrongMoves++
+    showWrong()
+    setReason(`❌ <strong>${action}</strong> was not the best move. ${advice.text}`)
+    showImage(IMAGES.wrong)
+  }
+
+  updateAccuracy()
 }
-else if(pt === dt){
-  bankroll += bet
-  setMessage("Push")
-}
-else{
-  setMessage("Dealer wins")
+
+function addBet(a){
+  if(!gameOver) return
+  if(bankroll<a) return
+  bankroll-=a
+  bet+=a
+  playChipSound()
+  updateMoney()
+
+  let chip=document.createElement("img")
+  chip.src=`images/chips/chip-${a}.png`
+  chip.className="bet-chip"
+  chip.style.bottom=`${betSpot.children.length*4}px`
+  betSpot.appendChild(chip)
 }
 
-bet = 0
-gameOver = true
-
-hideStrategyPopup()
-
-updateMoney()
-updateButtons()
+function clearBet(){
+  bankroll+=bet
+  bet=0
+  betSpot.innerHTML=""
+  updateMoney()
 }
+
+function deal(){
+  if(bankroll<=0){
+    setMessage("You are out of money.")
+    setReason("Bankroll destroyed. The dealer now has an empty tray and your chips are extinct.")
+    showImage(IMAGES.broke)
+    return
+  }
+
+  if(bet<=0){
+    setMessage("Place bet")
+    return
+  }
+
+  buildDeck()
+  shuffle()
+  player=[draw(),draw()]
+  dealer=[draw(),draw()]
+  gameOver=false
+
   
-function doubleDown(){
-checkMove("Double")
-if(bankroll<bet)return
-bankroll-=bet
-bet*=2
-player.push(draw())
-render()
-stand()
-}
 
-chipEls.forEach(c=>{
-c.onclick=()=>addBet(Number(c.dataset.amount))
-})
 
-dealBtn.onclick=deal
-hitBtn.onclick=hit
-standBtn.onclick=stand
-doubleBtn.onclick=doubleDown
-splitBtn.onclick=()=>setMessage("Split coming soon")
-clearBetBtn.onclick=clearBet
-
-updateMoney()
-updateButtons()
-render()
-
-</script>
-
-</body>
-</html>
