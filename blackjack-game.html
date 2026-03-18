@@ -430,7 +430,8 @@ let correctMoves=0
 let wrongMoves=0
 let lastStrategyMove=null
 let trainerHintsEnabled=true
-
+let hintDismissedForHand = false
+  
 const bankrollEl=document.getElementById("bankroll")
 const betEl=document.getElementById("bet")
 const dealerHandEl=document.getElementById("dealer-hand")
@@ -459,6 +460,12 @@ const strategyMoveEl=document.getElementById("strategyMove")
 const strategyTextEl=document.getElementById("strategyText")
 const strategyCloseBtn=document.getElementById("strategyClose")
 let strategyTimer=null
+
+  strategyCloseBtn.addEventListener("click",()=>{
+  strategyPopup.classList.add("hidden")
+  hintDismissedForHand = true
+  clearTimeout(strategyTimer)
+})
 
 const resultBubble=document.getElementById("resultBubble")
 const trainerToggle=document.getElementById("trainerToggle")
@@ -620,7 +627,8 @@ function getMoveClass(move){
 }
 
 function showStrategyPopup(move,text){
-  if(!trainerHintsEnabled) return
+  if(!trainerHintsEnabled || hintDismissedForHand) return
+
   lastStrategyMove=move
   strategyMoveEl.textContent=move.toUpperCase()
   strategyMoveEl.className=`strategy-move ${getMoveClass(move)}`
@@ -628,9 +636,6 @@ function showStrategyPopup(move,text){
   strategyPopup.classList.remove("hidden")
 
   clearTimeout(strategyTimer)
-  strategyTimer=setTimeout(()=>{
-    strategyPopup.classList.add("hidden")
-  },12000)
 }
 
 function hideStrategyPopup(){
@@ -847,6 +852,7 @@ function clearBet(){
 }
 
 function deal(){
+  hintDismissedForHand = false
   if(bankroll<=0){
     setMessage("You are out of money.")
     setReason("Bankroll destroyed. The dealer now has an empty tray and your chips are extinct.")
