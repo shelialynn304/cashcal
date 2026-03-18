@@ -884,7 +884,22 @@ function deal(){
 
 function hit(){
   if(gameOver) return
-if(bankroll<=0){
+
+  explainMove("Hit")
+  player.push(draw())
+  render()
+
+  if(handValue(player) > 21){
+    bet = 0
+    gameOver = true
+    hideStrategyPopup()
+    updateMoney()
+    updateButtons()
+    setMessage("Bust")
+    setReason("💥 You busted. Once you go over 21, your hand is dead no matter what the dealer does.")
+    showImage(IMAGES.playerBust)
+
+    if(bankroll<=0){
       setTimeout(()=>{
         setReason("Bankroll gone. The dealer’s chip tray is empty because your money has spiritually left the building.")
         showImage(IMAGES.broke)
@@ -931,7 +946,7 @@ function stand(fromAuto=false){
     setReason(`✅ Your ${pt} beat the dealer’s ${dt}.`)
     showImage(IMAGES.correct)
   }
-else if(pt === dt){
+  else if(pt === dt){
     bankroll += bet
     setMessage("Push")
     setReason(`🤝 Push. You and the dealer both finished with ${pt}, so your bet comes back.`)
@@ -956,6 +971,7 @@ else if(pt === dt){
     },700)
   }
 }
+
 function doubleDown(){
   if(gameOver) return
 
@@ -990,7 +1006,8 @@ function doubleDown(){
     }
     return
   }
-stand(true)
+
+  stand(true)
 }
 
 chipEls.forEach(c=>{
@@ -1011,17 +1028,3 @@ render()
 
 </body>
 </html>
-
-  explainMove("Hit")
-  player.push(draw())
-  render()
-
-  if(handValue(player) > 21){
-    bet = 0
-    gameOver = true
-    hideStrategyPopup()
-    updateMoney()
-    updateButtons()
-    setMessage("Bust")
-    setReason("💥 You busted. Once you go over 21, your hand is dead no matter what the dealer does.")
-    showImage(IMAGES.playerBust)
