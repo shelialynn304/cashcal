@@ -991,24 +991,32 @@ function hit(){
   player.push(draw())
   render()
 
-  if(handValue(player) > 21){
-    bet = 0
-    gameOver = true
-    hideStrategyPopup()
-    updateMoney()
-    updateButtons()
-    setMessage("Bust")
-    setReason("💥 You busted. Once you go over 21, your hand is dead no matter what the dealer does.")
-    showImage(IMAGES.playerBust)
+if(handValue(player) > 21){
+  bet = 0
+  gameOver = true
+  hideStrategyPopup()
 
-    if(bankroll<=0){
-      setTimeout(()=>{
-        setReason("Bankroll gone. The dealer’s chip tray is empty because your money has spiritually left the building.")
-        showImage(IMAGES.broke)
-      },700)
-    }
-    return
+  hitBtn.classList.remove("correct-glow")
+  standBtn.classList.remove("correct-glow")
+  doubleBtn.classList.remove("correct-glow")
+  splitBtn.classList.remove("correct-glow")
+
+  updateMoney()
+  updateButtons()
+  setMessage("Bust after double")
+  setReason("💥 You doubled and busted. Aggressive, educational, and financially unfortunate.")
+  showImage(IMAGES.playerBust)
+
+  if(bankroll<=0){
+    setTimeout(()=>{
+      setMessage("Out of money")
+      setReason("The bankroll has flatlined. Dealer’s got the empty tray look now.")
+      showImage(IMAGES.broke)
+    },700)
   }
+
+  return
+}
 
   if(handValue(player) === 21){
     setReason("You made 21. Now the dealer gets their turn.")
@@ -1051,7 +1059,6 @@ function stand(){
 
   hideStrategyPopup()
 
-  // 👇 ADD IT RIGHT HERE
   hitBtn.classList.remove("correct-glow")
   standBtn.classList.remove("correct-glow")
   doubleBtn.classList.remove("correct-glow")
