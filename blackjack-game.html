@@ -875,10 +875,23 @@ function getStrategyExplanation(playerHand,dealerCard){
 
 function maybeShowStrategy(){
   if(gameOver) return
-  if(!trainerHintsEnabled) return
   if(player.length<2 || dealer.length<1) return
 
   const advice=getStrategyExplanation(player,dealer[0])
+
+
+  hitBtn.classList.remove("correct-glow")
+  standBtn.classList.remove("correct-glow")
+  doubleBtn.classList.remove("correct-glow")
+  splitBtn.classList.remove("correct-glow")
+
+  if(trainerHintsEnabled){
+    if(advice.move==="Hit") hitBtn.classList.add("correct-glow")
+    if(advice.move==="Stand") standBtn.classList.add("correct-glow")
+    if(advice.move==="Double") doubleBtn.classList.add("correct-glow")
+    if(advice.move==="Split") splitBtn.classList.add("correct-glow")
+  }
+
   showStrategyPopup(advice.move,advice.text)
 }
 
@@ -1007,12 +1020,10 @@ function hit(){
   maybeShowStrategy()
 }
 
-function stand(fromAuto=false){
+function stand(){
   if(gameOver) return
 
-  if(!fromAuto){
-    explainMove("Stand")
-  }
+  checkMove("Stand")
 
   while(handValue(dealer) < 17){
     dealer.push(draw())
@@ -1023,34 +1034,32 @@ function stand(fromAuto=false){
   let pt = handValue(player)
   let dt = handValue(dealer)
 
-  if(dt > 21){
-    bankroll += bet * 2
-    setMessage("Dealer busts. You win.")
-    setReason("✅ Dealer busted by going over 21. Sometimes the house punches itself in the throat.")
-    showImage(IMAGES.correct)
-  }
-  else if(pt > dt){
+  if(dt > 21 || pt > dt){
     bankroll += bet * 2
     setMessage("You win")
-    setReason(`✅ Your ${pt} beat the dealer’s ${dt}.`)
-    showImage(IMAGES.correct)
   }
   else if(pt === dt){
     bankroll += bet
     setMessage("Push")
-    setReason(`🤝 Push. You and the dealer both finished with ${pt}, so your bet comes back.`)
   }
   else{
     setMessage("Dealer wins")
-    setReason(`❌ Dealer ${dt} beats your ${pt}.`)
-    showImage(IMAGES.dealerLaugh)
   }
 
   bet = 0
   gameOver = true
+
   hideStrategyPopup()
+
+  // 👇 ADD IT RIGHT HERE
+  hitBtn.classList.remove("correct-glow")
+  standBtn.classList.remove("correct-glow")
+  doubleBtn.classList.remove("correct-glow")
+  splitBtn.classList.remove("correct-glow")
+
   updateMoney()
   updateButtons()
+}
 
   if(bankroll<=0){
     setTimeout(()=>{
@@ -1080,6 +1089,10 @@ function doubleDown(){
     bet = 0
     gameOver = true
     hideStrategyPopup()
+     hitBtn.classList.remove("correct-glow")
+  standBtn.classList.remove("correct-glow")
+  doubleBtn.classList.remove("correct-glow")
+  splitBtn.classList.remove("correct-glow")
     updateMoney()
     updateButtons()
     setMessage("Bust after double")
@@ -1091,7 +1104,7 @@ function doubleDown(){
         setMessage("Out of money")
         setReason("The bankroll has flatlined. Dealer’s got the empty tray look now.")
         showImage(IMAGES.broke)
-      },700)
+      },1200)
     }
     return
   }
