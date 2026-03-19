@@ -408,7 +408,7 @@ width:56px;
   <div class="total">Total: <span id="player-total">0</span></div>
   <div id="player-hand" class="hand"></div>
 
-  <div class="chips">
+  <div class="chips" id="chipsRow">
     <img src="images/chips/chip-1.png" class="chip" data-amount="1">
     <img src="images/chips/chip-5.png" class="chip" data-amount="5">
     <img src="images/chips/chip-10.png" class="chip" data-amount="10">
@@ -474,7 +474,7 @@ const doubleBtn=document.getElementById("doubleBtn")
 const splitBtn=document.getElementById("splitBtn")
 const clearBetBtn=document.getElementById("clearBetBtn")
 
-const chipEls=document.querySelectorAll(".chip")
+const chipsRow=document.getElementById("chipsRow")
 const betSpot=document.getElementById("betSpot")
 
 const correctMovesEl=document.getElementById("correctMoves")
@@ -1119,9 +1119,17 @@ function doubleDown(){
   stand(true)
 }
 
-chipEls.forEach(c=>{
-  c.onclick=()=>addBet(Number(c.dataset.amount))
-})
+if(chipsRow){
+  chipsRow.addEventListener("click",(e)=>{
+    const chip=e.target.closest(".chip")
+    if(!chip) return
+
+    const amount=Number(chip.dataset.amount)
+    if(!Number.isFinite(amount)) return
+
+    addBet(amount)
+  })
+}
 
 dealBtn.onclick=deal
 hitBtn.onclick=hit
