@@ -105,6 +105,7 @@ margin-bottom:4px;
 color:#ffd54a;
 }
 
+
 .table-area{
 background:radial-gradient(circle,#0c6b35 0%,#084d26 70%,#053319 100%);
 border:4px solid #d4af37;
@@ -114,8 +115,10 @@ box-shadow:inset 0 0 40px rgba(0,0,0,.6),0 10px 25px rgba(0,0,0,.5);
 display:flex;
 flex-direction:column;
 flex:1;
+position:relative;
+overflow:hidden;
 }
-
+  
 .section-title{
 font-size:1rem;
 margin:2px 0;
@@ -303,17 +306,39 @@ animation:wrongPop .25s ease,wrongFloat 1.2s ease forwards;
 }
 
 .feedback-image{
-position:fixed;
-left:50%;
-top:40%;
-transform:translate(-50%,-50%);
+position:absolute;
+left:90px;
+top:230px;
 z-index:2000;
-width:260px;
-max-width:72vw;
+width:220px;
+max-width:28vw;
 border-radius:16px;
 box-shadow:0 14px 40px rgba(0,0,0,.55);
+opacity:0;
+transform:translateY(18px) scale(.96);
+animation:tableImageFade 2.2s ease forwards;
+pointer-events:none;
 }
 
+@keyframes tableImageFade{
+0%{
+opacity:0;
+transform:translateY(18px) scale(.96);
+}
+12%{
+opacity:1;
+transform:translateY(0) scale(1);
+}
+75%{
+opacity:1;
+transform:translateY(0) scale(1);
+}
+100%{
+opacity:0;
+transform:translateY(-10px) scale(.98);
+}
+}
+  
 @media (max-width: 800px){
 .wrap{
 height:auto;
@@ -456,6 +481,7 @@ const wrongMovesEl=document.getElementById("wrongMoves")
 const accuracyEl=document.getElementById("accuracy")
 
 const strategyPopup=document.getElementById("strategyPopup")
+const tableArea=document.querySelector(".table-area")
 const strategyMoveEl=document.getElementById("strategyMove")
 const strategyTextEl=document.getElementById("strategyText")
 const strategyCloseBtn=document.getElementById("strategyClose")
@@ -804,8 +830,9 @@ function showImage(src){
   let img=document.createElement("img")
   img.src=src
   img.className="feedback-image"
-  document.body.appendChild(img)
-  setTimeout(()=>img.remove(),1800)
+  tableArea.appendChild(img)
+
+  setTimeout(()=>img.remove(),2200)
 }
 
 function explainMove(action){
