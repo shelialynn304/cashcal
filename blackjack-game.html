@@ -40,7 +40,25 @@ h1{
 margin:4px 0 2px;
 font-size:1.8rem;
 }
-<button id="homeBtn" class="home-btn">⬅ Back to Home</button>
+
+.home-btn{
+  position:absolute;
+  top:10px;
+  left:10px;
+  padding:6px 10px;
+  font-size:.8rem;
+  background:#111;
+  color:#ffd54a;
+  border:2px solid #ffd54a;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.home-btn:hover{
+  background:#ffd54a;
+  color:#111;
+}
 .topbar{
 display:flex;
 justify-content:center;
@@ -369,7 +387,9 @@ width:56px;
 <div class="wrap">
 
 <h1>Blackjack Trainer</h1>
-
+  
+<button id="homeBtn" class="home-btn">⬅ Back to Home</button>
+  
 <div class="topbar">
   <div>Bankroll: $<span id="bankroll">1000</span></div>
   <div>Bet: $<span id="bet">0</span></div>
@@ -472,7 +492,8 @@ const dealerTotalEl=document.getElementById("dealer-total")
 const playerTotalEl=document.getElementById("player-total")
 const messageEl=document.getElementById("message")
 const chipSound=document.getElementById("chipSound")
-
+  
+const homeBtn = document.getElementById("homeBtn")
 const dealBtn=document.getElementById("dealBtn")
 const hitBtn=document.getElementById("hitBtn")
 const standBtn=document.getElementById("standBtn")
@@ -547,6 +568,12 @@ strategyCloseBtn.addEventListener("click",()=>{
   clearTimeout(strategyTimer)
 })
 
+  if(homeBtn){
+  homeBtn.onclick = () => {
+    window.location.href = "index.html"
+  }
+}
+  
 trainerToggle.addEventListener("change",()=>{
   trainerHintsEnabled=trainerToggle.checked
   trainerToggleText.textContent=trainerHintsEnabled ? "ON" : "OFF"
