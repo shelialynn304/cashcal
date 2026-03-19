@@ -369,6 +369,13 @@ width:56px;
   <div>Bet: $<span id="bet">0</span></div>
 </div>
 
+  <div style="margin-bottom:6px;">
+  <label style="font-size:14px;">
+    <input type="checkbox" id="explainToggle" checked>
+    Detailed explanations
+  </label>
+</div>
+
 <div class="trainer-stats">
   Correct: <span id="correctMoves">0</span> |
   Mistakes: <span id="wrongMoves">0</span> |
@@ -443,6 +450,7 @@ let dealer=[]
 let bankroll=1000
 let bet=0
 let gameOver=true
+let detailedExplanations = true
 
 let correctMoves=0
 let wrongMoves=0
@@ -480,16 +488,44 @@ const strategyTextEl=document.getElementById("strategyText")
 const strategyCloseBtn=document.getElementById("strategyClose")
 let strategyTimer=null
 
+if(strategyCloseBtn){
   strategyCloseBtn.addEventListener("click",()=>{
-  strategyPopup.classList.add("hidden")
-  hintDismissedForHand = true
-  clearTimeout(strategyTimer)
-})
+    strategyPopup.classList.add("hidden")
+    hintDismissedForHand = true
+    clearTimeout(strategyTimer)
+  })
+}  
 
 const resultBubble=document.getElementById("resultBubble")
 const trainerToggle=document.getElementById("trainerToggle")
 const trainerToggleText=document.getElementById("trainerToggleText")
 const reasonTextEl=document.getElementById("reasonText")
+const explainToggle = document.getElementById("explainToggle")
+  
+if(explainToggle){
+  explainToggle.addEventListener("change",()=>{
+
+    // update mode
+    detailedExplanations = explainToggle.checked
+
+    // 🔥 instant feedback (top message)
+    setMessage(
+      detailedExplanations
+        ? "Coach: detailed explanations"
+        : "Coach: quick mode"
+    )
+
+    // 🧠 only update explanation box BETWEEN hands
+    if(gameOver){
+      setReason(
+        detailedExplanations
+          ? "Detailed explanations ON"
+          : "Quick explanations ON"
+      )
+    }
+
+  })
+}
 
 const IMAGES = {
   correct: "images/corrextmove.png",
@@ -756,7 +792,7 @@ function getBasicStrategy(playerHand,dealerCard){
 }
 
 
- function getStrategyExplanation(playerHand,dealerCard){
+function getStrategyExplanation(playerHand,dealerCard){
   const move=getBasicStrategy(playerHand,dealerCard)
   const total=handValue(playerHand)
   const dealerUp=cardValue(dealerCard.rank)
@@ -764,61 +800,78 @@ function getBasicStrategy(playerHand,dealerCard){
   const soft=isSoftHand(playerHand)
   const pair=isPair(playerHand)
 
-  let handLabel=`${total}`
-  let why=""
+  let shortText=""
+  let detailedText=""
 
   if(pair){
-    const pairRank=normalizeRank(playerHand[0].rank)
-    handLabel=`pair of ${pairRank}s`
+    const rank=normalizeRank(playerHand[0].rank)
 
     if(move==="Split"){
-      if(pairRank==="A" || pairRank==="8"){
-        why=`Always split ${handLabel}. Playing them together gives you a weak total, but splitting gives you a better chance to build strong hands.`
+      if(rank==="A" || rank==="8"){
+        shortText=`Always split ${rank}s`
+        detailedText=`Always split ${rank}s. Playing them together gives you a weak hand. Splitting gives you a better chance to build stronger hands.`
       }else{
-        why=`Split ${handLabel} here because basic strategy gets better long-term value from two hands than from one awkward total.`
+        shortText=`Split this pair`
+        detailedText=`Splitting this pair gives you a better long-term chance than playing it as one awkward hand.`
       }
     }else if(move==="Stand"){
-      why=`Stand on ${handLabel} here because it is already strong enough. Splitting would usually make the situation worse.`
+      shortText=`Stand on this pair`
+      detailedText=`This pair is already strong enough as one hand. Splitting would usually make it worse.`
     }else if(move==="Double"){
-      why=`Treat ${handLabel} like a strong total here. Doubling gives better value than splitting.`
+      shortText=`Play it like a strong total`
+      detailedText=`This pair plays better as a strong total here. Doubling gives more value than splitting.`
     }else{
-      why=`Do not split ${handLabel} against dealer ${dealerLabel}. This matchup is better played as one hand.`
+      shortText=`Do not split here`
+      detailedText=`This is not a good spot to split. You are better off trying to improve the hand normally.`
     }
-  }else if(soft){
-    handLabel=`soft ${total}`
+  }
 
+  else if(soft){
     if(move==="Double"){
-      why=`Double on ${handLabel} against dealer ${dealerLabel} because soft hands are flexible. You can improve the hand without the same bust risk as a hard total.`
+      shortText=`Good spot to double`
+      detailedText=`This is a good spot to double because soft hands are flexible. You can improve the hand without the same bust risk as a hard total.`
     }else if(move==="Stand"){
-      why=`Stand on ${handLabel} here because the hand is already strong enough and you do not need to force more action.`
+      shortText=`Stand here`
+      detailedText=`Your hand is already strong enough here. There is no reason to force more action.`
     }else{
-      why=`Hit ${handLabel} here because the hand is flexible and not strong enough yet against dealer ${dealerLabel}.`
+      shortText=`Hit and improve`
+      detailedText=`Your hand is flexible, but not strong enough yet. Hitting gives you a good chance to improve it.`
     }
-  }else{
+  }
+
+  else{
     if(move==="Hit"){
       if(dealerUp >= 7 || dealerUp === 11){
-        why=`Hit ${total} against dealer ${dealerLabel} because the dealer is showing a strong card. Standing usually leaves you behind, so you need to improve your hand.`
+        shortText=`Dealer strong → hit`
+        detailedText=`Since the dealer has a strong card (${dealerLabel}), standing usually loses. You need to try to improve your hand. Hitting gives you a better chance to improve and win than standing and hoping the dealer messes up.`
       }else{
-        why=`Hit ${total} here because the hand is too weak to stand on.`
+        shortText=`Too weak to stand`
+        detailedText=`Your hand is too weak to stand on here, so the better play is to hit and try to improve it.`
       }
     }else if(move==="Stand"){
       if(dealerUp >= 2 && dealerUp <= 6){
-        why=`Stand on ${total} against dealer ${dealerLabel} because ${dealerLabel} is a weak up-card. The dealer is more likely to bust, so let the house make the mistake.`
+        shortText=`Dealer weak → stand`
+        detailedText=`Since the dealer has a weak card (${dealerLabel}), they are more likely to bust. The best move is to stand and let the dealer be the one who has to improve.`
       }else{
-        why=`Stand on ${total} here because your hand is already strong enough and hitting creates unnecessary bust risk.`
+        shortText=`Strong enough to stand`
+        detailedText=`Your hand is already strong enough. Hitting would add unnecessary bust risk.`
       }
     }else if(move==="Double"){
-      why=`Double on ${total} against dealer ${dealerLabel} because this is one of the best value spots in basic strategy. You have a strong starting total against a weaker dealer situation.`
+      shortText=`Strong spot to double`
+      detailedText=`This is one of the better spots to double because you have a strong starting hand against a weaker dealer situation.`
     }else{
-      why=`Split here because it creates better long-term value than playing the hand as one total.`
+      shortText=`Split here`
+      detailedText=`Splitting this hand creates a better long-term result than playing it as one total.`
     }
   }
 
   return {
     move,
-    text:`You have ${handLabel} vs dealer ${dealerLabel}. ${why}`
+    text: detailedExplanations ? detailedText : shortText
   }
 }
+
+
 
 function maybeShowStrategy(){
   if(gameOver) return
