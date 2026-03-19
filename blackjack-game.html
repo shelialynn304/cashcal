@@ -1003,8 +1003,8 @@ if(handValue(player) > 21){
 
   updateMoney()
   updateButtons()
-  setMessage("Bust after double")
-  setReason("💥 You doubled and busted. Aggressive, educational, and financially unfortunate.")
+ setMessage("Bust")
+ setReason("💥 You busted. You went over 21, so the hand is dead.")
   showImage(IMAGES.playerBust)
 
   if(bankroll<=0){
@@ -1028,10 +1028,13 @@ if(handValue(player) > 21){
   maybeShowStrategy()
 }
 
-function stand(){
+
+  function stand(fromAuto=false){
   if(gameOver) return
 
-  checkMove("Stand")
+  if(!fromAuto){
+    explainMove("Stand")
+  }
 
   while(handValue(dealer) < 17){
     dealer.push(draw())
@@ -1042,16 +1045,27 @@ function stand(){
   let pt = handValue(player)
   let dt = handValue(dealer)
 
-  if(dt > 21 || pt > dt){
+  if(dt > 21){
+    bankroll += bet * 2
+    setMessage("Dealer busts. You win.")
+    setReason("✅ Dealer busted by going over 21.")
+    showImage(IMAGES.correct)
+  }
+  else if(pt > dt){
     bankroll += bet * 2
     setMessage("You win")
+    setReason(`✅ Your ${pt} beat the dealer’s ${dt}.`)
+    showImage(IMAGES.correct)
   }
   else if(pt === dt){
     bankroll += bet
     setMessage("Push")
+    setReason(`🤝 Push. You and the dealer both finished with ${pt}, so your bet comes back.`)
   }
   else{
     setMessage("Dealer wins")
+    setReason(`❌ Dealer ${dt} beats your ${pt}.`)
+    showImage(IMAGES.dealerLaugh)
   }
 
   bet = 0
@@ -1066,7 +1080,6 @@ function stand(){
 
   updateMoney()
   updateButtons()
-}
 
   if(bankroll<=0){
     setTimeout(()=>{
@@ -1076,7 +1089,6 @@ function stand(){
     },700)
   }
 }
-
 function doubleDown(){
   if(gameOver) return
 
