@@ -307,8 +307,8 @@ animation:wrongPop .25s ease,wrongFloat 1.2s ease forwards;
 
 .feedback-image{
 position:absolute;
-left:90px;
-top:230px;
+left:40px;
+top:40px;                 /* 👈 moved UP */
 z-index:2000;
 width:220px;
 max-width:28vw;
@@ -319,7 +319,7 @@ transform:translateY(18px) scale(.96);
 animation:tableImageFade 2.2s ease forwards;
 pointer-events:none;
 }
-
+  
 @keyframes tableImageFade{
 0%{
 opacity:0;
