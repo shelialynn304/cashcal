@@ -847,18 +847,18 @@ function explainMove(action){
   if(action === advice.move){
     correctMoves++
     showCorrect()
-    setReason(`✅ <strong>Correct:</strong> ${advice.text}`)
+    setReason(`✅ Correct. ${advice.text}`)
     showImage(IMAGES.correct)
   }else{
     wrongMoves++
     showWrong()
-    setReason(`❌ <strong>${action}</strong> was not the best move. ${advice.text}`)
+    setReason(`❌ ${action} was not the best move. The correct play is <strong>${advice.move}</strong>. ${advice.text}`)
     showImage(IMAGES.wrong)
   }
 
   updateAccuracy()
 }
-
+  
 function addBet(a){
   if(!gameOver) return
   if(bankroll<a) return
