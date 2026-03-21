@@ -1,0 +1,532 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blackjack EV Calculator | Compare Hit, Stand, Double</title>
+  <meta name="description" content="Free blackjack EV calculator. Compare expected value for hit, stand, and double based on your hand, dealer upcard, and table rules." />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --panel: #1f2937;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --accent: #22c55e;
+      --accent-2: #38bdf8;
+      --danger: #ef4444;
+      --border: rgba(255,255,255,0.08);
+      --shadow: 0 18px 40px rgba(0,0,0,0.35);
+    }* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(180deg, #0b1020 0%, #101827 100%);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.hero {
+  text-align: center;
+  padding: 32px 0 18px;
+}
+
+.hero h1 {
+  margin: 0 0 10px;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.1;
+}
+
+.hero p {
+  margin: 0 auto;
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.card {
+  background: rgba(17,24,39,0.92);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 14px;
+  font-size: 1.4rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 16px;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: #0b1220;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.full { grid-column: 1 / -1; }
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+button {
+  border: 0;
+  border-radius: 14px;
+  padding: 13px 18px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary {
+  background: linear-gradient(135deg, var(--accent), #16a34a);
+  color: #03120a;
+}
+
+.secondary {
+  background: #243244;
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.result-box {
+  display: grid;
+  gap: 14px;
+}
+
+.best-move {
+  background: linear-gradient(135deg, rgba(34,197,94,0.18), rgba(56,189,248,0.12));
+  border: 1px solid rgba(34,197,94,0.35);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.best-move strong {
+  display: block;
+  font-size: 1.3rem;
+  margin-top: 4px;
+}
+
+.actions {
+  display: grid;
+  gap: 12px;
+}
+
+.action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  background: #0b1220;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.action-row.best {
+  border-color: rgba(34,197,94,0.5);
+  box-shadow: inset 0 0 0 1px rgba(34,197,94,0.25);
+}
+
+.action-label {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.ev {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.positive { color: #4ade80; }
+.negative { color: #f87171; }
+.neutral { color: #e2e8f0; }
+
+.note, .explain, .seo-copy {
+  color: var(--muted);
+}
+
+.explain ul {
+  padding-left: 18px;
+  margin: 8px 0 0;
+}
+
+.pill {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(56,189,248,0.12);
+  color: #bae6fd;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.seo-copy {
+  margin-top: 30px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 20px;
+  padding: 22px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.seo-copy h3 {
+  color: var(--text);
+  margin-top: 0;
+}
+
+@media (max-width: 820px) {
+  .grid, .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <span class="pill">Blackjack Tool</span>
+      <h1>Blackjack EV Calculator</h1>
+      <p>Compare the expected value of hitting, standing, or doubling based on your hand, the dealer upcard, and basic table conditions. This version is a practical approximation built for fast strategy training and content pages.</p>
+    </section><section class="grid">
+  <div class="card">
+    <h2>Enter Your Spot</h2>
+    <div class="form-grid">
+      <div>
+        <label for="playerTotal">Player Total</label>
+        <input id="playerTotal" type="number" min="4" max="21" value="16" />
+      </div>
+
+      <div>
+        <label for="dealerCard">Dealer Upcard</label>
+        <select id="dealerCard">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10" selected>10 / Face</option>
+          <option value="11">Ace</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="isSoft">Hand Type</label>
+        <select id="isSoft">
+          <option value="false" selected>Hard Total</option>
+          <option value="true">Soft Total</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="decks">Decks</label>
+        <select id="decks">
+          <option value="1">1 deck</option>
+          <option value="2">2 decks</option>
+          <option value="4">4 decks</option>
+          <option value="6" selected>6 decks</option>
+          <option value="8">8 decks</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="blackjackPayout">Blackjack Payout</label>
+        <select id="blackjackPayout">
+          <option value="1.5" selected>3:2</option>
+          <option value="1.2">6:5</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="betSize">Base Bet ($)</label>
+        <input id="betSize" type="number" min="1" value="25" />
+      </div>
+
+      <div class="full">
+        <label for="trueCount">True Count (optional rough boost)</label>
+        <input id="trueCount" type="number" min="-10" max="10" step="1" value="0" />
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="primary" id="calcBtn">Calculate EV</button>
+      <button class="secondary" id="demoBtn">Load Demo Spot</button>
+      <button class="secondary" id="resetBtn">Reset</button>
+    </div>
+
+    <p class="note">This is an approximation tool, not a full composition-dependent solver. Good enough for training, SEO, and helping users stop lighting money on fire.</p>
+  </div>
+
+  <div class="card">
+    <h2>Results</h2>
+    <div class="result-box">
+      <div class="best-move" id="bestMoveBox">
+        <div>Best move right now</div>
+        <strong id="bestMove">Stand</strong>
+        <div id="bestMoveDetail" class="note">Run the calculator to compare all actions.</div>
+      </div>
+
+      <div class="actions" id="results"></div>
+
+      <div class="explain" id="explanation">
+        <strong>How to read this:</strong>
+        <ul>
+          <li>EV is the average return per base bet.</li>
+          <li>Positive EV is good. Negative EV means the casino is chewing on your wallet.</li>
+          <li>Doubling uses twice the money, so the dollar impact can swing harder.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seo-copy">
+  <h3>About this blackjack expected value calculator</h3>
+  <p>This blackjack EV calculator helps compare common actions in a fast, user-friendly format. Instead of dumping users into a wall of math, it estimates expected value for stand, hit, and double based on total, dealer upcard, and a few rule inputs. That makes it useful for players learning blackjack strategy, affiliates building content, and site owners trying to rank pages around blackjack tools.</p>
+  <p>You can reuse this layout for more pages too: bankroll simulator, risk of ruin calculator, blackjack trainer, house edge explainer, and basic strategy lookup pages. That is how small projects stop looking like hobby sites and start looking like platforms.</p>
+</section>
+
+  </div>  <script>
+    const dealerBustByUpcard = {
+      2: 0.353, 3: 0.373, 4: 0.402, 5: 0.429, 6: 0.423,
+      7: 0.262, 8: 0.244, 9: 0.233, 10: 0.212, 11: 0.116
+    };
+
+    const standWinChanceByTotal = {
+      4: 0.08, 5: 0.09, 6: 0.10, 7: 0.12, 8: 0.14, 9: 0.18,
+      10: 0.22, 11: 0.25, 12: 0.29, 13: 0.34, 14: 0.39, 15: 0.43,
+      16: 0.47, 17: 0.57, 18: 0.68, 19: 0.79, 20: 0.88, 21: 0.92
+    };
+
+    const cardProbabilities = [
+      { value: 2, p: 1/13 },
+      { value: 3, p: 1/13 },
+      { value: 4, p: 1/13 },
+      { value: 5, p: 1/13 },
+      { value: 6, p: 1/13 },
+      { value: 7, p: 1/13 },
+      { value: 8, p: 1/13 },
+      { value: 9, p: 1/13 },
+      { value: 10, p: 4/13 },
+      { value: 11, p: 1/13 }
+    ];
+
+    function clamp(num, min, max) {
+      return Math.min(Math.max(num, min), max);
+    }
+
+    function formatEV(ev) {
+      return (ev > 0 ? '+' : '') + ev.toFixed(3);
+    }
+
+    function formatMoney(amount) {
+      return '$' + amount.toFixed(2);
+    }
+
+    function valueClass(ev) {
+      if (ev > 0.02) return 'positive';
+      if (ev < -0.02) return 'negative';
+      return 'neutral';
+    }
+
+    function applyCountAdjustment(ev, trueCount, action) {
+      const count = Number(trueCount) || 0;
+      const actionMultiplier = action === 'double' ? 0.012 : 0.008;
+      return ev + (count * actionMultiplier);
+    }
+
+    function applyRuleAdjustment(ev, decks, blackjackPayout) {
+      let adj = ev;
+      if (Number(decks) <= 2) adj += 0.01;
+      if (Number(blackjackPayout) === 1.2) adj -= 0.015;
+      return adj;
+    }
+
+    function estimateStandEV(total, dealerCard, decks, blackjackPayout, trueCount) {
+      if (total > 21) return -1;
+      const bustChance = dealerBustByUpcard[dealerCard] || 0.2;
+      const baseWinChance = standWinChanceByTotal[total] || 0.1;
+      const dealerPressure = dealerCard >= 7 ? -0.06 : 0.03;
+      let ev = (baseWinChance + bustChance * 0.55 + dealerPressure) - (1 - (baseWinChance + bustChance * 0.55 + dealerPressure));
+      ev = clamp(ev, -1, 1);
+      ev = applyRuleAdjustment(ev, decks, blackjackPayout);
+      ev = applyCountAdjustment(ev, trueCount, 'stand');
+      return clamp(ev, -1, 1);
+    }
+
+    function drawCard(total, isSoft, cardValue) {
+      let newTotal = total + (cardValue === 11 ? 11 : cardValue);
+      let soft = isSoft;
+
+      if (cardValue === 11) {
+        soft = true;
+      }
+
+      while (newTotal > 21 && soft) {
+        newTotal -= 10;
+        soft = false;
+      }
+
+      return { total: newTotal, isSoft: soft };
+    }
+
+    function estimateHitEV(total, isSoft, dealerCard, decks, blackjackPayout, trueCount, depth = 0) {
+      if (total > 21) return -1;
+      if (depth > 1) {
+        return estimateStandEV(total, dealerCard, decks, blackjackPayout, trueCount);
+      }
+
+      let ev = 0;
+
+      for (const card of cardProbabilities) {
+        const next = drawCard(total, isSoft, card.value);
+        let branchEV;
+
+        if (next.total > 21) {
+          branchEV = -1;
+        } else if (next.total >= 17) {
+          branchEV = estimateStandEV(next.total, dealerCard, decks, blackjackPayout, trueCount);
+        } else {
+          const standEV = estimateStandEV(next.total, dealerCard, decks, blackjackPayout, trueCount);
+          const hitAgainEV = estimateHitEV(next.total, next.isSoft, dealerCard, decks, blackjackPayout, trueCount, depth + 1);
+          branchEV = Math.max(standEV, hitAgainEV);
+        }
+
+        ev += card.p * branchEV;
+      }
+
+      ev = applyRuleAdjustment(ev, decks, blackjackPayout);
+      ev = applyCountAdjustment(ev, trueCount, 'hit');
+      return clamp(ev, -1, 1);
+    }
+
+    function estimateDoubleEV(total, isSoft, dealerCard, decks, blackjackPayout, trueCount) {
+      let ev = 0;
+
+      for (const card of cardProbabilities) {
+        const next = drawCard(total, isSoft, card.value);
+        const branchEV = next.total > 21 ? -1 : estimateStandEV(next.total, dealerCard, decks, blackjackPayout, trueCount);
+        ev += card.p * branchEV;
+      }
+
+      ev = ev * 2;
+      ev = applyRuleAdjustment(ev, decks, blackjackPayout);
+      ev = applyCountAdjustment(ev, trueCount, 'double');
+      return clamp(ev, -2, 2);
+    }
+
+    function buildReason(bestAction, total, dealerCard, isSoft) {
+      if (bestAction === 'Stand') {
+        if (total >= 17) return 'You already have enough made hand strength that drawing is usually how people turn decent spots into dumb stories.';
+        if (dealerCard >= 4 && dealerCard <= 6) return 'Dealer is showing a weak upcard, so letting them self-destruct is often smarter than taking extra risk.';
+        return 'Standing comes out ahead here in this model because the downside of drawing is worse than squeezing more value.';
+      }
+
+      if (bestAction === 'Hit') {
+        if (!isSoft && total <= 11) return 'Low hard totals usually need more cards. Standing here is basically surrendering with extra steps.';
+        if (dealerCard >= 7) return 'Dealer strength puts pressure on you to improve, so hitting rates better than freezing in place.';
+        return 'Hitting gives the best average return here based on the current hand and dealer pressure.';
+      }
+
+      return 'Doubling wins here because one strong draw can create more value than playing passively. Great when the spot favors aggression, terrible when used like a drunk raccoon.';
+    }
+
+    function calculateEV() {
+      const total = clamp(Number(document.getElementById('playerTotal').value) || 16, 4, 21);
+      const dealerCard = Number(document.getElementById('dealerCard').value);
+      const isSoft = document.getElementById('isSoft').value === 'true';
+      const decks = Number(document.getElementById('decks').value);
+      const blackjackPayout = Number(document.getElementById('blackjackPayout').value);
+      const betSize = Math.max(1, Number(document.getElementById('betSize').value) || 25);
+      const trueCount = Number(document.getElementById('trueCount').value) || 0;
+
+      const standEV = estimateStandEV(total, dealerCard, decks, blackjackPayout, trueCount);
+      const hitEV = estimateHitEV(total, isSoft, dealerCard, decks, blackjackPayout, trueCount);
+      const doubleEV = estimateDoubleEV(total, isSoft, dealerCard, decks, blackjackPayout, trueCount);
+
+      const actions = [
+        { label: 'Stand', ev: standEV, dollars: standEV * betSize },
+        { label: 'Hit', ev: hitEV, dollars: hitEV * betSize },
+        { label: 'Double', ev: doubleEV, dollars: doubleEV * betSize }
+      ].sort((a, b) => b.ev - a.ev);
+
+      const best = actions[0];
+      document.getElementById('bestMove').textContent = best.label;
+      document.getElementById('bestMoveDetail').textContent = `${buildReason(best.label, total, dealerCard, isSoft)} Estimated return: ${formatEV(best.ev)} units (${formatMoney(best.dollars)} on a ${formatMoney(betSize)} base bet).`;
+
+      const results = document.getElementById('results');
+      results.innerHTML = actions.map(action => `
+        <div class="action-row ${action.label === best.label ? 'best' : ''}">
+          <div>
+            <div class="action-label">${action.label}</div>
+            <div class="note">Approx return: ${formatMoney(action.dollars)}</div>
+          </div>
+          <div class="ev ${valueClass(action.ev)}">${formatEV(action.ev)} EV</div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('calcBtn').addEventListener('click', calculateEV);
+
+    document.getElementById('demoBtn').addEventListener('click', () => {
+      document.getElementById('playerTotal').value = 16;
+      document.getElementById('dealerCard').value = 10;
+      document.getElementById('isSoft').value = 'false';
+      document.getElementById('decks').value = 6;
+      document.getElementById('blackjackPayout').value = 1.5;
+      document.getElementById('betSize').value = 25;
+      document.getElementById('trueCount').value = 0;
+      calculateEV();
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      document.getElementById('playerTotal').value = 16;
+      document.getElementById('dealerCard').value = 10;
+      document.getElementById('isSoft').value = 'false';
+      document.getElementById('decks').value = 6;
+      document.getElementById('blackjackPayout').value = 1.5;
+      document.getElementById('betSize').value = 25;
+      document.getElementById('trueCount').value = 0;
+      calculateEV();
+    });
+
+    calculateEV();
+  </script></body>
+</html>
