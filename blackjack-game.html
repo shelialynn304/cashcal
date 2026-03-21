@@ -982,29 +982,30 @@ function clearBet(){
 
 function deal(){
   hintDismissedForHand = false
-  if(bankroll<=0 && bet<=0){
-  setMessage("You are out of money.")
-  setReason("Bankroll destroyed. The dealer now has an empty tray and your chips are extinct.")
-  showImage(IMAGES.broke)
-  return
-}
 
-  if(bet<=0){
+  if(bankroll <= 0 && bet <= 0){
+    setMessage("You are out of money.")
+    setReason("Bankroll destroyed. The dealer now has an empty tray and your chips are extinct.")
+    showImage(IMAGES.broke)
+    return
+  }
+
+  if(bet <= 0){
     setMessage("Place bet")
     return
   }
 
   buildDeck()
   shuffle()
-  player=[draw(),draw()]
-  dealer=[draw(),draw()]
-  gameOver=false
+  player = [draw(), draw()]
+  dealer = [draw(), draw()]
+  gameOver = false
 
   render()
   updateButtons()
   setMessage("Your move")
 
-  if(handValue(player)===21){
+  if(handValue(player) === 21){
     render(false)
     setReason("🎉 Blackjack. You hit 21 immediately, which is the dream before the casino remembers whose building this is.")
     showImage(IMAGES.blackjack)
@@ -1017,6 +1018,7 @@ function deal(){
   maybeShowStrategy()
 }
 
+  
 function hit(){
   if(gameOver) return
 
