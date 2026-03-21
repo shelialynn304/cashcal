@@ -982,12 +982,12 @@ function clearBet(){
 
 function deal(){
   hintDismissedForHand = false
-  if(bankroll<=0){
-    setMessage("You are out of money.")
-    setReason("Bankroll destroyed. The dealer now has an empty tray and your chips are extinct.")
-    showImage(IMAGES.broke)
-    return
-  }
+  if(bankroll<=0 && bet<=0){
+  setMessage("You are out of money.")
+  setReason("Bankroll destroyed. The dealer now has an empty tray and your chips are extinct.")
+  showImage(IMAGES.broke)
+  return
+}
 
   if(bet<=0){
     setMessage("Place bet")
