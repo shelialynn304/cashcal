@@ -86,25 +86,41 @@ Feedback bubbles:
 
 📂 Project Structure
 CasCal
+
 │
-├── index.html.                 
+├── index.html.  
+               
 ├── blackjack-trainer.html
+
 ├── blackjack-bankroll-calculator.html
+
 │
 ├── images
+
 │   ├── cards
+
 │   ├── chips
+
 │   ├── corrextmove.png
+
 │   ├── wrong.png
+
 │   ├── blackjackjackpot.png
+
 │   ├── dealerbust.png
+
 │   ├── laughdealer.png
+
 │   └── dealershrugemptytray.png
+
 │
 ├── sounds
+
 │   └── chip-click.mp3
+
 │
 └── README
+
 ⚙️ Tech Stack
 
 Vanilla JavaScript (no frameworks)
