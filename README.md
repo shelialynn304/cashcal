@@ -83,18 +83,17 @@ Broke (empty tray 😅)
 
 Feedback bubbles:
 
-CORRECT / WRONG
 
 📂 Project Structure
-CasCal/
+CasCal
 │
-├── index.html
+├── index.html.                 
 ├── blackjack-trainer.html
 ├── blackjack-bankroll-calculator.html
 │
-├── /images/
-│   ├── /cards/
-│   ├── /chips/
+├── images
+│   ├── cards
+│   ├── chips
 │   ├── corrextmove.png
 │   ├── wrong.png
 │   ├── blackjackjackpot.png
@@ -102,10 +101,10 @@ CasCal/
 │   ├── laughdealer.png
 │   └── dealershrugemptytray.png
 │
-├── /sounds/
+├── sounds
 │   └── chip-click.mp3
 │
-└── README.md
+└── README
 ⚙️ Tech Stack
 
 Vanilla JavaScript (no frameworks)
