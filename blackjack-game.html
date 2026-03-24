@@ -376,15 +376,12 @@ transform:translateY(-10px) scale(.98);
     right: 10px;
     bottom: 10px;
     top: auto;
-
     width: auto;
     max-width: none;
     max-height: 22vh;
-
     overflow-y: auto;
-    z-index: 9999;
-
     margin: 0;
+    z-index: 9999;
   }
 
   .strategy-header{
@@ -408,6 +405,54 @@ transform:translateY(-10px) scale(.98);
     width:56px;
   }
 }
+
+  @media (max-width: 768px) {
+  .game-board,
+  .table,
+  .wrap {
+    padding: 10px 8px !important;
+  }
+
+  .dealer-area,
+  .player-area,
+  .dealer,
+  .player {
+    margin-bottom: 8px !important;
+  }
+
+  .hand {
+    margin: 6px 0 !important;
+  }
+
+  .hand img,
+  .card {
+    width: 48px !important;
+  }
+
+  .chips-row img {
+    width: 38px !important;
+  }
+
+  .action-buttons button,
+  .actions button,
+  button {
+    padding: 9px 10px !important;
+    font-size: 0.9rem !important;
+  }
+
+  h1, h2, h3 {
+    margin: 6px 0 !important;
+  }
+
+  .bankroll,
+  .status,
+  .bet-display,
+  .balance {
+    margin: 4px 0 !important;
+    font-size: 0.95rem !important;
+  }
+}
+  
 </style>
 </head>
 
