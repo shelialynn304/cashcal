@@ -26,6 +26,11 @@ const rollSound = document.getElementById("rollSound");
 const winSound = document.getElementById("winSound");
 const loseSound = document.getElementById("loseSound");
 
+ chipSound.volume = 0.5;
+ rollSound.volume = 0.6;
+ winSound.volume = 0.4;
+ loseSound.volume = 0.4;
+
 const chipButtons = document.querySelectorAll(".chip-btn");
 const betSpots = document.querySelectorAll(".bet-spot");
 
@@ -358,15 +363,16 @@ rollBtn.addEventListener("click", () => {
 
   roundResultEl.textContent = messages.join(" | ");
 
-  if (winHappened) {
-    playSound(winSound);
-    flashBankroll("win");
-  } else if (lossHappened) {
-    playSound(loseSound);
-    flashBankroll("loss");
-  }
-
-  updateDisplay();
+   updateDisplay();
+  
+if (winHappened) {
+  flashBankroll("win");
+  setTimeout(() => playSound(winSound), 250);
+} else if (lossHappened) {
+  flashBankroll("loss");
+  setTimeout(() => playSound(loseSound), 250);
+}
+ 
 });
 
 clearBetBtn.addEventListener("click", () => {
