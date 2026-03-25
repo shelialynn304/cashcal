@@ -22,6 +22,14 @@ const resetBtn = document.getElementById("resetGame");
 const clearBetBtn = document.getElementById("clearBetBtn");
 const repeatBetBtn = document.getElementById("repeatBetBtn");
 
+const auto10Btn = document.getElementById("auto10");
+const auto25Btn = document.getElementById("auto25");
+const auto50Btn = document.getElementById("auto50");
+const stopAutoBtn = document.getElementById("stopAutoBtn");
+const strategySelect = document.getElementById("strategySelect");
+
+let autoRunning = false;
+
 const chipSound = document.getElementById("chipSound");
 const rollSound = document.getElementById("rollSound");
 const winSound = document.getElementById("winSound");
