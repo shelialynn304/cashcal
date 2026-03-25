@@ -269,75 +269,123 @@
       100%{ transform:translate(0,0) rotate(0deg); }
     }
 
-    .results{
-      margin-top:25px;
-    }
+ .results, 
+.stats-grid{
+  background:#1d1d1d;
+  border:1px solid #333;
+  border-radius:12px;
+  padding:14px;
+}
 
-    .stats-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
-      gap:12px;
-      margin-top:20px;
-      text-align:center;
-    }
+.results{
+  margin-top:0;
+  text-align:left;
+}
 
-    .stat-box{
-      background:#1a1a1a;
-      border:1px solid #333;
-      border-radius:10px;
-      padding:14px 10px;
-    }
+.results h3,
+.history-wrap h3{
+  margin:0 0 8px;
+  font-size:1.05rem;
+}
 
-    .stat-box strong{
-      display:block;
-      font-size:.9rem;
-      color:#bbb;
-      margin-bottom:6px;
-    }
+.results p{
+  margin:6px 0;
+}
 
-    .history-wrap{
-      margin-top:24px;
-    }
+.info-grid{
+  display:grid;
+  grid-template-columns:1.3fr 1fr;
+  gap:12px;
+  align-items:start;
+  margin-top:10px;
+}
 
-    .roll-history{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      justify-content:center;
-      margin-top:12px;
-    }
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:8px;
+  margin-top:0;
+  text-align:center;
+}
 
-    .roll-badge{
-      background:#1a1a1a;
-      border:1px solid #444;
-      border-radius:999px;
-      padding:8px 12px;
-      font-size:.95rem;
-    }
+.stat-box{
+  background:#1a1a1a;
+  border:1px solid #333;
+  border-radius:10px;
+  padding:10px 8px;
+}
 
-    .history-empty{
-      color:#999;
-    }
+.stat-box strong{
+  display:block;
+  font-size:.9rem;
+  color:#bbb;
+  margin-bottom:6px;
+}
 
-    .flash-win{
-      animation:flashWin .45s ease;
-    }
+.history-wrap{
+  margin-top:14px;
+}
 
-    .flash-loss{
-      animation:flashLoss .45s ease;
-    }
+.roll-history{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+  margin-top:8px;
+}
 
-    @keyframes flashWin{
-      0%{ color:white; }
-      50%{ color:#00ff88; }
-      100%{ color:white; }
-    }
+.roll-badge{
+  background:#1a1a1a;
+  border:1px solid #444;
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:.88rem;
+}
 
-    @keyframes flashLoss{
-      0%{ color:white; }
-      50%{ color:#ff5a5a; }
-      100%{ color:white; }
-    }
+.history-empty{
+  color:#999;
+}
+
+.flash-win{
+  animation:flashWin .45s ease;
+}
+
+.flash-loss{
+  animation:flashLoss .45s ease;
+}
+
+  @media (max-width:768px){
+  .info-grid{
+    grid-template-columns:1fr;
+  }
+
+  .stats-grid{
+    grid-template-columns:repeat(3, 1fr);
+  }
+
+  .roll-history{
+    justify-content:flex-start;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    padding-bottom:4px;
+  }
+
+  .results{
+   text-align:left; 
+  }
+}
+
+   @keyframes flashWin{
+    0%{ color:white; }
+    50%{ color:#00ff88; transform:scale(1.05); }
+    100%{ color:white; }
+}
+
+  @keyframes flashLoss{
+    0%{ color:white; }
+    50%{ color:#ff5a5a; transform:scale(1.05); }
+    100%{ color:white; }
+}
 
     .seo-content{
       max-width:900px;
@@ -484,35 +532,38 @@
           </div>
         </div>
 
-        <div class="results">
-          <h3>Results</h3>
-          <p>Dice Roll: <span id="diceResult">-</span></p>
-          <p>Result: <span id="roundResult">-</span></p>
-          <p>Bankroll: $<span id="bankroll">100</span></p>
-          <p>Total Bet: $<span id="betTotal">0</span></p>
-        </div>
+<div class="info-grid">
+  <div class="results">
+    <h3>Results</h3>
+    <p>Dice Roll: <span id="diceResult">-</span></p>
+    <p>Result: <span id="roundResult">-</span></p>
+    <p>Bankroll: $<span id="bankroll">100</span></p>
+    <p>Total Bet: $<span id="betTotal">0</span></p>
+  </div>
 
-        <div class="stats-grid">
-          <div class="stat-box">
-            <strong>Rolls</strong>
-            <span id="rollCount">0</span>
-          </div>
-          <div class="stat-box">
-            <strong>Wins</strong>
-            <span id="winCount">0</span>
-          </div>
-          <div class="stat-box">
-            <strong>Losses</strong>
-            <span id="lossCount">0</span>
-          </div>
-        </div>
+  <div class="stats-grid">
+    <div class="stat-box">
+      <strong>Rolls</strong>
+      <span id="rollCount">0</span>
+    </div>
+    <div class="stat-box">
+      <strong>Wins</strong>
+      <span id="winCount">0</span>
+    </div>
+    <div class="stat-box">
+      <strong>Losses</strong>
+      <span id="lossCount">0</span>
+    </div>
+  </div>
+</div>
 
-        <div class="history-wrap">
-          <h3>Recent Rolls</h3>
-          <div id="rollHistory" class="roll-history">
-            <span class="history-empty">No rolls yet.</span>
-          </div>
-        </div>
+<div class="history-wrap">
+  <h3>Recent Rolls</h3>
+  <div id="rollHistory" class="roll-history">
+    <span class="history-empty">No rolls yet.</span>
+  </div>
+</div>
+     
       </section>
 
       <section class="seo-content">
