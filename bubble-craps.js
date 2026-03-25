@@ -7,6 +7,7 @@ let roundActive = false;
 
 let selectedChip = 0;
 let lastBetSnapshot = { pass: 0, dontpass: 0, field: 0 };
+let previousFieldBet = 0;
 
 const bets = {
   pass: 0,
@@ -25,11 +26,6 @@ const chipSound = document.getElementById("chipSound");
 const rollSound = document.getElementById("rollSound");
 const winSound = document.getElementById("winSound");
 const loseSound = document.getElementById("loseSound");
-
- chipSound.volume = 0.5;
- rollSound.volume = 0.6;
- winSound.volume = 0.4;
- loseSound.volume = 0.4;
 
 const chipButtons = document.querySelectorAll(".chip-btn");
 const betSpots = document.querySelectorAll(".bet-spot");
@@ -55,6 +51,11 @@ const die2El = document.getElementById("die2");
 const pipClasses = ["face-1", "face-2", "face-3", "face-4", "face-5", "face-6"];
 const rollHistory = [];
 
+if (chipSound) chipSound.volume = 0.5;
+if (rollSound) rollSound.volume = 0.6;
+if (winSound) winSound.volume = 0.4;
+if (loseSound) loseSound.volume = 0.4;
+
 function totalBet() {
   return bets.pass + bets.dontpass + bets.field;
 }
@@ -72,6 +73,15 @@ function playSound(audioEl) {
 function updateDiceFace(el, value) {
   pipClasses.forEach(cls => el.classList.remove(cls));
   el.classList.add(`face-${value}`);
+}
+
+function animateDice() {
+  die1El.classList.remove("shake");
+  die2El.classList.remove("shake");
+  void die1El.offsetWidth;
+  void die2El.offsetWidth;
+  die1El.classList.add("shake");
+  die2El.classList.add("shake");
 }
 
 function flashBankroll(type) {
@@ -127,7 +137,10 @@ function updateDisplay() {
 }
 
 function clearCurrentBets() {
-  if (roundActive) return;
+  if (roundActive) {
+    alert("You can't clear bets while the point is on.");
+    return;
+  }
   bets.pass = 0;
   bets.dontpass = 0;
   bets.field = 0;
@@ -143,13 +156,20 @@ function saveBetSnapshot() {
 }
 
 function repeatLastBet() {
-  if (roundActive) return;
+  if (roundActive) {
+    alert("Finish the current round first.");
+    return;
+  }
+
   const needed = lastBetSnapshot.pass + lastBetSnapshot.dontpass + lastBetSnapshot.field;
+
   if (needed <= 0) return;
+
   if (needed > bankroll) {
     alert("Not enough bankroll to repeat last bet.");
     return;
   }
+
   bets.pass = lastBetSnapshot.pass;
   bets.dontpass = lastBetSnapshot.dontpass;
   bets.field = lastBetSnapshot.field;
@@ -159,10 +179,8 @@ function repeatLastBet() {
 chipButtons.forEach(btn => {
   btn.addEventListener("click", () => {
     selectedChip = Number(btn.dataset.value);
-
     chipButtons.forEach(b => b.classList.remove("selected"));
     btn.classList.add("selected");
-
     playSound(chipSound);
     updateDisplay();
   });
@@ -170,11 +188,6 @@ chipButtons.forEach(btn => {
 
 betSpots.forEach(spot => {
   spot.addEventListener("click", () => {
-    if (roundActive) {
-      alert("Finish the current round first.");
-      return;
-    }
-
     if (!selectedChip) {
       alert("Pick a chip first.");
       return;
@@ -187,9 +200,16 @@ betSpots.forEach(spot => {
 
     const betType = spot.dataset.bet;
 
-    if ((betType === "pass" && bets.dontpass > 0) || (betType === "dontpass" && bets.pass > 0)) {
-      alert("Pick Pass Line or Don't Pass, not both.");
+    if (roundActive && betType !== "field") {
+      alert("Only Field bets can be added while the point is on.");
       return;
+    }
+
+    if (!roundActive) {
+      if ((betType === "pass" && bets.dontpass > 0) || (betType === "dontpass" && bets.pass > 0)) {
+        alert("Pick Pass Line or Don't Pass, not both.");
+        return;
+      }
     }
 
     bets[betType] += selectedChip;
@@ -198,20 +218,19 @@ betSpots.forEach(spot => {
   });
 });
 
-function resolveFieldBet(total) {
-  if (bets.field <= 0) return 0;
-
-  let payout = 0;
+function resolveFieldBet(total, messages) {
+  if (previousFieldBet <= 0) return { win: false, loss: false };
 
   if ([2, 3, 4, 9, 10, 11, 12].includes(total)) {
-    payout = total === 2 || total === 12 ? bets.field * 2 : bets.field;
+    const payout = (total === 2 || total === 12) ? previousFieldBet * 2 : previousFieldBet;
     bankroll += payout;
-  } else {
-    bankroll -= bets.field;
+    messages.push(`Field wins $${payout}`);
+    return { win: true, loss: false };
   }
 
-  bets.field = 0;
-  return payout;
+  bankroll -= previousFieldBet;
+  messages.push("Field loses");
+  return { win: false, loss: true };
 }
 
 function recordRoll(d1, d2, total) {
@@ -225,154 +244,155 @@ rollBtn.addEventListener("click", () => {
     return;
   }
 
-  const mainBetActive = bets.pass > 0 || bets.dontpass > 0;
-
-  if (!mainBetActive && point !== null) {
-    alert("You need an active Pass or Don't Pass bet while the point is on.");
+  const hasMainBet = bets.pass > 0 || bets.dontpass > 0;
+  if (!hasMainBet && point === null && bets.field <= 0) {
+    alert("Place a bet first.");
     return;
   }
 
-  playSound(rollSound);
+  previousFieldBet = bets.field;
+  bets.field = 0;
 
-  const die1 = Math.floor(Math.random() * 6) + 1;
-  const die2 = Math.floor(Math.random() * 6) + 1;
-  const total = die1 + die2;
-
-  updateDiceFace(die1El, die1);
-  updateDiceFace(die2El, die2);
-
-  rolls++;
-  diceResultEl.textContent = `${die1} + ${die2} = ${total}`;
-  recordRoll(die1, die2, total);
-
-  let winHappened = false;
-  let lossHappened = false;
-  let messages = [];
-
-  const fieldPayout = resolveFieldBet(total);
-  if (bets.field === 0 && fieldPayout > 0) {
-    messages.push(`Field wins $${fieldPayout}`);
-    winHappened = true;
-  } else if (![2, 3, 4, 9, 10, 11, 12].includes(total) && lastBetSnapshot.field > 0) {
-    messages.push(`Field loses`);
-    lossHappened = true;
+  if (rollSound) {
+    rollSound.playbackRate = 1 + Math.random() * 0.15;
+    playSound(rollSound);
   }
 
-  if (point === null) {
-    roundActive = true;
+  animateDice();
 
-    if (bets.pass > 0) {
-      if (total === 7 || total === 11) {
-        bankroll += bets.pass;
-        messages.push(`Pass Line wins $${bets.pass}`);
-        bets.pass = 0;
-        wins++;
-        winHappened = true;
-      } else if (total === 2 || total === 3 || total === 12) {
-        bankroll -= bets.pass;
-        messages.push(`Pass Line loses`);
-        bets.pass = 0;
-        losses++;
-        lossHappened = true;
-      } else {
-        point = total;
-        messages.push(`Point set to ${point}`);
+  setTimeout(() => {
+    const die1 = Math.floor(Math.random() * 6) + 1;
+    const die2 = Math.floor(Math.random() * 6) + 1;
+    const total = die1 + die2;
+
+    updateDiceFace(die1El, die1);
+    updateDiceFace(die2El, die2);
+
+    rolls++;
+    diceResultEl.textContent = `${die1} + ${die2} = ${total}`;
+    recordRoll(die1, die2, total);
+
+    let winHappened = false;
+    let lossHappened = false;
+    let messages = [];
+
+    const fieldResult = resolveFieldBet(total, messages);
+    if (fieldResult.win) winHappened = true;
+    if (fieldResult.loss) lossHappened = true;
+
+    if (point === null) {
+      if (bets.pass > 0) {
+        if (total === 7 || total === 11) {
+          bankroll += bets.pass;
+          messages.push(`Pass Line wins $${bets.pass}`);
+          bets.pass = 0;
+          wins++;
+          winHappened = true;
+        } else if (total === 2 || total === 3 || total === 12) {
+          bankroll -= bets.pass;
+          messages.push("Pass Line loses");
+          bets.pass = 0;
+          losses++;
+          lossHappened = true;
+        } else {
+          point = total;
+          roundActive = true;
+          messages.push(`Point set to ${point}`);
+        }
+      }
+
+      if (bets.dontpass > 0) {
+        if (total === 2 || total === 3) {
+          bankroll += bets.dontpass;
+          messages.push(`Don't Pass wins $${bets.dontpass}`);
+          bets.dontpass = 0;
+          wins++;
+          winHappened = true;
+        } else if (total === 7 || total === 11) {
+          bankroll -= bets.dontpass;
+          messages.push("Don't Pass loses");
+          bets.dontpass = 0;
+          losses++;
+          lossHappened = true;
+        } else if (total === 12) {
+          messages.push("Don't Pass pushes on 12");
+        } else {
+          point = total;
+          roundActive = true;
+          messages.push(`Point set to ${point}`);
+        }
+      }
+    } else {
+      if (bets.pass > 0) {
+        if (total === point) {
+          bankroll += bets.pass;
+          messages.push(`Pass Line wins $${bets.pass}`);
+          bets.pass = 0;
+          wins++;
+          winHappened = true;
+          point = null;
+          roundActive = false;
+        } else if (total === 7) {
+          bankroll -= bets.pass;
+          messages.push("Seven out. Pass Line loses");
+          bets.pass = 0;
+          losses++;
+          lossHappened = true;
+          point = null;
+          roundActive = false;
+        }
+      }
+
+      if (bets.dontpass > 0) {
+        if (total === 7) {
+          bankroll += bets.dontpass;
+          messages.push(`Seven out. Don't Pass wins $${bets.dontpass}`);
+          bets.dontpass = 0;
+          wins++;
+          winHappened = true;
+          point = null;
+          roundActive = false;
+        } else if (total === point) {
+          bankroll -= bets.dontpass;
+          messages.push("Don't Pass loses on point hit");
+          bets.dontpass = 0;
+          losses++;
+          lossHappened = true;
+          point = null;
+          roundActive = false;
+        }
+      }
+
+      if (point !== null) {
+        messages.push(`Point stays at ${point}`);
       }
     }
 
-    if (bets.dontpass > 0) {
-      if (total === 2 || total === 3) {
-        bankroll += bets.dontpass;
-        messages.push(`Don't Pass wins $${bets.dontpass}`);
-        bets.dontpass = 0;
-        wins++;
-        winHappened = true;
-      } else if (total === 7 || total === 11) {
-        bankroll -= bets.dontpass;
-        messages.push(`Don't Pass loses`);
-        bets.dontpass = 0;
-        losses++;
-        lossHappened = true;
-      } else if (total === 12) {
-        messages.push(`Don't Pass pushes on 12`);
-      } else {
-        point = total;
-        messages.push(`Point set to ${point}`);
-      }
+    saveBetSnapshot();
+
+    if (bankroll <= 0) {
+      bankroll = 0;
+      point = null;
+      roundActive = false;
+      bets.pass = 0;
+      bets.dontpass = 0;
+      bets.field = 0;
+      messages = ["Bankroll busted! The table ate your lunch."];
+      rollBtn.disabled = true;
+      lossHappened = true;
     }
 
-    roundActive = point !== null;
-  } else {
-    if (bets.pass > 0) {
-      if (total === point) {
-        bankroll += bets.pass;
-        messages.push(`Pass Line wins $${bets.pass}`);
-        bets.pass = 0;
-        wins++;
-        winHappened = true;
-        point = null;
-        roundActive = false;
-      } else if (total === 7) {
-        bankroll -= bets.pass;
-        messages.push(`Seven out. Pass Line loses`);
-        bets.pass = 0;
-        losses++;
-        lossHappened = true;
-        point = null;
-        roundActive = false;
-      }
+    roundResultEl.textContent = messages.join(" | ");
+    updateDisplay();
+
+    if (winHappened) {
+      flashBankroll("win");
+      setTimeout(() => playSound(winSound), 250);
+    } else if (lossHappened) {
+      flashBankroll("loss");
+      setTimeout(() => playSound(loseSound), 250);
     }
-
-    if (bets.dontpass > 0) {
-      if (total === 7) {
-        bankroll += bets.dontpass;
-        messages.push(`Seven out. Don't Pass wins $${bets.dontpass}`);
-        bets.dontpass = 0;
-        wins++;
-        winHappened = true;
-        point = null;
-        roundActive = false;
-      } else if (total === point) {
-        bankroll -= bets.dontpass;
-        messages.push(`Don't Pass loses on point hit`);
-        bets.dontpass = 0;
-        losses++;
-        lossHappened = true;
-        point = null;
-        roundActive = false;
-      }
-    }
-
-    if (point !== null) {
-      messages.push(`Point stays at ${point}`);
-    }
-  }
-
-  saveBetSnapshot();
-
-  if (bankroll <= 0) {
-    bankroll = 0;
-    point = null;
-    roundActive = false;
-    bets.pass = 0;
-    bets.dontpass = 0;
-    bets.field = 0;
-    messages = ["Bankroll busted! The table ate your lunch."];
-    rollBtn.disabled = true;
-  }
-
-  roundResultEl.textContent = messages.join(" | ");
-
-   updateDisplay();
-  
-if (winHappened) {
-  flashBankroll("win");
-  setTimeout(() => playSound(winSound), 250);
-} else if (lossHappened) {
-  flashBankroll("loss");
-  setTimeout(() => playSound(loseSound), 250);
-}
- 
+  }, 260);
 });
 
 clearBetBtn.addEventListener("click", () => {
@@ -391,6 +411,7 @@ resetBtn.addEventListener("click", () => {
   point = null;
   roundActive = false;
   selectedChip = 0;
+  previousFieldBet = 0;
 
   bets.pass = 0;
   bets.dontpass = 0;
