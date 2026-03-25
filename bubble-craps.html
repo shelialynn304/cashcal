@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0">
+  <meta name="description" content="Use this free Bubble Craps simulator to test betting strategy, practice bankroll management, and track wins, losses, and dice results.">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="robots" content="index, follow">
-
-<meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
-
-<meta name="description" content="Bubble craps simulator that lets you test betting strategies and bankroll survival using simulated dice rolls." />
-
-<title>Bubble Craps Simulator | CashCal</title>
-
-<link rel="stylesheet" href="style.css">
-  
-  <title>Bubble Craps Simulator</title>
+  <title>Bubble Craps Simulator – Test Bets & Bankroll Strategy | CashCal</title>
+  <link rel="canonical" href="https://shelialynn304.github.io/cashcal/bubble-craps.html">
   <link rel="stylesheet" href="style.css">
+
+  <meta property="og:title" content="Bubble Craps Simulator | CashCal">
+  <meta property="og:description" content="Practice a simple Pass Line style bubble craps simulation, test bankroll survival, and learn how come-out rolls and point numbers work.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://shelialynn304.github.io/cashcal/bubble-craps.html">
 
   <style>
     body{
@@ -24,6 +22,26 @@
       text-align:center;
       background:#1b1b1b;
       color:white;
+      margin:0;
+      padding:0;
+    }
+
+    .page-wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:20px;
+    }
+
+    .hero{
+      margin-top:20px;
+      margin-bottom:25px;
+    }
+
+    .hero p{
+      max-width:700px;
+      margin:10px auto 0;
+      line-height:1.6;
+      color:#ddd;
     }
 
     .chip-row{
@@ -44,10 +62,33 @@
       transform:scale(1.1);
     }
 
+    .game-panel{
+      background:#242424;
+      border:1px solid #3a3a3a;
+      border-radius:14px;
+      padding:24px;
+      max-width:800px;
+      margin:0 auto 35px;
+      box-shadow:0 8px 24px rgba(0,0,0,.35);
+    }
+
+    .bet-display{
+      font-size:1.2rem;
+      margin-bottom:16px;
+    }
+
+    .button-row{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:16px;
+      margin-bottom:20px;
+    }
+
     button{
       padding:10px 20px;
       font-size:16px;
-      margin:10px;
       cursor:pointer;
       border:none;
       border-radius:6px;
@@ -66,44 +107,176 @@
     .results{
       margin-top:25px;
     }
-  </style>
-</head>
 
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
+      gap:12px;
+      margin-top:20px;
+      text-align:center;
+    }
+
+    .stat-box{
+      background:#1a1a1a;
+      border:1px solid #333;
+      border-radius:10px;
+      padding:14px 10px;
+    }
+
+    .stat-box strong{
+      display:block;
+      font-size:.9rem;
+      color:#bbb;
+      margin-bottom:6px;
+    }
+
+    .seo-content{
+      max-width:900px;
+      margin:40px auto 60px;
+      text-align:left;
+      line-height:1.75;
+      color:#e6e6e6;
+    }
+
+    .seo-content h2,
+    .seo-content h3{
+      color:#ffd54a;
+      margin-top:30px;
+    }
+
+    .seo-content ul{
+      padding-left:20px;
+    }
+
+    @media (max-width:768px){
+      .chip{
+        width:52px;
+      }
+
+      .game-panel{
+        padding:18px 14px;
+      }
+
+      .seo-content{
+        padding:0 4px;
+      }
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "name":"Bubble Craps Simulator",
+    "description":"A free bubble craps simulator for testing bets, bankroll survival, and basic strategy.",
+    "url":"https://shelialynn304.github.io/cashcal/bubble-craps.html"
+  }
+  </script>
+</head>
 <body>
 
   <div class="navbar">
     <a href="index.html">Home</a>
-    <a href="blackjack-bankroll-calculator.html" class="active">Blackjack</a>
+    <a href="blackjack-bankroll-calculator.html">Blackjack</a>
     <a href="blackjack-strategy.html">Blackjack Strategy</a>
     <a href="blackjack-game.html">Blackjack Training Game</a>
-    <a href="bubble-craps.html">Bubble Craps</a>
+    <a href="bubble-craps.html" class="active">Bubble Craps</a>
   </div>
 
-  <audio id="chipSound" src="sounds/chip-click.mp3" preload="auto"></audio>
+  <div class="page-wrap">
+    <audio id="chipSound" src="sounds/chip-click.mp3" preload="auto"></audio>
 
-  <h1>Bubble Craps Simulator</h1>
+    <header class="hero">
+      <h1>Bubble Craps Simulator</h1>
+      <p>
+        Practice a simple craps-style betting simulation, track wins and losses, and see how quickly your bankroll can rise or get murdered.
+      </p>
+    </header>
 
-  <p>
-    Test common craps bets and see how your bankroll changes.
-  </p>
+    <main>
+      <section class="game-panel">
+        <div class="chip-row">
+          <img src="images/chips/chip-1.png" class="chip" data-value="1" alt="$1 chip">
+          <img src="images/chips/chip-5.png" class="chip" data-value="5" alt="$5 chip">
+          <img src="images/chips/chip-10.png" class="chip" data-value="10" alt="$10 chip">
+          <img src="images/chips/chip-25.png" class="chip" data-value="25" alt="$25 chip">
+          <img src="images/chips/chip-100.png" class="chip" data-value="100" alt="$100 chip">
+        </div>
 
-  <div class="chip-row">
-    <img src="images/chips/chip-1.png" class="chip" data-value="1" alt="$1 chip">
-    <img src="images/chips/chip-5.png" class="chip" data-value="5" alt="$5 chip">
-    <img src="images/chips/chip-10.png" class="chip" data-value="10" alt="$10 chip">
-    <img src="images/chips/chip-25.png" class="chip" data-value="25" alt="$25 chip">
-    <img src="images/chips/chip-100.png" class="chip" data-value="100" alt="$100 chip">
+        <div class="bet-display">
+          <h2>Current Bet: $<span id="betTotal">0</span></h2>
+        </div>
+
+        <div class="button-row">
+          <button id="rollBtn" class="roll-btn">Roll Dice</button>
+          <button id="resetGame" class="reset-btn">Reset Game</button>
+        </div>
+
+       <div class="results">
+  <h3>Results</h3>
+  <p>Dice Roll: <span id="diceResult">-</span></p>
+  <p>Point: <span id="pointValue">-</span></p>
+  <p>Result: <span id="roundResult">-</span></p>
+  <p>Bankroll: $<span id="bankroll">100</span></p>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-box">
+    <strong>Rolls</strong>
+    <span id="rollCount">0</span>
   </div>
+  <div class="stat-box">
+    <strong>Wins</strong>
+    <span id="winCount">0</span>
+  </div>
+  <div class="stat-box">
+    <strong>Losses</strong>
+    <span id="lossCount">0</span>
+  </div>
+</div>
+      </section>
 
-  <h3>Current Bet: $<span id="betTotal">0</span></h3>
+      <section class="seo-content">
+        <h2>How This Bubble Craps Simulator Works</h2>
+        <p>
+          This free Bubble Craps simulator lets you place a bet, roll simulated dice, and watch how your bankroll changes over time. It is built for practice, entertainment, and testing simple betting ideas without risking real money.
+        </p>
 
-  <button id="rollBtn" class="roll-btn">Roll Dice</button>
-  <button id="resetGame" class="reset-btn">Reset Game</button>
+        <h2>Why Use a Craps Simulator?</h2>
+        <p>
+          A craps simulator helps you understand volatility. Even simple bets can drain a bankroll fast if your sizing is reckless. Running simulated rolls makes it easier to see whether your betting approach is disciplined or just gambling with extra steps.
+        </p>
 
-  <div class="results">
-    <h3>Results</h3>
-    <p>Dice Roll: <span id="diceResult">-</span></p>
-    <p>Bankroll: $<span id="bankroll">100</span></p>
+        <h2>What You Can Learn</h2>
+        <ul>
+          <li>How fast small bets and larger bets affect bankroll survival</li>
+          <li>How winning and losing streaks change session results</li>
+          <li>Why bankroll control matters more than hype</li>
+          <li>How a simple betting strategy performs over repeated rolls</li>
+        </ul>
+
+        <h2>Bubble Craps Bankroll Strategy</h2>
+        <p>
+          Good bankroll management matters more than blind confidence. Smaller, consistent bets usually keep you alive longer, while oversized bets can erase a session in a few bad rolls. This simulator gives you a quick way to test that reality instead of pretending luck is a business model.
+        </p>
+
+        <h2>Practice Craps Without Real Money</h2>
+        <p>
+          This page is for learning and entertainment only. It does not use real money and does not guarantee results in real casino play. It is simply a free craps-style practice tool for testing betting behavior and bankroll swings.
+        </p>
+
+        <h2>FAQ</h2>
+
+        <h3>Is this Bubble Craps simulator free?</h3>
+        <p>Yes. You can use it for free to practice betting and track bankroll changes.</p>
+
+        <h3>Does this simulator use real money?</h3>
+        <p>No. It is just a free practice tool.</p>
+
+        <h3>Can this help me test betting strategy?</h3>
+        <p>Yes. It helps you see how wins, losses, and bet sizing impact your bankroll over time.</p>
+      </section>
+    </main>
   </div>
 
   <script src="bubble-craps.js"></script>
