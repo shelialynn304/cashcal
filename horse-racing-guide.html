@@ -1,0 +1,663 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horse Racing Guide | Betting Basics, Terms, and Quick Handicapping Tips</title>
+  <meta name="description" content="Learn horse racing betting basics, common wager types, track terms, and fast handicapping tips. A beginner-friendly horse racing guide page for CashCal." />
+  <link rel="canonical" href="https://shelialynn304.github.io/cashcal/horse-racing-guide.html" />
+  <meta name="robots" content="index, follow" />  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel-2: #1e2430;
+      --text: #eef2f7;
+      --muted: #a7b0be;
+      --gold: #f1c45b;
+      --accent: #4db6ff;
+      --danger: #ff7171;
+      --success: #58d68d;
+      --border: rgba(255,255,255,0.08);
+      --shadow: 0 18px 45px rgba(0,0,0,0.35);
+      --radius: 18px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #0c0f14 0%, #121722 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover { text-decoration: underline; }
+
+    .container {
+      width: min(92%, var(--max));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      background: rgba(10, 13, 18, 0.88);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 72px;
+    }
+
+    .brand {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.4px;
+    }
+
+    .brand span { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .hero {
+      padding: 76px 0 48px;
+    }
+
+    .hero-wrap {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(241,196,91,0.12);
+      color: var(--gold);
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.15;
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 4vw, 4rem);
+      margin-bottom: 14px;
+    }
+
+    .hero p {
+      font-size: 1.08rem;
+      color: var(--muted);
+      max-width: 720px;
+      margin-bottom: 24px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      font-weight: 800;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: #131313;
+    }
+
+    .btn-primary:hover {
+      text-decoration: none;
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover {
+      text-decoration: none;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .hero-card,
+    .panel,
+    .stat,
+    .tip-card,
+    .cta-box,
+    .warning-box {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: 24px;
+    }
+
+    .hero-card h3 {
+      margin-bottom: 16px;
+      font-size: 1.2rem;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 12px;
+      padding: 0;
+      list-style: none;
+      margin: 0;
+    }
+
+    .check-list li {
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+    }
+
+    section {
+      padding: 26px 0 10px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 2vw, 2.35rem);
+      margin-bottom: 12px;
+    }
+
+    .section-subtext {
+      color: var(--muted);
+      max-width: 780px;
+      margin-bottom: 24px;
+    }
+
+    .stats-grid,
+    .cards-grid,
+    .tips-grid,
+    .two-col {
+      display: grid;
+      gap: 18px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .stat {
+      padding: 20px;
+    }
+
+    .stat .num {
+      display: block;
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .stat p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .cards-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .panel {
+      padding: 22px;
+    }
+
+    .panel h3 {
+      margin-bottom: 12px;
+      font-size: 1.15rem;
+    }
+
+    .panel p,
+    .panel li {
+      color: var(--muted);
+    }
+
+    .panel ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .two-col {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+
+    .tips-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tip-card {
+      padding: 20px;
+    }
+
+    .tip-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+    }
+
+    .tip-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .warning-box,
+    .cta-box {
+      padding: 22px;
+      margin-top: 18px;
+    }
+
+    .warning-box {
+      border-color: rgba(255,113,113,0.22);
+      background: linear-gradient(180deg, rgba(255,113,113,0.09), rgba(255,113,113,0.03));
+    }
+
+    .warning-box strong { color: #fff; }
+
+    .cta-box {
+      border-color: rgba(77,182,255,0.22);
+      background: linear-gradient(180deg, rgba(77,182,255,0.09), rgba(77,182,255,0.03));
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      overflow: hidden;
+      border-radius: 14px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th {
+      background: rgba(255,255,255,0.03);
+      color: #fff;
+      font-size: 0.95rem;
+    }
+
+    td {
+      color: var(--muted);
+      background: rgba(255,255,255,0.015);
+    }
+
+    .footer {
+      padding: 38px 0 54px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .footer-inner {
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 1000px) {
+      .hero-wrap,
+      .two-col,
+      .cards-grid,
+      .stats-grid,
+      .tips-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px 0;
+      }
+
+      .hero {
+        padding-top: 42px;
+      }
+
+      .hero-wrap,
+      .two-col,
+      .cards-grid,
+      .stats-grid,
+      .tips-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      th, td {
+        font-size: 0.94rem;
+      }
+    }
+  </style></head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand">Cash<span>Cal</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="blackjack-strategy.html">Blackjack Strategy</a>
+        <a href="blackjack-trainer.html">Blackjack Trainer</a>
+        <a href="bankroll-calculator.html">Bankroll Calculator</a>
+        <a href="horse-racing-guide.html">Horse Racing</a>
+      </nav>
+    </div>
+  </header>  <main>
+    <section class="hero">
+      <div class="container hero-wrap">
+        <div>
+          <div class="eyebrow">Horse Racing Guide</div>
+          <h1>Horse Racing Betting Basics Without the Pretentious Nonsense</h1>
+          <p>
+            Horse racing can look like a spreadsheet mated with a casino and raised a speed demon.
+            This page strips it down: what the bets mean, what odds actually tell you, what to check fast,
+            and how not to torch money chasing longshots that looked cute in the paddock.
+          </p>
+          <div class="hero-actions">
+            <a href="#bet-types" class="btn btn-primary">Start With Bet Types</a>
+            <a href="#quick-guide" class="btn btn-secondary">See the Fast Checklist</a>
+          </div>
+        </div><aside class="hero-card">
+      <h3>Quick reality check</h3>
+      <ul class="check-list">
+        <li><strong>Favorite:</strong> Most likely winner, not guaranteed winner.</li>
+        <li><strong>Longshot:</strong> Bigger payout, lower chance. Shocking, I know.</li>
+        <li><strong>Odds move:</strong> The crowd changes the price, not the horse's soul.</li>
+        <li><strong>Best beginner move:</strong> Start with Win, Place, Show before trying exotic bets.</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 class="section-title">What matters most</h2>
+    <p class="section-subtext">
+      If you're new, focus on only a few variables first. Too many people try to decode every stat on the page and end up making worse decisions with extra confidence. That's not intelligence. That's decorative chaos.
+    </p>
+
+    <div class="stats-grid">
+      <div class="stat">
+        <span class="num">1</span>
+        <p>Recent form: Is the horse actually running well lately?</p>
+      </div>
+      <div class="stat">
+        <span class="num">2</span>
+        <p>Class: Is it facing easier or tougher competition today?</p>
+      </div>
+      <div class="stat">
+        <span class="num">3</span>
+        <p>Distance and surface: Dirt, turf, sprint, route — not all horses handle all of it.</p>
+      </div>
+      <div class="stat">
+        <span class="num">4</span>
+        <p>Jockey/trainer fit: Sometimes the human attached to the horse is the real clue.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="bet-types">
+  <div class="container">
+    <h2 class="section-title">Common horse racing bets</h2>
+    <p class="section-subtext">
+      These are the main bet types people start with. Basic bets are easier to understand and harder to butcher. Exotic bets can pay more, but they also eat bankroll faster if you don't know what you're doing.
+    </p>
+
+    <div class="panel">
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Bet Type</th>
+              <th>What Has to Happen</th>
+              <th>Difficulty</th>
+              <th>Beginner Friendly?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Win</strong></td>
+              <td>Your horse must finish 1st.</td>
+              <td>Low</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td><strong>Place</strong></td>
+              <td>Your horse must finish 1st or 2nd.</td>
+              <td>Low</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td><strong>Show</strong></td>
+              <td>Your horse must finish 1st, 2nd, or 3rd.</td>
+              <td>Low</td>
+              <td>Yes, but smaller payouts</td>
+            </tr>
+            <tr>
+              <td><strong>Exacta</strong></td>
+              <td>Pick the 1st and 2nd finishers in exact order.</td>
+              <td>Medium</td>
+              <td>Not at first</td>
+            </tr>
+            <tr>
+              <td><strong>Trifecta</strong></td>
+              <td>Pick 1st, 2nd, and 3rd in exact order.</td>
+              <td>High</td>
+              <td>No, unless you enjoy donating</td>
+            </tr>
+            <tr>
+              <td><strong>Superfecta</strong></td>
+              <td>Pick 1st through 4th in exact order.</td>
+              <td>Very High</td>
+              <td>Absolutely not for beginners</td>
+            </tr>
+            <tr>
+              <td><strong>Daily Double</strong></td>
+              <td>Pick the winners of 2 consecutive races.</td>
+              <td>Medium</td>
+              <td>Maybe later</td>
+            </tr>
+            <tr>
+              <td><strong>Pick 3 / 4 / 5 / 6</strong></td>
+              <td>Pick winners across multiple races.</td>
+              <td>High to absurd</td>
+              <td>No</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="quick-guide">
+  <div class="container">
+    <h2 class="section-title">Fast handicapping checklist</h2>
+    <p class="section-subtext">
+      If you're trying to pick a horse quickly, this is the practical filter. Don't overcomplicate it. You are not breeding the thing. You're deciding whether there's a decent bet.
+    </p>
+
+    <div class="tips-grid">
+      <article class="tip-card">
+        <h3>1. Check recent finishes</h3>
+        <p>Look at the horse's last 3 races. A string of competitive finishes matters more than one random miracle run from months ago.</p>
+      </article>
+
+      <article class="tip-card">
+        <h3>2. Compare class level</h3>
+        <p>If a horse is dropping into easier company, that's often a real signal. Moving up in class can mean the barn is confident or just optimistic and delusional.</p>
+      </article>
+
+      <article class="tip-card">
+        <h3>3. Match distance and surface</h3>
+        <p>Some horses love turf, some hate it. Some finish strong at longer distances, others burn out early. Ignore this and you are basically betting on a name.</p>
+      </article>
+
+      <article class="tip-card">
+        <h3>4. Look at pace setup</h3>
+        <p>If several horses want the lead, they can cook each other early and set the race up for a closer. Pace matters a lot more than most beginners realize.</p>
+      </article>
+
+      <article class="tip-card">
+        <h3>5. Respect jockey and trainer stats</h3>
+        <p>A productive jockey-trainer combo can matter. Especially watch for barns that do well first off a claim, off layoffs, or switching surfaces.</p>
+      </article>
+
+      <article class="tip-card">
+        <h3>6. Watch the odds drift or drop</h3>
+        <p>Big money can be informative, but not magic. Sharp action exists. So does public stupidity. Odds movement is a clue, not a commandment.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container two-col">
+    <div class="panel">
+      <h2 class="section-title">Horse racing terms you should know</h2>
+      <ul>
+        <li><strong>Morning line:</strong> The track handicapper's predicted odds before betting opens.</li>
+        <li><strong>Favorite:</strong> The horse with the lowest odds.</li>
+        <li><strong>Overlay:</strong> A horse whose current odds are better than you think they should be.</li>
+        <li><strong>Underlay:</strong> A horse being overbet relative to its real chance.</li>
+        <li><strong>Pace horse:</strong> A horse likely to race near the front early.</li>
+        <li><strong>Closer:</strong> A horse that comes from behind late.</li>
+        <li><strong>Layoff:</strong> A long break since the horse's last race.</li>
+        <li><strong>Post position:</strong> The gate number where the horse starts.</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2 class="section-title">Quick bankroll rules</h2>
+      <ul>
+        <li>Set a race budget before you start. Not after the third "almost had it" moment.</li>
+        <li>Keep most bets small and flat. Randomly doubling after losses is how people cosplay as financial arsonists.</li>
+        <li>Use simple bets until you prove you can pick contenders consistently.</li>
+        <li>Do not bet every race. Boredom is not an edge.</li>
+        <li>Pass races where the field looks chaotic or you don't understand the setup.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="warning-box">
+      <strong>Important:</strong> Horse racing is not a reliable income strategy. It is gambling. Even smart reads lose all the time because animals, track conditions, pace chaos, bad trips, and plain randomness do not care about your confidence level.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 class="section-title">Simple beginner approach</h2>
+    <p class="section-subtext">
+      If you want the least stupid way to start, use this. It's not sexy. That's why it has a chance of not wrecking you immediately.
+    </p>
+
+    <div class="cards-grid">
+      <article class="panel">
+        <h3>Step 1: Pick 2-3 contenders</h3>
+        <p>Use recent form, class, distance, and surface to narrow the race. Ignore hype names and random superstition nonsense.</p>
+      </article>
+
+      <article class="panel">
+        <h3>Step 2: Look for value</h3>
+        <p>If your best horse is getting crushed at tiny odds, the bet may not be worth it. A slightly less likely horse at much better odds can be the sharper play.</p>
+      </article>
+
+      <article class="panel">
+        <h3>Step 3: Bet simple</h3>
+        <p>Stick to Win bets, maybe Win/Place, until you can actually read races with some consistency. Exotic bets are where optimism goes to die.</p>
+      </article>
+    </div>
+
+    <div class="cta-box">
+      <h3 style="margin-top:0;">Want to connect this page to the rest of your site?</h3>
+      <p class="small-note">
+        Good next additions would be a horse racing odds explainer, a payout calculator, or a "how to read the program" page. Those would fit your math/training angle way better than just dumping generic gambling fluff on the page.
+      </p>
+    </div>
+  </div>
+</section>
+
+  </main>  <footer class="footer">
+    <div class="container footer-inner">
+      <p><strong>CashCal</strong> — educational gambling tools, explainers, and calculators.</p>
+      <p class="small-note">
+        This page is for informational purposes only. Gambling involves risk. Follow your local laws and age restrictions. Do not gamble with money you cannot afford to lose.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
