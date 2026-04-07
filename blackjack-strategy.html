@@ -7,13 +7,9 @@
 src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js">
 </script>
 
-<!-- Chart library (used for calculators) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Google site verification -->
 <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
-
-<!-- SEO basics -->
 <meta name="robots" content="index, follow">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,12 +18,7 @@ src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js">
 
 <meta name="description" content="Learn blackjack basic strategy including when to hit, stand, split, and double. Improve your blackjack decisions with this beginner friendly guide.">
 
-<link rel="canonical" href="https://cascal.com/blackjack-strategy.html">
-
-<meta property="og:title" content="Blackjack Strategy Guide">
-<meta property="og:description" content="Learn when to hit, stand, split and double with this beginner friendly blackjack strategy guide.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://cascal.com/blackjack-strategy.html">
+<link rel="canonical" href="https://shelialynn304.github.io/cashcal/blackjack-strategy.html">
 
 <link rel="stylesheet" href="style.css">
 
@@ -40,454 +31,182 @@ src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js">
 }
 </script>
 
-<style>
-  .quick-links,
-  .cta-box,
-  .mini-quiz,
-  .next-step-box,
-  .related-tools {
-    background: #121212;
-    border: 1px solid #2c2c2c;
-    border-radius: 14px;
-    padding: 20px;
-    margin: 24px 0;
-  }
-
-  .quick-links h2,
-  .cta-box h2,
-  .mini-quiz h2,
-  .next-step-box h2,
-  .related-tools h2 {
-    margin-top: 0;
-  }
-
-  .cta-buttons,
-  .tool-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 14px;
-  }
-
-  .cta-button {
-    display: inline-block;
-    background: #1f7a43;
-    color: #fff;
-    padding: 12px 18px;
-    text-decoration: none;
-    border-radius: 10px;
-    font-weight: 700;
-    transition: 0.2s ease;
-  }
-
-  .cta-button:hover {
-    background: #249652;
-    transform: translateY(-2px);
-  }
-
-  .cta-button.secondary {
-    background: #222;
-    border: 1px solid #444;
-  }
-
-  .cta-button.secondary:hover {
-    background: #2c2c2c;
-  }
-
-  .quick-list {
-    margin: 12px 0 0 0;
-    padding-left: 18px;
-  }
-
-  .quick-list li {
-    margin-bottom: 10px;
-  }
-
-  .strategy-chart td,
-  .strategy-chart th,
-  .strategy-table td,
-  .strategy-table th {
-    text-align: center;
-    vertical-align: middle;
-  }
-
-  .legend-pill {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 999px;
-    margin-right: 8px;
-    font-weight: 700;
-  }
-
-  .hit,
-  .legend-hit {
-    background: #8b1e1e;
-    color: #fff;
-  }
-
-  .stand,
-  .legend-stand {
-    background: #176c2f;
-    color: #fff;
-  }
-
-  .double,
-  .legend-double {
-    background: #1a4f8b;
-    color: #fff;
-  }
-
-  .split,
-  .legend-split {
-    background: #7a5312;
-    color: #fff;
-  }
-
-  .mini-quiz button {
-    margin: 8px 8px 0 0;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 700;
-    background: #2a2a2a;
-    color: #fff;
-  }
-
-  .mini-quiz button:hover {
-    background: #3a3a3a;
-  }
-
-  #quiz-result {
-    margin-top: 16px;
-    font-weight: 700;
-    min-height: 24px;
-  }
-
-  .feedback-image {
-    margin-top: 14px;
-    max-width: 220px;
-    display: none;
-    border-radius: 12px;
-  }
-
-  .sticky-practice {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    z-index: 999;
-    background: #1f7a43;
-    color: white;
-    padding: 14px 18px;
-    border-radius: 999px;
-    text-decoration: none;
-    font-weight: 700;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-  }
-
-  .sticky-practice:hover {
-    background: #249652;
-  }
-
-  .section-divider {
-    margin: 34px 0;
-    border: 0;
-    border-top: 1px solid #2f2f2f;
-  }
-
-  @media (max-width: 700px) {
-    .sticky-practice {
-      right: 12px;
-      left: 12px;
-      bottom: 12px;
-      text-align: center;
-      border-radius: 14px;
-    }
-  }
-</style>
-
 </head>
 
 <body>
 
- <div class="navbar">
-  <a href="index.html">Home</a>
-  <a href="blackjack-bankroll-calculator.html">Bankroll Calculator</a>
-  <a href="blackjack-ev-calculator.html">EV Calculator</a>
-  <a href="blackjack-strategy.html" class="active">Blackjack Strategy</a>
-  <a href="blackjack-game.html">Blackjack Training Game</a>
-  <a href="bubble-craps.html">Bubble Craps</a>
-</div>
+<header class="site-header">
+  <div class="container nav">
+    <a href="index.html" class="brand">Cash<span>Cal</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="blackjack-bankroll-calculator.html">Bankroll</a>
+      <a href="blackjack-ev-calculator.html">EV</a>
+      <a href="blackjack-strategy.html" class="active">Strategy</a>
+      <a href="blackjack-game.html">Trainer</a>
+      <a href="bubble-craps.html">Craps</a>
+      <a href="horse-racing-guide.html">Horse</a>
+    </nav>
+  </div>
+</header>
 
-<main class="container">
+<main>
 
-  <h1>Blackjack Strategy Guide</h1>
-
-  <p>
-    Blackjack is one of the few casino games where strategy can significantly reduce the house edge.
-    By making mathematically correct decisions based on your hand and the dealer’s visible card, players can improve their odds compared to guessing or playing by instinct.
-  </p>
-
-  <div class="cta-box">
-    <h2>Learn It Fast. Then Test It.</h2>
-    <p>
-      Reading strategy is good. Actually using it under pressure is better.
-      Most players think they know basic strategy until they get hit with ugly hands like <strong>16 vs 10</strong>.
+<section class="hero">
+  <div class="container">
+    <h1>Blackjack Strategy Guide</h1>
+    <p class="section-subtext">
+      Learn when to hit, stand, split, and double using actual math — not guesswork.
+      Most players lose because they improvise. This removes that problem.
     </p>
-    <div class="cta-buttons">
-      <a class="cta-button" href="blackjack-game.html">Play Blackjack Training Game →</a>
-      <a class="cta-button secondary" href="blackjack-bankroll-calculator.html">See the Bankroll Calculator →</a>
+
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="blackjack-game.html">Practice Strategy</a>
+      <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">See Bankroll Risk</a>
     </div>
   </div>
+</section>
 
-  <div class="quick-links">
-    <h2>What You’ll Learn on This Page</h2>
-    <ul class="quick-list">
-      <li>How the dealer’s up card changes your best move</li>
-      <li>When to hit, stand, double, and split</li>
-      <li>The common mistakes that quietly drain money</li>
-      <li>Where to practice basic strategy live on this site</li>
-    </ul>
+<section class="section">
+  <div class="container grid grid-2">
+
+    <div class="card">
+      <h2 class="section-title">Core Idea</h2>
+      <p>
+        Blackjack is one of the few casino games where correct decisions reduce the house edge.
+        Your move should depend on your hand and the dealer’s card — not emotion.
+      </p>
+      <p class="mb-0">
+        Strategy is not optional. It’s the difference between controlled loss and chaos.
+      </p>
+    </div>
+
+    <div class="warning-box">
+      <h2 class="section-title">Reality Check</h2>
+      <p>
+        Even perfect strategy does not eliminate the house edge.
+        It just slows down how fast you lose.
+      </p>
+      <p class="mb-0">
+        Bad decisions accelerate losses fast.
+      </p>
+    </div>
+
   </div>
+</section>
 
-  <p>
-    The objective of blackjack is simple: beat the dealer by getting as close to <strong>21</strong> as possible without going over.
-    Number cards are worth their face value, face cards count as <strong>10</strong>, and aces can count as either <strong>1 or 11</strong> depending on what benefits your hand.
-  </p>
+<section class="section">
+  <div class="container card">
 
-  <h2>Understanding the Dealer's Card</h2>
+    <h2 class="section-title">Basic Strategy Chart</h2>
 
-  <p>
-    Your decisions in blackjack should always consider the dealer’s visible card.
-    Dealers must follow strict rules and typically must hit until they reach at least 17.
-    Because of this, some dealer cards are considered strong while others are weak.
-  </p>
-
-  <p>
-    When the dealer shows a <strong>2 through 6</strong>, they are more likely to bust.
-    When the dealer shows a <strong>7 through Ace</strong>, they have a better chance of making a strong hand.
-  </p>
-
-  <div class="next-step-box">
-    <h2>Big Rule to Remember</h2>
-    <p>
-      Weak dealer card? You often let the dealer self-destruct.
-      Strong dealer card? You usually need to be more aggressive.
+    <p><strong>Legend:</strong></p>
+    <p class="legend">
+      <span class="hit">Hit</span>
+      <span class="stand">Stand</span>
+      <span class="double">Double</span>
+      <span class="split">Split</span>
     </p>
-    <p>
-      That’s why blackjack strategy is not about “gut feeling.” It’s math wearing a casino costume.
-    </p>
+
+    <table class="strategy-chart">
+      <thead>
+        <tr>
+          <th>Your Hand</th>
+          <th>Dealer 2–6</th>
+          <th>Dealer 7–Ace</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>8 or less</td><td class="hit">Hit</td><td class="hit">Hit</td></tr>
+        <tr><td>9</td><td class="double">Double</td><td class="hit">Hit</td></tr>
+        <tr><td>10</td><td class="double">Double</td><td class="hit">Hit</td></tr>
+        <tr><td>11</td><td class="double">Double</td><td class="double">Double</td></tr>
+        <tr><td>12</td><td class="stand">Stand</td><td class="hit">Hit</td></tr>
+        <tr><td>13–16</td><td class="stand">Stand</td><td class="hit">Hit</td></tr>
+        <tr><td>17+</td><td class="stand">Stand</td><td class="stand">Stand</td></tr>
+        <tr><td>Pair of Aces</td><td class="split">Split</td><td class="split">Split</td></tr>
+        <tr><td>Pair of 8s</td><td class="split">Split</td><td class="split">Split</td></tr>
+        <tr><td>Pair of 10s</td><td class="stand">Stand</td><td class="stand">Stand</td></tr>
+        <tr><td>Pair of 5s</td><td class="double">Double</td><td class="hit">Hit</td></tr>
+      </tbody>
+    </table>
+
+    <div class="cta-box">
+      <h2>Don’t Just Read This</h2>
+      <p>
+        Reading strategy feels smart. Actually using it without screwing up is the real test.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="blackjack-game.html">Practice Now</a>
+      </div>
+    </div>
+
   </div>
+</section>
 
-  <hr class="section-divider">
+<section class="section">
+  <div class="container card">
 
-  <h2>Basic Blackjack Strategy Chart</h2>
+    <h2 class="section-title">Common Mistakes</h2>
 
-  <p>
-    This simplified blackjack strategy chart shows the mathematically best move based on your hand and the dealer’s up card.
-  </p>
+    <table class="strategy-table">
+      <thead>
+        <tr>
+          <th>Situation</th>
+          <th>Mistake</th>
+          <th>Better Play</th>
+          <th>Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>16 vs 10</td><td>Stand</td><td>Hit</td><td>Dealer is strong</td></tr>
+        <tr><td>Pair of 8s</td><td>No split</td><td>Split</td><td>16 is weak</td></tr>
+        <tr><td>Pair of 10s</td><td>Split</td><td>Stand</td><td>20 is strong</td></tr>
+        <tr><td>Insurance</td><td>Take it</td><td>Avoid</td><td>Bad bet long-term</td></tr>
+      </tbody>
+    </table>
 
-  <p>
-    <strong>Legend:</strong>
-    <span class="legend-pill legend-hit">Hit</span>
-    <span class="legend-pill legend-stand">Stand</span>
-    <span class="legend-pill legend-double">Double</span>
-    <span class="legend-pill legend-split">Split</span>
-  </p>
+  </div>
+</section>
 
-  <table class="strategy-chart">
-    <thead>
-      <tr>
-        <th>Your Hand</th>
-        <th>Dealer 2–6</th>
-        <th>Dealer 7–Ace</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>8 or less</td>
-        <td class="hit">Hit</td>
-        <td class="hit">Hit</td>
-      </tr>
-      <tr>
-        <td>9</td>
-        <td class="double">Double</td>
-        <td class="hit">Hit</td>
-      </tr>
-      <tr>
-        <td>10</td>
-        <td class="double">Double</td>
-        <td class="hit">Hit</td>
-      </tr>
-      <tr>
-        <td>11</td>
-        <td class="double">Double</td>
-        <td class="double">Double</td>
-      </tr>
-      <tr>
-        <td>12</td>
-        <td class="stand">Stand</td>
-        <td class="hit">Hit</td>
-      </tr>
-      <tr>
-        <td>13–16</td>
-        <td class="stand">Stand</td>
-        <td class="hit">Hit</td>
-      </tr>
-      <tr>
-        <td>17+</td>
-        <td class="stand">Stand</td>
-        <td class="stand">Stand</td>
-      </tr>
-      <tr>
-        <td>Pair of Aces</td>
-        <td class="split">Split</td>
-        <td class="split">Split</td>
-      </tr>
-      <tr>
-        <td>Pair of 8s</td>
-        <td class="split">Split</td>
-        <td class="split">Split</td>
-      </tr>
-      <tr>
-        <td>Pair of 10s</td>
-        <td class="stand">Stand</td>
-        <td class="stand">Stand</td>
-      </tr>
-      <tr>
-        <td>Pair of 5s</td>
-        <td class="double">Double</td>
-        <td class="hit">Hit</td>
-      </tr>
-    </tbody>
-  </table>
+<section class="section">
+  <div class="container card">
 
-  <div class="cta-box">
-    <h2>Don’t Just Read the Chart</h2>
-    <p>
-      The fastest way to actually remember this stuff is to use it in live hands.
-      Reading strategy feels smart. Using it without screwing up is the real test.
-    </p>
-    <div class="cta-buttons">
-      <a class="cta-button" href="blackjack-game.html">Practice These Decisions Now →</a>
+    <h2 class="section-title">Quick Test</h2>
+    <p><strong>You have 16. Dealer shows 10. What do you do?</strong></p>
+
+    <button class="btn" onclick="checkQuizAnswer('stand')">Stand</button>
+    <button class="btn" onclick="checkQuizAnswer('hit')">Hit</button>
+    <button class="btn" onclick="checkQuizAnswer('split')">Split</button>
+
+    <p id="quiz-result" class="summary"></p>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container cta-box">
+    <h2 class="section-title">Next Step</h2>
+    <p>Use strategy + bankroll control together.</p>
+
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="blackjack-game.html">Training Game</a>
+      <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Bankroll Calculator</a>
     </div>
   </div>
-
-  <p>
-    Many blackjack players lose money not because the game is unbeatable, but because they make decisions based on emotion or superstition instead of probability.
-    Even small mistakes repeated over time can significantly increase the house edge.
-  </p>
-
-  <hr class="section-divider">
-
-  <h2>Common Blackjack Mistakes</h2>
-
-  <table class="strategy-table">
-    <thead>
-      <tr>
-        <th>Situation</th>
-        <th>Mistake</th>
-        <th>Better Play</th>
-        <th>Why</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>16 vs Dealer 10</td>
-        <td>Standing</td>
-        <td>Hit</td>
-        <td>The dealer has a strong card. Standing gives them a big advantage.</td>
-      </tr>
-      <tr>
-        <td>Pair of 8s</td>
-        <td>Not splitting</td>
-        <td>Split</td>
-        <td>16 is a weak hand. Splitting gives two chances to build stronger hands.</td>
-      </tr>
-      <tr>
-        <td>Pair of 10s</td>
-        <td>Splitting</td>
-        <td>Stand</td>
-        <td>20 is already one of the strongest hands in blackjack.</td>
-      </tr>
-      <tr>
-        <td>Dealer shows Ace</td>
-        <td>Taking insurance</td>
-        <td>Avoid insurance</td>
-        <td>Insurance is usually a losing bet unless you are counting cards.</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="mini-quiz">
-    <h2>Quick Strategy Test</h2>
-    <p><strong>You have 16. Dealer shows 10. What’s the correct basic strategy move?</strong></p>
-
-    <button onclick="checkQuizAnswer('stand')">Stand</button>
-    <button onclick="checkQuizAnswer('hit')">Hit</button>
-    <button onclick="checkQuizAnswer('split')">Split</button>
-
-    <div id="quiz-result"></div>
-    <img id="quiz-image" class="feedback-image" src="images/corrextmove.png" alt="Correct move feedback">
-  </div>
-
-  <div class="next-step-box">
-    <h2>Why Players Stay Bad</h2>
-    <p>
-      Most people don’t lose because blackjack is some mystical beast from hell.
-      They lose because they panic on borderline hands and then convince themselves the bad move was “safer.”
-    </p>
-    <p>
-      Strategy removes that nonsense.
-      Then bankroll discipline matters too, which is why you should check the
-      <a href="blackjack-bankroll-calculator.html"><strong>Bankroll Calculator</strong></a>.
-    </p>
-  </div>
-
-  <hr class="section-divider">
-
-  <h2>Test Your Blackjack Skills</h2>
-
-  <p>
-    Understanding blackjack strategy is the first step, but the best way to learn is through practice.
-    Our blackjack trainer presents real game situations and lets you choose the correct move based on basic strategy.
-  </p>
-
-  <p>
-    <a href="blackjack-game.html"><strong>Start the Blackjack Training Game →</strong></a>
-  </p>
-
-  <div class="related-tools">
-    <h2>Keep Going</h2>
-    <p>Don’t let this page be the end of the road. Use the rest of the site:</p>
-
-    <div class="tool-buttons">
-      <a class="cta-button" href="blackjack-game.html">Blackjack Training Game</a>
-      <a class="cta-button secondary" href="blackjack-bankroll-calculator.html">Bankroll Calculator</a>
-      <a class="cta-button secondary" href="index.html">Back to Home</a>
-      <a class="cta-button secondary" href="bubble-craps.html">Try Bubble Craps</a>
-    </div>
-  </div>
+</section>
 
 </main>
 
-<a class="sticky-practice" href="blackjack-game.html">🎮 Practice Blackjack Strategy</a>
-
 <script>
-  function checkQuizAnswer(answer) {
-    const result = document.getElementById("quiz-result");
-    const image = document.getElementById("quiz-image");
-
-    if (answer === "hit") {
-      result.innerHTML = '✅ Correct. Against a dealer 10, standing on 16 usually just lets the dealer bully you.';
-      image.src = "images/corrextmove.png";
-      image.style.display = "block";
-    } else {
-      result.innerHTML = '❌ Wrong. The correct basic strategy play is <strong>Hit</strong>. Brutal hand, but math doesn’t care about feelings.';
-      image.src = "images/wrong.png";
-      image.style.display = "block";
-    }
+function checkQuizAnswer(answer){
+  const result = document.getElementById("quiz-result");
+  if(answer === "hit"){
+    result.innerHTML = "✅ Correct. 16 vs 10 is brutal — but hitting is still right.";
+  } else {
+    result.innerHTML = "❌ Wrong. Correct move is Hit. Math doesn't care about fear.";
   }
+}
 </script>
 
 </body>
