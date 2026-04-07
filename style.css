@@ -721,3 +721,135 @@ table td,
     font-size: 0.92rem;
   }
 }
+
+/* ===== TRUST PAGE STYLES ===== */
+
+.trust-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 20px 72px;
+}
+
+/* HERO */
+.trust-hero {
+  margin-bottom: 32px;
+  padding: 32px 28px;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #0f0f0f, #191919);
+  border: 1px solid rgba(245, 197, 66, 0.18);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.trust-eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f5c542;
+}
+
+.trust-hero h1 {
+  margin: 0 0 14px;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.08;
+  color: #f5c542;
+}
+
+.trust-hero p {
+  margin: 0;
+  max-width: 840px;
+  font-size: 1.03rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* GRID */
+.trust-grid {
+  display: grid;
+  gap: 22px;
+}
+
+/* CARDS */
+.trust-card {
+  padding: 28px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #111111, #1b1b1b);
+  border: 1px solid rgba(245, 197, 66, 0.14);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.trust-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(245, 197, 66, 0.32);
+}
+
+.trust-card h2 {
+  margin: 0 0 12px;
+  font-size: 1.45rem;
+  line-height: 1.2;
+  color: #f5c542;
+}
+
+.trust-card p,
+.trust-card li {
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.8;
+}
+
+.trust-card ul {
+  margin: 14px 0 0;
+  padding-left: 20px;
+}
+
+/* NOTE BOX */
+.trust-note {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border-left: 4px solid #f5c542;
+  border-radius: 12px;
+  background: rgba(245, 197, 66, 0.08);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* SMALL TEXT */
+.trust-small {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* LINKS */
+.trust-contact a,
+.trust-footer-link {
+  color: #f5c542;
+  text-decoration: none;
+}
+
+.trust-contact a:hover,
+.trust-footer-link:hover {
+  text-decoration: underline;
+}
+
+/* FOOTER */
+.trust-footer {
+  margin-top: 38px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(245, 197, 66, 0.14);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .trust-page {
+    padding: 32px 16px 56px;
+  }
+
+  .trust-hero,
+  .trust-card {
+    padding: 22px 18px;
+  }
+}
