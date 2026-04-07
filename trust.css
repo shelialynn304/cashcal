@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trust, Disclosure & Responsible Gambling | Edge Over Luck</title>
+  <meta
+    name="description"
+    content="Learn about Edge Over Luck, our affiliate disclosure, responsible gambling standards, privacy practices, and terms of use."
+  />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://edgeoverluck.com/trust.html" />
+  <link rel="stylesheet" href="style.css" />   
+ 
+</head>
+<body>
+
+  <!-- Optional: if your other pages use a shared nav style, keep this -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="index.html" class="logo">Edge Over Luck</a>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="blackjack-calculator.html">Blackjack Calculator</a>
+        <a href="blackjack-ev-calculator.html">EV Calculator</a>
+        <a href="horse-racing.html">Horse Racing</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="trust-page">
+    <section class="trust-hero">
+      <span class="trust-eyebrow">Transparency First</span>
+      <h1>Trust, Disclosure & Responsible Gambling</h1>
+      <p>
+        Edge Over Luck provides gambling-related educational content, calculators, simulators,
+        and strategy tools designed to help users better understand odds, expected value,
+        bankroll risk, and decision-making. This page explains how the site works, how we may
+        earn money, and the standards we expect users to understand before relying on any content here.
+      </p>
+    </section>
+
+    <div class="trust-grid">
+
+      <section class="trust-card" id="about">
+        <h2>About Edge Over Luck</h2>
+        <p>
+          Edge Over Luck is an independent gambling education and tool platform focused on math,
+          probabilities, bankroll planning, simulator-based learning, and strategy-driven analysis.
+          The site exists to help users think more clearly about gambling decisions instead of blindly
+          punting money and calling it a system.
+        </p>
+        <p>
+          We do not promise profits, guaranteed wins, or magic formulas. Gambling always involves risk.
+          In most games, the house keeps the long-term edge. Our goal is to improve understanding, not sell fantasy.
+        </p>
+      </section>
+
+      <section class="trust-card" id="affiliate-disclosure">
+        <h2>Affiliate Disclosure</h2>
+        <p>
+          Some links on Edge Over Luck may be affiliate links. If you click one of those links and take
+          a qualifying action, we may earn a commission at no extra cost to you.
+        </p>
+        <p>
+          These affiliate relationships may involve online casinos, sportsbooks, gaming products,
+          gambling-related services, tools, or educational resources where legally permitted.
+          Those relationships help support the cost of building tools, maintaining the site, and publishing content.
+        </p>
+        <div class="trust-note">
+          <strong>Important:</strong> Affiliate relationships do not guarantee endorsement of every operator, offer,
+          or product forever. Users should do their own due diligence before creating accounts, depositing money,
+          or relying on promotional claims.
+        </div>
+      </section>
+
+      <section class="trust-card" id="responsible-gambling">
+        <h2>Responsible Gambling</h2>
+        <p>
+          Gambling should be treated as entertainment, not a paycheck. Never gamble with money you cannot
+          afford to lose. Do not chase losses. Do not assume a short win streak means you cracked the code
+          of the universe. Variance makes people feel smarter than they are.
+        </p>
+        <ul>
+          <li>Set a hard budget before you play.</li>
+          <li>Set time limits and stop when you hit them.</li>
+          <li>Do not gamble while angry, desperate, sleep-deprived, or intoxicated.</li>
+          <li>Do not increase bets just because you are down.</li>
+          <li>Do not treat calculators or strategy tools as a guarantee of profit.</li>
+        </ul>
+        <p>
+          If gambling is causing financial, emotional, or relationship problems, stop and get help.
+          In the United States, support is available through the National Problem Gambling Helpline at
+          <strong>1-800-GAMBLER</strong>.
+        </p>
+        <p class="trust-small">
+          Gambling laws, age requirements, and game availability vary by state, country, and platform.
+          You are responsible for following the laws in your own jurisdiction.
+        </p>
+      </section>
+
+      <section class="trust-card" id="educational-disclaimer">
+        <h2>Educational Use Disclaimer</h2>
+        <p>
+          All content on this site is provided for general educational and informational purposes only.
+          Nothing on Edge Over Luck should be interpreted as financial advice, legal advice, tax advice,
+          investment advice, or guaranteed gambling guidance.
+        </p>
+        <p>
+          We aim to keep content useful and accurate, but we do not guarantee that every article, tool,
+          simulator, promo detail, rule set, or game condition is always current or error-free.
+          Casinos change rules. Promotions expire. Laws shift. Reality is rude like that.
+        </p>
+      </section>
+
+      <section class="trust-card" id="privacy">
+        <h2>Privacy Summary</h2>
+        <p>
+          Edge Over Luck may collect basic website usage information through analytics tools, cookies,
+          and similar tracking technologies. This can include page views, device/browser type, referral source,
+          approximate location data, interaction data, and general performance metrics.
+        </p>
+        <p>
+          We use this information to understand how users interact with the site, improve content,
+          measure engagement, and evaluate which pages or tools are useful.
+        </p>
+        <ul>
+          <li>We may use analytics and affiliate tracking tools.</li>
+          <li>Third-party services may process data under their own privacy policies.</li>
+          <li>If you contact us directly, we may retain that communication to respond.</li>
+          <li>We do not collect more than we need just for the thrill of digital hoarding.</li>
+        </ul>
+      </section>
+
+      <section class="trust-card" id="terms">
+        <h2>Terms of Use</h2>
+        <p>
+          By using this website, you agree that you do so at your own risk. All content, tools,
+          and resources are provided “as is” without warranties of any kind, express or implied.
+        </p>
+        <ul>
+          <li>You are responsible for your own gambling decisions and financial outcomes.</li>
+          <li>You are responsible for confirming legality and eligibility in your location.</li>
+          <li>You should not rely on this site as a guarantee of winnings or a substitute for judgment.</li>
+          <li>We are not liable for losses, damages, or consequences resulting from use of this site.</li>
+        </ul>
+        <p>
+          We may update tools, policies, content, offers, links, or page structure at any time without notice.
+        </p>
+      </section>
+
+      <section class="trust-card trust-contact" id="contact">
+        <h2>Contact</h2>
+        <p>
+          Questions about this site, affiliate relationships, disclosures, or content can be sent to:
+        </p>
+        <p>
+          <a href="mailto:info@edgeoverluck.com">info@edgeoverluck.com</a>
+        </p>
+        <p class="trust-small">
+          Replace this with your actual contact email before going live.
+        </p>
+      </section>
+
+      <section class="trust-card" id="last-updated">
+        <h2>Last Updated</h2>
+        <p>April 7, 2026</p>
+      </section>
+
+    </div>
+
+    <div class="trust-footer">
+      Edge Over Luck © 2026 • Built for smarter gambling decisions, not magical thinking.
+    </div>
+  </main>
+
+</body>
+</html>
