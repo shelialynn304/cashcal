@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <script defer data-workspace="69b01028d6e4c738cf4abf0f"
+    src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="index, follow" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Blackjack Bankroll Calculator | CashCal</title>
   <meta name="description" content="Blackjack bankroll calculator that estimates bust risk, profit chance, and bankroll survival based on bet size, house edge, and number of hands. Test different blackjack betting strategies and bankroll sizes." />
+  <link rel="canonical" href="https://shelialynn304.github.io/cashcal/blackjack-bankroll-calculator.html" />
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 
   <script type="application/ld+json">
   {
@@ -29,248 +32,273 @@
 
 <body>
 
-  <div class="navbar">
-  <a href="index.html">Home</a>
-  <a href="blackjack-bankroll-calculator.html" class="active">Bankroll Calculator</a>
-  <a href="blackjack-ev-calculator.html">EV Calculator</a>
-  <a href="blackjack-strategy.html">Blackjack Strategy</a>
-  <a href="blackjack-game.html">Blackjack Training Game</a>
-  <a href="bubble-craps.html">Bubble Craps</a>
-</div>
-
-  <main class="container">
-    <section class="hero">
-      <h1 class="page-title">Blackjack Bankroll Calculator</h1>
-
-      <img src="images/casino-calculator.webp"
-      alt="Blackjack bankroll simulator concept"
-      style="max-width:600px;width:100%;height:auto;display:block;margin:20px auto;">
-
-      <p>
-        Use this blackjack bankroll calculator to estimate how long a bankroll might last over a series of hands. Blackjack has one of the lowest house edges in the casino when played with solid basic strategy, but bankroll size and bet size still have a huge effect on survival.
-      </p>
-    </section>
-      
-
-<section class="card">
-<h2>Blackjack Bankroll Calculator</h2>
-
-<p>
-Many players approach blackjack with a limited bankroll, often around
-$200 or less. Because blackjack has one of the lowest house edges in the
-casino when basic strategy is used, players sometimes assume their
-bankroll will last longer than it actually does.
-</p>
-
-<p>
-This blackjack bankroll calculator runs thousands of simulated sessions
-to estimate how often a bankroll survives, goes bust, or finishes in
-profit. By adjusting bet size, house edge, and number of hands, you can
-see how different bankroll strategies affect long-term results.
-</p>
-
-<p>
-Even with favorable odds, variance plays a major role. Short losing
-streaks can quickly drain a small bankroll, while disciplined bet sizing
-can dramatically increase the chances of staying in the game longer.
-</p>
-
-</section>
-    <section class="card">
-         <section class="card">
-
-
-<h2>Calculator</h2>
-
-<form id="bankrollForm">
-  <div class="grid">
-    <div class="field">
-      <label for="bankroll">Starting Bankroll ($)</label>
-      <input type="number" id="bankroll" min="1" step="1" value="200" required />
-    </div>
-
-    <div class="field">
-      <label for="betSize">Bet Size Per Round ($)</label>
-      <input type="number" id="betSize" min="0.01" step="0.01" value="5" required />
-    </div>
-
-    <div class="field">
-    <label for="houseEdge">Estimated Blackjack House Edge (%)</label>
-     <input type="number" id="houseEdge" min="0" max="100" step="0.01" value="0.5" required />
-    </div>
-
-    <div class="field">
-      <label for="bets">Number of Bets</label>
-      <input type="number" id="bets" min="1" step="1" value="100" required />
-    </div>
+<header class="site-header">
+  <div class="container nav">
+    <a href="index.html" class="brand">Cash<span>Cal</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="blackjack-bankroll-calculator.html" class="active">Bankroll</a>
+      <a href="blackjack-ev-calculator.html">EV</a>
+      <a href="blackjack-strategy.html">Strategy</a>
+      <a href="blackjack-game.html">Trainer</a>
+      <a href="bubble-craps.html">Craps</a>
+      <a href="horse-racing-guide.html">Horse</a>
+    </nav>
   </div>
+</header>
 
-  <button type="submit">Calculate</button>
-</form>
-    </section>
+<main>
 
-    <section class="card results" id="results" aria-live="polite">
-      <h2>Results</h2>
+  <section class="hero">
+    <div class="container hero-wrap">
+      <div>
+        <div class="eyebrow">Blackjack Math Tool</div>
+        <h1>Blackjack Bankroll Calculator</h1>
+        <p>
+          Estimate how long a bankroll might last over a series of blackjack hands. Blackjack has one of the lowest house edges in the casino when played correctly, but bankroll size and bet size still decide whether you survive or get steamrolled.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#calculator">Use the Calculator</a>
+          <a class="btn btn-secondary" href="blackjack-strategy.html">Learn Strategy</a>
+          <a class="btn btn-secondary" href="blackjack-game.html">Practice Free</a>
+        </div>
+
+        <div class="info-box" style="margin-top: 22px;">
+          <p class="mb-0">
+            <strong>What this page is for:</strong> bankroll planning, bust-risk estimates, and showing people that “I’ll just press a little” is not a financial strategy.
+          </p>
+        </div>
+      </div>
+
+      <aside class="card">
+        <img src="images/casino-calculator.webp" alt="Blackjack bankroll simulator concept" style="border-radius: 12px; margin-bottom: 18px;" />
+        <ul class="check-list">
+          <li><strong>Adjust bankroll:</strong> See how starting money affects survival.</li>
+          <li><strong>Change bet size:</strong> Watch aggressive betting shorten lifespan.</li>
+          <li><strong>Test house edge:</strong> See how even small disadvantages grind people down.</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2">
+      <div class="card">
+        <h2 class="section-title">What this calculator does</h2>
+        <p>
+          Many blackjack players show up with a limited bankroll, often around $200, and assume blackjack’s lower house edge means they are basically immortal. They are not.
+        </p>
+        <p>
+          This tool runs simulated sessions to estimate how often a bankroll survives, goes bust, or finishes in profit. Adjust bet size, house edge, and number of hands to see how different choices affect the outcome.
+        </p>
+        <p class="mb-0">
+          Even with decent odds, variance still kicks people in the teeth. Short losing streaks can drain a small bankroll fast.
+        </p>
+      </div>
+
+      <div class="warning-box">
+        <h2 class="section-title">Reality check</h2>
+        <p>
+          This is an estimate, not a promise. It does not predict your next session. It just gives you a better sense of how likely your bankroll is to survive.
+        </p>
+        <p class="mb-0">
+          Smaller bets help. Better strategy helps. Reckless confidence does not.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="calculator">
+    <div class="container card">
+      <h2 class="section-title">Calculator</h2>
+      <p class="section-subtext">Enter your bankroll, bet size, estimated house edge, and number of hands.</p>
+
+      <form id="bankrollForm">
+        <div class="grid">
+          <div class="field">
+            <label for="bankroll">Starting Bankroll ($)</label>
+            <input type="number" id="bankroll" min="1" step="1" value="200" required />
+          </div>
+
+          <div class="field">
+            <label for="betSize">Bet Size Per Round ($)</label>
+            <input type="number" id="betSize" min="0.01" step="0.01" value="5" required />
+          </div>
+
+          <div class="field">
+            <label for="houseEdge">Estimated Blackjack House Edge (%)</label>
+            <input type="number" id="houseEdge" min="0" max="100" step="0.01" value="0.5" required />
+          </div>
+
+          <div class="field">
+            <label for="bets">Number of Bets</label>
+            <input type="number" id="bets" min="1" step="1" value="100" required />
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Calculate</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container card results" id="results" aria-live="polite">
+      <h2 class="section-title">Results</h2>
+
       <div class="result-list">
-       <div class="result-item">
-  <span>Average Loss</span>
-  <strong id="expectedLoss">$0.00</strong>
-</div>
-<div class="result-item">
-  <span>Average Ending Bankroll</span>
-  <strong id="endingBankroll">$0.00</strong>
-</div>
-<div class="result-item">
-  <span>Bust Risk</span>
-  <strong id="bustRisk">0%</strong>
-</div>
-<div class="result-item">
-  <span>Chance of Profit</span>
-  <strong id="profitChance">0%</strong>
-</div>
+        <div class="result-item">
+          <span>Average Loss</span>
+          <strong id="expectedLoss">$0.00</strong>
+        </div>
+
+        <div class="result-item">
+          <span>Average Ending Bankroll</span>
+          <strong id="endingBankroll">$0.00</strong>
+        </div>
+
+        <div class="result-item">
+          <span>Bust Risk</span>
+          <strong id="bustRisk">0%</strong>
+        </div>
+
+        <div class="result-item">
+          <span>Chance of Profit</span>
+          <strong id="profitChance">0%</strong>
+        </div>
       </div>
 
       <p id="summary" class="summary"></p>
-    </section>
-<div class="card">
-  <h2>Simulation Outcome Distribution</h2>
-  <canvas id="resultsChart" height="120"></canvas>
-</div>
+    </div>
+  </section>
 
-<div class="card">
-  <h2>Example Bankroll Session</h2>
-  <canvas id="sessionChart" height="120"></canvas>
-</div>
+  <section class="section-tight">
+    <div class="container grid grid-2">
+      <div class="card">
+        <h2 class="section-title">Simulation Outcome Distribution</h2>
+        <canvas id="resultsChart" height="120"></canvas>
+      </div>
 
-<section class="card">
-  <h2>What this means</h2>
-  <p>
-        This tool gives a rough estimate using expected value and simplified variance.
-        It is not a promise, a prediction, or a magic money printer. It’s just math
-        trying to stop people from walking into a buzzsaw blind.
+      <div class="card">
+        <h2 class="section-title">Example Bankroll Session</h2>
+        <canvas id="sessionChart" height="120"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container cta-box">
+      <h2 class="section-title">Best next step</h2>
+      <p>
+        Calculator results are useful, but strategy mistakes torch bankrolls even faster than people think.
       </p>
-    </section>
-    <section class="card">
 
-<h2>How Casino Bankroll Simulation Works</h2>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="blackjack-strategy.html">Read Blackjack Strategy</a>
+        <a class="btn btn-secondary" href="blackjack-game.html">Practice in Trainer</a>
+      </div>
+    </div>
+  </section>
 
-<p>
-Every casino game has a mathematical advantage called the
-<strong>house edge</strong>. This edge represents the percentage
-of each bet the casino expects to keep over time.
-</p>
+  <section class="section">
+    <div class="container grid grid-2">
+      <article class="card">
+        <h2 class="section-title">How bankroll simulation works</h2>
+        <p>
+          Every casino game has a mathematical advantage called the <strong>house edge</strong>. This is the percentage the casino expects to keep over time.
+        </p>
+        <p>
+          Even blackjack, which can have a relatively low edge when played correctly, still tilts against the player. Over enough hands, that edge becomes more visible.
+        </p>
+        <p class="mb-0">
+          The simulator uses probability models to estimate what might happen across many sessions, rather than pretending one lucky run proves anything.
+        </p>
+      </article>
 
-<p>
-Even games with a small house edge, such as blackjack, slowly
-tilt the odds in favor of the casino. Over hundreds or thousands
-of bets, the expected value of the house edge becomes more
-predictable.
-</p>
+      <article class="card">
+        <h2 class="section-title">Understanding variance</h2>
+        <p>
+          Short-term results are heavily driven by variance. You can win for a while. You can also get buried early. Both happen.
+        </p>
+        <p class="mb-0">
+          The distribution chart shows how often different outcomes occur, while the session chart shows how a bankroll can rise and fall during play.
+        </p>
+      </article>
 
-<p>
-The simulator above uses probability models to estimate what
-might happen over many simulated casino sessions. Instead of
-running one single outcome, it performs thousands of simulations
-to show how often a bankroll survives, busts, or finishes with
-a profit.
-</p>
+      <article class="card">
+        <h2 class="section-title">Blackjack strategy basics</h2>
+        <p>
+          Blackjack is one of the few casino games where skill matters. The goal is to beat the dealer by getting closer to 21 without going over.
+        </p>
+        <p>
+          The dealer’s visible card matters a lot. Weak dealer cards often allow you to play more conservatively. Strong dealer cards usually force more aggressive decisions.
+        </p>
+        <p class="mb-0">
+          That’s why basic strategy matters so much. Good decisions reduce damage. Bad ones speed it up.
+        </p>
+      </article>
 
-</section>
+      <article class="card">
+        <h2 class="section-title">What this means</h2>
+        <p>
+          This tool gives a rough estimate using expected value and simplified variance. It is not a magic money printer or some prophecy engine.
+        </p>
+        <p class="mb-0">
+          It is math trying to stop people from walking into a casino with blind confidence and a funeral budget.
+        </p>
+      </article>
+    </div>
+  </section>
 
-    <section class="card">
+  <section class="section-tight">
+    <div class="container grid grid-2">
+      <div class="info-box">
+        <h2 class="section-title">Legal online blackjack</h2>
+        <p>
+          This calculator models bankroll risk. If someone chooses to play online, they should use licensed and regulated operators only.
+        </p>
+        <p class="mb-0">
+          A legal casino comparison page can be added later once you decide how you want to handle affiliate offers.
+        </p>
+      </div>
 
-<h2>Understanding Casino Variance</h2>
+      <div class="card">
+        <h2 class="section-title">About this tool</h2>
+        <p class="mb-0">
+          CashCal is built to explain gambling math in plain English, show bankroll risk realistically, and help users make less stupid betting decisions.
+        </p>
+      </div>
+    </div>
+  </section>
 
-<p>
-Short-term gambling results are heavily influenced by
-<strong>variance</strong>. Players can experience winning streaks
-or losing streaks purely due to randomness.
-</p>
+</main>
 
-<p>
-While luck can dominate in the short term, the long-term
-mathematics of the house edge usually determines the overall
-outcome.
-</p>
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="blackjack-strategy.html">Blackjack Strategy</a>
+    <a href="blackjack-game.html">Training Game</a>
+    <a href="bubble-craps.html">Bubble Craps</a>
+    <a href="horse-racing-guide.html">Horse Racing</a>
+  </div>
 
-<p>
-This simulator helps visualize that concept by generating
-thousands of simulated sessions. The outcome distribution chart
-shows how frequently each result occurs, while the session graph
-illustrates how a bankroll might rise and fall during play.
-</p>
+  <p class="affiliate-note">
+    This site may contain affiliate links. If someone signs up through those links, CashCal may earn a commission at no extra cost.
+  </p>
 
-</section>
-    <section class="card">
-<h2>Blackjack Strategy Basics</h2>
+  <p class="gambling-warning">
+    Gambling involves risk and may not be suitable for everyone. These tools are provided for educational and entertainment purposes only. Gamble responsibly.
+  </p>
 
-<p>
-Blackjack is one of the few casino games where skill and strategy 
-can actually improve your chances of winning. The objective is simple: 
-beat the dealer by getting a hand total as close to 21 as possible without going over. 
-Number cards count as their value, face cards are worth 10, and aces can count as 1 or
-11 depending on what helps your hand.
+  <p class="responsible">
+    Need help? Visit
+    <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">ncpgambling.org</a>
+    for responsible gambling resources.
+  </p>
 
-Unlike many casino games, blackjack decisions depend heavily on the 
-dealer’s visible card. The dealer must follow strict rules and 
-cannot choose their actions freely. Because of this, players can make 
-better decisions based on whether the dealer is in a strong or 
-weak position.
+  <p class="copyright">© 2026 CashCal — Casino simulators and bankroll tools.</p>
+</footer>
 
-In general, you should hit on low totals and stand on strong ones. Most
-players hit until they reach 17 or higher, but the dealer’s card 
-can change the correct move. If the dealer shows a 2 through 6, they have a 
-higher chance of busting, so players often stand and let the dealer take the 
-risk. If the dealer shows a 7 through Ace, they are more likely to build a strong hand, 
-which means players often need to hit to stay competitive.
-
-There are also special situations like splitting pairs and doubling down that can
-increase your winnings when used correctly. Learning when to make these moves is 
-part of basic blackjack strategy and is what separates casual players from skilled ones.
-</p>
-</section>
-
- <section class="card cta">
-<h2>Legal Online Casinos w/Blackjack</h2>
-
-<p>
-This simulator models probability and bankroll risk.
-If you choose to play online, make sure you only use
-licensed and regulated casinos.
-</p>
-
-<p>
-We will be adding a comparison of legal casino options soon.
-</p>
-
-</section>
-    <section class="card">
-<section class="card">
-<h2>Casino House Edge Explained</h2>
-
-<p>
-Every casino game has a mathematical advantage called the house edge.
-Even small edges slowly reduce the expected value of a player's bankroll
-over time.
-</p>
-
-<p>
-This simulator shows how that edge affects bankroll survival by running
-thousands of simulated sessions using probability models.
-</p>
-
-</section>
-      
-<h2>About This Tool</h2>
-<p>
-CashCal is a simple probability simulator designed to show how
-casino house edge and bet size affect bankroll survival.
-It is intended for educational purposes and to illustrate
-basic gambling math concepts.
-</p>
-</section>
-  </main>
-
-  <script src="blackjack.js"></script>
+<script src="blackjack.js"></script>
 </body>
 </html>
