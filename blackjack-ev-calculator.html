@@ -6,11 +6,14 @@
   <meta name="robots" content="index, follow" />
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
 
-  <title>Blackjack EV Calculator | Hit, Stand & Double EV</title>
-  <meta name="description" content="Free blackjack EV calculator. Compare expected value for hit, stand, and double based on your hand, dealer upcard, and table rules." />
+  <title>Blackjack EV Calculator & Decision Tool | Edge Over Luck</title>
+  <meta name="description" content="Free blackjack EV calculator. Compare the expected value of hit, stand, and double based on your hand, dealer upcard, decks, payout rules, and table conditions." />
   <link rel="canonical" href="https://edgeoverluck.com/blackjack-ev-calculator.html" />
 
   <link rel="stylesheet" href="style.css" />
+
+  <script defer data-workspace="69b01028d6e4c738cf4abf0f"
+    src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js"></script>
 
   <script type="application/ld+json">
   {
@@ -20,7 +23,40 @@
     "url": "https://edgeoverluck.com/blackjack-ev-calculator.html",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "All",
-    "description": "Blackjack expected value calculator for comparing hit, stand, and double decisions based on player hand, dealer upcard, and table rules."
+    "description": "Blackjack expected value calculator for comparing hit, stand, and double decisions based on player hand, dealer upcard, decks, payout rules, and table conditions."
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is EV in blackjack?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "EV stands for expected value. In blackjack, it measures the average long-term return of a decision like hit, stand, or double in a specific spot."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does expected value matter in blackjack?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Expected value matters because blackjack is a math-driven game. The best move is usually the one with the highest long-term average return, even if it does not win every single hand."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can an EV calculator replace basic strategy?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. An EV calculator helps explain why a move is correct, but basic strategy is still the practical shortcut players use at the table."
+        }
+      }
+    ]
   }
   </script>
 </head>
@@ -45,9 +81,9 @@
   <section class="hero">
     <div class="container">
       <div class="eyebrow">Blackjack Decision Tool</div>
-      <h1>Blackjack EV Calculator</h1>
+      <h1>Blackjack EV Calculator & Decision Tool</h1>
       <p class="section-subtext">
-        Compare the expected value of hitting, standing, or doubling based on your hand, the dealer upcard, and basic table conditions. This is a practical approximation tool built for fast strategy training, content pages, and helping people stop making expensive guesses.
+        Compare the expected value of hitting, standing, or doubling based on your hand, the dealer upcard, and basic table conditions. This tool helps explain which move has the best long-term return instead of relying on gut feelings and casino-level overconfidence.
       </p>
 
       <div class="hero-actions">
@@ -61,22 +97,22 @@
   <section class="section">
     <div class="container grid grid-2">
       <div class="card">
-        <h2 class="section-title">What this tool does</h2>
+        <h2 class="section-title">What this blackjack EV calculator does</h2>
         <p>
           This calculator estimates the long-term expected value of common blackjack decisions in a given spot. Instead of relying on instinct, superstition, or “it felt right,” it compares the average return for hit, stand, and double.
         </p>
         <p class="mb-0">
-          It is not a full composition-dependent solver. It is a fast, practical approximation that is good enough for training and for teaching the logic behind good decisions.
+          It is not a full composition-dependent solver. It is a fast, practical approximation that is good for training, content, and helping people stop making expensive guesses.
         </p>
       </div>
 
       <div class="warning-box">
         <h2 class="section-title">Reality check</h2>
         <p>
-          Positive EV is good. Negative EV means the casino is chewing on your wallet, slowly or aggressively depending on how dumb the spot is.
+          Positive EV is better. Negative EV means the casino is still chewing on your wallet, just at different speeds depending on how bad the spot is.
         </p>
         <p class="mb-0">
-          This tool helps compare choices. It does not turn blackjack into free money.
+          This tool helps compare choices. It does not turn blackjack into free money, despite what every loud guy at the table thinks.
         </p>
       </div>
     </div>
@@ -154,7 +190,7 @@
         </div>
 
         <p class="small-note">
-          This is an approximation tool, not a full composition-dependent solver. Good enough for training, SEO, and helping users stop lighting money on fire.
+          This is an approximation tool, not a full composition-dependent solver. Good enough for training and learning. Not a magical anti-casino force field.
         </p>
       </div>
 
@@ -173,8 +209,8 @@
           <strong>How to read this:</strong>
           <ul>
             <li>EV is the average return per base bet.</li>
-            <li>Positive EV is good. Negative EV means the house is still eating.</li>
-            <li>Doubling uses twice the money, so the dollar impact can swing harder.</li>
+            <li>Positive EV is better. Negative EV means the house still has the edge.</li>
+            <li>Doubling uses twice the money, so the dollar swing can hit harder.</li>
           </ul>
         </div>
       </div>
@@ -185,12 +221,64 @@
     <div class="container cta-box">
       <h2 class="section-title">Best next step</h2>
       <p>
-        EV is useful, but if someone doesn’t actually know basic strategy, they’ll still find a way to lose with confidence.
+        EV is useful, but if someone does not actually know basic strategy, they will still find a creative way to lose with confidence.
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="blackjack-strategy.html">Read Strategy Guide</a>
         <a class="btn btn-secondary" href="blackjack-game.html">Use Training Game</a>
       </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2">
+      <article class="card">
+        <h2 class="section-title">What is EV in blackjack?</h2>
+        <p>
+          EV stands for expected value. In blackjack, it means the average long-term result of a decision in a specific spot.
+        </p>
+        <p>
+          A move with better expected value does not guarantee a win on that hand. It means that over many repetitions, it performs better on average than the alternatives.
+        </p>
+        <p class="mb-0">
+          That is why smart blackjack play is based on math, not vibes, streaks, or whatever story a stranger tells while spilling beer on the felt.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2 class="section-title">When should you hit, stand, or double?</h2>
+        <p>
+          The correct move depends on your total, whether the hand is hard or soft, the dealer’s upcard, and the game rules.
+        </p>
+        <p>
+          In general, strong dealer cards force you to improve more often, while weak dealer cards let you stand more often and allow the dealer to self-destruct.
+        </p>
+        <p class="mb-0">
+          Doubling is strongest when you have a favorable edge and want to press it with one more card, not when you are rage-clicking because the table hurt your feelings.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2 class="section-title">Why expected value matters</h2>
+        <p>
+          Blackjack is one of the few casino games where player decisions actually matter. Bad decisions raise the house edge. Good decisions reduce it.
+        </p>
+        <p class="mb-0">
+          This EV calculator helps show why some basic strategy plays are correct by comparing the long-term return of different options in the same situation.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2 class="section-title">Related blackjack tools</h2>
+        <p>
+          Want to go deeper into blackjack math and decision-making?
+        </p>
+        <ul>
+          <li><a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a></li>
+          <li><a href="blackjack-strategy.html">Blackjack Strategy Guide</a></li>
+          <li><a href="blackjack-game.html">Blackjack Trainer Game</a></li>
+        </ul>
+      </article>
     </div>
   </section>
 
@@ -201,7 +289,7 @@
         This blackjack EV calculator helps compare the long-term profitability of different decisions, including hit, stand, and double. By entering your hand, the dealer’s upcard, and basic table conditions, you can see which move has the highest expected return over time.
       </p>
       <p class="mb-0">
-        Instead of guessing or relying on instinct, this tool gives a data-driven edge by showing how each decision performs mathematically. It is designed for both beginners learning basic strategy and more experienced players who want a faster way to understand the impact of their choices.
+        Instead of guessing or relying on instinct, this tool gives a data-driven explanation of how each decision performs mathematically. It is built for beginners learning basic strategy and for more experienced players who want a faster way to understand the impact of their choices.
       </p>
     </div>
   </section>
