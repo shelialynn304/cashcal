@@ -144,7 +144,7 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
     }
 
     if (ending <= 0 || result.bust) {
-      // already counted as bust
+      // bust bucket only
     } else if (ending > bankroll) {
       profitCount++;
     } else {
@@ -219,17 +219,16 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
     } else {
       lastsHandsStat.textContent = `YOU LAST THE FULL ${bets.toLocaleString()} HANDS`;
       lastsHandsNote.textContent =
-        `In these simulations, the bankroll survived the entire session every time. That does not make the game beatable. It just means this session length was survivable.`;
+        `In these simulations, the bankroll survived the full session every time. That still does not turn the casino into a charity.`;
     }
   }
 
   document.getElementById("summary").textContent =
     `Based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}. ` +
-    `The estimated chance of busting before the session ended was ${results.bustRisk.toFixed(1)}%, while the full-session survival rate was ${results.survivalRate.toFixed(1)}%. ` +
-    `The chance of finishing ahead was ${results.profitChance.toFixed(1)}%. ` +
+    `Bust risk was ${results.bustRisk.toFixed(1)}%, full-session survival was ${results.survivalRate.toFixed(1)}%, and the chance of finishing ahead was ${results.profitChance.toFixed(1)}%. ` +
     `The worst simulated result was ${formatMoney(results.minEnding)}, and the best was ${formatMoney(results.maxEnding)}.` +
     (results.bustHands.length > 0
-      ? ` Players who busted did so around hand ${Math.round(results.avgBustHand).toLocaleString()} on average, with a median bust point of hand ${Math.round(results.medianBustHand).toLocaleString()}.`
+      ? ` Busted sessions died around hand ${Math.round(results.avgBustHand).toLocaleString()} on average, with a median bust point of hand ${Math.round(results.medianBustHand).toLocaleString()}.`
       : ``);
 
   const resultsCanvas = document.getElementById("resultsChart");
