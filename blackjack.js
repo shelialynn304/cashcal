@@ -35,8 +35,14 @@ function formatMoney(num) {
 
 function getOutcomeProbabilities(houseEdgePercent) {
   const pushProbability = 0.08;
-  const winProbability = clamp(0.5 - (houseEdgePercent / 200), 0.01, 0.99 - pushProbability);
-  const lossProbability = clamp(1 - pushProbability - winProbability, 0.01, 0.98);
+  const edge = houseEdgePercent / 100;
+
+  let winProbability = ((1 - pushProbability) - edge) / 2;
+  let lossProbability = ((1 - pushProbability) + edge) / 2;
+
+  winProbability = clamp(winProbability, 0.001, 0.999);
+  lossProbability = clamp(lossProbability, 0.001, 0.999);
+
   return { winProbability, pushProbability, lossProbability };
 }
 
@@ -64,14 +70,10 @@ function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
 
     handsPlayed = i + 1;
 
-    if (balance < betSize && bustHand === null && i < bets - 1) {
+    if (balance < betSize) {
       bustHand = i + 1;
       break;
     }
-  }
-
-  if (bustHand === null && balance < betSize) {
-    bustHand = handsPlayed;
   }
 
   return {
@@ -143,7 +145,7 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
       survivedFullSessionCount++;
     }
 
-    if (ending <= 0 || result.bust) {
+    if (result.bust) {
       // bust bucket only
     } else if (ending > bankroll) {
       profitCount++;
@@ -219,7 +221,7 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
     } else {
       lastsHandsStat.textContent = `YOU LAST THE FULL ${bets.toLocaleString()} HANDS`;
       lastsHandsNote.textContent =
-        `In these simulations, the bankroll survived the full session every time. That still does not turn the casino into a charity.`;
+        `In these simulations, the bankroll survived the full session every time. That still does not make the game beatable.`;
     }
   }
 
@@ -250,6 +252,7 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
       },
       options: {
         responsive: true,
+        maintainAspectRatio: true,
         plugins: {
           legend: { display: false }
         },
@@ -283,6 +286,7 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
       },
       options: {
         responsive: true,
+        maintainAspectRatio: true,
         plugins: {
           legend: { display: false }
         },
