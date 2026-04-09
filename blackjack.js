@@ -1,7 +1,6 @@
 let resultsChart;
 let sessionChart;
 
-
 function setPreset(game) {
   const houseEdgeInput = document.getElementById("houseEdge");
   const betSizeInput = document.getElementById("betSize");
@@ -58,7 +57,9 @@ function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
 function generateSession(bankroll, betSize, houseEdgePercent, bets) {
   const balances = [];
   let balance = bankroll;
-  const winProbability = clamp(0.49 - (houseEdgePercent / 200), 0.01, 0.99);
+  const winProbability = clamp(0.5 - (houseEdgePercent / 200), 0.01, 0.99);
+  const pushProbability = 0.08;
+
   balances.push(balance);
 
   for (let i = 0; i < bets; i++) {
@@ -66,16 +67,15 @@ function generateSession(bankroll, betSize, houseEdgePercent, bets) {
       break;
     }
 
-    const pushProbability = 0.08;
-const r = Math.random();
+    const r = Math.random();
 
-if (r < pushProbability) {
-  // push: no bankroll change
-} else if (r < pushProbability + winProbability) {
-  balance += betSize;
-} else {
-  balance -= betSize;
-}
+    if (r < pushProbability) {
+      // push
+    } else if (r < pushProbability + winProbability) {
+      balance += betSize;
+    } else {
+      balance -= betSize;
+    }
 
     balances.push(balance);
   }
@@ -101,7 +101,8 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
       lossCount++;
     }
   }
- const total = endings.reduce((sum, value) => sum + value, 0);
+
+  const total = endings.reduce((sum, value) => sum + value, 0);
   const averageEnding = total / endings.length;
   const minEnding = Math.min(...endings);
   const maxEnding = Math.max(...endings);
@@ -201,7 +202,7 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
       type: "line",
       data: {
         labels: sessionData.map((_, i) => i),
-   datasets: [
+        datasets: [
           {
             label: "Bankroll",
             data: sessionData,
