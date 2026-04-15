@@ -1,10 +1,10 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Slot Simulator | Edge Over Luck</title>
-  <meta name="description" content="Play with a fun slot simulator using different RTP settings, reel counts, bankroll sizes, and bet amounts. Test 3, 5, or 7 reel setups and watch the math unfold." />
+  <title>Slot Simulator, RTP & Slot Odds Guide | Edge Over Luck</title>
+  <meta name="description" content="Use this slot simulator to test slot RTP, reel counts, bankroll survival, and slot odds behavior. Learn RNG, volatility, paylines, and why short sessions can differ from long-term RTP." />
   <link rel="canonical" href="https://edgeoverluck.com/slots.html" />
   <meta name="robots" content="index, follow" />
   <link rel="stylesheet" href="style.css" />
@@ -20,11 +20,19 @@
       text-align: center;
     }
 
+    .slot-simulator-card {
+      margin-top: 18px;
+      background: rgba(12, 12, 12, 0.94);
+      border: 1px solid rgba(255, 215, 74, 0.18);
+      border-radius: 22px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.28);
+      padding: 18px;
+    }
+
     .slot-layout {
       display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 24px;
-      margin-top: 28px;
+      grid-template-columns: 320px 1fr;
+      gap: 18px;
       align-items: start;
     }
 
@@ -32,8 +40,8 @@
       background: rgba(12, 12, 12, 0.94);
       border: 1px solid rgba(255, 215, 74, 0.18);
       border-radius: 20px;
-      padding: 22px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.28);
+      padding: 20px;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.24);
     }
 
     .slot-card h2,
@@ -43,7 +51,7 @@
 
     .slot-controls {
       display: grid;
-      gap: 14px;
+      gap: 12px;
     }
 
     .slot-field label {
@@ -65,16 +73,16 @@
 
     .slot-actions {
       display: grid;
-      rid-template-columns: 1fr;
+      grid-template-columns: 1fr;
       gap: 10px;
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
     .slot-btn {
       appearance: none;
       border: none;
       border-radius: 12px;
-      padding: 13px 14px;
+      padding: 12px 14px;
       font: inherit;
       font-weight: 800;
       cursor: pointer;
@@ -108,40 +116,40 @@
 
     .slot-machine {
       display: grid;
-      gap: 18px;
-    }
-
-    .slot-stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
       gap: 12px;
     }
 
-    .slot-stat {
-      background: rgba(12, 12, 12, 0.94);
-      border: 1px solid rgba(255, 215, 74, 0.14);
-      border-radius: 18px;
-      padding: 16px;
+    .slot-live-config {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
     }
 
-    .slot-stat-label {
-      font-size: 0.82rem;
+    .slot-live-item {
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .slot-live-label {
+      font-size: 0.74rem;
       opacity: 0.72;
-      margin-bottom: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
     }
 
-    .slot-stat-value {
-      font-size: clamp(1.1rem, 2.5vw, 1.45rem);
-      font-weight: 900;
+    .slot-live-value {
+      font-weight: 800;
+      color: #ffd54a;
     }
 
     .slot-machine-shell {
       background: linear-gradient(180deg, rgba(23, 23, 23, 0.98), rgba(8, 8, 8, 0.98));
       border: 1px solid rgba(255, 215, 74, 0.18);
       border-radius: 24px;
-      padding: 24px;
+      padding: 20px;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 18px 45px rgba(0,0,0,0.35);
     }
 
@@ -149,9 +157,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       flex-wrap: wrap;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
+    }
+
+    .slot-topline h2 {
+      margin: 0 0 6px;
+      font-size: 1.35rem;
     }
 
     .slot-badge {
@@ -169,8 +182,8 @@
     .reels-wrap {
       position: relative;
       overflow: hidden;
-      padding: 22px;
-      border-radius: 22px;
+      padding: 18px;
+      border-radius: 20px;
       background: radial-gradient(circle at top, rgba(255,213,74,0.14), transparent 45%), rgba(0,0,0,0.45);
       border: 1px solid rgba(255,255,255,0.06);
     }
@@ -220,30 +233,22 @@
     }
 
     .slot-message {
-      margin-top: 18px;
+      margin-top: 14px;
       min-height: 32px;
       text-align: center;
       font-weight: 800;
       font-size: 1.02rem;
     }
 
-    .slot-message.win {
-      color: #86efac;
-    }
-
-    .slot-message.loss {
-      color: #fca5a5;
-    }
-
-    .slot-message.bonus {
-      color: #fcd34d;
-    }
+    .slot-message.win { color: #86efac; }
+    .slot-message.loss { color: #fca5a5; }
+    .slot-message.bonus { color: #fcd34d; }
 
     .slot-fun-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 16px;
+      gap: 12px;
+      margin-top: 14px;
     }
 
     .slot-fun-box {
@@ -259,8 +264,34 @@
       font-size: 0.95rem;
     }
 
+    .slot-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .slot-stat {
+      background: rgba(12, 12, 12, 0.94);
+      border: 1px solid rgba(255, 215, 74, 0.14);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .slot-stat-label {
+      font-size: 0.79rem;
+      opacity: 0.72;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .slot-stat-value {
+      font-size: clamp(1.05rem, 2.2vw, 1.38rem);
+      font-weight: 900;
+    }
+
     .slot-paytable {
-      margin-top: 20px;
+      margin-top: 16px;
       display: grid;
       gap: 10px;
     }
@@ -269,17 +300,36 @@
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      padding: 12px 14px;
-      border-radius: 14px;
+      padding: 11px 12px;
+      border-radius: 12px;
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.94rem;
     }
 
     .slot-note,
     .slot-disclaimer {
-      opacity: 0.8;
+      opacity: 0.84;
       line-height: 1.6;
       font-size: 0.95rem;
+    }
+
+    .slot-learn-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0 4px;
+    }
+
+    .slot-cta-row {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 14px;
+    }
+
+    .slot-cta-row .card {
+      height: 100%;
     }
 
     @keyframes slotPulse {
@@ -296,25 +346,49 @@
       100% { transform: scale(1); }
     }
 
-    @media (max-width: 1000px) {
+    @media (max-width: 1080px) {
       .slot-layout {
         grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .slot-simulator-card {
+        padding: 14px;
       }
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 900px) {
+      .slot-learn-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
       .slot-stats {
         grid-template-columns: 1fr 1fr;
       }
 
-      .slot-fun-row {
+      .slot-cta-row {
         grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 560px) {
-      .slot-actions,
-      .slot-stats {
+    @media (max-width: 640px) {
+      .hero {
+        margin-bottom: 14px;
+      }
+
+      .slot-layout {
+        margin-top: 0;
+      }
+
+      .slot-card,
+      .slot-machine-shell {
+        padding: 16px;
+      }
+
+      .slot-live-config,
+      .slot-stats,
+      .slot-fun-row,
+      .slot-learn-grid {
         grid-template-columns: 1fr;
       }
 
@@ -325,7 +399,7 @@
       }
 
       .reels-wrap {
-        padding: 16px;
+        padding: 14px;
       }
     }
   </style>
@@ -364,128 +438,213 @@
   </header>
 
   <main class="container slot-page">
-    <section class="hero">
+    <section class="hero section-tight">
       <div class="slot-hero-copy">
-        <h1>Slot Simulator</h1>
+        <h1>Slot Simulator & Slot RTP Math</h1>
         <p>
-          Try different reel counts, bankroll sizes, bet amounts, and RTP presets in a cleaner slot-style simulator.
-          It is built to be fun enough to poke at while still showing the ugly little truth: even pretty machines are still math with lipstick.
+          Test reel count, RTP preset, bankroll, and bet size in one connected slot simulator.
+          Then use the explanations below to understand how slot odds, volatility, and variance affect real sessions.
         </p>
       </div>
     </section>
 
-    <section class="slot-layout">
-      <aside class="slot-card">
-        <h2>Controls</h2>
-        <div class="slot-controls">
-          <div class="slot-field">
-            <label for="reelCount">Reel Count</label>
-            <select id="reelCount">
-              <option value="3">3 Reels</option>
-              <option value="5" selected>5 Reels</option>
-              <option value="7">7 Reels</option>
-            </select>
-          </div>
+    <section class="slot-simulator-card" aria-label="Slot simulator">
+      <div class="slot-layout">
+        <aside class="slot-card">
+          <h2>Simulator Controls</h2>
+          <p class="small-note">Set your game settings, then spin. Controls and reels are grouped below for a cleaner flow on mobile and desktop.</p>
 
-          <div class="slot-field">
-            <label for="rtpSelect">RTP Preset</label>
-            <select id="rtpSelect">
-              <option value="0.88">88%</option>
-              <option value="0.92">92%</option>
-              <option value="0.95">95%</option>
-              <option value="0.96" selected>96%</option>
-              <option value="0.98">98%</option>
-            </select>
-          </div>
+          <div class="slot-controls">
+            <div class="slot-field">
+              <label for="reelCount">Reel Count</label>
+              <select id="reelCount">
+                <option value="3">3 Reels</option>
+                <option value="5" selected>5 Reels</option>
+                <option value="7">7 Reels</option>
+              </select>
+            </div>
 
-          <div class="slot-field">
-            <label for="betSize">Bet Per Spin ($)</label>
-            <input type="number" id="betSize" min="0.01" step="0.01" value="1.00" />
-          </div>
+            <div class="slot-field">
+              <label for="rtpSelect">RTP Preset</label>
+              <select id="rtpSelect">
+                <option value="0.88">88%</option>
+                <option value="0.92">92%</option>
+                <option value="0.95">95%</option>
+                <option value="0.96" selected>96%</option>
+                <option value="0.98">98%</option>
+              </select>
+            </div>
 
-          <div class="slot-field">
-            <label for="bankroll">Starting Bankroll ($)</label>
-            <input type="number" id="bankroll" min="1" step="1" value="100" />
-          </div>
+            <div class="slot-field">
+              <label for="betSize">Bet Per Spin ($)</label>
+              <input type="number" id="betSize" min="0.01" step="0.01" value="1.00" />
+            </div>
 
-          <div class="slot-actions">
-            <button class="slot-btn slot-btn-primary" id="spinBtn">Spin</button>
-            <button class="slot-btn slot-btn-primary" id="autoBtn">Auto x100</button>
-            <button class="slot-btn slot-btn-secondary" id="turboBtn">Turbo x500</button>
-            <button class="slot-btn slot-btn-secondary" id="resetBtn">Reset</button>
-            <button class="slot-btn slot-btn-secondary" id="soundToggleBtn">Sound: On</button>
-            <button class="slot-btn slot-btn-danger" id="stopBtn" style="grid-column: 1 / -1;">Stop</button>
+            <div class="slot-field">
+              <label for="bankroll">Starting Bankroll ($)</label>
+              <input type="number" id="bankroll" min="1" step="1" value="100" />
+            </div>
+
+            <div class="slot-actions">
+              <button class="slot-btn slot-btn-primary" id="spinBtn">Spin</button>
+              <button class="slot-btn slot-btn-primary" id="autoBtn">Auto x100</button>
+              <button class="slot-btn slot-btn-secondary" id="turboBtn">Turbo x500</button>
+              <button class="slot-btn slot-btn-secondary" id="resetBtn">Reset</button>
+              <button class="slot-btn slot-btn-secondary" id="soundToggleBtn">Sound: On</button>
+              <button class="slot-btn slot-btn-danger" id="stopBtn">Stop</button>
+            </div>
           </div>
+        </aside>
+
+        <div class="slot-machine">
+          <section class="slot-live-config" aria-label="Current slot settings">
+            <div class="slot-live-item">
+              <div class="slot-live-label">Current RTP</div>
+              <div class="slot-live-value" id="currentRtpDisplay">96%</div>
+            </div>
+            <div class="slot-live-item">
+              <div class="slot-live-label">Volatility</div>
+              <div class="slot-live-value" id="currentVolatilityDisplay">Medium</div>
+            </div>
+            <div class="slot-live-item">
+              <div class="slot-live-label">Reels</div>
+              <div class="slot-live-value" id="currentReelsDisplay">5</div>
+            </div>
+          </section>
+
+          <section class="slot-machine-shell">
+            <div class="slot-topline">
+              <div>
+                <h2>Spin the Machine</h2>
+                <div class="small-note">Reels are directly below controls so you can adjust and see outcomes immediately.</div>
+              </div>
+              <div class="slot-badge">Bonus Meter: <span id="bonusMeter">0</span>/3 ⭐</div>
+            </div>
+
+            <div class="reels-wrap">
+              <div class="slot-payline"></div>
+              <div class="reels" id="reels"></div>
+            </div>
+
+            <div class="slot-message" id="message">Set your bankroll and spin.</div>
+
+            <div class="slot-fun-row">
+              <div class="slot-fun-box">
+                <strong>Last Hit</strong>
+                <span id="lastHitDisplay">No win yet.</span>
+              </div>
+              <div class="slot-fun-box">
+                <strong>Biggest Win</strong>
+                <span id="biggestWinDisplay">$0.00</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="slot-stats">
+            <div class="slot-stat">
+              <div class="slot-stat-label">Balance</div>
+              <div class="slot-stat-value" id="balanceDisplay">$100.00</div>
+            </div>
+            <div class="slot-stat">
+              <div class="slot-stat-label">Spins</div>
+              <div class="slot-stat-value" id="spinsDisplay">0</div>
+            </div>
+            <div class="slot-stat">
+              <div class="slot-stat-label">Total Wagered</div>
+              <div class="slot-stat-value" id="wageredDisplay">$0.00</div>
+            </div>
+            <div class="slot-stat">
+              <div class="slot-stat-label">Actual Return</div>
+              <div class="slot-stat-value" id="actualRtpDisplay">0.00%</div>
+            </div>
+          </section>
         </div>
+      </div>
+    </section>
 
-        <div class="slot-paytable">
-          <h3>Demo Paytable</h3>
-          <div class="slot-pay-row"><span>🍒 / 🍋 / 🔔 line hit</span><strong>2x to 6x bet</strong></div>
-          <div class="slot-pay-row"><span>🍀 / 💎 line hit</span><strong>8x to 15x bet</strong></div>
-          <div class="slot-pay-row"><span>7️⃣ full line</span><strong>20x to 50x bet</strong></div>
-          <div class="slot-pay-row"><span>👑 full line</span><strong>80x to 150x bet</strong></div>
-          <div class="slot-pay-row"><span>⭐ Bonus trigger</span><strong>Random extra payout</strong></div>
+    <section class="card" style="margin-top: 18px;">
+      <h2>How Slot Machines Actually Work</h2>
+      <p>
+        Modern slots use a random number generator (RNG). Every spin gets a new random outcome the moment you press spin.
+        That means spins are independent: the machine does not remember the last result and is never “due” to pay you back.
+      </p>
+      <p class="slot-note">
+        A losing streak does not increase your chance of a win on the next spin. The next spin is still a fresh random event.
+      </p>
+    </section>
+
+    <section class="card" style="margin-top: 18px;">
+      <h2>What Affects Your Chances?</h2>
+      <div class="slot-learn-grid">
+        <article class="card">
+          <h3>RTP (Return to Player)</h3>
+          <p>RTP is the long-run percentage of wagered money returned to players.</p>
+          <p class="small-note">In real play: higher RTP can help over many spins, but short sessions can still lose quickly.</p>
+        </article>
+
+        <article class="card">
+          <h3>Volatility</h3>
+          <p>Volatility describes payout swing size and frequency.</p>
+          <p class="small-note">In real play: high volatility means fewer wins, but some wins are much larger.</p>
+        </article>
+
+        <article class="card">
+          <h3>Number of Paylines</h3>
+          <p>More paylines can create more ways to hit combinations.</p>
+          <p class="small-note">In real play: total bet often rises with active lines, so bankroll drains faster.</p>
+        </article>
+
+        <article class="card">
+          <h3>Bet Size</h3>
+          <p>Bet size scales how fast your bankroll moves up or down.</p>
+          <p class="small-note">In real play: bigger bets can create bigger wins and faster busts in the same session.</p>
+        </article>
+
+        <article class="card">
+          <h3>Bonus Features</h3>
+          <p>Free spins, multipliers, and bonus rounds shift where RTP comes from.</p>
+          <p class="small-note">In real play: base game may feel dry while bonus rounds carry much of the return.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 18px;">
+      <h2>RTP vs Reality</h2>
+      <p>
+        RTP is long-term math, not a promise for a short session.
+        You can hit big early or burn through your bankroll fast. That’s variance, not a broken machine.
+      </p>
+      <div class="slot-paytable">
+        <h3>Demo Paytable</h3>
+        <div class="slot-pay-row"><span>🍒 / 🍋 / 🔔 line hit</span><strong>2x to 6x bet</strong></div>
+        <div class="slot-pay-row"><span>🍀 / 💎 line hit</span><strong>8x to 15x bet</strong></div>
+        <div class="slot-pay-row"><span>7️⃣ full line</span><strong>20x to 50x bet</strong></div>
+        <div class="slot-pay-row"><span>👑 full line</span><strong>80x to 150x bet</strong></div>
+        <div class="slot-pay-row"><span>⭐ Bonus trigger</span><strong>Random extra payout</strong></div>
+      </div>
+      <p class="slot-disclaimer" style="margin-top: 14px;">
+        This simulator keeps things lightweight and educational. It approximates RTP by adjusting hit rate and payout weighting.
+      </p>
+    </section>
+
+    <section class="card" style="margin-top: 18px;">
+      <h2>Try Different Settings</h2>
+      <p>
+        Change RTP, reel count, and bankroll to see how quickly results diverge. Run a few short sessions, then try a longer auto-spin run and compare the outcomes.
+      </p>
+      <a class="btn" href="#reelCount">Experiment with simulator settings above</a>
+
+      <div class="slot-cta-row">
+        <div class="card">
+          <h3>Want to see how long your bankroll lasts?</h3>
+          <p>Try the bankroll calculator and compare your slot bet size against your starting balance before you play.</p>
+          <a class="btn" href="blackjack-bankroll.html">Try the Bankroll Calculator</a>
         </div>
-
-        <p class="slot-note">
-          This is a fun simulator, not a real casino engine. RTP here is approximated by shifting hit rate and payout weighting. Real slots are way more complicated, which is a polite way of saying the machine has more ways to mug you.
-        </p>
-      </aside>
-
-      <div class="slot-machine">
-        <section class="slot-stats">
-          <div class="slot-stat">
-            <div class="slot-stat-label">Balance</div>
-            <div class="slot-stat-value" id="balanceDisplay">$100.00</div>
-          </div>
-          <div class="slot-stat">
-            <div class="slot-stat-label">Spins</div>
-            <div class="slot-stat-value" id="spinsDisplay">0</div>
-          </div>
-          <div class="slot-stat">
-            <div class="slot-stat-label">Total Wagered</div>
-            <div class="slot-stat-value" id="wageredDisplay">$0.00</div>
-          </div>
-          <div class="slot-stat">
-            <div class="slot-stat-label">Actual Return</div>
-            <div class="slot-stat-value" id="actualRtpDisplay">0.00%</div>
-          </div>
-        </section>
-
-        <section class="slot-machine-shell">
-          <div class="slot-topline">
-            <div>
-              <h2 style="margin:0 0 6px;">Spin the Machine</h2>
-              <div style="opacity:0.74;">3, 5, or 7 reels. Different RTP presets. Same basic ending for most bankrolls.</div>
-            </div>
-            <div class="slot-badge">Bonus Meter: <span id="bonusMeter">0</span>/3 ⭐</div>
-          </div>
-
-          <div class="reels-wrap">
-            <div class="slot-payline"></div>
-            <div class="reels" id="reels"></div>
-          </div>
-
-          <div class="slot-message" id="message">Set your bankroll and spin.</div>
-
-          <div class="slot-fun-row">
-            <div class="slot-fun-box">
-              <strong>Last Hit</strong>
-              <span id="lastHitDisplay">No win yet.</span>
-            </div>
-            <div class="slot-fun-box">
-              <strong>Biggest Win</strong>
-              <span id="biggestWinDisplay">$0.00</span>
-            </div>
-          </div>
-        </section>
-
-        <section class="slot-card">
-          <h3>What This Page Is Good For</h3>
-          <p class="slot-disclaimer">
-            This page is good for engagement, curiosity, and showing that RTP and bankroll survival actually matter. It is also good for reminding people that “almost won” is not a legal tender recognized by any civilized economy.
-          </p>
-        </section>
+        <div class="card">
+          <h3>Want a game where decisions actually matter?</h3>
+          <p>Try the blackjack trainer and practice strategy choices that can influence expected value.</p>
+          <a class="btn" href="blackjack-game.html">Try the Blackjack Trainer</a>
+        </div>
       </div>
     </section>
   </main>
