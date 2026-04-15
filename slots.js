@@ -8,7 +8,7 @@ const symbols = [
   { icon: "👑", weight: 2, payout: 100 },
   { icon: "⭐", weight: 3, payout: 0 }
 ];
-
+ 
 const reelCountEl = document.getElementById("reelCount");
 const rtpSelectEl = document.getElementById("rtpSelect");
 const betSizeEl = document.getElementById("betSize");
