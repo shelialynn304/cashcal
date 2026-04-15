@@ -29,6 +29,9 @@ const bonusMeterEl = document.getElementById("bonusMeter");
 const biggestWinDisplay = document.getElementById("biggestWinDisplay");
 const lastHitDisplay = document.getElementById("lastHitDisplay");
 const messageEl = document.getElementById("message");
+const currentRtpDisplay = document.getElementById("currentRtpDisplay");
+const currentVolatilityDisplay = document.getElementById("currentVolatilityDisplay");
+const currentReelsDisplay = document.getElementById("currentReelsDisplay");
 
 let state = {
   balance: 100,
@@ -174,6 +177,25 @@ function renderSpinningState() {
   }
 }
 
+
+function updateLiveConfig() {
+  if (!currentRtpDisplay || !currentVolatilityDisplay || !currentReelsDisplay) return;
+
+  const rtpPercent = `${(Number(rtpSelectEl.value) * 100).toFixed(0)}%`;
+  const reels = Number(reelCountEl.value);
+
+  currentRtpDisplay.textContent = rtpPercent;
+  currentReelsDisplay.textContent = reels;
+
+  if (rtpSelectEl.value >= 0.98 || reels >= 7) {
+    currentVolatilityDisplay.textContent = "High";
+  } else if (rtpSelectEl.value <= 0.92 || reels <= 3) {
+    currentVolatilityDisplay.textContent = "Low";
+  } else {
+    currentVolatilityDisplay.textContent = "Medium";
+  }
+}
+
 function updateStats() {
   balanceDisplay.textContent = formatMoney(state.balance);
   spinsDisplay.textContent = state.spins.toLocaleString();
@@ -300,6 +322,7 @@ function resetSimulator() {
     )
   );
   updateStats();
+  updateLiveConfig();
   setMessage("Fresh bankroll loaded. Let the shiny theft begin.");
 }
 
@@ -345,6 +368,8 @@ soundToggleBtn.addEventListener("click", () => {
 });
 
 reelCountEl.addEventListener("change", resetSimulator);
+rtpSelectEl.addEventListener("change", updateLiveConfig);
 bankrollEl.addEventListener("change", resetSimulator);
 
 resetSimulator();
+updateLiveConfig();
