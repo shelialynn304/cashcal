@@ -124,6 +124,19 @@ function median(arr) {
     : sorted[mid];
 }
 
+function percentile(arr, p) {
+  if (!arr.length) return 0;
+  const sorted = [...arr].sort((a, b) => a - b);
+  const index = (sorted.length - 1) * clamp(p, 0, 1);
+  const lower = Math.floor(index);
+  const upper = Math.ceil(index);
+
+  if (lower === upper) return sorted[lower];
+
+  const weight = index - lower;
+  return sorted[lower] * (1 - weight) + sorted[upper] * weight;
+}
+
 function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
   const endings = [];
   const bustHands = [];
@@ -163,6 +176,8 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
   const survivalRate = (survivedFullSessionCount / simulations) * 100;
   const avgBustHand = average(bustHands);
   const medianBustHand = median(bustHands);
+  const p10Ending = percentile(endings, 0.1);
+  const p90Ending = percentile(endings, 0.9);
 
   return {
     averageEnding,
@@ -176,8 +191,45 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
     lossCount,
     avgBustHand,
     medianBustHand,
-    bustHands
+    bustHands,
+    p10Ending,
+    p90Ending
   };
+}
+
+function estimateBustRiskForBet(bankroll, betSize, houseEdgePercent, bets, simulations) {
+  if (betSize <= 0 || betSize > bankroll) return 100;
+
+  let bustCount = 0;
+
+  for (let i = 0; i < simulations; i++) {
+    const result = simulateSession(bankroll, betSize, houseEdgePercent, bets);
+    if (result.bust) bustCount++;
+  }
+
+  return (bustCount / simulations) * 100;
+}
+
+function findRecommendedBet(bankroll, houseEdgePercent, bets, riskTargetPercent, simulations) {
+  const target = clamp(riskTargetPercent, 1, 99);
+  const simCount = clamp(Math.round(simulations), 500, 5000);
+  let low = 0.01;
+  let high = bankroll;
+  let best = 0.01;
+
+  for (let i = 0; i < 12; i++) {
+    const mid = (low + high) / 2;
+    const bustRisk = estimateBustRiskForBet(bankroll, mid, houseEdgePercent, bets, simCount);
+
+    if (bustRisk <= target) {
+      best = mid;
+      low = mid;
+    } else {
+      high = mid;
+    }
+  }
+
+  return Math.max(0.01, Math.min(bankroll, best));
 }
 
 document.getElementById("bankrollForm").addEventListener("submit", function (e) {
@@ -187,28 +239,44 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
   const betSize = parseFloat(document.getElementById("betSize").value);
   const houseEdge = parseFloat(document.getElementById("houseEdge").value);
   const bets = parseInt(document.getElementById("bets").value, 10);
-  const simulations = 5000;
+  const simulations = parseInt(document.getElementById("simulations").value, 10);
+  const riskTarget = parseFloat(document.getElementById("riskTarget").value);
 
   if (
     !Number.isFinite(bankroll) ||
     !Number.isFinite(betSize) ||
     !Number.isFinite(houseEdge) ||
     !Number.isFinite(bets) ||
+    !Number.isFinite(simulations) ||
+    !Number.isFinite(riskTarget) ||
     bankroll <= 0 ||
     betSize <= 0 ||
     bets <= 0 ||
-    houseEdge < 0
+    houseEdge < 0 ||
+    simulations < 500 ||
+    riskTarget <= 0 ||
+    riskTarget >= 100
   ) {
     alert("Please enter valid numbers.");
     return;
   }
 
   const results = runMonteCarlo(bankroll, betSize, houseEdge, bets, simulations);
+  const recommendedBet = findRecommendedBet(
+    bankroll,
+    houseEdge,
+    bets,
+    riskTarget,
+    Math.min(5000, Math.max(500, Math.round(simulations / 2)))
+  );
 
   document.getElementById("expectedLoss").textContent = formatMoney(bankroll - results.averageEnding);
   document.getElementById("endingBankroll").textContent = formatMoney(results.averageEnding);
   document.getElementById("bustRisk").textContent = `${results.bustRisk.toFixed(1)}%`;
   document.getElementById("profitChance").textContent = `${results.profitChance.toFixed(1)}%`;
+  document.getElementById("p10Ending").textContent = formatMoney(results.p10Ending);
+  document.getElementById("p90Ending").textContent = formatMoney(results.p90Ending);
+  document.getElementById("recommendedBet").textContent = `${formatMoney(recommendedBet)} @ ${riskTarget.toFixed(0)}% bust risk`;
 
   const lastsHandsStat = document.getElementById("lastsHandsStat");
   const lastsHandsNote = document.getElementById("lastsHandsNote");
