@@ -3,22 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Roulette Tool | CashCal</title>
-  <meta name="description" content="Roulette tools are coming to CashCal. Use our bankroll calculator, blackjack trainer, bubble craps simulator, and horse racing guide while roulette is being finalized." />
-  <link rel="canonical" href="https://edgeoverluck.com/roulette.html" />
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .roulette-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-    }
+  <meta name="robots" content="index, follow" />
+  <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
 
-    .roulette-panel {
-      margin-top: 24px;
-    }
-  </style>
+  <title>Roulette Odds Calculator, House Edge, Rules & Betting Guide | CashCal</title>
+  <meta name="description" content="Learn roulette rules, house edge, and how to bet with a free roulette odds calculator and demo simulator. Compare bet types, win chance, and bankroll risk." />
+  <link rel="canonical" href="https://edgeoverluck.com/roulette.html" />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <script defer data-workspace="69b01028d6e4c738cf4abf0f" src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Roulette Odds Calculator",
+    "url": "https://edgeoverluck.com/roulette.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "description": "Interactive roulette calculator and simulator showing house edge, bet odds, expected loss, and bankroll risk."
+  }
+  </script>
 </head>
 <body>
   <header class="site-header">
@@ -28,45 +34,285 @@
         <a href="index.html">Home</a>
         <a href="blackjack-bankroll-calculator.html">Bankroll</a>
         <a href="blackjack-ev-calculator.html">EV</a>
-        <a href="blackjack-strategy.html">Strategy</a>
         <a href="blackjack-game.html">Trainer</a>
         <a href="slots.html">Slots</a>
-        <a href="bubble-craps.html">Craps</a>
-        <a href="horse-racing-guide.html">Horse</a>
         <a href="roulette.html" class="active">Roulette</a>
       </nav>
     </div>
   </header>
 
-  <main class="container section">
-    <p class="eyebrow">Roulette Tools</p>
-    <h1 class="page-title">Roulette tools are coming soon.</h1>
-    <p class="lead">While we finish the roulette calculator, you can still build smarter bets with our highest-converting tools below.</p>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow">Roulette Math Guide</div>
+        <h1>Roulette Odds, House Edge & Betting Strategy Demo</h1>
+        <p class="section-subtext">
+          See exactly how roulette works, what each bet pays, and why bet type and bet size change your bankroll outcome. Use the calculator below to compare win chance, expected loss, and risk across American and European wheels.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#roulette-calculator">Open Roulette Calculator</a>
+          <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Plan Bankroll First</a>
+          <a class="btn btn-secondary" href="blackjack-game.html">Practice Blackjack Trainer</a>
+        </div>
+      </div>
+    </section>
 
-    <section class="card roulette-panel">
-      <h2>Use these now</h2>
-      <p>Get instant value right now with bankroll planning, blackjack training, and additional casino simulation tools.</p>
-      <div class="roulette-actions">
-        <a class="btn btn-primary" href="blackjack-bankroll-calculator.html">Open Bankroll Calculator</a>
-        <a class="btn btn-secondary" href="blackjack-game.html">Play Blackjack Trainer</a>
-        <a class="btn btn-secondary" href="bubble-craps.html">Try Bubble Craps</a>
-        <a class="btn btn-secondary" href="horse-racing-guide.html">View Horse Racing Guide</a>
+    <section class="section">
+      <div class="container grid grid-2">
+        <article class="card">
+          <h2 class="section-title">How roulette is played</h2>
+          <p>Roulette is a wheel game where you place chips on betting spots before the spin. The dealer spins the wheel and drops a ball; wherever the ball lands decides winners and losers.</p>
+          <ul>
+            <li>American wheel: 38 pockets (1-36, 0, 00)</li>
+            <li>European wheel: 37 pockets (1-36, 0)</li>
+            <li>After betting closes, no bet changes are allowed</li>
+            <li>Payout depends on how many numbers your bet covers</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2 class="section-title">Roulette rules and bet types</h2>
+          <p>Inside bets target specific numbers (higher payout, lower hit rate). Outside bets cover more outcomes (lower payout, higher hit rate).</p>
+          <ul>
+            <li><strong>Straight:</strong> 1 number, pays 35:1</li>
+            <li><strong>Dozen/Column:</strong> 12 numbers, pays 2:1</li>
+            <li><strong>Red/Black or Odd/Even:</strong> 18 numbers, pays 1:1</li>
+          </ul>
+          <p class="mb-0">No matter how you arrange bets, the house edge stays negative for the player over time.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container warning-box">
+        <h2 class="section-title">Roulette house edge explained</h2>
+        <p><strong>European roulette house edge:</strong> 2.70% (1 zero).</p>
+        <p><strong>American roulette house edge:</strong> 5.26% (0 and 00).</p>
+        <p class="mb-0">That means expected loss is about $2.70 per $100 wagered on European and $5.26 per $100 wagered on American in the long run.</p>
+      </div>
+    </section>
+
+    <section class="section" id="roulette-calculator">
+      <div class="container grid grid-2">
+        <div class="card">
+          <h2 class="section-title">Roulette odds calculator</h2>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="wheelType">Wheel Type</label>
+              <select id="wheelType">
+                <option value="european" selected>European (single zero)</option>
+                <option value="american">American (double zero)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="betType">Bet Type</label>
+              <select id="betType"></select>
+            </div>
+
+            <div class="field">
+              <label for="bankroll">Starting Bankroll ($)</label>
+              <input id="bankroll" type="number" min="10" step="1" value="300" />
+            </div>
+
+            <div class="field">
+              <label for="betSize">Bet Size Per Spin ($)</label>
+              <input id="betSize" type="number" min="1" step="1" value="10" />
+            </div>
+
+            <div class="field">
+              <label for="spins">Number of Spins</label>
+              <input id="spins" type="number" min="1" step="1" value="100" />
+            </div>
+
+            <div class="field">
+              <label for="sessions">Simulation Sessions</label>
+              <input id="sessions" type="number" min="200" step="100" value="2000" />
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <button type="button" id="calcBtn" class="btn btn-primary">Calculate Odds</button>
+            <button type="button" id="spinDemoBtn" class="btn btn-secondary">Run Demo Session</button>
+          </div>
+
+          <p class="small-note mb-0">This demo shows math + variance. Short runs can win, but expected value remains negative over repeated play.</p>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Results</h2>
+          <div class="result-list">
+            <div class="result-item"><span>Win Chance (per spin)</span><strong id="winChance">0%</strong></div>
+            <div class="result-item"><span>House Edge</span><strong id="houseEdge">0%</strong></div>
+            <div class="result-item"><span>Expected Loss</span><strong id="expectedLoss">$0.00</strong></div>
+            <div class="result-item"><span>Expected Ending Bankroll</span><strong id="endBankroll">$0.00</strong></div>
+            <div class="result-item"><span>Chance of Any Profit</span><strong id="profitChance">0%</strong></div>
+            <div class="result-item"><span>Estimated Bust Risk</span><strong id="bustRisk">0%</strong></div>
+          </div>
+          <p id="summary" class="summary" style="margin-top: 16px;"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container card">
+        <h2 class="section-title">Demo spin log (single session)</h2>
+        <p class="small-note">Use this to see how changing bet size can make the same odds feel very different in your bankroll.</p>
+        <div id="spinLog" class="result-list" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid grid-2">
+        <article class="card">
+          <h2 class="section-title">How betting style changes odds vs risk</h2>
+          <h3>Chance to win a spin</h3>
+          <p>Picking outside bets increases hit rate. Picking single numbers lowers hit rate but offers bigger payouts.</p>
+          <h3>Bet size controls volatility</h3>
+          <p class="mb-0">A larger bet does not improve roulette odds. It only increases bankroll swings and raises your bust risk over a session.</p>
+        </article>
+
+        <article class="cta-box">
+          <h2 class="section-title">Best next step: stress-test your bankroll</h2>
+          <p>Use bankroll math before casino play so you know session limits and risk exposure.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="blackjack-bankroll-calculator.html">Use Bankroll Calculator</a>
+            <a class="btn btn-secondary" href="slots.html">Try Slot Simulator</a>
+            <a class="btn btn-secondary" href="blackjack-game.html">Open Blackjack Trainer</a>
+          </div>
+        </article>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-links">
+    <div class="footer-links">
       <a href="index.html">Home</a>
       <a href="blackjack-bankroll-calculator.html">Bankroll</a>
-      <a href="blackjack-ev-calculator.html">EV</a>
-      <a href="blackjack-strategy.html">Strategy</a>
-      <a href="blackjack-game.html">Trainer</a>
+      <a href="blackjack-game.html">Blackjack Trainer</a>
       <a href="slots.html">Slots</a>
-      <a href="bubble-craps.html">Craps</a>
-      <a href="horse-racing-guide.html">Horse</a>
       <a href="roulette.html">Roulette</a>
     </div>
+
+    <p class="gambling-warning">
+      Gambling involves risk and may not be suitable for everyone. These tools are provided for educational and entertainment purposes only. Gamble responsibly.
+    </p>
+
+    <p class="responsible">
+      Need help? Visit <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">ncpgambling.org</a> for responsible gambling resources.
+    </p>
+
+    <p class="copyright">© 2026 CashCal — Casino simulators and bankroll tools.</p>
   </footer>
+
+  <script>
+    const betTypes = {
+      straight: { label: 'Straight (1 number, 35:1)', covered: 1, payout: 35 },
+      split: { label: 'Split (2 numbers, 17:1)', covered: 2, payout: 17 },
+      street: { label: 'Street (3 numbers, 11:1)', covered: 3, payout: 11 },
+      corner: { label: 'Corner (4 numbers, 8:1)', covered: 4, payout: 8 },
+      sixline: { label: 'Six Line (6 numbers, 5:1)', covered: 6, payout: 5 },
+      dozen: { label: 'Dozen (12 numbers, 2:1)', covered: 12, payout: 2 },
+      column: { label: 'Column (12 numbers, 2:1)', covered: 12, payout: 2 },
+      evenMoney: { label: 'Red/Black or Odd/Even (18 numbers, 1:1)', covered: 18, payout: 1 }
+    };
+
+    function formatMoney(value) {
+      return `$${value.toFixed(2)}`;
+    }
+
+    function pickWin(probability) {
+      return Math.random() < probability;
+    }
+
+    function fillBetTypes() {
+      const select = document.getElementById('betType');
+      select.innerHTML = Object.entries(betTypes).map(([value, bet]) => `<option value="${value}">${bet.label}</option>`).join('');
+      select.value = 'evenMoney';
+    }
+
+    function runMonteCarlo({ sessions, spins, bankroll, betSize, winProb, payout }) {
+      let profitSessions = 0;
+      let bustSessions = 0;
+
+      for (let s = 0; s < sessions; s += 1) {
+        let roll = bankroll;
+
+        for (let i = 0; i < spins; i += 1) {
+          if (roll < betSize) break;
+          const win = pickWin(winProb);
+          roll += win ? betSize * payout : -betSize;
+        }
+
+        if (roll > bankroll) profitSessions += 1;
+        if (roll < betSize) bustSessions += 1;
+      }
+
+      return {
+        profitChance: (profitSessions / sessions) * 100,
+        bustRisk: (bustSessions / sessions) * 100
+      };
+    }
+
+    function calculateOdds() {
+      const wheelType = document.getElementById('wheelType').value;
+      const betType = betTypes[document.getElementById('betType').value];
+      const bankroll = Math.max(10, Number(document.getElementById('bankroll').value) || 300);
+      const betSize = Math.max(1, Number(document.getElementById('betSize').value) || 10);
+      const spins = Math.max(1, Number(document.getElementById('spins').value) || 100);
+      const sessions = Math.max(200, Number(document.getElementById('sessions').value) || 2000);
+
+      const pockets = wheelType === 'american' ? 38 : 37;
+      const houseEdge = wheelType === 'american' ? 5.26 : 2.70;
+      const winProb = betType.covered / pockets;
+      const lossProb = 1 - winProb;
+      const evPerSpin = (winProb * betType.payout - lossProb) * betSize;
+      const expectedLoss = Math.max(0, -evPerSpin * spins);
+      const expectedEnding = bankroll - expectedLoss;
+
+      const sim = runMonteCarlo({ sessions, spins, bankroll, betSize, winProb, payout: betType.payout });
+
+      document.getElementById('winChance').textContent = `${(winProb * 100).toFixed(2)}%`;
+      document.getElementById('houseEdge').textContent = `${houseEdge.toFixed(2)}%`;
+      document.getElementById('expectedLoss').textContent = formatMoney(expectedLoss);
+      document.getElementById('endBankroll').textContent = formatMoney(expectedEnding);
+      document.getElementById('profitChance').textContent = `${sim.profitChance.toFixed(1)}%`;
+      document.getElementById('bustRisk').textContent = `${sim.bustRisk.toFixed(1)}%`;
+
+      document.getElementById('summary').textContent =
+        `With a ${formatMoney(betSize)} ${betType.label.toLowerCase()} bet over ${spins} spins on ${wheelType} roulette, your expected loss is ${formatMoney(expectedLoss)}. Increasing bet size scales losses and volatility faster, even though per-spin win probability stays ${ (winProb * 100).toFixed(2)}%.`;
+    }
+
+    function runDemoSession() {
+      const betType = betTypes[document.getElementById('betType').value];
+      const wheelType = document.getElementById('wheelType').value;
+      const bankroll = Math.max(10, Number(document.getElementById('bankroll').value) || 300);
+      const betSize = Math.max(1, Number(document.getElementById('betSize').value) || 10);
+      const spins = Math.min(40, Math.max(1, Number(document.getElementById('spins').value) || 20));
+      const pockets = wheelType === 'american' ? 38 : 37;
+      const winProb = betType.covered / pockets;
+
+      let roll = bankroll;
+      const rows = [];
+      for (let i = 1; i <= spins; i += 1) {
+        if (roll < betSize) {
+          rows.push(`<div class="result-item"><span>Spin ${i}</span><strong>Stopped: bankroll below bet size.</strong></div>`);
+          break;
+        }
+
+        const win = pickWin(winProb);
+        roll += win ? betSize * betType.payout : -betSize;
+        rows.push(`<div class="result-item"><span>Spin ${i}</span><strong>${win ? `Win +${formatMoney(betSize * betType.payout)}` : `Lose -${formatMoney(betSize)}`} | Bankroll: ${formatMoney(roll)}</strong></div>`);
+      }
+
+      document.getElementById('spinLog').innerHTML = rows.join('');
+    }
+
+    fillBetTypes();
+    document.getElementById('calcBtn').addEventListener('click', calculateOdds);
+    document.getElementById('spinDemoBtn').addEventListener('click', runDemoSession);
+    calculateOdds();
+  </script>
 </body>
 </html>
