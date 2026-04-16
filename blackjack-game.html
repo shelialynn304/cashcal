@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blackjack Trainer</title>
+<link rel="stylesheet" href="style.css">
 
 <style>
 body{
@@ -497,10 +498,48 @@ transform:translateY(-10px) scale(.98);
   }
 }
   
+
+/* shared site navigation */
+.site-header .container.nav {
+  width: min(92%, 1180px);
+  margin: 0 auto;
+  padding: 0;
+}
+
+.site-header .nav-links a {
+  font-size: 0.86rem;
+}
+
+body > .wrap {
+  min-height: calc(100vh - 72px);
+}
+
+@media (max-width: 768px) {
+  body > .wrap {
+    min-height: auto;
+  }
+}
+
 </style>
 </head>
 
 <body>
+<header class="site-header">
+  <div class="container nav">
+    <a href="index.html" class="brand">Cash<span>Cal</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="blackjack-bankroll-calculator.html">Bankroll</a>
+      <a href="blackjack-ev-calculator.html">EV</a>
+      <a href="blackjack-strategy.html">Strategy</a>
+      <a href="blackjack-game.html" class="active">Trainer</a>
+      <a href="slots.html">Slots</a>
+      <a href="bubble-craps.html">Craps</a>
+      <a href="horse-racing-guide.html">Horse</a>
+      <a href="roulette.html">Roulette</a>
+    </nav>
+  </div>
+</header>
 
 <div class="wrap">
 

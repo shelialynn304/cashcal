@@ -853,3 +853,61 @@ table td,
     padding: 22px 18px;
   }
 }
+
+/* HORSE RACING PAGE */
+.hero-media-card img {
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.tag-low {
+  background: rgba(88, 214, 141, 0.18);
+  color: #8ef0b4;
+}
+
+.tag-mid {
+  background: rgba(241, 196, 91, 0.18);
+  color: #f5d07a;
+}
+
+.tag-high {
+  background: rgba(255, 113, 113, 0.18);
+  color: #ff9d9d;
+}
+
+.checklist-box .section-subtext {
+  margin-bottom: 14px;
+}
+
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 0;
+  color: var(--text);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-weight: 600;
+}
+
+.check-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--gold);
+}
+
+.checklist-box .btn {
+  margin-top: 12px;
+}

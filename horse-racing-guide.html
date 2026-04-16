@@ -1,419 +1,33 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Horse Racing Guide | Betting Basics, Terms, and Quick Handicapping Tips</title>
-  <meta name="description" content="Learn horse racing betting basics, common wager types, track terms, and fast handicapping tips. A beginner-friendly horse racing guide page for CashCal." />
+  <meta name="robots" content="index, follow" />
+  <title>Horse Racing Betting Guide | Odds, Bet Types, Strategy Tips for Beginners</title>
+  <meta name="description" content="Learn horse racing betting basics, odds, bet types, and fast handicapping tips. Understand favorites vs longshots and make smarter horse racing picks with CashCal." />
   <link rel="canonical" href="https://edgeoverluck.com/horse-racing-guide.html" />
-  <meta name="robots" content="index, follow" />  <style>
-    :root {
-      --bg: #0f1115;
-      --panel: #171a21;
-      --panel-2: #1e2430;
-      --text: #eef2f7;
-      --muted: #a7b0be;
-      --gold: #f1c45b;
-      --accent: #4db6ff;
-      --danger: #ff7171;
-      --success: #58d68d;
-      --border: rgba(255,255,255,0.08);
-      --shadow: 0 18px 45px rgba(0,0,0,0.35);
-      --radius: 18px;
-      --max: 1180px;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(180deg, #0c0f14 0%, #121722 100%);
-      color: var(--text);
-      line-height: 1.65;
-    }
-
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    a:hover { text-decoration: underline; }
-
-    .container {
-      width: min(92%, var(--max));
-      margin: 0 auto;
-    }
-
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      backdrop-filter: blur(10px);
-      background: rgba(10, 13, 18, 0.88);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      min-height: 72px;
-    }
-
-    .brand {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: 0.4px;
-    }
-
-    .brand span { color: var(--gold); }
-
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      align-items: center;
-    }
-
-    .nav-links a {
-      color: var(--text);
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
-
-    .hero {
-      padding: 76px 0 48px;
-    }
-
-    .hero-wrap {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 28px;
-      align-items: center;
-    }
-
-    .eyebrow {
-      display: inline-block;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: rgba(241,196,91,0.12);
-      color: var(--gold);
-      font-size: 0.85rem;
-      font-weight: 800;
-      letter-spacing: 0.3px;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-
-    h1, h2, h3 {
-      line-height: 1.15;
-      margin-top: 0;
-    }
-
-    h1 {
-      font-size: clamp(2.2rem, 4vw, 4rem);
-      margin-bottom: 14px;
-    }
-
-    .hero p {
-      font-size: 1.08rem;
-      color: var(--muted);
-      max-width: 720px;
-      margin-bottom: 24px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 0 18px;
-      border-radius: 999px;
-      font-weight: 800;
-      border: 1px solid transparent;
-      transition: 0.2s ease;
-    }
-
-    .btn-primary {
-      background: var(--gold);
-      color: #131313;
-    }
-
-    .btn-primary:hover {
-      text-decoration: none;
-      transform: translateY(-1px);
-      filter: brightness(1.03);
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--text);
-      border-color: var(--border);
-    }
-
-    .btn-secondary:hover {
-      text-decoration: none;
-      background: rgba(255,255,255,0.04);
-    }
-
-    .hero-card,
-    .panel,
-    .stat,
-    .tip-card,
-    .cta-box,
-    .warning-box {
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-
-    .hero-card {
-      padding: 24px;
-    }
-
-    .hero-card h3 {
-      margin-bottom: 16px;
-      font-size: 1.2rem;
-    }
-
-    .check-list {
-      display: grid;
-      gap: 12px;
-      padding: 0;
-      list-style: none;
-      margin: 0;
-    }
-
-    .check-list li {
-      padding: 12px 14px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.03);
-      color: var(--text);
-    }
-
-    section {
-      padding: 26px 0 10px;
-    }
-
-    .section-title {
-      font-size: clamp(1.6rem, 2vw, 2.35rem);
-      margin-bottom: 12px;
-    }
-
-    .section-subtext {
-      color: var(--muted);
-      max-width: 780px;
-      margin-bottom: 24px;
-    }
-
-    .stats-grid,
-    .cards-grid,
-    .tips-grid,
-    .two-col {
-      display: grid;
-      gap: 18px;
-    }
-
-    .stats-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .stat {
-      padding: 20px;
-    }
-
-    .stat .num {
-      display: block;
-      font-size: 1.7rem;
-      font-weight: 800;
-      color: var(--gold);
-      margin-bottom: 8px;
-    }
-
-    .stat p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .cards-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .panel {
-      padding: 22px;
-    }
-
-    .panel h3 {
-      margin-bottom: 12px;
-      font-size: 1.15rem;
-    }
-
-    .panel p,
-    .panel li {
-      color: var(--muted);
-    }
-
-    .panel ul {
-      margin: 0;
-      padding-left: 18px;
-    }
-
-    .two-col {
-      grid-template-columns: 1fr 1fr;
-      align-items: start;
-    }
-
-    .tips-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .tip-card {
-      padding: 20px;
-    }
-
-    .tip-card h3 {
-      font-size: 1.05rem;
-      margin-bottom: 10px;
-    }
-
-    .tip-card p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .warning-box,
-    .cta-box {
-      padding: 22px;
-      margin-top: 18px;
-    }
-
-    .warning-box {
-      border-color: rgba(255,113,113,0.22);
-      background: linear-gradient(180deg, rgba(255,113,113,0.09), rgba(255,113,113,0.03));
-    }
-
-    .warning-box strong { color: #fff; }
-
-    .cta-box {
-      border-color: rgba(77,182,255,0.22);
-      background: linear-gradient(180deg, rgba(77,182,255,0.09), rgba(77,182,255,0.03));
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 8px;
-      overflow: hidden;
-      border-radius: 14px;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 14px 12px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-    }
-
-    th {
-      background: rgba(255,255,255,0.03);
-      color: #fff;
-      font-size: 0.95rem;
-    }
-
-    td {
-      color: var(--muted);
-      background: rgba(255,255,255,0.015);
-    }
-
-    .footer {
-      padding: 38px 0 54px;
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    .footer-inner {
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
-    }
-
-    .small-note {
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    @media (max-width: 1000px) {
-      .hero-wrap,
-      .two-col,
-      .cards-grid,
-      .stats-grid,
-      .tips-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .nav {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 14px 0;
-      }
-
-      .hero {
-        padding-top: 42px;
-      }
-
-      .hero-wrap,
-      .two-col,
-      .cards-grid,
-      .stats-grid,
-      .tips-grid {
-        grid-template-columns: 1fr;
-      }
-
-      h1 {
-        font-size: 2.2rem;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
-      .hero-actions {
-        flex-direction: column;
-      }
-
-      th, td {
-        font-size: 0.94rem;
-      }
-    }
-  </style></head>
+  <link rel="stylesheet" href="style.css" />
+</head>
 <body>
 <header class="site-header">
     <div class="container nav">
       <a href="index.html" class="brand">Cash<span>Cal</span></a>
       <nav class="nav-links">
-        <a href="index.html" class="active">Home</a>
+        <a href="index.html">Home</a>
         <a href="blackjack-bankroll-calculator.html">Bankroll Calculator</a>
         <a href="blackjack-ev-calculator.html">EV Calculator</a>
         <a href="blackjack-strategy.html">Blackjack Strategy</a>
         <a href="blackjack-game.html">Blackjack Training Game</a>
+        <a href="slots.html">Slot Simulator</a>
         <a href="bubble-craps.html">Bubble Craps</a>
+        <a href="horse-racing-guide.html" class="active">Horse Racing</a>
+        <a href="roulette.html">Roulette</a>
       </nav>
     </div>
   </header>
-  </header>  <main>
+
+  <main>
     <section class="hero">
       <div class="container hero-wrap">
         <div>
@@ -438,222 +52,301 @@
       </ul>
     </aside>
   </div>
-</section>
+</header>
 
-<section>
-  <div class="container">
-    <h2 class="section-title">What matters most</h2>
-    <p class="section-subtext">
-      If you're new, focus on only a few variables first. Too many people try to decode every stat on the page and end up making worse decisions with extra confidence. That's not intelligence. That's decorative chaos.
-    </p>
-
-    <div class="stats-grid">
-      <div class="stat">
-        <span class="num">1</span>
-        <p>Recent form: Is the horse actually running well lately?</p>
+<main>
+  <section class="hero">
+    <div class="container hero-wrap">
+      <div>
+        <span class="eyebrow">Horse Racing Strategy Guide</span>
+        <h1>Understand Horse Racing Odds Faster and Make Smarter Bets</h1>
+        <p>
+          This page helps you quickly learn how horse racing works, what each bet type means,
+          and what to check before picking a horse. No jargon overload — just practical betting basics.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#horse-racing-basics">Learn the Basics</a>
+          <a class="btn btn-secondary" href="#before-you-bet">Use the Race Checklist</a>
+        </div>
       </div>
-      <div class="stat">
-        <span class="num">2</span>
-        <p>Class: Is it facing easier or tougher competition today?</p>
-      </div>
-      <div class="stat">
-        <span class="num">3</span>
-        <p>Distance and surface: Dirt, turf, sprint, route — not all horses handle all of it.</p>
-      </div>
-      <div class="stat">
-        <span class="num">4</span>
-        <p>Jockey/trainer fit: Sometimes the human attached to the horse is the real clue.</p>
-      </div>
+
+      <aside class="card hero-media-card">
+        <img src="images/horse-racing/horse-race-betting-simulator-hero.webp" alt="Horse race betting guide hero image" loading="eager" decoding="async" />
+        <ul class="check-list">
+          <li><strong>Goal:</strong> Pick smarter, not just louder longshots.</li>
+          <li><strong>Focus:</strong> Odds, form, class, conditions, and pace setup.</li>
+          <li><strong>Best start:</strong> Use simpler bets before trying exotics.</li>
+        </ul>
+      </aside>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="bet-types">
-  <div class="container">
-    <h2 class="section-title">Common horse racing bets</h2>
-    <p class="section-subtext">
-      These are the main bet types people start with. Basic bets are easier to understand and harder to butcher. Exotic bets can pay more, but they also eat bankroll faster if you don't know what you're doing.
-    </p>
-
-    <div class="panel">
-      <div style="overflow-x:auto;">
-        <table>
-          <thead>
-            <tr>
-              <th>Bet Type</th>
-              <th>What Has to Happen</th>
-              <th>Difficulty</th>
-              <th>Beginner Friendly?</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Win</strong></td>
-              <td>Your horse must finish 1st.</td>
-              <td>Low</td>
-              <td>Yes</td>
-            </tr>
-            <tr>
-              <td><strong>Place</strong></td>
-              <td>Your horse must finish 1st or 2nd.</td>
-              <td>Low</td>
-              <td>Yes</td>
-            </tr>
-            <tr>
-              <td><strong>Show</strong></td>
-              <td>Your horse must finish 1st, 2nd, or 3rd.</td>
-              <td>Low</td>
-              <td>Yes, but smaller payouts</td>
-            </tr>
-            <tr>
-              <td><strong>Exacta</strong></td>
-              <td>Pick the 1st and 2nd finishers in exact order.</td>
-              <td>Medium</td>
-              <td>Not at first</td>
-            </tr>
-            <tr>
-              <td><strong>Trifecta</strong></td>
-              <td>Pick 1st, 2nd, and 3rd in exact order.</td>
-              <td>High</td>
-              <td>No, unless you enjoy donating</td>
-            </tr>
-            <tr>
-              <td><strong>Superfecta</strong></td>
-              <td>Pick 1st through 4th in exact order.</td>
-              <td>Very High</td>
-              <td>Absolutely not for beginners</td>
-            </tr>
-            <tr>
-              <td><strong>Daily Double</strong></td>
-              <td>Pick the winners of 2 consecutive races.</td>
-              <td>Medium</td>
-              <td>Maybe later</td>
-            </tr>
-            <tr>
-              <td><strong>Pick 3 / 4 / 5 / 6</strong></td>
-              <td>Pick winners across multiple races.</td>
-              <td>High to absurd</td>
-              <td>No</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="quick-guide">
-  <div class="container">
-    <h2 class="section-title">Fast handicapping checklist</h2>
-    <p class="section-subtext">
-      If you're trying to pick a horse quickly, this is the practical filter. Don't overcomplicate it. You are not breeding the thing. You're deciding whether there's a decent bet.
-    </p>
-
-    <div class="tips-grid">
-      <article class="tip-card">
-        <h3>1. Check recent finishes</h3>
-        <p>Look at the horse's last 3 races. A string of competitive finishes matters more than one random miracle run from months ago.</p>
-      </article>
-
-      <article class="tip-card">
-        <h3>2. Compare class level</h3>
-        <p>If a horse is dropping into easier company, that's often a real signal. Moving up in class can mean the barn is confident or just optimistic and delusional.</p>
-      </article>
-
-      <article class="tip-card">
-        <h3>3. Match distance and surface</h3>
-        <p>Some horses love turf, some hate it. Some finish strong at longer distances, others burn out early. Ignore this and you are basically betting on a name.</p>
-      </article>
-
-      <article class="tip-card">
-        <h3>4. Look at pace setup</h3>
-        <p>If several horses want the lead, they can cook each other early and set the race up for a closer. Pace matters a lot more than most beginners realize.</p>
-      </article>
-
-      <article class="tip-card">
-        <h3>5. Respect jockey and trainer stats</h3>
-        <p>A productive jockey-trainer combo can matter. Especially watch for barns that do well first off a claim, off layoffs, or switching surfaces.</p>
-      </article>
-
-      <article class="tip-card">
-        <h3>6. Watch the odds drift or drop</h3>
-        <p>Big money can be informative, but not magic. Sharp action exists. So does public stupidity. Odds movement is a clue, not a commandment.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="container two-col">
-    <div class="panel">
-      <h2 class="section-title">Horse racing terms you should know</h2>
-      <ul>
-        <li><strong>Morning line:</strong> The track handicapper's predicted odds before betting opens.</li>
-        <li><strong>Favorite:</strong> The horse with the lowest odds.</li>
-        <li><strong>Overlay:</strong> A horse whose current odds are better than you think they should be.</li>
-        <li><strong>Underlay:</strong> A horse being overbet relative to its real chance.</li>
-        <li><strong>Pace horse:</strong> A horse likely to race near the front early.</li>
-        <li><strong>Closer:</strong> A horse that comes from behind late.</li>
-        <li><strong>Layoff:</strong> A long break since the horse's last race.</li>
-        <li><strong>Post position:</strong> The gate number where the horse starts.</li>
-      </ul>
-    </div>
-
-    <div class="panel">
-      <h2 class="section-title">Quick bankroll rules</h2>
-      <ul>
-        <li>Set a race budget before you start. Not after the third "almost had it" moment.</li>
-        <li>Keep most bets small and flat. Randomly doubling after losses is how people cosplay as financial arsonists.</li>
-        <li>Use simple bets until you prove you can pick contenders consistently.</li>
-        <li>Do not bet every race. Boredom is not an edge.</li>
-        <li>Pass races where the field looks chaotic or you don't understand the setup.</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="container">
-    <div class="warning-box">
-      <strong>Important:</strong> Horse racing is not a reliable income strategy. It is gambling. Even smart reads lose all the time because animals, track conditions, pace chaos, bad trips, and plain randomness do not care about your confidence level.
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="container">
-    <h2 class="section-title">Simple beginner approach</h2>
-    <p class="section-subtext">
-      If you want the least stupid way to start, use this. It's not sexy. That's why it has a chance of not wrecking you immediately.
-    </p>
-
-    <div class="cards-grid">
-      <article class="panel">
-        <h3>Step 1: Pick 2-3 contenders</h3>
-        <p>Use recent form, class, distance, and surface to narrow the race. Ignore hype names and random superstition nonsense.</p>
-      </article>
-
-      <article class="panel">
-        <h3>Step 2: Look for value</h3>
-        <p>If your best horse is getting crushed at tiny odds, the bet may not be worth it. A slightly less likely horse at much better odds can be the sharper play.</p>
-      </article>
-
-      <article class="panel">
-        <h3>Step 3: Bet simple</h3>
-        <p>Stick to Win bets, maybe Win/Place, until you can actually read races with some consistency. Exotic bets are where optimism goes to die.</p>
-      </article>
-    </div>
-
-  </div>
-</section>
-
-  </main>  <footer class="footer">
-    <div class="container footer-inner">
-      <p><strong>CashCal</strong> — educational gambling tools, explainers, and calculators.</p>
-      <p class="small-note">
-        This page is for informational purposes only. Gambling involves risk. Follow your local laws and age restrictions. Do not gamble with money you cannot afford to lose.
+  <section class="section" id="horse-racing-basics">
+    <div class="container">
+      <h2 class="section-title">Horse Racing Basics</h2>
+      <p class="section-subtext">
+        Horse racing betting means choosing outcomes in a race and getting paid based on odds.
+        The more unlikely your pick, the higher the payout potential — and the lower the hit rate.
       </p>
+
+      <div class="grid grid-3">
+        <article class="card">
+          <h3>What horse betting is</h3>
+          <p>You place money on a horse (or combo of horses) to finish in specific positions.</p>
+          <p class="mb-0">If your bet condition is correct, you win based on the final odds and pool payouts.</p>
+        </article>
+
+        <article class="card">
+          <h3>How a race works</h3>
+          <p>Horses break from assigned post positions and compete over a set distance.</p>
+          <p class="mb-0">Race shape matters: pace can collapse early or favor leaders depending on field makeup.</p>
+        </article>
+
+        <article class="card">
+          <h3>What bettors look at</h3>
+          <p>Most bettors compare odds, recent form, class level, track conditions, and jockey/trainer stats.</p>
+          <p class="mb-0">The goal is to find value: fair chance at better-than-fair price.</p>
+        </article>
+      </div>
     </div>
-  </footer>
+  </section>
+
+  <section class="section" id="common-bet-types">
+    <div class="container">
+      <h2 class="section-title">Common Bet Types</h2>
+      <p class="section-subtext">
+        Start with these five bet types. They cover most beginner decisions and make race reading easier.
+      </p>
+
+      <div class="grid grid-3">
+        <article class="panel">
+          <h3>Win</h3>
+          <p><strong>What it means:</strong> Your horse must finish 1st.</p>
+          <p><strong>Risk:</strong> <span class="tag tag-low">Lower</span></p>
+          <p class="mb-0"><strong>Why choose it:</strong> Simple and clean. Great for beginners building discipline.</p>
+        </article>
+
+        <article class="panel">
+          <h3>Place</h3>
+          <p><strong>What it means:</strong> Your horse must finish 1st or 2nd.</p>
+          <p><strong>Risk:</strong> <span class="tag tag-low">Lower</span></p>
+          <p class="mb-0"><strong>Why choose it:</strong> Higher hit rate than Win, but with smaller payouts.</p>
+        </article>
+
+        <article class="panel">
+          <h3>Show</h3>
+          <p><strong>What it means:</strong> Your horse must finish 1st, 2nd, or 3rd.</p>
+          <p><strong>Risk:</strong> <span class="tag tag-low">Lower</span></p>
+          <p class="mb-0"><strong>Why choose it:</strong> Lowest variance among common bets, often used for conservative play.</p>
+        </article>
+
+        <article class="panel">
+          <h3>Exacta</h3>
+          <p><strong>What it means:</strong> Pick 1st and 2nd in exact order.</p>
+          <p><strong>Risk:</strong> <span class="tag tag-mid">Medium</span></p>
+          <p class="mb-0"><strong>Why choose it:</strong> Bigger upside if you have a strong read on top contenders.</p>
+        </article>
+
+        <article class="panel">
+          <h3>Trifecta</h3>
+          <p><strong>What it means:</strong> Pick 1st, 2nd, and 3rd in exact order.</p>
+          <p><strong>Risk:</strong> <span class="tag tag-high">High</span></p>
+          <p class="mb-0"><strong>Why choose it:</strong> Big payout potential, but low hit rate and high variance.</p>
+        </article>
+
+        <article class="info-box">
+          <h3>Beginner tip</h3>
+          <p>If you're new, focus on Win/Place/Show first.</p>
+          <p class="mb-0">Learn to identify contenders before paying for complex combinations.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pick-a-horse-fast">
+    <div class="container">
+      <h2 class="section-title">How to Pick a Horse Fast</h2>
+      <p class="section-subtext">
+        Use this quick scan before betting. It keeps your process simple and avoids random guessing.
+      </p>
+
+      <div class="grid grid-3">
+        <article class="tip-card">
+          <h3>1) Check the odds board</h3>
+          <p>Odds show market expectation. Big favorites are more likely to win, but prices can be too short.</p>
+        </article>
+
+        <article class="tip-card">
+          <h3>2) Favorite vs longshot</h3>
+          <p>Ask whether a longshot has a real angle (surface switch, class drop, pace edge) or just hype.</p>
+        </article>
+
+        <article class="tip-card">
+          <h3>3) Read recent form</h3>
+          <p>Look at last 3 starts: finish position, speed consistency, and whether performance is improving.</p>
+        </article>
+
+        <article class="tip-card">
+          <h3>4) Track and weather</h3>
+          <p>Some horses improve on wet dirt or turf; others regress badly. Conditions can flip expected outcomes.</p>
+        </article>
+
+        <article class="tip-card">
+          <h3>5) Jockey + trainer combo</h3>
+          <p>Strong combinations often outperform baseline expectations, especially in competitive fields.</p>
+        </article>
+
+        <article class="tip-card">
+          <h3>6) Post position</h3>
+          <p>At some distances/tracks, outside or inside gates can help or hurt depending on pace and turn setup.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="chance-factors">
+    <div class="container">
+      <h2 class="section-title">What Actually Changes Your Chances?</h2>
+      <p class="section-subtext">
+        These factors affect real race outcomes more than random intuition.
+      </p>
+
+      <div class="grid grid-3">
+        <article class="card">
+          <h3>Horse form</h3>
+          <p>Current fitness and recent speed are usually more predictive than old career highlights.</p>
+        </article>
+
+        <article class="card">
+          <h3>Class level</h3>
+          <p>Dropping in class can be powerful. Moving up means tougher rivals and less room for error.</p>
+        </article>
+
+        <article class="card">
+          <h3>Surface + conditions</h3>
+          <p>Dirt, turf, and wet tracks produce different results. Match the horse to today's surface profile.</p>
+        </article>
+
+        <article class="card">
+          <h3>Pace scenario</h3>
+          <p>Too many front-runners can create a late collapse. Slow pace can make it hard for closers to catch up.</p>
+        </article>
+
+        <article class="card">
+          <h3>Jockey and trainer</h3>
+          <p>Decision-making, timing, and prep quality influence position, trip, and final stretch execution.</p>
+        </article>
+
+        <article class="card">
+          <h3>Field size</h3>
+          <p>Bigger fields mean more chaos and traffic. Smaller fields are often cleaner but can be tactically tricky.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="risk-reward">
+    <div class="container grid grid-2">
+      <article class="warning-box">
+        <h2 class="section-title">Risk vs Reward (No Fluff)</h2>
+        <p><strong>Favorites:</strong> Win more often, pay less.</p>
+        <p><strong>Longshots:</strong> Win rarely, can pay big.</p>
+        <p class="mb-0"><strong>Reality:</strong> Horse racing has high variance. Good process still includes losing streaks.</p>
+      </article>
+
+      <article class="card">
+        <h2 class="section-title">What this means for you</h2>
+        <ul>
+          <li>Use stable bet sizing — don't chase losses.</li>
+          <li>Take value prices, not just popular horses.</li>
+          <li>Skip races with unclear pace or contradictory signals.</li>
+          <li>Track results so your betting decisions improve over time.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="beginner-mistakes">
+    <div class="container">
+      <h2 class="section-title">Common Beginner Mistakes</h2>
+      <div class="grid grid-2">
+        <article class="panel">
+          <h3>Betting random names only</h3>
+          <p>Fun for one race, destructive over time. Use at least a basic form and odds filter.</p>
+        </article>
+        <article class="panel">
+          <h3>Chasing longshots every race</h3>
+          <p>Huge payouts are rare. Constant longshot betting creates sharp bankroll swings.</p>
+        </article>
+        <article class="panel">
+          <h3>Ignoring track conditions</h3>
+          <p>A surface or weather change can invalidate your pre-race assumptions instantly.</p>
+        </article>
+        <article class="panel">
+          <h3>Misunderstanding odds</h3>
+          <p>Odds imply probability and payout. If you ignore that relationship, you can't evaluate value.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="before-you-bet">
+    <div class="container cta-box checklist-box">
+      <h2 class="section-title">Before You Bet: 60-Second Race Checklist</h2>
+      <p class="section-subtext">Quickly tick these items before placing money on a race.</p>
+      <div class="grid grid-2">
+        <label class="check-item"><input type="checkbox" data-check /> Odds checked for value (not just winner probability)</label>
+        <label class="check-item"><input type="checkbox" data-check /> Recent form reviewed (last 3 starts)</label>
+        <label class="check-item"><input type="checkbox" data-check /> Surface and weather fit confirmed</label>
+        <label class="check-item"><input type="checkbox" data-check /> Pace setup understood (leaders vs closers)</label>
+        <label class="check-item"><input type="checkbox" data-check /> Jockey/trainer combo sanity-checked</label>
+        <label class="check-item"><input type="checkbox" data-check /> Bet size fits bankroll plan</label>
+      </div>
+      <p id="checklist-status" class="summary mb-0">0 / 6 complete</p>
+      <button id="reset-checklist" type="button" class="btn btn-secondary">Reset Checklist</button>
+    </div>
+  </section>
+
+  <section class="section" id="next-tools">
+    <div class="container">
+      <h2 class="section-title">Turn This Into Better Gambling Decisions</h2>
+      <p class="section-subtext">
+        Horse racing is one part of the puzzle. Use these tools to manage risk and sharpen decision quality.
+      </p>
+
+      <div class="grid grid-3">
+        <article class="card">
+          <h3>Bankroll Calculator</h3>
+          <p>Want to see how long your bankroll can last under different bet sizes and streaks?</p>
+          <a class="btn btn-primary" href="blackjack-bankroll-calculator.html">Open Bankroll Calculator</a>
+        </article>
+
+        <article class="card">
+          <h3>Slot Simulator</h3>
+          <p>Compare expectation and volatility in a fast simulation environment.</p>
+          <a class="btn btn-secondary" href="slots.html">Try Slot Simulator</a>
+        </article>
+
+        <article class="card">
+          <h3>Blackjack Trainer</h3>
+          <p>Want a gambling tool based more on math than gut feeling? Practice blackjack decision logic.</p>
+          <a class="btn btn-secondary" href="blackjack-game.html">Launch Blackjack Trainer</a>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <p><strong>CashCal</strong> — practical gambling education, strategy explainers, and fast decision tools.</p>
+    <p class="small-note">
+      Educational content only. Gambling involves risk and variance. Follow your local laws and age requirements.
+      Never bet money you cannot afford to lose.
+    </p>
+  </div>
+</footer>
+
+<script src="horse.js" defer></script>
 </body>
 </html>
