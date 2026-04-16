@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blackjack Trainer</title>
+<link rel="stylesheet" href="style.css">
 
 <style>
 body{
@@ -502,11 +503,27 @@ transform:translateY(-10px) scale(.98);
 
 <body>
 
+<header class="site-header">
+  <div class="container nav">
+    <a href="index.html" class="brand">Cash<span>Cal</span></a>
+    <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="blackjack-bankroll-calculator.html">Bankroll</a>
+        <a href="blackjack-ev-calculator.html">EV</a>
+        <a href="blackjack-strategy.html">Strategy</a>
+        <a href="blackjack-game.html" class="active">Trainer</a>
+        <a href="slots.html">Slots</a>
+        <a href="bubble-craps.html">Bubble Craps</a>
+        <a href="horse-racing-guide.html">Horse Guide</a>
+        <a href="roulette.html">Roulette</a>
+    </nav>
+  </div>
+</header>
+
 <div class="wrap">
 
 <h1>Blackjack Trainer</h1>
   
-<button id="homeBtn" class="home-btn">⬅ Back to Home</button>
   
 <div class="topbar">
   <div>Bankroll: $<span id="bankroll">1000</span></div>
