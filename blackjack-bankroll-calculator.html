@@ -118,6 +118,16 @@
               <label for="bets">Hands Played</label>
               <input type="number" id="bets" value="100" min="1" step="1" required />
             </div>
+
+            <div class="field">
+              <label for="simulations">Simulations</label>
+              <input type="number" id="simulations" value="5000" min="500" max="50000" step="100" required />
+            </div>
+
+            <div class="field">
+              <label for="riskTarget">Target Bust Risk (%)</label>
+              <input type="number" id="riskTarget" value="20" min="1" max="99" step="1" required />
+            </div>
           </div>
 
           <button type="submit" class="btn">Calculate</button>
@@ -153,6 +163,21 @@
             <div class="result-item">
               <span>Profit Chance</span>
               <strong id="profitChance">0%</strong>
+            </div>
+
+            <div class="result-item">
+              <span>P10 Ending Bankroll</span>
+              <strong id="p10Ending">$0.00</strong>
+            </div>
+
+            <div class="result-item">
+              <span>P90 Ending Bankroll</span>
+              <strong id="p90Ending">$0.00</strong>
+            </div>
+
+            <div class="result-item">
+              <span>Recommended Max Bet</span>
+              <strong id="recommendedBet">$0.00</strong>
             </div>
           </div>
 
