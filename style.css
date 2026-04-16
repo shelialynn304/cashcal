@@ -486,6 +486,29 @@ button:hover,
   margin-top: 18px;
 }
 
+
+.bankroll-lasts-stat {
+  margin-bottom: 24px;
+}
+
+.lasts-hands-stat-value {
+  font-size: clamp(1.4rem, 3.2vw, 2.2rem);
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1.15;
+  margin-top: 8px;
+}
+
+.lasts-hands-actions {
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.results-spacing,
+.chart-grid-spacing {
+  margin-top: 24px;
+}
+
 /* INFO / WARNING BOXES */
 .warning-box {
   border-color: rgba(255,113,113,0.22);
