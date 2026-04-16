@@ -12,13 +12,9 @@
   <link rel="canonical" href="https://edgeoverluck.com/" />
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Analytics -->
   <script defer data-workspace="69b01028d6e4c738cf4abf0f" src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js"></script>
-
-  <!-- Chart.js (for calculators) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -69,9 +65,9 @@
       <div class="container hero-wrap">
         <div>
           <div class="eyebrow">Casino Math Tools</div>
-          <h1>Stop Guessing. Know Your Odds.</h1>
+          <h1>Stop Guessing. Build a Smarter Game Plan.</h1>
           <p>
-            CashCal helps you test bankroll risk, train blackjack decisions, and run realistic slot simulations so you can make smarter calls before real money is on the table.
+            CashCal helps you test bankroll risk, train blackjack decisions, and run realistic slot simulations so you can make better calls before real money is on the table.
           </p>
 
           <div class="hero-actions">
@@ -79,18 +75,26 @@
             <a class="btn btn-secondary" href="blackjack-game.html">Play Blackjack Trainer</a>
           </div>
 
-          <div class="info-box" style="margin-top: 22px;">
-            <p class="mb-0"><strong>Built for:</strong> players who want probability, bankroll planning, and practical strategy training instead of gambling myths.</p>
+          <div class="quick-tool-tabs" aria-label="Quick tool jump links">
+            <button class="btn btn-secondary active" type="button" data-tool-tab="bankroll">Bankroll</button>
+            <button class="btn btn-secondary" type="button" data-tool-tab="trainer">Trainer</button>
+            <button class="btn btn-secondary" type="button" data-tool-tab="slots">Slots</button>
+            <button class="btn btn-secondary" type="button" data-tool-tab="roulette">Roulette</button>
           </div>
         </div>
 
-        <aside class="card">
-          <img src="images/cashcal-casino-calculator-hero.webp" alt="CashCal bankroll and gambling odds tools" style="border-radius: 12px; margin-bottom: 18px;" />
-          <ul class="check-list">
-            <li><strong>Math-based tools:</strong> estimate risk using bankroll, edge, and bet size.</li>
-            <li><strong>Realistic simulations:</strong> run scenarios instead of trusting gut feeling.</li>
-            <li><strong>Actionable results:</strong> spot where strategy or sizing breaks down fast.</li>
-          </ul>
+        <aside class="card hero-media-card">
+          <img src="images/cashcal-casino-calculator-hero.webp" alt="CashCal bankroll and gambling odds tools" />
+          <div class="result-list">
+            <div class="result-item">
+              <span>Session Readiness</span>
+              <strong id="engagementScore">0/100</strong>
+            </div>
+            <div class="result-item">
+              <span>Best First Move</span>
+              <strong>Run bankroll check</strong>
+            </div>
+          </div>
         </aside>
       </div>
     </section>
@@ -98,31 +102,28 @@
     <section class="section">
       <div class="container">
         <h2 class="section-title">Main tools to improve your edge</h2>
-        <p class="section-subtext">Start with the calculator, sharpen your decisions, then stress-test your assumptions with simulation.</p>
+        <p class="section-subtext">Start with the calculator, sharpen your decisions, then stress-test assumptions with simulation.</p>
 
-        <div class="grid grid-3">
-          <article class="card">
+        <div class="grid grid-2">
+          <article class="card" data-tool-card="bankroll">
             <h3>Bankroll Calculator</h3>
             <p>Estimate bust risk, expected loss, and survival odds over a session using house edge and bet size.</p>
             <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Use Bankroll Calculator</a>
           </article>
 
-          <article class="card">
+          <article class="card" data-tool-card="trainer">
             <h3>Blackjack Trainer</h3>
             <p>Practice real blackjack decisions and get immediate feedback to build stronger strategy habits.</p>
             <a class="btn btn-secondary" href="blackjack-game.html">Open Blackjack Trainer</a>
           </article>
 
-          <article class="card">
+          <article class="card" data-tool-card="slots">
             <h3>Slot Simulator</h3>
             <p>Explore variance, streaks, and bankroll swings with a simulation-focused view of slot outcomes.</p>
             <a class="btn btn-secondary" href="slots.html">Run Slot Simulator</a>
           </article>
-        </div>
-      </div>
-    </section>
 
-          <article class="card">
+          <article class="card" data-tool-card="roulette">
             <h3>Roulette Odds Tool</h3>
             <p>Compare roulette chance, house edge, and bankroll risk with a simple calculator and spin demo.</p>
             <a class="btn btn-secondary" href="roulette.html">Use Roulette Tool</a>
@@ -133,40 +134,41 @@
 
     <section class="section-tight">
       <div class="container cta-box">
-        <h2 class="section-title">How Long Will You Last?</h2>
-        <p>
-          Most players go broke faster than expected because bet size and house edge compound losses quickly. A few bad runs can erase a bankroll long before people think it should.
-        </p>
-        <p>
-          Use CashCal's bankroll simulator to model realistic outcomes and see how small adjustments can dramatically change survival odds.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="blackjack-bankroll-calculator.html">See Your Bankroll Risk</a>
+        <h2 class="section-title">Interactive Session Pressure Test</h2>
+        <p>Use this quick scenario tuner to see how bet size pressure can change session risk before you run full simulations.</p>
+        <div class="grid grid-2">
+          <div class="card scenario-row">
+            <label for="scenarioBankroll">Starting bankroll ($)</label>
+            <input id="scenarioBankroll" type="range" min="100" max="3000" value="350" step="50" />
+            <label for="scenarioBet">Average bet ($)</label>
+            <input id="scenarioBet" type="range" min="2" max="150" value="15" step="1" />
+            <label for="scenarioEdge">House edge (%)</label>
+            <input id="scenarioEdge" type="range" min="0.2" max="8" value="1.2" step="0.1" />
+            <label for="scenarioHands">Planned hands</label>
+            <input id="scenarioHands" type="range" min="40" max="500" value="120" step="10" />
+          </div>
+          <div class="card">
+            <h3>Quick scenario output</h3>
+            <div class="result-list">
+              <div class="result-item">
+                <span>Estimated session risk</span>
+                <strong id="scenarioRisk">0%</strong>
+              </div>
+              <div class="result-item">
+                <span>Projected walk-away bankroll</span>
+                <strong id="scenarioWalkAway">$0</strong>
+              </div>
+              <div class="result-item">
+                <span>Bankroll pace</span>
+                <strong id="scenarioPace">-</strong>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#calculator">Run Full Calculator</a>
+              <a class="btn btn-secondary" href="blackjack-ev-calculator.html">Compare EV Spots</a>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container grid grid-2">
-        <article class="card">
-          <h2 class="section-title">Trust the math, not the hype</h2>
-          <p>
-            Every tool on CashCal is built around probabilities, expected value, and bankroll dynamics—not superstition or lucky-system marketing.
-          </p>
-          <p class="mb-0">
-            Simulations are designed to reflect how variance and house edge play out over repeated sessions.
-          </p>
-        </article>
-
-        <article class="warning-box">
-          <h2 class="section-title">Educational, not gambling advice</h2>
-          <p>
-            CashCal provides data-driven insight to help users understand risk and decision quality.
-          </p>
-          <p class="mb-0">
-            These tools do <strong>not</strong> guarantee results, predict outcomes, or recommend gambling behavior.
-          </p>
-        </article>
       </div>
     </section>
 
@@ -177,10 +179,10 @@
 
         <div class="presets">
           <p><strong>Try a game:</strong></p>
-          <button type="button" onclick="setPreset('blackjack')">Blackjack</button>
-          <button type="button" onclick="setPreset('roulette')">Roulette</button>
-          <button type="button" onclick="setPreset('slots')">Slots</button>
-          <button type="button" onclick="setPreset('baccarat')">Baccarat</button>
+          <button type="button" data-preset="blackjack">Blackjack</button>
+          <button type="button" data-preset="roulette">Roulette</button>
+          <button type="button" data-preset="slots">Slots</button>
+          <button type="button" data-preset="baccarat">Baccarat</button>
         </div>
 
         <form id="bankrollForm">
@@ -189,23 +191,19 @@
               <label for="bankroll">Starting Bankroll ($)</label>
               <input type="number" id="bankroll" min="1" step="1" value="200" required />
             </div>
-
             <div class="field">
               <label for="betSize">Bet Size Per Round ($)</label>
               <input type="number" id="betSize" min="0.01" step="0.01" value="5" required />
             </div>
-
             <div class="field">
               <label for="houseEdge">House Edge (%)</label>
               <input type="number" id="houseEdge" min="0" max="100" step="0.01" value="2" required />
             </div>
-
             <div class="field">
               <label for="bets">Number of Bets</label>
               <input type="number" id="bets" min="1" step="1" value="100" required />
             </div>
           </div>
-
           <button type="submit" class="btn btn-primary">Calculate</button>
         </form>
       </div>
@@ -214,29 +212,12 @@
     <section class="section-tight">
       <div class="container card results" id="calc-results" aria-live="polite">
         <h2 class="section-title">Results</h2>
-
         <div class="result-list">
-          <div class="result-item">
-            <span>Average Loss</span>
-            <strong id="expectedLoss">$0.00</strong>
-          </div>
-
-          <div class="result-item">
-            <span>Average Ending Bankroll</span>
-            <strong id="endingBankroll">$0.00</strong>
-          </div>
-
-          <div class="result-item">
-            <span>Bust Risk</span>
-            <strong id="bustRisk">0%</strong>
-          </div>
-
-          <div class="result-item">
-            <span>Chance of Profit</span>
-            <strong id="profitChance">0%</strong>
-          </div>
+          <div class="result-item"><span>Average Loss</span><strong id="expectedLoss">$0.00</strong></div>
+          <div class="result-item"><span>Average Ending Bankroll</span><strong id="endingBankroll">$0.00</strong></div>
+          <div class="result-item"><span>Bust Risk</span><strong id="bustRisk">0%</strong></div>
+          <div class="result-item"><span>Chance of Profit</span><strong id="profitChance">0%</strong></div>
         </div>
-
         <p id="summary" class="summary"></p>
       </div>
     </section>
@@ -247,7 +228,6 @@
           <h2 class="section-title">Simulation outcome distribution</h2>
           <canvas id="resultsChart" height="120"></canvas>
         </div>
-
         <div class="card">
           <h2 class="section-title">Example bankroll session</h2>
           <canvas id="sessionChart" height="120"></canvas>
@@ -258,19 +238,17 @@
     <section class="section-tight">
       <div class="container cta-box">
         <h2 class="section-title">Test your strategy before you risk real money</h2>
-        <p>
-          Learn the right moves, then validate your bankroll plan with simulation so you walk in with a process—not wishful thinking.
-        </p>
+        <p>Learn the right moves, then validate your bankroll plan with simulation so you walk in with a process—not wishful thinking.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="blackjack-bankroll-calculator.html">Go to Main Bankroll Tool</a>
+          <a class="btn btn-secondary" href="blackjack-strategy.html">Read Blackjack Strategy</a>
+          <a class="btn btn-secondary" href="slots.html">Explore Slot Variance</a>
         </div>
       </div>
     </section>
   </main>
 
-  <a class="btn btn-primary" href="blackjack-game.html" style="position: fixed; right: 18px; bottom: 18px; z-index: 999; box-shadow: 0 8px 24px rgba(0,0,0,0.35);">🎮 Practice Blackjack Free</a>
-
-  <script src="script.js"></script>
+  <a class="btn btn-primary floating-cta" href="blackjack-game.html">🎮 Practice Blackjack Free</a>
 
   <footer class="site-footer">
     <div class="footer-links">
@@ -279,22 +257,15 @@
       <a href="blackjack-game.html">Blackjack Trainer</a>
       <a href="slots.html">Slot Simulator</a>
       <a href="roulette.html">Roulette Odds</a>
-      <a href="responsible-gaming.html">Responsible Gaming</a>
     </div>
 
-    <p class="affiliate-note">
-      This site may contain affiliate links. If someone signs up through those links, CashCal may earn a commission at no extra cost.
-    </p>
-
-    <p class="gambling-warning">
-      Gambling involves risk and may not be suitable for everyone. These tools are provided for educational and entertainment purposes only. Gamble responsibly.
-    </p>
-
-    <p class="responsible">
-      Need help? Visit <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">ncpgambling.org</a> for responsible gambling resources.
-    </p>
-
+    <p class="affiliate-note">This site may contain affiliate links. If someone signs up through those links, CashCal may earn a commission at no extra cost.</p>
+    <p class="gambling-warning">Gambling involves risk and may not be suitable for everyone. These tools are provided for educational and entertainment purposes only. Gamble responsibly.</p>
+    <p class="responsible">Need help? Visit <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">ncpgambling.org</a> for responsible gambling resources.</p>
     <p class="copyright">© 2026 CashCal — Casino simulators and bankroll tools.</p>
   </footer>
+
+  <script src="script.js"></script>
+  <script src="home-engagement.js"></script>
 </body>
 </html>
