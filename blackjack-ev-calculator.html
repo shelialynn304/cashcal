@@ -12,8 +12,7 @@
 
   <link rel="stylesheet" href="style.css" />
 
-  <script defer data-workspace="69b01028d6e4c738cf4abf0f"
-    src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js"></script>
+  <script defer data-workspace="69b01028d6e4c738cf4abf0f" src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js"></script>
 
   <script type="application/ld+json">
   {
@@ -26,42 +25,8 @@
     "description": "Blackjack expected value calculator for comparing hit, stand, and double decisions based on player hand, dealer upcard, decks, payout rules, and table conditions."
   }
   </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is EV in blackjack?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "EV stands for expected value. In blackjack, it measures the average long-term return of a decision like hit, stand, or double in a specific spot."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Why does expected value matter in blackjack?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Expected value matters because blackjack is a math-driven game. The best move is usually the one with the highest long-term average return, even if it does not win every single hand."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can an EV calculator replace basic strategy?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No. An EV calculator helps explain why a move is correct, but basic strategy is still the practical shortcut players use at the table."
-        }
-      }
-    ]
-  }
-  </script>
 </head>
 <body>
-
 <header class="site-header">
   <div class="container nav">
     <a href="index.html" class="brand">Cash<span>Cal</span></a>
@@ -84,38 +49,11 @@
     <div class="container">
       <div class="eyebrow">Blackjack Decision Tool</div>
       <h1>Blackjack EV Calculator & Decision Tool</h1>
-      <p class="section-subtext">
-        Compare the expected value of hitting, standing, or doubling based on your hand, the dealer upcard, and basic table conditions. This tool helps explain which move has the best long-term return instead of relying on gut feelings and casino-level overconfidence.
-      </p>
-
+      <p class="section-subtext">Compare the expected value of hitting, standing, or doubling based on your hand, dealer upcard, and table conditions.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#ev-calculator">Run the Calculator</a>
         <a class="btn btn-secondary" href="blackjack-strategy.html">Learn Strategy</a>
         <a class="btn btn-secondary" href="blackjack-game.html">Practice Free</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container grid grid-2">
-      <div class="card">
-        <h2 class="section-title">What this blackjack EV calculator does</h2>
-        <p>
-          This calculator estimates the long-term expected value of common blackjack decisions in a given spot. Instead of relying on instinct, superstition, or “it felt right,” it compares the average return for hit, stand, and double.
-        </p>
-        <p class="mb-0">
-          It is not a full composition-dependent solver. It is a fast, practical approximation that is good for training, content, and helping people stop making expensive guesses.
-        </p>
-      </div>
-
-      <div class="warning-box">
-        <h2 class="section-title">Reality check</h2>
-        <p>
-          Positive EV is better. Negative EV means the casino is still chewing on your wallet, just at different speeds depending on how bad the spot is.
-        </p>
-        <p class="mb-0">
-          This tool helps compare choices. It does not turn blackjack into free money, despite what every loud guy at the table thinks.
-        </p>
       </div>
     </div>
   </section>
@@ -126,64 +64,15 @@
         <h2 class="section-title">Enter Your Spot</h2>
 
         <div class="form-row">
-          <div class="field">
-            <label for="playerTotal">Player Total</label>
-            <input id="playerTotal" type="number" min="4" max="21" value="16" />
-          </div>
-
-          <div class="field">
-            <label for="dealerCard">Dealer Upcard</label>
-            <select id="dealerCard">
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10" selected>10 / Face</option>
-              <option value="11">Ace</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="isSoft">Hand Type</label>
-            <select id="isSoft">
-              <option value="false" selected>Hard Total</option>
-              <option value="true">Soft Total</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="decks">Decks</label>
-            <select id="decks">
-              <option value="1">1 deck</option>
-              <option value="2">2 decks</option>
-              <option value="4">4 decks</option>
-              <option value="6" selected>6 decks</option>
-              <option value="8">8 decks</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="blackjackPayout">Blackjack Payout</label>
-            <select id="blackjackPayout">
-              <option value="1.5" selected>3:2</option>
-              <option value="1.2">6:5</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="betSize">Base Bet ($)</label>
-            <input id="betSize" type="number" min="1" value="25" />
-          </div>
+          <div class="field"><label for="playerTotal">Player Total</label><input id="playerTotal" type="number" min="4" max="21" value="16" /></div>
+          <div class="field"><label for="dealerCard">Dealer Upcard</label><select id="dealerCard"><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10" selected>10 / Face</option><option value="11">Ace</option></select></div>
+          <div class="field"><label for="isSoft">Hand Type</label><select id="isSoft"><option value="false" selected>Hard Total</option><option value="true">Soft Total</option></select></div>
+          <div class="field"><label for="decks">Decks</label><select id="decks"><option value="1">1 deck</option><option value="2">2 decks</option><option value="4">4 decks</option><option value="6" selected>6 decks</option><option value="8">8 decks</option></select></div>
+          <div class="field"><label for="blackjackPayout">Blackjack Payout</label><select id="blackjackPayout"><option value="1.5" selected>3:2</option><option value="1.2">6:5</option></select></div>
+          <div class="field"><label for="betSize">Base Bet ($)</label><input id="betSize" type="number" min="1" value="25" /></div>
         </div>
 
-        <div class="field" style="margin-top:16px;">
-          <label for="trueCount">True Count (optional rough boost)</label>
-          <input id="trueCount" type="number" min="-10" max="10" step="1" value="0" />
-        </div>
+        <div class="field input-spaced"><label for="trueCount">True Count (optional rough boost)</label><input id="trueCount" type="number" min="-10" max="10" step="1" value="0" /></div>
 
         <div class="hero-actions">
           <button class="btn btn-primary" id="calcBtn" type="button">Calculate EV</button>
@@ -191,9 +80,7 @@
           <button class="btn btn-secondary" id="resetBtn" type="button">Reset</button>
         </div>
 
-        <p class="small-note">
-          This is an approximation tool, not a full composition-dependent solver. Good enough for training and learning. Not a magical anti-casino force field.
-        </p>
+        <p class="small-note">Approximation tool for training and learning — not a full composition-dependent solver.</p>
       </div>
 
       <div class="card">
@@ -201,18 +88,18 @@
 
         <div class="info-box" id="bestMoveBox">
           <p class="small-note mb-0">Best move right now</p>
-          <h3 id="bestMove" style="margin-top:8px;">Stand</h3>
+          <h3 id="bestMove" class="result-headline">Stand</h3>
           <p id="bestMoveDetail" class="small-note mb-0">Run the calculator to compare all actions.</p>
         </div>
 
-        <div id="results" class="grid" style="margin-top:18px;"></div>
+        <div id="results" class="grid top-gap"></div>
 
-        <div class="card" style="margin-top:18px; background: rgba(255,255,255,0.02);">
+        <div class="card top-gap subtle-card">
           <strong>How to read this:</strong>
           <ul>
             <li>EV is the average return per base bet.</li>
             <li>Positive EV is better. Negative EV means the house still has the edge.</li>
-            <li>Doubling uses twice the money, so the dollar swing can hit harder.</li>
+            <li>Doubling uses twice the money, so dollar swings are bigger.</li>
           </ul>
         </div>
       </div>
@@ -221,78 +108,16 @@
 
   <section class="section-tight">
     <div class="container cta-box">
-      <h2 class="section-title">Best next step</h2>
-      <p>
-        EV is useful, but if someone does not actually know basic strategy, they will still find a creative way to lose with confidence.
-      </p>
+      <h2 class="section-title">What affects EV most?</h2>
+      <div class="grid grid-3">
+        <article class="card"><h3>Dealer upcard strength</h3><p>7 through Ace puts pressure on player totals and often forces improvement plays.</p></article>
+        <article class="card"><h3>Hand type</h3><p>Soft totals give extra flexibility because the Ace can drop from 11 to 1.</p></article>
+        <article class="card"><h3>Rule quality</h3><p>3:2 payouts and fewer decks are generally better for players than 6:5 games.</p></article>
+      </div>
       <div class="hero-actions">
         <a class="btn btn-primary" href="blackjack-strategy.html">Read Strategy Guide</a>
-        <a class="btn btn-secondary" href="blackjack-game.html">Use Training Game</a>
+        <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Estimate Bankroll Risk</a>
       </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container grid grid-2">
-      <article class="card">
-        <h2 class="section-title">What is EV in blackjack?</h2>
-        <p>
-          EV stands for expected value. In blackjack, it means the average long-term result of a decision in a specific spot.
-        </p>
-        <p>
-          A move with better expected value does not guarantee a win on that hand. It means that over many repetitions, it performs better on average than the alternatives.
-        </p>
-        <p class="mb-0">
-          That is why smart blackjack play is based on math, not vibes, streaks, or whatever story a stranger tells while spilling beer on the felt.
-        </p>
-      </article>
-
-      <article class="card">
-        <h2 class="section-title">When should you hit, stand, or double?</h2>
-        <p>
-          The correct move depends on your total, whether the hand is hard or soft, the dealer’s upcard, and the game rules.
-        </p>
-        <p>
-          In general, strong dealer cards force you to improve more often, while weak dealer cards let you stand more often and allow the dealer to self-destruct.
-        </p>
-        <p class="mb-0">
-          Doubling is strongest when you have a favorable edge and want to press it with one more card, not when you are rage-clicking because the table hurt your feelings.
-        </p>
-      </article>
-
-      <article class="card">
-        <h2 class="section-title">Why expected value matters</h2>
-        <p>
-          Blackjack is one of the few casino games where player decisions actually matter. Bad decisions raise the house edge. Good decisions reduce it.
-        </p>
-        <p class="mb-0">
-          This EV calculator helps show why some basic strategy plays are correct by comparing the long-term return of different options in the same situation.
-        </p>
-      </article>
-
-      <article class="card">
-        <h2 class="section-title">Related blackjack tools</h2>
-        <p>
-          Want to go deeper into blackjack math and decision-making?
-        </p>
-        <ul>
-          <li><a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a></li>
-          <li><a href="blackjack-strategy.html">Blackjack Strategy Guide</a></li>
-          <li><a href="blackjack-game.html">Blackjack Trainer Game</a></li>
-        </ul>
-      </article>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container card">
-      <h2 class="section-title">About this blackjack expected value calculator</h2>
-      <p>
-        This blackjack EV calculator helps compare the long-term profitability of different decisions, including hit, stand, and double. By entering your hand, the dealer’s upcard, and basic table conditions, you can see which move has the highest expected return over time.
-      </p>
-      <p class="mb-0">
-        Instead of guessing or relying on instinct, this tool gives a data-driven explanation of how each decision performs mathematically. It is built for beginners learning basic strategy and for more experienced players who want a faster way to understand the impact of their choices.
-      </p>
     </div>
   </section>
 </main>
@@ -305,229 +130,10 @@
     <a href="blackjack-game.html">Trainer</a>
     <a href="bubble-craps.html">Bubble Craps</a>
   </div>
-
-  <p class="affiliate-note">
-    This site may contain affiliate links. If someone signs up through those links, CashCal may earn a commission at no extra cost.
-  </p>
-
-  <p class="gambling-warning">
-    Gambling involves risk and may not be suitable for everyone. These tools are provided for educational and entertainment purposes only. Gamble responsibly.
-  </p>
-
-  <p class="responsible">
-    Need help? Visit
-    <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">ncpgambling.org</a>
-    for responsible gambling resources.
-  </p>
-
+  <p class="gambling-warning">Gambling involves risk and may not be suitable for everyone. These tools are provided for educational and entertainment purposes only.</p>
   <p class="copyright">© 2026 CashCal — Casino simulators and bankroll tools.</p>
 </footer>
 
-<script>
-  const dealerBustByUpcard = {
-    2: 0.353, 3: 0.373, 4: 0.402, 5: 0.429, 6: 0.423,
-    7: 0.262, 8: 0.244, 9: 0.233, 10: 0.212, 11: 0.116
-  };
-
-  const standWinChanceByTotal = {
-    4: 0.08, 5: 0.09, 6: 0.10, 7: 0.12, 8: 0.14, 9: 0.18,
-    10: 0.22, 11: 0.25, 12: 0.29, 13: 0.34, 14: 0.39, 15: 0.43,
-    16: 0.47, 17: 0.57, 18: 0.68, 19: 0.79, 20: 0.88, 21: 0.92
-  };
-
-  const cardProbabilities = [
-    { value: 2, p: 1/13 },
-    { value: 3, p: 1/13 },
-    { value: 4, p: 1/13 },
-    { value: 5, p: 1/13 },
-    { value: 6, p: 1/13 },
-    { value: 7, p: 1/13 },
-    { value: 8, p: 1/13 },
-    { value: 9, p: 1/13 },
-    { value: 10, p: 4/13 },
-    { value: 11, p: 1/13 }
-  ];
-
-  function clamp(num, min, max) {
-    return Math.min(Math.max(num, min), max);
-  }
-
-  function formatEV(ev) {
-    return (ev > 0 ? '+' : '') + ev.toFixed(3);
-  }
-
-  function formatMoney(amount) {
-    return '$' + amount.toFixed(2);
-  }
-
-  function valueClass(ev) {
-    if (ev > 0.02) return 'text-gold';
-    if (ev < -0.02) return 'text-muted';
-    return '';
-  }
-
-  function applyCountAdjustment(ev, trueCount, action) {
-    const count = Number(trueCount) || 0;
-    const actionMultiplier = action === 'double' ? 0.012 : 0.008;
-    return ev + (count * actionMultiplier);
-  }
-
-  function applyRuleAdjustment(ev, decks, blackjackPayout) {
-    let adj = ev;
-    if (Number(decks) <= 2) adj += 0.01;
-    if (Number(blackjackPayout) === 1.2) adj -= 0.015;
-    return adj;
-  }
-
-  function estimateStandEV(total, dealerCard, decks, blackjackPayout, trueCount) {
-    if (total > 21) return -1;
-    const bustChance = dealerBustByUpcard[dealerCard] || 0.2;
-    const baseWinChance = standWinChanceByTotal[total] || 0.1;
-    const dealerPressure = dealerCard >= 7 ? -0.06 : 0.03;
-    let ev = (baseWinChance + bustChance * 0.55 + dealerPressure) - (1 - (baseWinChance + bustChance * 0.55 + dealerPressure));
-    ev = clamp(ev, -1, 1);
-    ev = applyRuleAdjustment(ev, decks, blackjackPayout);
-    ev = applyCountAdjustment(ev, trueCount, 'stand');
-    return clamp(ev, -1, 1);
-  }
-
-  function drawCard(total, isSoft, cardValue) {
-    let newTotal = total + (cardValue === 11 ? 11 : cardValue);
-    let soft = isSoft;
-
-    if (cardValue === 11) {
-      soft = true;
-    }
-
-    while (newTotal > 21 && soft) {
-      newTotal -= 10;
-      soft = false;
-    }
-
-    return { total: newTotal, isSoft: soft };
-  }
-
-  function estimateHitEV(total, isSoft, dealerCard, decks, blackjackPayout, trueCount, depth = 0) {
-    if (total > 21) return -1;
-    if (depth > 1) {
-      return estimateStandEV(total, dealerCard, decks, blackjackPayout, trueCount);
-    }
-
-    let ev = 0;
-
-    for (const card of cardProbabilities) {
-      const next = drawCard(total, isSoft, card.value);
-      let branchEV;
-
-      if (next.total > 21) {
-        branchEV = -1;
-      } else if (next.total >= 17) {
-        branchEV = estimateStandEV(next.total, dealerCard, decks, blackjackPayout, trueCount);
-      } else {
-        const standEV = estimateStandEV(next.total, dealerCard, decks, blackjackPayout, trueCount);
-        const hitAgainEV = estimateHitEV(next.total, next.isSoft, dealerCard, decks, blackjackPayout, trueCount, depth + 1);
-        branchEV = Math.max(standEV, hitAgainEV);
-      }
-
-      ev += card.p * branchEV;
-    }
-
-    ev = applyRuleAdjustment(ev, decks, blackjackPayout);
-    ev = applyCountAdjustment(ev, trueCount, 'hit');
-    return clamp(ev, -1, 1);
-  }
-
-  function estimateDoubleEV(total, isSoft, dealerCard, decks, blackjackPayout, trueCount) {
-    let ev = 0;
-
-    for (const card of cardProbabilities) {
-      const next = drawCard(total, isSoft, card.value);
-      const branchEV = next.total > 21 ? -1 : estimateStandEV(next.total, dealerCard, decks, blackjackPayout, trueCount);
-      ev += card.p * branchEV;
-    }
-
-    ev = ev * 2;
-    ev = applyRuleAdjustment(ev, decks, blackjackPayout);
-    ev = applyCountAdjustment(ev, trueCount, 'double');
-    return clamp(ev, -2, 2);
-  }
-
-  function buildReason(bestAction, total, dealerCard, isSoft) {
-    if (bestAction === 'Stand') {
-      if (total >= 17) return 'You already have enough made hand strength that drawing is usually how people turn decent spots into dumb stories.';
-      if (dealerCard >= 4 && dealerCard <= 6) return 'Dealer is showing a weak upcard, so letting them self-destruct is often smarter than taking extra risk.';
-      return 'Standing comes out ahead here in this model because the downside of drawing is worse than squeezing more value.';
-    }
-
-    if (bestAction === 'Hit') {
-      if (!isSoft && total <= 11) return 'Low hard totals usually need more cards. Standing here is basically surrendering with extra steps.';
-      if (dealerCard >= 7) return 'Dealer strength puts pressure on you to improve, so hitting rates better than freezing in place.';
-      return 'Hitting gives the best average return here based on the current hand and dealer pressure.';
-    }
-
-    return 'Doubling wins here because one strong draw can create more value than playing passively. Great when the spot favors aggression, terrible when used like a drunk raccoon.';
-  }
-
-  function calculateEV() {
-    const total = clamp(Number(document.getElementById('playerTotal').value) || 16, 4, 21);
-    const dealerCard = Number(document.getElementById('dealerCard').value);
-    const isSoft = document.getElementById('isSoft').value === 'true';
-    const decks = Number(document.getElementById('decks').value);
-    const blackjackPayout = Number(document.getElementById('blackjackPayout').value);
-    const betSize = Math.max(1, Number(document.getElementById('betSize').value) || 25);
-    const trueCount = Number(document.getElementById('trueCount').value) || 0;
-
-    const standEV = estimateStandEV(total, dealerCard, decks, blackjackPayout, trueCount);
-    const hitEV = estimateHitEV(total, isSoft, dealerCard, decks, blackjackPayout, trueCount);
-    const doubleEV = estimateDoubleEV(total, isSoft, dealerCard, decks, blackjackPayout, trueCount);
-
-    const actions = [
-      { label: 'Stand', ev: standEV, dollars: standEV * betSize },
-      { label: 'Hit', ev: hitEV, dollars: hitEV * betSize },
-      { label: 'Double', ev: doubleEV, dollars: doubleEV * betSize }
-    ].sort((a, b) => b.ev - a.ev);
-
-    const best = actions[0];
-    document.getElementById('bestMove').textContent = best.label;
-    document.getElementById('bestMoveDetail').textContent =
-      `${buildReason(best.label, total, dealerCard, isSoft)} Estimated return: ${formatEV(best.ev)} units (${formatMoney(best.dollars)} on a ${formatMoney(betSize)} base bet).`;
-
-    const results = document.getElementById('results');
-    results.innerHTML = actions.map(action => `
-      <div class="result-item">
-        <span>${action.label}</span>
-        <strong class="${valueClass(action.ev)}">${formatEV(action.ev)} EV</strong>
-        <p class="small-note mb-0">Approx return: ${formatMoney(action.dollars)}</p>
-      </div>
-    `).join('');
-  }
-
-  document.getElementById('calcBtn').addEventListener('click', calculateEV);
-
-  document.getElementById('demoBtn').addEventListener('click', () => {
-    document.getElementById('playerTotal').value = 16;
-    document.getElementById('dealerCard').value = 10;
-    document.getElementById('isSoft').value = 'false';
-    document.getElementById('decks').value = 6;
-    document.getElementById('blackjackPayout').value = 1.5;
-    document.getElementById('betSize').value = 25;
-    document.getElementById('trueCount').value = 0;
-    calculateEV();
-  });
-
-  document.getElementById('resetBtn').addEventListener('click', () => {
-    document.getElementById('playerTotal').value = 16;
-    document.getElementById('dealerCard').value = 10;
-    document.getElementById('isSoft').value = 'false';
-    document.getElementById('decks').value = 6;
-    document.getElementById('blackjackPayout').value = 1.5;
-    document.getElementById('betSize').value = 25;
-    document.getElementById('trueCount').value = 0;
-    calculateEV();
-  });
-
-  calculateEV();
-</script>
-
+<script src="blackjack-ev.js"></script>
 </body>
 </html>

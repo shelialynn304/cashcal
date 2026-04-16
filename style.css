@@ -934,3 +934,61 @@ table td,
 .checklist-box .btn {
   margin-top: 12px;
 }
+
+/* HOME ENGAGEMENT */
+.quick-tool-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.quick-tool-tabs .btn {
+  margin-top: 0;
+}
+
+.quick-tool-tabs .btn.active {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.tool-highlight {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+
+.scenario-row.is-strong {
+  border-color: rgba(88, 214, 141, 0.35);
+}
+
+.floating-cta {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 999;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+.input-spaced {
+  margin-top: 16px;
+}
+
+.result-headline {
+  margin-top: 8px;
+}
+
+.top-gap {
+  margin-top: 18px;
+}
+
+.subtle-card {
+  background: rgba(255,255,255,0.02);
+}
+
+@media (max-width: 768px) {
+  .floating-cta {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+  }
+}
