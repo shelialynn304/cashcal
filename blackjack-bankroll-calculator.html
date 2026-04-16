@@ -88,6 +88,21 @@
   <section class="section" id="calculator">
     <div class="container">
       <div class="card">
+        <div class="bankroll-lasts-stat info-box text-center">
+          <p class="small-note mb-0">Quick Reality Check</p>
+          <div id="lastsHandsStat" class="lasts-hands-stat-value">
+            YOU LAST ~0 HANDS
+          </div>
+          <p id="lastsHandsNote" class="summary mb-0">
+            Run the calculator to estimate how long your bankroll survives.
+          </p>
+          <div class="hero-actions lasts-hands-actions">
+            <a class="btn" href="#bankrollForm">Test My Bet Size</a>
+            <a class="btn btn-secondary" href="blackjack-game.html">Practice in Trainer</a>
+            <a class="btn btn-secondary" href="blackjack-ev-calculator.html">Compare EV</a>
+          </div>
+        </div>
+
         <h2 class="section-title">Bankroll Calculator</h2>
         <p class="section-subtext">
           Enter your bankroll, average bet size, house edge, and planned number of hands.
@@ -137,17 +152,7 @@
           <button type="submit" class="btn">Calculate</button>
         </form>
 
-        <div class="info-box text-center" style="margin-top:24px;">
-          <p class="small-note mb-0">Estimated Survival</p>
-          <div id="lastsHandsStat" style="font-size:clamp(1.4rem,3.2vw,2.2rem); font-weight:800; color:var(--gold); line-height:1.15; margin-top:8px;">
-            YOU LAST ~0 HANDS
-          </div>
-          <p id="lastsHandsNote" class="summary" style="margin-bottom:0;">
-            Run the calculator to estimate how long your bankroll survives.
-          </p>
-        </div>
-
-        <div class="results" style="margin-top:24px;">
+        <div class="results results-spacing">
           <div class="result-list">
             <div class="result-item">
               <span>Expected Loss</span>
@@ -190,7 +195,7 @@
           </p>
         </div>
 
-        <div class="grid grid-2" style="margin-top:24px;">
+        <div class="grid grid-2 chart-grid-spacing">
           <div class="card">
             <h3>Outcome Breakdown</h3>
             <p class="small-note">
