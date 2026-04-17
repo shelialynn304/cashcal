@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <title>How Long Will Your Slot Bankroll Last? Survival Calculator | CashCal</title>
+  <meta name="description" content="Estimate slot bankroll survival odds with inputs for bankroll, bet size, RTP, volatility, and target spins." />
+  <link rel="canonical" href="https://edgeoverluck.com/bankroll-survival-slots.html" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Slot Bankroll Survival Calculator",
+    "url": "https://edgeoverluck.com/bankroll-survival-slots.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "description": "Calculator to estimate slot bankroll survival, ruin risk, and likely spin endurance.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand">Cash<span>Cal</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="slots.html">Slots Hub</a>
+        <a href="bankroll-survival-slots.html" class="active">Bankroll Survival</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow">Interactive Tool</div>
+        <h1>How Long Will Your Slot Bankroll Last?</h1>
+        <p class="lead">Stress-test your bankroll against bet size, RTP profile, volatility, and spin target before a real session.</p>
+        <p><strong>Disclaimer:</strong> Slots are negative-EV games. This tool helps estimate risk, not beat it.</p>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container card">
+        <form id="slotSurvivalForm">
+          <div class="grid grid-2">
+            <div class="field">
+              <label for="survivalBankroll">Bankroll ($)</label>
+              <input id="survivalBankroll" type="number" min="20" step="5" value="250" required />
+            </div>
+            <div class="field">
+              <label for="survivalBet">Bet size ($)</label>
+              <input id="survivalBet" type="number" min="0.1" step="0.1" value="1.5" required />
+            </div>
+            <div class="field">
+              <label for="survivalPreset">RTP + volatility preset</label>
+              <select id="survivalPreset"></select>
+            </div>
+            <div class="field">
+              <label for="survivalTargetSpins">Target spins</label>
+              <input id="survivalTargetSpins" type="number" min="50" step="50" value="600" required />
+            </div>
+          </div>
+          <button type="submit">Estimate Survival Odds</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container results" aria-live="polite">
+        <div class="result-list">
+          <div class="result-item"><span>Estimated survival odds</span><strong id="survivalOdds">0%</strong></div>
+          <div class="result-item"><span>Likely spin range</span><strong id="survivalRange">-</strong></div>
+          <div class="result-item"><span>Ruin risk</span><strong id="survivalRuinRisk">0%</strong></div>
+          <div class="result-item"><span>Median ending bankroll</span><strong id="survivalMedianEnd">$0.00</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container card">
+        <h2 class="section-title">Interpretation</h2>
+        <p id="survivalDetail" class="section-subtext"></p>
+        <h3>What this tool highlights</h3>
+        <ul>
+          <li>Bet size usually drives bust risk faster than small RTP differences.</li>
+          <li>High volatility creates wider outcome ranges around the same average return.</li>
+          <li>Bonus value can soften losses, but it does not remove long-run house edge.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container cta-box">
+        <h2 class="section-title">Next step: compare strategy across tools</h2>
+        <p>Use this survival estimate, then run the same scenario in the slot simulator for a visual streak profile.</p>
+        <div class="hero-actions">
+          <a class="btn" href="slot-simulator.html">Run slot simulator</a>
+          <a class="btn btn-secondary" href="slots.html">Back to slots hub</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container card">
+        <h2 class="section-title">Related slot pages</h2>
+        <p><a href="slots.html">Slots hub</a> • <a href="slot-rtp-explained.html">RTP explained</a> • <a href="slot-volatility-guide.html">Volatility guide</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container"><p>Educational use only. Set limits and treat slots as entertainment.</p></div></footer>
+
+  <script src="slots-data.js"></script>
+  <script src="slots.js"></script>
+  <script src="bankroll-survival-slots.js"></script>
+</body>
+</html>

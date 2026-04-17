@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <title>Slot Machine Simulator: RTP & Volatility Session Tester | CashCal</title>
+  <meta name="description" content="Use this slot machine simulator to test bankroll outcomes, bust chance, RTP behavior, and volatility swings across autoplay sessions." />
+  <link rel="canonical" href="https://edgeoverluck.com/slot-simulator.html" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CashCal Slot Machine Simulator",
+    "url": "https://edgeoverluck.com/slot-simulator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "description": "Interactive simulator for slot bankroll outcomes, volatility, RTP, and bust risk.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand">Cash<span>Cal</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="slots.html">Slots Hub</a>
+        <a href="slot-simulator.html" class="active">Slot Simulator</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow">Interactive Tool</div>
+        <h1>Slot Machine Simulator for Realistic Session Swings</h1>
+        <p class="lead">Test bankroll, bet size, RTP preset, volatility, and spin count. Use autoplay to see end bankroll, bust chance, and streak behavior in one view.</p>
+        <p><strong>Disclaimer:</strong> Slots are negative-EV games. This simulator is for education and entertainment only.</p>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container card">
+        <h2 class="section-title">Configure your scenario</h2>
+        <form id="slotSimulatorForm">
+          <div class="grid grid-2">
+            <div class="field">
+              <label for="simBankroll">Starting bankroll ($)</label>
+              <input id="simBankroll" type="number" min="20" step="5" value="300" required />
+            </div>
+            <div class="field">
+              <label for="simBetSize">Bet size per spin ($)</label>
+              <input id="simBetSize" type="number" min="0.1" step="0.1" value="2" required />
+            </div>
+            <div class="field">
+              <label for="slotPreset">RTP + volatility preset</label>
+              <select id="slotPreset"></select>
+            </div>
+            <div class="field">
+              <label for="simSpins">Number of spins</label>
+              <input id="simSpins" type="number" min="25" step="25" value="500" required />
+            </div>
+          </div>
+          <div class="hero-actions">
+            <button id="runAutoplay" type="submit">Run Autoplay Simulation</button>
+            <a class="btn btn-secondary" href="bankroll-survival-slots.html">Open Bankroll Survival Tool</a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container results" aria-live="polite">
+        <div class="result-list">
+          <div class="result-item"><span>Estimated end bankroll</span><strong id="simEndBankroll">$0.00</strong></div>
+          <div class="result-item"><span>Bust chance</span><strong id="simBustChance">0%</strong></div>
+          <div class="result-item"><span>Best run (single simulation)</span><strong id="simBestRun">$0.00</strong></div>
+          <div class="result-item"><span>Worst run (single simulation)</span><strong id="simWorstRun">$0.00</strong></div>
+          <div class="result-item"><span>Average actual RTP</span><strong id="simActualRtp">0%</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container card">
+        <h2 class="section-title">Session visual summary</h2>
+        <p class="section-subtext">Bars below show balance pacing across one autoplay run so you can see bankroll drain and recovery phases.</p>
+        <div id="simBalanceBars" class="slot-bars"></div>
+        <p id="simNarrative" class="small-note"></p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid grid-2">
+        <article class="card">
+          <h2>What RTP can and cannot tell you</h2>
+          <p>RTP is the long-run average return over very large samples. It does not forecast what your next 100 or 500 spins will do.</p>
+          <p>Use this simulator to compare equal bankrolls at 94% vs 96.5% RTP and observe how short-run variance dominates session outcomes.</p>
+          <a class="btn btn-secondary" href="slot-rtp-explained.html">Read RTP guide</a>
+        </article>
+        <article class="card">
+          <h2>Volatility vs bankroll pain</h2>
+          <p>Higher volatility often means more missed spins in a row, larger drawdowns, and occasional spikes. Your bankroll needs to survive the drought.</p>
+          <a class="btn btn-secondary" href="slot-volatility-guide.html">Read volatility guide</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container card">
+        <h2 class="section-title">Related slot pages</h2>
+        <p><a href="slots.html">Back to slots hub</a> • <a href="slot-rtp-explained.html">RTP explained</a> • <a href="slot-volatility-guide.html">Volatility guide</a> • <a href="bankroll-survival-slots.html">Bankroll survival</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>CashCal is educational only. Slot outcomes are random and negative-EV over long play.</p>
+    </div>
+  </footer>
+
+  <script src="slots-data.js"></script>
+  <script src="slots.js"></script>
+  <script src="slot-simulator.js"></script>
+</body>
+</html>
