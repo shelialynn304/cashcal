@@ -1216,3 +1216,19 @@ table td,
     max-width: 280px;
   }
 }
+.hero {
+  position: relative;
+  background: url('slots-hero-machine.webp') center/cover no-repeat;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+}
+
+.hero .container {
+  position: relative;
+  z-index: 2;
+}
