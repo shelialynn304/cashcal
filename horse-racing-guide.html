@@ -4,13 +4,64 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
-  <title>Horse Racing Betting Guide | Odds, Bet Types, Strategy Tips for Beginners</title>
-  <meta name="description" content="Learn horse racing betting basics, odds, bet types, and fast handicapping tips. Understand favorites vs longshots and make smarter horse racing picks with CashCal." />
+  <title>Horse Racing Betting Guide & Calculators | Odds, Bankroll, and Simulation Tools</title>
+  <meta name="description" content="Learn horse racing bet types, odds math, takeout, bankroll strategy, and favorite vs longshot variance with interactive calculators and beginner-friendly simulations." />
   <link rel="canonical" href="https://edgeoverluck.com/horse-racing-guide.html" />
   <link rel="stylesheet" href="style.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": "Horse Racing Betting Guide & Tools",
+        "url": "https://edgeoverluck.com/horse-racing-guide.html",
+        "description": "Educational horse racing guide covering odds, bet types, bankroll strategy, and value-focused betting tools."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the difference between win, place, and show?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Win pays only if your horse finishes first. Place pays if the horse finishes first or second. Show pays if the horse finishes first, second, or third, typically with lower payouts."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are favorites profitable in horse racing?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Favorites win more often than longshots but are not automatically profitable. Profit depends on whether the payout price is better than the horse's true chance after track takeout."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does takeout mean in horse betting?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Takeout is the percentage removed from the betting pool before payouts. A higher takeout means bettors need stronger value to break even over time."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I beat horse racing by picking more winners?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Picking winners alone is not enough. You need to beat the market price by finding odds that are higher than your estimate of a horse's true winning probability."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
-<body>
-<header class="site-header">
+<body class="horse-page">
+  <header class="site-header">
     <div class="container nav">
       <a href="index.html" class="brand">Cash<span>Cal</span></a>
       <nav class="nav-links">
@@ -31,322 +82,326 @@
     <section class="hero">
       <div class="container hero-wrap">
         <div>
-          <div class="eyebrow">Horse Racing Guide</div>
-          <h1>Horse Racing Betting Basics Without the Pretentious Nonsense</h1>
-          <p>
-            Horse racing can look like a spreadsheet mated with a casino and raised a speed demon.
-            This page strips it down: what the bets mean, what odds actually tell you, what to check fast,
-            and how not to torch money chasing longshots that looked cute in the paddock.
+          <div class="eyebrow">Horse Racing Betting Lab</div>
+          <h1>Learn Horse Betting Math, Build Smarter Tickets, and Stress-Test Your Strategy</h1>
+          <p class="lead">
+            This page turns horse racing from "gut feel" into a repeatable process. Learn win/place/show and exotic bets,
+            convert odds to probability, estimate payout reality after takeout, and run fun simulations to compare favorites vs longshots.
           </p>
           <div class="hero-actions">
-            <a href="#bet-types" class="btn btn-primary">Start With Bet Types</a>
-            <a href="#quick-guide" class="btn btn-secondary">See the Fast Checklist</a>
+            <a href="#horse-tools" class="btn btn-primary">Jump to Interactive Tools</a>
+            <a href="#race-lab" class="btn btn-secondary">Play the Race Lab</a>
+            <a href="#horse-faq" class="btn btn-secondary">Read Beginner FAQ</a>
           </div>
-        </div><aside class="hero-card">
-      <h3>Quick reality check</h3>
-      <ul class="check-list">
-        <li><strong>Favorite:</strong> Most likely winner, not guaranteed winner.</li>
-        <li><strong>Longshot:</strong> Bigger payout, lower chance. Shocking, I know.</li>
-        <li><strong>Odds move:</strong> The crowd changes the price, not the horse's soul.</li>
-        <li><strong>Best beginner move:</strong> Start with Win, Place, Show before trying exotic bets.</li>
-      </ul>
-    </aside>
-  </div>
-</header>
+        </div>
 
-<main>
-  <section class="hero">
-    <div class="container hero-wrap">
-      <div>
-        <span class="eyebrow">Horse Racing Strategy Guide</span>
-        <h1>Understand Horse Racing Odds Faster and Make Smarter Bets</h1>
-        <p>
-          This page helps you quickly learn how horse racing works, what each bet type means,
-          and what to check before picking a horse. No jargon overload — just practical betting basics.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#horse-racing-basics">Learn the Basics</a>
-          <a class="btn btn-secondary" href="#before-you-bet">Use the Race Checklist</a>
+        <aside class="card hero-media-card">
+          <img src="images/horse-racing/horse-race-betting-simulator-hero.webp" alt="Horse racing educational tools and simulation" loading="eager" decoding="async" />
+          <ul class="check-list">
+            <li><strong>Educational focus:</strong> Math-first, no fake certainty.</li>
+            <li><strong>Best use:</strong> Test ideas before betting real money.</li>
+            <li><strong>Core lesson:</strong> Picking winners is not the same as finding value.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="quick-basics">
+      <div class="container">
+        <h2 class="section-title">Quick Betting Basics: What Each Bet Actually Means</h2>
+        <p class="section-subtext">Start here if the racing form looks overwhelming. These are the core bets and how variance changes as complexity increases.</p>
+
+        <div class="grid grid-3">
+          <article class="panel">
+            <h3>Win</h3>
+            <p><strong>Requirement:</strong> Your horse must finish 1st.</p>
+            <p><strong>Use case:</strong> Most direct way to compare your opinion vs market odds.</p>
+            <p class="mb-0"><span class="tag tag-low">Lower complexity</span></p>
+          </article>
+          <article class="panel">
+            <h3>Place</h3>
+            <p><strong>Requirement:</strong> Horse finishes 1st or 2nd.</p>
+            <p><strong>Use case:</strong> Higher hit rate than Win, usually smaller payoff.</p>
+            <p class="mb-0"><span class="tag tag-low">Lower variance</span></p>
+          </article>
+          <article class="panel">
+            <h3>Show</h3>
+            <p><strong>Requirement:</strong> Horse finishes top 3.</p>
+            <p><strong>Use case:</strong> Conservative bet type, lowest payout ceiling.</p>
+            <p class="mb-0"><span class="tag tag-low">Most conservative</span></p>
+          </article>
+          <article class="panel">
+            <h3>Exacta</h3>
+            <p><strong>Requirement:</strong> Pick 1st and 2nd in exact order.</p>
+            <p><strong>Use case:</strong> Better payouts, but far lower hit rate than Win/Place/Show.</p>
+            <p class="mb-0"><span class="tag tag-mid">Medium risk</span></p>
+          </article>
+          <article class="panel">
+            <h3>Trifecta</h3>
+            <p><strong>Requirement:</strong> Pick top 3 in exact order.</p>
+            <p><strong>Use case:</strong> High upside, heavy variance and long cold stretches.</p>
+            <p class="mb-0"><span class="tag tag-high">High risk</span></p>
+          </article>
+          <article class="panel">
+            <h3>Superfecta</h3>
+            <p><strong>Requirement:</strong> Pick top 4 in exact order.</p>
+            <p><strong>Use case:</strong> Big headline payouts with very low hit frequency.</p>
+            <p class="mb-0"><span class="tag tag-high">Very high risk</span></p>
+          </article>
         </div>
       </div>
+    </section>
 
-      <aside class="card hero-media-card">
-        <img src="images/horse-racing/horse-race-betting-simulator-hero.webp" alt="Horse race betting guide hero image" loading="eager" decoding="async" />
-        <ul class="check-list">
-          <li><strong>Goal:</strong> Pick smarter, not just louder longshots.</li>
-          <li><strong>Focus:</strong> Odds, form, class, conditions, and pace setup.</li>
-          <li><strong>Best start:</strong> Use simpler bets before trying exotics.</li>
-        </ul>
-      </aside>
-    </div>
-  </section>
+    <section class="section">
+      <div class="container grid grid-2">
+        <article class="card">
+          <h2 class="section-title">Odds and Implied Probability (Plain English)</h2>
+          <p>Fractional odds like 5/1 imply a rough win chance of <strong>1 ÷ (5+1) = 16.7%</strong>. Bigger odds mean bigger payouts <em>because</em> expected win rate is lower.</p>
+          <ul>
+            <li><strong>Favorite:</strong> Lower odds, higher expected win rate, lower payout.</li>
+            <li><strong>Longshot:</strong> Higher odds, lower expected win rate, bigger payout spikes.</li>
+            <li><strong>Price matters:</strong> A horse can be "most likely" and still be a bad bet if the odds are too short.</li>
+          </ul>
+        </article>
 
-  <section class="section" id="horse-racing-basics">
-    <div class="container">
-      <h2 class="section-title">Horse Racing Basics</h2>
-      <p class="section-subtext">
-        Horse racing betting means choosing outcomes in a race and getting paid based on odds.
-        The more unlikely your pick, the higher the payout potential — and the lower the hit rate.
+        <article class="warning-box">
+          <h2 class="section-title">Quick Takeaway</h2>
+          <p><strong>Payout size is not value.</strong> Longshots create memorable wins, but most lose. Your edge only exists if market odds are better than true probability.</p>
+          <p><strong>Takeout shrinks every pool.</strong> Even decent handicapping can lose long-term if you overpay for risk.</p>
+          <p class="mb-0"><strong>Goal:</strong> Think like a price shopper, not a winner picker.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="horse-tools">
+      <div class="container">
+        <h2 class="section-title">Interactive Horse Betting Tools</h2>
+        <p class="section-subtext">Use these calculators to understand what odds imply, what tickets cost, and how quickly bankroll risk can snowball.</p>
+
+        <div class="grid grid-3 horse-tool-grid">
+          <article class="card">
+            <h3>Odds → Probability Calculator</h3>
+            <div class="field">
+              <label for="oddsInput">Fractional odds (examples: 5/2, 7/1, 1/1)</label>
+              <input id="oddsInput" type="text" value="5/2" inputmode="decimal" />
+            </div>
+            <button id="calcOddsBtn" type="button" class="btn btn-secondary">Convert Odds</button>
+            <p id="oddsResult" class="summary result-headline">Enter odds to see implied probability and decimal odds.</p>
+          </article>
+
+          <article class="card">
+            <h3>Ticket Cost & Payout Estimator</h3>
+            <div class="form-row">
+              <div class="field">
+                <label for="ticketType">Ticket type</label>
+                <select id="ticketType">
+                  <option value="exacta">Exacta</option>
+                  <option value="trifecta">Trifecta</option>
+                  <option value="superfecta">Superfecta</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="ticketBase">Base unit ($)</label>
+                <input id="ticketBase" type="number" min="0.5" step="0.5" value="1" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="horsesUsed">Horses used</label>
+                <input id="horsesUsed" type="number" min="2" max="12" step="1" value="4" />
+              </div>
+              <div class="field">
+                <label for="sampleOdds">Main horse odds (e.g. 3/1)</label>
+                <input id="sampleOdds" type="text" value="3/1" />
+              </div>
+            </div>
+            <button id="calcTicketBtn" type="button" class="btn btn-secondary">Estimate Ticket</button>
+            <p id="ticketResult" class="summary result-headline">Ticket combinations and rough payout estimate will appear here.</p>
+          </article>
+
+          <article class="card">
+            <h3>Bankroll Session Risk Check</h3>
+            <div class="form-row">
+              <div class="field">
+                <label for="bankrollInput">Starting bankroll ($)</label>
+                <input id="bankrollInput" type="number" min="20" step="10" value="300" />
+              </div>
+              <div class="field">
+                <label for="unitInput">Bet size per race ($)</label>
+                <input id="unitInput" type="number" min="1" step="1" value="15" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="racesInput">Races in session</label>
+                <input id="racesInput" type="number" min="5" step="1" value="20" />
+              </div>
+              <div class="field">
+                <label for="hitRateInput">Estimated hit rate (%)</label>
+                <input id="hitRateInput" type="number" min="5" max="80" step="1" value="28" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="avgNetMultipleInput">Average net win multiple (x bet, simplified)</label>
+              <input id="avgNetMultipleInput" type="number" min="0.2" step="0.1" value="2.4" />
+            </div>
+            <button id="calcBankrollBtn" type="button" class="btn btn-secondary">Run Session Stress Test</button>
+            <p id="bankrollResult" class="summary result-headline">Estimate bust risk before your next card.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="race-lab">
+      <div class="container">
+        <h2 class="section-title">Race Lab: Favorite vs Longshot Simulator</h2>
+        <p class="section-subtext">Educational simulation only. It illustrates variance and takeout pressure, not guaranteed real-world outcomes.</p>
+
+        <div class="grid grid-2">
+          <article class="card">
+            <h3>Simulation controls</h3>
+            <div class="form-row">
+              <div class="field">
+                <label for="favOdds">Favorite odds</label>
+                <input id="favOdds" type="text" value="2/1" />
+              </div>
+              <div class="field">
+                <label for="longOdds">Longshot odds</label>
+                <input id="longOdds" type="text" value="12/1" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="simRaces">Number of races</label>
+                <input id="simRaces" type="number" min="20" max="1000" step="10" value="200" />
+              </div>
+              <div class="field">
+                <label for="simTakeout">Takeout (%)</label>
+                <input id="simTakeout" type="number" min="5" max="30" step="1" value="17" />
+              </div>
+            </div>
+            <button id="runSimBtn" type="button" class="btn">Run Favorite vs Longshot</button>
+            <p id="simResult" class="summary result-headline">Run a simulation to compare hit rate and profit swings.</p>
+          </article>
+
+          <article class="info-box">
+            <h3>How to read this simulator</h3>
+            <ul>
+              <li>Favorites usually win more often, but can still lose money at short prices.</li>
+              <li>Longshots can show huge temporary spikes but often finish deeply negative.</li>
+              <li>Takeout means both paths face a built-in disadvantage unless you find true market mispricing.</li>
+            </ul>
+            <p class="mb-0">Use this with the <a href="blackjack-ev-calculator.html">EV calculator</a> and <a href="blackjack-bankroll-calculator.html">bankroll calculator</a> to compare gambling variance across games.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid grid-2">
+        <article class="card">
+          <h2 class="section-title">Bankroll strategy for horse betting sessions</h2>
+          <ul>
+            <li><strong>Set a unit size:</strong> Common starting range is 1%–3% of bankroll per race.</li>
+            <li><strong>Cap race exposure:</strong> Avoid firing multiple exotics in every race out of boredom.</li>
+            <li><strong>Pre-commit stops:</strong> Session loss cap and profit lock rule reduce emotional tilt.</li>
+            <li><strong>Grade your bets:</strong> Track whether losses came from bad reads or good bets at bad variance points.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2 class="section-title">Why payouts can be misleading</h2>
+          <p>A bettor might hit one 18/1 winner and feel unbeatable while ignoring 30 losing bets around it. This creates <strong>result bias</strong> — judging decisions by short-term outcomes instead of long-run expected value.</p>
+          <p><strong>Important:</strong> Beating races is a pricing problem, not a prediction contest. You can pick many winners and still lose if you consistently accept bad prices.</p>
+          <p class="mb-0">Compare this variance profile with <a href="slots.html">slot volatility behavior</a> and <a href="blackjack-game.html">blackjack training decisions</a> to see how edge and variance differ by game.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Common mistakes horse bettors make</h2>
+        <div class="grid grid-3">
+          <article class="tip-card">
+            <h3>Confusing "most likely" with "best bet"</h3>
+            <p>The favorite can be correctly favored and still be overpriced.</p>
+          </article>
+          <article class="tip-card">
+            <h3>Overbuilding exotic tickets</h3>
+            <p>Too many combinations can quietly destroy ROI even after occasional hits.</p>
+          </article>
+          <article class="tip-card">
+            <h3>Ignoring takeout and breakage</h3>
+            <p>Pool deductions change fair odds and reduce achievable long-run returns.</p>
+          </article>
+          <article class="tip-card">
+            <h3>Betting every race</h3>
+            <p>Passing low-confidence races is often more profitable than forcing action.</p>
+          </article>
+          <article class="tip-card">
+            <h3>Chasing after near-misses</h3>
+            <p>Exotic near-hits are emotionally loud but should not trigger reckless sizing.</p>
+          </article>
+          <article class="tip-card">
+            <h3>No record-keeping</h3>
+            <p>Without logs, you cannot separate luck from skill improvements.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="horse-faq">
+      <div class="container">
+        <h2 class="section-title">Horse Betting FAQ (Beginner Friendly)</h2>
+        <div class="faq-list">
+          <details class="card" open>
+            <summary>What is the easiest horse bet for beginners?</summary>
+            <p>Start with Win bets. They are easiest to track, easiest to compare against your expected probability, and easier to learn bankroll discipline with.</p>
+          </details>
+          <details class="card">
+            <summary>What is an exacta box and why is it expensive?</summary>
+            <p>An exacta box covers multiple order combinations. More coverage means more ticket combinations, which raises cost quickly and can erase value.</p>
+          </details>
+          <details class="card">
+            <summary>Do longshots make more money over time?</summary>
+            <p>Usually no. They create larger single wins but lower hit rates. Without pricing edge, longshot-heavy play often creates bigger drawdowns.</p>
+          </details>
+          <details class="card">
+            <summary>How much bankroll should I bring for a horse racing session?</summary>
+            <p>Use a preset unit (often 1%–3% of bankroll) and a race cap. Your session should survive normal losing streaks without forcing bigger bets.</p>
+          </details>
+          <details class="card">
+            <summary>Can I win long-term just by handicapping better?</summary>
+            <p>Only if your probability estimates beat market prices after takeout. Accuracy alone is not enough without value discipline.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container cta-box">
+        <h2 class="section-title">Keep building your edge with other EdgeOverLuck tools</h2>
+        <p>Next, compare variance and risk management across games using our core math tools.</p>
+        <div class="hero-actions">
+          <a class="btn" href="blackjack-bankroll-calculator.html">Bankroll Calculator</a>
+          <a class="btn btn-secondary" href="blackjack-ev-calculator.html">EV Calculator</a>
+          <a class="btn btn-secondary" href="slots.html">Slots Variance Hub</a>
+          <a class="btn btn-secondary" href="blackjack-game.html">Blackjack Trainer</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p><strong>CashCal</strong> — practical gambling education, strategy explainers, and interactive variance tools.</p>
+      <p class="small-note">
+        Educational content only. Gambling involves risk and variance. Follow local laws and age requirements.
+        Never bet money you cannot afford to lose.
       </p>
-
-      <div class="grid grid-3">
-        <article class="card">
-          <h3>What horse betting is</h3>
-          <p>You place money on a horse (or combo of horses) to finish in specific positions.</p>
-          <p class="mb-0">If your bet condition is correct, you win based on the final odds and pool payouts.</p>
-        </article>
-
-        <article class="card">
-          <h3>How a race works</h3>
-          <p>Horses break from assigned post positions and compete over a set distance.</p>
-          <p class="mb-0">Race shape matters: pace can collapse early or favor leaders depending on field makeup.</p>
-        </article>
-
-        <article class="card">
-          <h3>What bettors look at</h3>
-          <p>Most bettors compare odds, recent form, class level, track conditions, and jockey/trainer stats.</p>
-          <p class="mb-0">The goal is to find value: fair chance at better-than-fair price.</p>
-        </article>
-      </div>
     </div>
-  </section>
+  </footer>
 
-  <section class="section" id="common-bet-types">
-    <div class="container">
-      <h2 class="section-title">Common Bet Types</h2>
-      <p class="section-subtext">
-        Start with these five bet types. They cover most beginner decisions and make race reading easier.
-      </p>
-
-      <div class="grid grid-3">
-        <article class="panel">
-          <h3>Win</h3>
-          <p><strong>What it means:</strong> Your horse must finish 1st.</p>
-          <p><strong>Risk:</strong> <span class="tag tag-low">Lower</span></p>
-          <p class="mb-0"><strong>Why choose it:</strong> Simple and clean. Great for beginners building discipline.</p>
-        </article>
-
-        <article class="panel">
-          <h3>Place</h3>
-          <p><strong>What it means:</strong> Your horse must finish 1st or 2nd.</p>
-          <p><strong>Risk:</strong> <span class="tag tag-low">Lower</span></p>
-          <p class="mb-0"><strong>Why choose it:</strong> Higher hit rate than Win, but with smaller payouts.</p>
-        </article>
-
-        <article class="panel">
-          <h3>Show</h3>
-          <p><strong>What it means:</strong> Your horse must finish 1st, 2nd, or 3rd.</p>
-          <p><strong>Risk:</strong> <span class="tag tag-low">Lower</span></p>
-          <p class="mb-0"><strong>Why choose it:</strong> Lowest variance among common bets, often used for conservative play.</p>
-        </article>
-
-        <article class="panel">
-          <h3>Exacta</h3>
-          <p><strong>What it means:</strong> Pick 1st and 2nd in exact order.</p>
-          <p><strong>Risk:</strong> <span class="tag tag-mid">Medium</span></p>
-          <p class="mb-0"><strong>Why choose it:</strong> Bigger upside if you have a strong read on top contenders.</p>
-        </article>
-
-        <article class="panel">
-          <h3>Trifecta</h3>
-          <p><strong>What it means:</strong> Pick 1st, 2nd, and 3rd in exact order.</p>
-          <p><strong>Risk:</strong> <span class="tag tag-high">High</span></p>
-          <p class="mb-0"><strong>Why choose it:</strong> Big payout potential, but low hit rate and high variance.</p>
-        </article>
-
-        <article class="info-box">
-          <h3>Beginner tip</h3>
-          <p>If you're new, focus on Win/Place/Show first.</p>
-          <p class="mb-0">Learn to identify contenders before paying for complex combinations.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="pick-a-horse-fast">
-    <div class="container">
-      <h2 class="section-title">How to Pick a Horse Fast</h2>
-      <p class="section-subtext">
-        Use this quick scan before betting. It keeps your process simple and avoids random guessing.
-      </p>
-
-      <div class="grid grid-3">
-        <article class="tip-card">
-          <h3>1) Check the odds board</h3>
-          <p>Odds show market expectation. Big favorites are more likely to win, but prices can be too short.</p>
-        </article>
-
-        <article class="tip-card">
-          <h3>2) Favorite vs longshot</h3>
-          <p>Ask whether a longshot has a real angle (surface switch, class drop, pace edge) or just hype.</p>
-        </article>
-
-        <article class="tip-card">
-          <h3>3) Read recent form</h3>
-          <p>Look at last 3 starts: finish position, speed consistency, and whether performance is improving.</p>
-        </article>
-
-        <article class="tip-card">
-          <h3>4) Track and weather</h3>
-          <p>Some horses improve on wet dirt or turf; others regress badly. Conditions can flip expected outcomes.</p>
-        </article>
-
-        <article class="tip-card">
-          <h3>5) Jockey + trainer combo</h3>
-          <p>Strong combinations often outperform baseline expectations, especially in competitive fields.</p>
-        </article>
-
-        <article class="tip-card">
-          <h3>6) Post position</h3>
-          <p>At some distances/tracks, outside or inside gates can help or hurt depending on pace and turn setup.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="chance-factors">
-    <div class="container">
-      <h2 class="section-title">What Actually Changes Your Chances?</h2>
-      <p class="section-subtext">
-        These factors affect real race outcomes more than random intuition.
-      </p>
-
-      <div class="grid grid-3">
-        <article class="card">
-          <h3>Horse form</h3>
-          <p>Current fitness and recent speed are usually more predictive than old career highlights.</p>
-        </article>
-
-        <article class="card">
-          <h3>Class level</h3>
-          <p>Dropping in class can be powerful. Moving up means tougher rivals and less room for error.</p>
-        </article>
-
-        <article class="card">
-          <h3>Surface + conditions</h3>
-          <p>Dirt, turf, and wet tracks produce different results. Match the horse to today's surface profile.</p>
-        </article>
-
-        <article class="card">
-          <h3>Pace scenario</h3>
-          <p>Too many front-runners can create a late collapse. Slow pace can make it hard for closers to catch up.</p>
-        </article>
-
-        <article class="card">
-          <h3>Jockey and trainer</h3>
-          <p>Decision-making, timing, and prep quality influence position, trip, and final stretch execution.</p>
-        </article>
-
-        <article class="card">
-          <h3>Field size</h3>
-          <p>Bigger fields mean more chaos and traffic. Smaller fields are often cleaner but can be tactically tricky.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="risk-reward">
-    <div class="container grid grid-2">
-      <article class="warning-box">
-        <h2 class="section-title">Risk vs Reward (No Fluff)</h2>
-        <p><strong>Favorites:</strong> Win more often, pay less.</p>
-        <p><strong>Longshots:</strong> Win rarely, can pay big.</p>
-        <p class="mb-0"><strong>Reality:</strong> Horse racing has high variance. Good process still includes losing streaks.</p>
-      </article>
-
-      <article class="card">
-        <h2 class="section-title">What this means for you</h2>
-        <ul>
-          <li>Use stable bet sizing — don't chase losses.</li>
-          <li>Take value prices, not just popular horses.</li>
-          <li>Skip races with unclear pace or contradictory signals.</li>
-          <li>Track results so your betting decisions improve over time.</li>
-        </ul>
-      </article>
-    </div>
-  </section>
-
-  <section class="section" id="beginner-mistakes">
-    <div class="container">
-      <h2 class="section-title">Common Beginner Mistakes</h2>
-      <div class="grid grid-2">
-        <article class="panel">
-          <h3>Betting random names only</h3>
-          <p>Fun for one race, destructive over time. Use at least a basic form and odds filter.</p>
-        </article>
-        <article class="panel">
-          <h3>Chasing longshots every race</h3>
-          <p>Huge payouts are rare. Constant longshot betting creates sharp bankroll swings.</p>
-        </article>
-        <article class="panel">
-          <h3>Ignoring track conditions</h3>
-          <p>A surface or weather change can invalidate your pre-race assumptions instantly.</p>
-        </article>
-        <article class="panel">
-          <h3>Misunderstanding odds</h3>
-          <p>Odds imply probability and payout. If you ignore that relationship, you can't evaluate value.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="before-you-bet">
-    <div class="container cta-box checklist-box">
-      <h2 class="section-title">Before You Bet: 60-Second Race Checklist</h2>
-      <p class="section-subtext">Quickly tick these items before placing money on a race.</p>
-      <div class="grid grid-2">
-        <label class="check-item"><input type="checkbox" data-check /> Odds checked for value (not just winner probability)</label>
-        <label class="check-item"><input type="checkbox" data-check /> Recent form reviewed (last 3 starts)</label>
-        <label class="check-item"><input type="checkbox" data-check /> Surface and weather fit confirmed</label>
-        <label class="check-item"><input type="checkbox" data-check /> Pace setup understood (leaders vs closers)</label>
-        <label class="check-item"><input type="checkbox" data-check /> Jockey/trainer combo sanity-checked</label>
-        <label class="check-item"><input type="checkbox" data-check /> Bet size fits bankroll plan</label>
-      </div>
-      <p id="checklist-status" class="summary mb-0">0 / 6 complete</p>
-      <button id="reset-checklist" type="button" class="btn btn-secondary">Reset Checklist</button>
-    </div>
-  </section>
-
-  <section class="section" id="next-tools">
-    <div class="container">
-      <h2 class="section-title">Turn This Into Better Gambling Decisions</h2>
-      <p class="section-subtext">
-        Horse racing is one part of the puzzle. Use these tools to manage risk and sharpen decision quality.
-      </p>
-
-      <div class="grid grid-3">
-        <article class="card">
-          <h3>Bankroll Calculator</h3>
-          <p>Want to see how long your bankroll can last under different bet sizes and streaks?</p>
-          <a class="btn btn-primary" href="blackjack-bankroll-calculator.html">Open Bankroll Calculator</a>
-        </article>
-
-        <article class="card">
-          <h3>Slot Simulator</h3>
-          <p>Compare expectation and volatility in a fast simulation environment.</p>
-          <a class="btn btn-secondary" href="slots.html">Try Slot Simulator</a>
-        </article>
-
-        <article class="card">
-          <h3>Blackjack Trainer</h3>
-          <p>Want a gambling tool based more on math than gut feeling? Practice blackjack decision logic.</p>
-          <a class="btn btn-secondary" href="blackjack-game.html">Launch Blackjack Trainer</a>
-        </article>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer class="footer">
-  <div class="container footer-inner">
-    <p><strong>CashCal</strong> — practical gambling education, strategy explainers, and fast decision tools.</p>
-    <p class="small-note">
-      Educational content only. Gambling involves risk and variance. Follow your local laws and age requirements.
-      Never bet money you cannot afford to lose.
-    </p>
-  </div>
-</footer>
-
-<script src="horse.js" defer></script>
+  <script src="horse.js" defer></script>
 </body>
 </html>
