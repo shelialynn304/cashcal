@@ -935,6 +935,49 @@ table td,
   margin-top: 12px;
 }
 
+.horse-tool-grid .btn {
+  margin-top: 14px;
+}
+
+.faq-list {
+  display: grid;
+  gap: 14px;
+}
+
+.faq-list details {
+  padding: 0;
+}
+
+.faq-list summary {
+  list-style: none;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 18px 22px;
+}
+
+.faq-list summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-list details p {
+  padding: 0 22px 20px;
+  margin: 0;
+}
+
+.horse-page .lead {
+  max-width: 68ch;
+}
+
+@media (max-width: 768px) {
+  .faq-list summary {
+    padding: 16px 18px;
+  }
+
+  .faq-list details p {
+    padding: 0 18px 18px;
+  }
+}
+
 /* HOME ENGAGEMENT */
 .quick-tool-tabs {
   display: flex;
