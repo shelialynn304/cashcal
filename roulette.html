@@ -6,8 +6,8 @@
   <meta name="robots" content="index, follow" />
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
 
-  <title>Roulette Odds Calculator, House Edge, Rules & Betting Guide | CashCal</title>
-  <meta name="description" content="Learn roulette rules, house edge, and how to bet with a free roulette odds calculator and demo simulator. Compare bet types, win chance, and bankroll risk." />
+  <title>Roulette Strategy Guide, Odds Calculator & Risk Simulator | EdgeOverLuck</title>
+  <meta name="description" content="Use the EdgeOverLuck roulette guide to compare American vs European roulette, bet odds, bankroll risk, and strategy outcomes with interactive simulators and beginner-friendly lessons." />
   <link rel="canonical" href="https://edgeoverluck.com/roulette.html" />
 
   <link rel="stylesheet" href="style.css" />
@@ -17,12 +17,56 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Roulette Odds Calculator",
-    "url": "https://edgeoverluck.com/roulette.html",
-    "applicationCategory": "FinanceApplication",
-    "operatingSystem": "All",
-    "description": "Interactive roulette calculator and simulator showing house edge, bet odds, expected loss, and bankroll risk."
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": "EdgeOverLuck Roulette Guide and Simulators",
+        "url": "https://edgeoverluck.com/roulette.html",
+        "description": "Educational roulette guide with odds calculators, strategy comparisons, and bankroll risk simulators.",
+        "inLanguage": "en",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "EdgeOverLuck",
+          "url": "https://edgeoverluck.com"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://edgeoverluck.com/index.html"},
+          {"@type": "ListItem", "position": 2, "name": "Roulette", "item": "https://edgeoverluck.com/roulette.html"}
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can any roulette strategy beat the house edge long-term?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Strategies can change variance and session outcomes, but they cannot remove the built-in house edge in roulette."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why is European roulette better than American roulette?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "European roulette has one zero and a lower house edge (2.70%) than American roulette (5.26%), so expected losses are lower over time."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do streaks in roulette predict the next spin?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. On a fair wheel each spin is independent, so past outcomes do not change the probability of the next spin."
+            }
+          }
+        ]
+      }
+    ]
   }
   </script>
 </head>
@@ -44,15 +88,15 @@
   <main>
     <section class="hero">
       <div class="container">
-        <div class="eyebrow">Roulette Math Guide</div>
-        <h1>Roulette Odds, House Edge & Betting Strategy Demo</h1>
+        <div class="eyebrow">Roulette Guide + Simulators</div>
+        <h1>Roulette Odds, Strategies, and Session Risk — Explained With Real Math</h1>
         <p class="section-subtext">
-          See exactly how roulette works, what each bet pays, and why bet type and bet size change your bankroll outcome. Use the calculator below to compare win chance, expected loss, and risk across American and European wheels.
+          This page is your roulette content hub: learn the rules, compare bet types, test strategies, and run session simulations to see what variance feels like. Useful for beginners, honest enough for grinders.
         </p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#roulette-calculator">Open Roulette Calculator</a>
-          <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Plan Bankroll First</a>
-          <a class="btn btn-secondary" href="blackjack-game.html">Practice Blackjack Trainer</a>
+          <a class="btn btn-primary" href="#roulette-calculator">Try Bet Odds Tool</a>
+          <a class="btn btn-secondary" href="#strategy-comparison">Compare Strategies</a>
+          <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Build a Bankroll Plan</a>
         </div>
       </div>
     </section>
@@ -60,128 +104,279 @@
     <section class="section">
       <div class="container grid grid-2">
         <article class="card">
-          <h2 class="section-title">How roulette is played</h2>
-          <p>Roulette is a wheel game where you place chips on betting spots before the spin. The dealer spins the wheel and drops a ball; wherever the ball lands decides winners and losers.</p>
+          <h2 class="section-title">American vs European roulette</h2>
+          <p><strong>European roulette</strong> has 37 pockets (1–36 plus 0). <strong>American roulette</strong> has 38 pockets (1–36 plus 0 and 00).</p>
+          <p>This extra 00 pocket is a big deal because it nearly doubles the casino advantage on most bets.</p>
           <ul>
-            <li>American wheel: 38 pockets (1-36, 0, 00)</li>
-            <li>European wheel: 37 pockets (1-36, 0)</li>
-            <li>After betting closes, no bet changes are allowed</li>
-            <li>Payout depends on how many numbers your bet covers</li>
+            <li><strong>European house edge:</strong> 2.70%</li>
+            <li><strong>American house edge:</strong> 5.26%</li>
           </ul>
+          <p class="mb-0">If both versions are available, choose European. Lower edge means slower expected bankroll drain.</p>
+        </article>
+        <article class="warning-box">
+          <h2 class="section-title">What roulette strategies can and can’t do</h2>
+          <p><strong>Can do:</strong> change bet sizing, smooth or amplify swings, and alter short-session outcomes.</p>
+          <p><strong>Cannot do:</strong> turn roulette into a positive expected value game.</p>
+          <p class="mb-0">Blunt truth: no betting system beats the house edge long-term. Strategy affects volatility, not math edge.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="roulette-calculator">
+      <div class="container grid grid-2">
+        <article class="card">
+          <h2 class="section-title">Bet type selector + odds calculator</h2>
+          <p class="small-note">Pick wheel and bet type to view payout, probability, house edge, expected loss, and a quick risk summary.</p>
+          <div class="form-row">
+            <div class="field">
+              <label for="wheelType">Wheel type</label>
+              <select id="wheelType">
+                <option value="european" selected>European (single zero)</option>
+                <option value="american">American (double zero)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="betType">Bet type</label>
+              <select id="betType"></select>
+            </div>
+            <div class="field">
+              <label for="bankroll">Starting bankroll ($)</label>
+              <input id="bankroll" type="number" min="10" step="1" value="300" />
+            </div>
+            <div class="field">
+              <label for="betSize">Base bet per spin ($)</label>
+              <input id="betSize" type="number" min="1" step="1" value="10" />
+            </div>
+            <div class="field">
+              <label for="spins">Number of spins</label>
+              <input id="spins" type="number" min="1" step="1" value="120" />
+            </div>
+            <div class="field">
+              <label for="sessions">Simulation sessions</label>
+              <input id="sessions" type="number" min="200" step="100" value="1500" />
+            </div>
+          </div>
+          <div class="hero-actions">
+            <button type="button" id="calcBtn" class="btn btn-primary">Update Roulette Math</button>
+            <button type="button" id="spinDemoBtn" class="btn btn-secondary">Run 1 Session Demo</button>
+          </div>
+        </article>
+
+        <article class="card results">
+          <h2 class="section-title">Calculator results</h2>
+          <div class="result-list">
+            <div class="result-item"><span>Payout</span><strong id="payoutStat">0:1</strong></div>
+            <div class="result-item"><span>Win chance (per spin)</span><strong id="winChance">0%</strong></div>
+            <div class="result-item"><span>House edge</span><strong id="houseEdge">0%</strong></div>
+            <div class="result-item"><span>Expected loss</span><strong id="expectedLoss">$0.00</strong></div>
+            <div class="result-item"><span>Expected ending bankroll</span><strong id="endBankroll">$0.00</strong></div>
+            <div class="result-item"><span>Estimated bust risk</span><strong id="bustRisk">0%</strong></div>
+          </div>
+          <p id="summary" class="summary"></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container grid grid-2">
+        <article class="card">
+          <h2 class="section-title">Roulette spin simulator</h2>
+          <p class="small-note">Try this: click spin repeatedly to feel variance. Past spins do not influence future outcomes.</p>
+          <div class="hero-actions">
+            <button type="button" id="singleSpinBtn" class="btn btn-primary">Spin Once</button>
+          </div>
+          <div id="singleSpinResult" class="result-item" aria-live="polite">
+            <span>Latest spin</span>
+            <strong>Press “Spin Once” to start.</strong>
+          </div>
         </article>
 
         <article class="card">
-          <h2 class="section-title">Roulette rules and bet types</h2>
-          <p>Inside bets target specific numbers (higher payout, lower hit rate). Outside bets cover more outcomes (lower payout, higher hit rate).</p>
+          <h2 class="section-title">Demo spin log (single session)</h2>
+          <p class="small-note">Try this: switch between $5 and $25 bets and compare how quickly swings increase.</p>
+          <div id="spinLog" class="result-list" aria-live="polite"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="strategy-comparison">
+      <div class="container">
+        <article class="info-box">
+          <h2 class="section-title">Strategy comparison tool</h2>
+          <p>Compare <strong>flat betting</strong>, <strong>Martingale</strong>, <strong>Fibonacci</strong>, and <strong>D’Alembert</strong> using the same bankroll, bet, spins, and wheel. Results show how strategy changes session volatility, not house edge.</p>
+          <div class="hero-actions">
+            <button type="button" id="strategyCompareBtn" class="btn btn-primary">Run Strategy Comparison</button>
+          </div>
+        </article>
+        <div class="grid grid-4 results-spacing" id="strategyCards"></div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container card">
+        <h2 class="section-title">Session risk estimator</h2>
+        <p class="small-note">Use this to estimate your chance of finishing ahead and your chance of busting your session.</p>
+        <div class="form-row">
+          <div class="field">
+            <label for="riskStrategy">Strategy</label>
+            <select id="riskStrategy">
+              <option value="flat" selected>Flat betting</option>
+              <option value="martingale">Martingale</option>
+              <option value="fibonacci">Fibonacci</option>
+              <option value="dalembert">D’Alembert</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="riskSessions">Estimator sessions</label>
+            <input id="riskSessions" type="number" min="200" step="100" value="2000" />
+          </div>
+        </div>
+        <div class="hero-actions">
+          <button type="button" id="riskBtn" class="btn btn-primary">Estimate Session Risk</button>
+        </div>
+        <div class="result-list" id="riskCards"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid grid-2">
+        <article class="card">
+          <h2 class="section-title">Inside bets vs outside bets</h2>
+          <p><strong>Inside bets</strong> cover small groups of numbers and pay higher odds, but hit less often.</p>
           <ul>
-            <li><strong>Straight:</strong> 1 number, pays 35:1</li>
-            <li><strong>Dozen/Column:</strong> 12 numbers, pays 2:1</li>
-            <li><strong>Red/Black or Odd/Even:</strong> 18 numbers, pays 1:1</li>
+            <li>Straight (1 number): 35:1</li>
+            <li>Split (2 numbers): 17:1</li>
+            <li>Street (3 numbers): 11:1</li>
+            <li>Corner (4 numbers): 8:1</li>
+            <li>Six line (6 numbers): 5:1</li>
           </ul>
-          <p class="mb-0">No matter how you arrange bets, the house edge stays negative for the player over time.</p>
+          <p><strong>Outside bets</strong> cover wider ranges and pay less, but hit more often:</p>
+          <ul class="mb-0">
+            <li>Red/Black, Odd/Even, High/Low: 1:1</li>
+            <li>Dozens, Columns: 2:1</li>
+          </ul>
+        </article>
+        <article class="cta-box">
+          <h2 class="section-title">Try this before your next casino session</h2>
+          <p>Run the strategy comparison, then set a hard stop-loss and stop-win in the bankroll calculator.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="blackjack-bankroll-calculator.html">Open Bankroll Calculator</a>
+            <a class="btn btn-secondary" href="blackjack-game.html">Practice Blackjack Trainer</a>
+            <a class="btn btn-secondary" href="slots.html">Try Slot Simulator</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid grid-2">
+        <article class="card">
+          <h2 class="section-title">Why roulette feels streaky</h2>
+          <p>Short runs naturally create clusters. You might see red hit several times in a row or a dozen “go cold.” That feels meaningful, but it usually isn’t.</p>
+          <p class="mb-0">Human brains over-detect patterns. Variance plus memory bias makes random sequences look less random than they are.</p>
+        </article>
+        <article class="card">
+          <h2 class="section-title">The biggest roulette mistake beginners make</h2>
+          <p>Beginners often raise bet size to “recover losses.” This can create fast drawdowns and emotional decisions.</p>
+          <p class="mb-0">The core mistake is confusing a short losing streak with a guaranteed rebound. There is no “due” spin.</p>
+        </article>
+        <article class="card">
+          <h2 class="section-title">American vs European roulette: which should you play?</h2>
+          <p>If your goal is maximizing playtime for a fixed bankroll, pick European roulette whenever possible.</p>
+          <p class="mb-0">At 2.70% edge vs 5.26%, the difference compounds over hundreds of spins and can materially reduce expected losses.</p>
+        </article>
+        <article class="card">
+          <h2 class="section-title">Bankroll rules for roulette</h2>
+          <ul>
+            <li>Set a fixed entertainment budget before you play.</li>
+            <li>Keep base bets small (often 1% to 2% of session bankroll).</li>
+            <li>Predefine stop-loss and stop-win levels.</li>
+            <li>Never chase losses with emotional bet increases.</li>
+          </ul>
+          <p class="mb-0">Good bankroll rules don’t beat roulette; they help control risk and preserve fun.</p>
         </article>
       </div>
     </section>
 
     <section class="section-tight">
       <div class="container warning-box">
-        <h2 class="section-title">Roulette house edge explained</h2>
-        <p><strong>European roulette house edge:</strong> 2.70% (1 zero).</p>
-        <p><strong>American roulette house edge:</strong> 5.26% (0 and 00).</p>
-        <p class="mb-0">That means expected loss is about $2.70 per $100 wagered on European and $5.26 per $100 wagered on American in the long run.</p>
+        <h2 class="section-title">Why past spins don’t predict the next spin</h2>
+        <p>Roulette outcomes are independent events. If black hit five times in a row, the next spin still has the same base probability for red/black given the wheel type.</p>
+        <p class="mb-0">Both the gambler’s fallacy (“red is due”) and hot-hand fallacy (“black stays hot”) can lead to poor decisions.</p>
       </div>
     </section>
 
-    <section class="section" id="roulette-calculator">
-      <div class="container grid grid-2">
-        <div class="card">
-          <h2 class="section-title">Roulette odds calculator</h2>
-
-          <div class="form-row">
-            <div class="field">
-              <label for="wheelType">Wheel Type</label>
-              <select id="wheelType">
-                <option value="european" selected>European (single zero)</option>
-                <option value="american">American (double zero)</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="betType">Bet Type</label>
-              <select id="betType"></select>
-            </div>
-
-            <div class="field">
-              <label for="bankroll">Starting Bankroll ($)</label>
-              <input id="bankroll" type="number" min="10" step="1" value="300" />
-            </div>
-
-            <div class="field">
-              <label for="betSize">Bet Size Per Spin ($)</label>
-              <input id="betSize" type="number" min="1" step="1" value="10" />
-            </div>
-
-            <div class="field">
-              <label for="spins">Number of Spins</label>
-              <input id="spins" type="number" min="1" step="1" value="100" />
-            </div>
-
-            <div class="field">
-              <label for="sessions">Simulation Sessions</label>
-              <input id="sessions" type="number" min="200" step="100" value="2000" />
-            </div>
-          </div>
-
-          <div class="hero-actions">
-            <button type="button" id="calcBtn" class="btn btn-primary">Calculate Odds</button>
-            <button type="button" id="spinDemoBtn" class="btn btn-secondary">Run Demo Session</button>
-          </div>
-
-          <p class="small-note mb-0">This demo shows math + variance. Short runs can win, but expected value remains negative over repeated play.</p>
-        </div>
-
-        <div class="card">
-          <h2 class="section-title">Results</h2>
-          <div class="result-list">
-            <div class="result-item"><span>Win Chance (per spin)</span><strong id="winChance">0%</strong></div>
-            <div class="result-item"><span>House Edge</span><strong id="houseEdge">0%</strong></div>
-            <div class="result-item"><span>Expected Loss</span><strong id="expectedLoss">$0.00</strong></div>
-            <div class="result-item"><span>Expected Ending Bankroll</span><strong id="endBankroll">$0.00</strong></div>
-            <div class="result-item"><span>Chance of Any Profit</span><strong id="profitChance">0%</strong></div>
-            <div class="result-item"><span>Estimated Bust Risk</span><strong id="bustRisk">0%</strong></div>
-          </div>
-          <p id="summary" class="summary" style="margin-top: 16px;"></p>
+    <section class="section">
+      <div class="container card">
+        <h2 class="section-title">Popular roulette systems: quick breakdown</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>System</th>
+                <th>How it works</th>
+                <th>Can it beat house edge?</th>
+                <th>Main risk</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Martingale</td>
+                <td>Double after a loss, reset after a win.</td>
+                <td>No</td>
+                <td>Explosive bet growth during losing streaks.</td>
+              </tr>
+              <tr>
+                <td>Fibonacci</td>
+                <td>Increase bet using Fibonacci sequence after losses.</td>
+                <td>No</td>
+                <td>Still escalates bet size and bankroll risk.</td>
+              </tr>
+              <tr>
+                <td>D’Alembert</td>
+                <td>Increase by one unit after loss, decrease after win.</td>
+                <td>No</td>
+                <td>Long sessions can still grind bankroll down.</td>
+              </tr>
+              <tr>
+                <td>Labouchere</td>
+                <td>Cancellation sequence where losses add numbers.</td>
+                <td>No</td>
+                <td>Complex progression can balloon stakes.</td>
+              </tr>
+              <tr>
+                <td>Flat betting</td>
+                <td>Same stake each spin.</td>
+                <td>No</td>
+                <td>Slower swings, but negative EV remains.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
 
     <section class="section-tight">
       <div class="container card">
-        <h2 class="section-title">Demo spin log (single session)</h2>
-        <p class="small-note">Use this to see how changing bet size can make the same odds feel very different in your bankroll.</p>
-        <div id="spinLog" class="result-list" aria-live="polite"></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container grid grid-2">
-        <article class="card">
-          <h2 class="section-title">How betting style changes odds vs risk</h2>
-          <h3>Chance to win a spin</h3>
-          <p>Picking outside bets increases hit rate. Picking single numbers lowers hit rate but offers bigger payouts.</p>
-          <h3>Bet size controls volatility</h3>
-          <p class="mb-0">A larger bet does not improve roulette odds. It only increases bankroll swings and raises your bust risk over a session.</p>
-        </article>
-
-        <article class="cta-box">
-          <h2 class="section-title">Best next step: stress-test your bankroll</h2>
-          <p>Use bankroll math before casino play so you know session limits and risk exposure.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="blackjack-bankroll-calculator.html">Use Bankroll Calculator</a>
-            <a class="btn btn-secondary" href="slots.html">Try Slot Simulator</a>
-            <a class="btn btn-secondary" href="blackjack-game.html">Open Blackjack Trainer</a>
-          </div>
-        </article>
+        <h2 class="section-title">Roulette FAQ</h2>
+        <div class="faq-list">
+          <details class="card" open>
+            <summary>Is roulette beatable with strategy?</summary>
+            <p>No. Betting systems change short-term variance and risk, but they do not remove the built-in house edge.</p>
+          </details>
+          <details class="card">
+            <summary>Which roulette table is better for players?</summary>
+            <p>European roulette is generally better because its house edge is 2.70%, compared with 5.26% for American roulette.</p>
+          </details>
+          <details class="card">
+            <summary>Should I play inside or outside bets?</summary>
+            <p>Inside bets offer larger payouts but lower hit frequency. Outside bets hit more often with lower payouts. Choose based on volatility preference, not expected edge.</p>
+          </details>
+          <details class="card">
+            <summary>Is roulette negative EV?</summary>
+            <p>Yes. In standard roulette variants, expected value is negative for players over long samples.</p>
+          </details>
+        </div>
       </div>
     </section>
   </main>
@@ -196,123 +391,16 @@
     </div>
 
     <p class="gambling-warning">
-      Gambling involves risk and may not be suitable for everyone. These tools are provided for educational and entertainment purposes only. Gamble responsibly.
+      21+ only. Gambling involves financial risk. This page is for education and entertainment, not profit promises.
     </p>
 
     <p class="responsible">
-      Need help? Visit <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">ncpgambling.org</a> for responsible gambling resources.
+      Roulette is a negative-EV game over time. Need help? Visit <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">ncpgambling.org</a> for responsible gambling resources.
     </p>
 
     <p class="copyright">© 2026 CashCal — Casino simulators and bankroll tools.</p>
   </footer>
 
-  <script>
-    const betTypes = {
-      straight: { label: 'Straight (1 number, 35:1)', covered: 1, payout: 35 },
-      split: { label: 'Split (2 numbers, 17:1)', covered: 2, payout: 17 },
-      street: { label: 'Street (3 numbers, 11:1)', covered: 3, payout: 11 },
-      corner: { label: 'Corner (4 numbers, 8:1)', covered: 4, payout: 8 },
-      sixline: { label: 'Six Line (6 numbers, 5:1)', covered: 6, payout: 5 },
-      dozen: { label: 'Dozen (12 numbers, 2:1)', covered: 12, payout: 2 },
-      column: { label: 'Column (12 numbers, 2:1)', covered: 12, payout: 2 },
-      evenMoney: { label: 'Red/Black or Odd/Even (18 numbers, 1:1)', covered: 18, payout: 1 }
-    };
-
-    function formatMoney(value) {
-      return `$${value.toFixed(2)}`;
-    }
-
-    function pickWin(probability) {
-      return Math.random() < probability;
-    }
-
-    function fillBetTypes() {
-      const select = document.getElementById('betType');
-      select.innerHTML = Object.entries(betTypes).map(([value, bet]) => `<option value="${value}">${bet.label}</option>`).join('');
-      select.value = 'evenMoney';
-    }
-
-    function runMonteCarlo({ sessions, spins, bankroll, betSize, winProb, payout }) {
-      let profitSessions = 0;
-      let bustSessions = 0;
-
-      for (let s = 0; s < sessions; s += 1) {
-        let roll = bankroll;
-
-        for (let i = 0; i < spins; i += 1) {
-          if (roll < betSize) break;
-          const win = pickWin(winProb);
-          roll += win ? betSize * payout : -betSize;
-        }
-
-        if (roll > bankroll) profitSessions += 1;
-        if (roll < betSize) bustSessions += 1;
-      }
-
-      return {
-        profitChance: (profitSessions / sessions) * 100,
-        bustRisk: (bustSessions / sessions) * 100
-      };
-    }
-
-    function calculateOdds() {
-      const wheelType = document.getElementById('wheelType').value;
-      const betType = betTypes[document.getElementById('betType').value];
-      const bankroll = Math.max(10, Number(document.getElementById('bankroll').value) || 300);
-      const betSize = Math.max(1, Number(document.getElementById('betSize').value) || 10);
-      const spins = Math.max(1, Number(document.getElementById('spins').value) || 100);
-      const sessions = Math.max(200, Number(document.getElementById('sessions').value) || 2000);
-
-      const pockets = wheelType === 'american' ? 38 : 37;
-      const houseEdge = wheelType === 'american' ? 5.26 : 2.70;
-      const winProb = betType.covered / pockets;
-      const lossProb = 1 - winProb;
-      const evPerSpin = (winProb * betType.payout - lossProb) * betSize;
-      const expectedLoss = Math.max(0, -evPerSpin * spins);
-      const expectedEnding = bankroll - expectedLoss;
-
-      const sim = runMonteCarlo({ sessions, spins, bankroll, betSize, winProb, payout: betType.payout });
-
-      document.getElementById('winChance').textContent = `${(winProb * 100).toFixed(2)}%`;
-      document.getElementById('houseEdge').textContent = `${houseEdge.toFixed(2)}%`;
-      document.getElementById('expectedLoss').textContent = formatMoney(expectedLoss);
-      document.getElementById('endBankroll').textContent = formatMoney(expectedEnding);
-      document.getElementById('profitChance').textContent = `${sim.profitChance.toFixed(1)}%`;
-      document.getElementById('bustRisk').textContent = `${sim.bustRisk.toFixed(1)}%`;
-
-      document.getElementById('summary').textContent =
-        `With a ${formatMoney(betSize)} ${betType.label.toLowerCase()} bet over ${spins} spins on ${wheelType} roulette, your expected loss is ${formatMoney(expectedLoss)}. Increasing bet size scales losses and volatility faster, even though per-spin win probability stays ${ (winProb * 100).toFixed(2)}%.`;
-    }
-
-    function runDemoSession() {
-      const betType = betTypes[document.getElementById('betType').value];
-      const wheelType = document.getElementById('wheelType').value;
-      const bankroll = Math.max(10, Number(document.getElementById('bankroll').value) || 300);
-      const betSize = Math.max(1, Number(document.getElementById('betSize').value) || 10);
-      const spins = Math.min(40, Math.max(1, Number(document.getElementById('spins').value) || 20));
-      const pockets = wheelType === 'american' ? 38 : 37;
-      const winProb = betType.covered / pockets;
-
-      let roll = bankroll;
-      const rows = [];
-      for (let i = 1; i <= spins; i += 1) {
-        if (roll < betSize) {
-          rows.push(`<div class="result-item"><span>Spin ${i}</span><strong>Stopped: bankroll below bet size.</strong></div>`);
-          break;
-        }
-
-        const win = pickWin(winProb);
-        roll += win ? betSize * betType.payout : -betSize;
-        rows.push(`<div class="result-item"><span>Spin ${i}</span><strong>${win ? `Win +${formatMoney(betSize * betType.payout)}` : `Lose -${formatMoney(betSize)}`} | Bankroll: ${formatMoney(roll)}</strong></div>`);
-      }
-
-      document.getElementById('spinLog').innerHTML = rows.join('');
-    }
-
-    fillBetTypes();
-    document.getElementById('calcBtn').addEventListener('click', calculateOdds);
-    document.getElementById('spinDemoBtn').addEventListener('click', runDemoSession);
-    calculateOdds();
-  </script>
+  <script src="roulette.js"></script>
 </body>
 </html>
