@@ -11,12 +11,56 @@
   <link rel="canonical" href="https://edgeoverluck.com/roulette.html" />
 
   <link rel="stylesheet" href="style.css" />
-
   <script defer data-workspace="69b01028d6e4c738cf4abf0f" src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js"></script>
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Roulette Guide",
+    "url": "https://edgeoverluck.com/roulette.html",
+    "description": "Educational roulette guide covering wheel types, house edge, payouts, and bankroll risk.",
+    "isPartOf": { "@type": "WebSite", "name": "CashCal", "url": "https://edgeoverluck.com/" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://edgeoverluck.com/"},
+      {"@type": "ListItem", "position": 2, "name": "Roulette Guide", "item": "https://edgeoverluck.com/roulette.html"}
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is European roulette better than American roulette?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "European roulette usually has a lower house edge at 2.70% because it has one zero, while American roulette has a 5.26% house edge with both 0 and 00."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can roulette betting systems beat the game long-term?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Progression systems like Martingale, Fibonacci, and D’Alembert can change variance but do not remove roulette’s negative expected value."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does negative EV mean in roulette?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Negative EV means the average long-term result is a loss for players per dollar wagered due to the house edge built into payouts."
+        }
     "@graph": [
       {
         "@type": "WebPage",
@@ -122,261 +166,82 @@
       </div>
     </section>
 
-    <section class="section" id="roulette-calculator">
-      <div class="container grid grid-2">
-        <article class="card">
-          <h2 class="section-title">Bet type selector + odds calculator</h2>
-          <p class="small-note">Pick wheel and bet type to view payout, probability, house edge, expected loss, and a quick risk summary.</p>
-          <div class="form-row">
-            <div class="field">
-              <label for="wheelType">Wheel type</label>
-              <select id="wheelType">
-                <option value="european" selected>European (single zero)</option>
-                <option value="american">American (double zero)</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="betType">Bet type</label>
-              <select id="betType"></select>
-            </div>
-            <div class="field">
-              <label for="bankroll">Starting bankroll ($)</label>
-              <input id="bankroll" type="number" min="10" step="1" value="300" />
-            </div>
-            <div class="field">
-              <label for="betSize">Base bet per spin ($)</label>
-              <input id="betSize" type="number" min="1" step="1" value="10" />
-            </div>
-            <div class="field">
-              <label for="spins">Number of spins</label>
-              <input id="spins" type="number" min="1" step="1" value="120" />
-            </div>
-            <div class="field">
-              <label for="sessions">Simulation sessions</label>
-              <input id="sessions" type="number" min="200" step="100" value="1500" />
-            </div>
-          </div>
-          <div class="hero-actions">
-            <button type="button" id="calcBtn" class="btn btn-primary">Update Roulette Math</button>
-            <button type="button" id="spinDemoBtn" class="btn btn-secondary">Run 1 Session Demo</button>
-          </div>
-        </article>
-
-        <article class="card results">
-          <h2 class="section-title">Calculator results</h2>
-          <div class="result-list">
-            <div class="result-item"><span>Payout</span><strong id="payoutStat">0:1</strong></div>
-            <div class="result-item"><span>Win chance (per spin)</span><strong id="winChance">0%</strong></div>
-            <div class="result-item"><span>House edge</span><strong id="houseEdge">0%</strong></div>
-            <div class="result-item"><span>Expected loss</span><strong id="expectedLoss">$0.00</strong></div>
-            <div class="result-item"><span>Expected ending bankroll</span><strong id="endBankroll">$0.00</strong></div>
-            <div class="result-item"><span>Estimated bust risk</span><strong id="bustRisk">0%</strong></div>
-          </div>
-          <p id="summary" class="summary"></p>
-        </article>
-      </div>
-    </section>
-
     <section class="section-tight">
-      <div class="container grid grid-2">
-        <article class="card">
-          <h2 class="section-title">Roulette spin simulator</h2>
-          <p class="small-note">Try this: click spin repeatedly to feel variance. Past spins do not influence future outcomes.</p>
-          <div class="hero-actions">
-            <button type="button" id="singleSpinBtn" class="btn btn-primary">Spin Once</button>
-          </div>
-          <div id="singleSpinResult" class="result-item" aria-live="polite">
-            <span>Latest spin</span>
-            <strong>Press “Spin Once” to start.</strong>
-          </div>
-        </article>
-
-        <article class="card">
-          <h2 class="section-title">Demo spin log (single session)</h2>
-          <p class="small-note">Try this: switch between $5 and $25 bets and compare how quickly swings increase.</p>
-          <div id="spinLog" class="result-list" aria-live="polite"></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="strategy-comparison">
-      <div class="container">
-        <article class="info-box">
-          <h2 class="section-title">Strategy comparison tool</h2>
-          <p>Compare <strong>flat betting</strong>, <strong>Martingale</strong>, <strong>Fibonacci</strong>, and <strong>D’Alembert</strong> using the same bankroll, bet, spins, and wheel. Results show how strategy changes session volatility, not house edge.</p>
-          <div class="hero-actions">
-            <button type="button" id="strategyCompareBtn" class="btn btn-primary">Run Strategy Comparison</button>
-          </div>
-        </article>
-        <div class="grid grid-4 results-spacing" id="strategyCards"></div>
-      </div>
-    </section>
-
-    <section class="section-tight">
-      <div class="container card">
-        <h2 class="section-title">Session risk estimator</h2>
-        <p class="small-note">Use this to estimate your chance of finishing ahead and your chance of busting your session.</p>
+      <div class="container card" id="quick-roulette-compare">
+        <h2 class="section-title">Quick bet comparison</h2>
+        <p class="small-note">Select a wheel and bet type to see payout, hit chance, and expected value per $10 stake.</p>
         <div class="form-row">
           <div class="field">
-            <label for="riskStrategy">Strategy</label>
-            <select id="riskStrategy">
-              <option value="flat" selected>Flat betting</option>
-              <option value="martingale">Martingale</option>
-              <option value="fibonacci">Fibonacci</option>
-              <option value="dalembert">D’Alembert</option>
+            <label for="hubWheel">Wheel</label>
+            <select id="hubWheel">
+              <option value="european" selected>European</option>
+              <option value="american">American</option>
             </select>
           </div>
           <div class="field">
-            <label for="riskSessions">Estimator sessions</label>
-            <input id="riskSessions" type="number" min="200" step="100" value="2000" />
+            <label for="hubBetType">Bet Type</label>
+            <select id="hubBetType"></select>
           </div>
         </div>
-        <div class="hero-actions">
-          <button type="button" id="riskBtn" class="btn btn-primary">Estimate Session Risk</button>
+        <div class="result-list" style="margin-top:16px;">
+          <div class="result-item"><span>Win Probability</span><strong id="hubWinProb">--</strong></div>
+          <div class="result-item"><span>Payout</span><strong id="hubPayout">--</strong></div>
+          <div class="result-item"><span>House Edge</span><strong id="hubHouseEdge">--</strong></div>
+          <div class="result-item"><span>Expected Value / $10 Spin</span><strong id="hubEv">--</strong></div>
         </div>
-        <div class="result-list" id="riskCards"></div>
       </div>
     </section>
 
     <section class="section">
       <div class="container grid grid-2">
         <article class="card">
-          <h2 class="section-title">Inside bets vs outside bets</h2>
-          <p><strong>Inside bets</strong> cover small groups of numbers and pay higher odds, but hit less often.</p>
+          <h2 class="section-title">Why roulette systems do not beat roulette</h2>
+          <p>Flat betting, Martingale, Fibonacci, and D’Alembert all change <em>bet sizing</em>, not wheel math. Since spin outcomes and payouts keep the same edge, no progression removes negative EV.</p>
           <ul>
-            <li>Straight (1 number): 35:1</li>
-            <li>Split (2 numbers): 17:1</li>
-            <li>Street (3 numbers): 11:1</li>
-            <li>Corner (4 numbers): 8:1</li>
-            <li>Six line (6 numbers): 5:1</li>
+            <li>Martingale can create rare recoveries and large crash sessions.</li>
+            <li>Fibonacci/D’Alembert can feel smoother but still lose over long runs.</li>
+            <li>Flat betting reduces volatility but not expected loss rate.</li>
           </ul>
-          <p><strong>Outside bets</strong> cover wider ranges and pay less, but hit more often:</p>
-          <ul class="mb-0">
-            <li>Red/Black, Odd/Even, High/Low: 1:1</li>
-            <li>Dozens, Columns: 2:1</li>
-          </ul>
+          <a class="btn btn-secondary" href="roulette-strategy-simulator.html">Compare Strategies Side-by-Side</a>
         </article>
         <article class="cta-box">
-          <h2 class="section-title">Try this before your next casino session</h2>
-          <p>Run the strategy comparison, then set a hard stop-loss and stop-win in the bankroll calculator.</p>
+          <h2 class="section-title">Try the full roulette tool cluster</h2>
+          <p>Use the linked tools to model payouts, probability, bankroll drain, and strategy variance before risking money.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="blackjack-bankroll-calculator.html">Open Bankroll Calculator</a>
-            <a class="btn btn-secondary" href="blackjack-game.html">Practice Blackjack Trainer</a>
-            <a class="btn btn-secondary" href="slots.html">Try Slot Simulator</a>
+            <a class="btn btn-primary" href="roulette-calculator.html">Roulette Odds Calculator</a>
+            <a class="btn btn-secondary" href="roulette-strategy-simulator.html">Bankroll + Strategy Simulator</a>
+            <a class="btn btn-secondary" href="blackjack-ev-calculator.html">Blackjack EV Calculator</a>
+            <a class="btn btn-secondary" href="slots.html">Slots Page</a>
           </div>
         </article>
       </div>
     </section>
 
     <section class="section">
-      <div class="container grid grid-2">
-        <article class="card">
-          <h2 class="section-title">Why roulette feels streaky</h2>
-          <p>Short runs naturally create clusters. You might see red hit several times in a row or a dozen “go cold.” That feels meaningful, but it usually isn’t.</p>
-          <p class="mb-0">Human brains over-detect patterns. Variance plus memory bias makes random sequences look less random than they are.</p>
-        </article>
-        <article class="card">
-          <h2 class="section-title">The biggest roulette mistake beginners make</h2>
-          <p>Beginners often raise bet size to “recover losses.” This can create fast drawdowns and emotional decisions.</p>
-          <p class="mb-0">The core mistake is confusing a short losing streak with a guaranteed rebound. There is no “due” spin.</p>
-        </article>
-        <article class="card">
-          <h2 class="section-title">American vs European roulette: which should you play?</h2>
-          <p>If your goal is maximizing playtime for a fixed bankroll, pick European roulette whenever possible.</p>
-          <p class="mb-0">At 2.70% edge vs 5.26%, the difference compounds over hundreds of spins and can materially reduce expected losses.</p>
-        </article>
-        <article class="card">
-          <h2 class="section-title">Bankroll rules for roulette</h2>
-          <ul>
-            <li>Set a fixed entertainment budget before you play.</li>
-            <li>Keep base bets small (often 1% to 2% of session bankroll).</li>
-            <li>Predefine stop-loss and stop-win levels.</li>
-            <li>Never chase losses with emotional bet increases.</li>
-          </ul>
-          <p class="mb-0">Good bankroll rules don’t beat roulette; they help control risk and preserve fun.</p>
-        </article>
+      <div class="container">
+        <h2 class="section-title">Roulette FAQ</h2>
+        <div class="faq-list">
+          <details class="card">
+            <summary>Does betting red/black improve expected value?</summary>
+            <p>No. Red/black increases hit rate versus single-number bets, but the long-run edge remains negative due to zero pockets and payout structure.</p>
+          </details>
+          <details class="card">
+            <summary>Can short-term winning streaks prove a strategy works?</summary>
+            <p>No. Variance creates streaks naturally. A strategy can run hot for a session while still being negative EV across larger samples.</p>
+          </details>
+          <details class="card">
+            <summary>How should beginners control roulette risk?</summary>
+            <p>Set a fixed budget, fixed session time, and stop-loss before playing. Treat losses as entertainment cost and never chase with larger bets.</p>
+          </details>
+        </div>
       </div>
     </section>
 
     <section class="section-tight">
       <div class="container warning-box">
-        <h2 class="section-title">Why past spins don’t predict the next spin</h2>
-        <p>Roulette outcomes are independent events. If black hit five times in a row, the next spin still has the same base probability for red/black given the wheel type.</p>
-        <p class="mb-0">Both the gambler’s fallacy (“red is due”) and hot-hand fallacy (“black stays hot”) can lead to poor decisions.</p>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container card">
-        <h2 class="section-title">Popular roulette systems: quick breakdown</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>System</th>
-                <th>How it works</th>
-                <th>Can it beat house edge?</th>
-                <th>Main risk</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Martingale</td>
-                <td>Double after a loss, reset after a win.</td>
-                <td>No</td>
-                <td>Explosive bet growth during losing streaks.</td>
-              </tr>
-              <tr>
-                <td>Fibonacci</td>
-                <td>Increase bet using Fibonacci sequence after losses.</td>
-                <td>No</td>
-                <td>Still escalates bet size and bankroll risk.</td>
-              </tr>
-              <tr>
-                <td>D’Alembert</td>
-                <td>Increase by one unit after loss, decrease after win.</td>
-                <td>No</td>
-                <td>Long sessions can still grind bankroll down.</td>
-              </tr>
-              <tr>
-                <td>Labouchere</td>
-                <td>Cancellation sequence where losses add numbers.</td>
-                <td>No</td>
-                <td>Complex progression can balloon stakes.</td>
-              </tr>
-              <tr>
-                <td>Flat betting</td>
-                <td>Same stake each spin.</td>
-                <td>No</td>
-                <td>Slower swings, but negative EV remains.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-tight">
-      <div class="container card">
-        <h2 class="section-title">Roulette FAQ</h2>
-        <div class="faq-list">
-          <details class="card" open>
-            <summary>Is roulette beatable with strategy?</summary>
-            <p>No. Betting systems change short-term variance and risk, but they do not remove the built-in house edge.</p>
-          </details>
-          <details class="card">
-            <summary>Which roulette table is better for players?</summary>
-            <p>European roulette is generally better because its house edge is 2.70%, compared with 5.26% for American roulette.</p>
-          </details>
-          <details class="card">
-            <summary>Should I play inside or outside bets?</summary>
-            <p>Inside bets offer larger payouts but lower hit frequency. Outside bets hit more often with lower payouts. Choose based on volatility preference, not expected edge.</p>
-          </details>
-          <details class="card">
-            <summary>Is roulette negative EV?</summary>
-            <p>Yes. In standard roulette variants, expected value is negative for players over long samples.</p>
-          </details>
-        </div>
+        <h2 class="section-title">Responsible gambling note</h2>
+        <p>21+ only where legal. These tools are for education and entertainment. Roulette is a negative expected value game, and no betting system can guarantee long-term profit.</p>
+        <p class="mb-0">If gambling stops being fun, stop play and seek support from <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">NCPG</a>.</p>
       </div>
     </section>
   </main>
@@ -384,12 +249,20 @@
   <footer class="site-footer">
     <div class="footer-links">
       <a href="index.html">Home</a>
+      <a href="roulette.html">Roulette Hub</a>
+      <a href="roulette-calculator.html">Roulette Calculator</a>
+      <a href="roulette-strategy-simulator.html">Roulette Strategy Simulator</a>
       <a href="blackjack-bankroll-calculator.html">Bankroll</a>
-      <a href="blackjack-game.html">Blackjack Trainer</a>
+      <a href="blackjack-ev-calculator.html">Blackjack EV</a>
       <a href="slots.html">Slots</a>
-      <a href="roulette.html">Roulette</a>
     </div>
 
+    <p class="gambling-warning">21+ only. Educational and entertainment use only. Gamble responsibly.</p>
+    <p class="copyright">© 2026 CashCal — Casino simulators and bankroll tools.</p>
+  </footer>
+
+  <script src="roulette-shared.js" defer></script>
+  <script src="roulette-hub.js" defer></script>
     <p class="gambling-warning">
       21+ only. Gambling involves financial risk. This page is for education and entertainment, not profit promises.
     </p>

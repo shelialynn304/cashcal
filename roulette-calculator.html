@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+
+  <title>Roulette Odds Calculator: Payout, Probability, House Edge & EV | CashCal</title>
+  <meta name="description" content="Use a free roulette odds calculator to compare bet type payouts, true probability, expected loss, and bankroll outcomes for American and European roulette." />
+  <link rel="canonical" href="https://edgeoverluck.com/roulette-calculator.html" />
+
+  <link rel="stylesheet" href="style.css" />
+  <script defer data-workspace="69b01028d6e4c738cf4abf0f" src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Roulette Odds Calculator",
+    "url": "https://edgeoverluck.com/roulette-calculator.html",
+    "description": "Interactive roulette payout and probability calculator with expected value and bankroll risk outputs."
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://edgeoverluck.com/"},
+      {"@type": "ListItem", "position": 2, "name": "Roulette", "item": "https://edgeoverluck.com/roulette.html"},
+      {"@type": "ListItem", "position": 3, "name": "Roulette Odds Calculator", "item": "https://edgeoverluck.com/roulette-calculator.html"}
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How is roulette probability calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Roulette probability is covered pockets divided by total pockets. Example: an even-money bet covers 18 pockets, so chance is 18/37 in European roulette and 18/38 in American roulette."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do higher payouts mean better expected value?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Not in standard roulette. Higher payouts come with lower hit probability, and both are priced to keep the house edge negative for players."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand">Cash<span>Cal</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="blackjack-bankroll-calculator.html">Bankroll</a>
+        <a href="blackjack-ev-calculator.html">EV</a>
+        <a href="blackjack-game.html">Trainer</a>
+        <a href="slots.html">Slots</a>
+        <a href="roulette.html" class="active">Roulette</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow">Roulette Calculator</div>
+        <h1>Roulette Payout & Probability Calculator</h1>
+        <p class="section-subtext">Select wheel and bet type to calculate exact hit rate, payout, expected value, and estimated bankroll outcomes. Then run a demo spin session to see short-term variance in action.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#roulette-calculator-tool">Start Calculator</a>
+          <a class="btn btn-secondary" href="roulette-strategy-simulator.html">Compare Betting Systems</a>
+          <a class="btn btn-secondary" href="blackjack-ev-calculator.html">Blackjack EV Tool</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="roulette-calculator-tool">
+      <div class="container grid grid-2">
+        <article class="card">
+          <h2 class="section-title">Calculator inputs</h2>
+          <div class="form-row">
+            <div class="field">
+              <label for="wheelType">Wheel Type</label>
+              <select id="wheelType">
+                <option value="european" selected>European (single-zero)</option>
+                <option value="american">American (double-zero)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="betType">Bet Type</label>
+              <select id="betType"></select>
+            </div>
+            <div class="field">
+              <label for="bankroll">Starting Bankroll ($)</label>
+              <input id="bankroll" type="number" min="10" step="1" value="300" />
+            </div>
+            <div class="field">
+              <label for="betSize">Bet Size Per Spin ($)</label>
+              <input id="betSize" type="number" min="1" step="1" value="10" />
+            </div>
+            <div class="field">
+              <label for="spins">Number of Spins</label>
+              <input id="spins" type="number" min="1" step="1" value="100" />
+            </div>
+            <div class="field">
+              <label for="sessions">Simulation Sessions</label>
+              <input id="sessions" type="number" min="200" step="100" value="2000" />
+            </div>
+          </div>
+          <div class="hero-actions">
+            <button type="button" id="calcBtn" class="btn btn-primary">Calculate</button>
+            <button type="button" id="spinDemoBtn" class="btn btn-secondary">Run Demo Session</button>
+          </div>
+          <p class="small-note mb-0">This is educational modeling. Winning runs happen, but roulette remains negative EV long-term.</p>
+        </article>
+
+        <article class="card">
+          <h2 class="section-title">Results</h2>
+          <div class="result-list">
+            <div class="result-item"><span>Win Chance (per spin)</span><strong id="winChance">--</strong></div>
+            <div class="result-item"><span>Payout</span><strong id="payoutRatio">--</strong></div>
+            <div class="result-item"><span>House Edge</span><strong id="houseEdge">--</strong></div>
+            <div class="result-item"><span>Expected Value / Spin</span><strong id="evSpin">--</strong></div>
+            <div class="result-item"><span>Expected Session Loss</span><strong id="expectedLoss">--</strong></div>
+            <div class="result-item"><span>Expected Ending Bankroll</span><strong id="endBankroll">--</strong></div>
+            <div class="result-item"><span>Chance of Any Profit</span><strong id="profitChance">--</strong></div>
+            <div class="result-item"><span>Estimated Bust Risk</span><strong id="bustRisk">--</strong></div>
+          </div>
+          <p id="summary" class="summary" style="margin-top:16px;"></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container card">
+        <h2 class="section-title">Demo spin log (single session)</h2>
+        <p class="small-note">A quick simulation for variance. Try increasing bet size to see bankroll swings accelerate.</p>
+        <div id="spinLog" class="result-list" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid grid-2">
+        <article class="card">
+          <h2 class="section-title">Beginner interpretation guide</h2>
+          <ul>
+            <li><strong>Win chance</strong> = how often your bet is expected to hit.</li>
+            <li><strong>Payout</strong> = profit multiple on wins (stake is returned separately on real tables).</li>
+            <li><strong>EV/spin</strong> = average gain/loss per spin over long samples.</li>
+            <li><strong>Bust risk</strong> = simulated chance bankroll drops below your bet size before planned spins end.</li>
+          </ul>
+          <p class="mb-0">Even high-hit bets still lose slowly over time due to built-in edge.</p>
+        </article>
+
+        <article class="cta-box">
+          <h2 class="section-title">Try this next</h2>
+          <p>After checking bet math, compare progression systems and bankroll drain behavior side-by-side.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="roulette-strategy-simulator.html">Open Strategy Simulator</a>
+            <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Bankroll Calculator</a>
+            <a class="btn btn-secondary" href="slots.html">Slots Page</a>
+            <a class="btn btn-secondary" href="index.html">Homepage</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Roulette calculator FAQ</h2>
+        <div class="faq-list">
+          <details class="card">
+            <summary>Why does expected value stay negative for all standard bets?</summary>
+            <p>Payouts are slightly lower than true fair odds, and the zero pockets create that gap. This built-in difference is the house edge.</p>
+          </details>
+          <details class="card">
+            <summary>Can this tool predict exact future outcomes?</summary>
+            <p>No. It models probabilities and long-run expectation. Individual sessions can deviate significantly due to variance.</p>
+          </details>
+          <details class="card">
+            <summary>Should I increase stake after losses?</summary>
+            <p>Increasing stake raises volatility and bust risk. It can change short-term paths but not long-run expected value.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container warning-box">
+        <h2 class="section-title">Responsible gambling and 21+ notice</h2>
+        <p>For adults 21+ where legal. Educational and entertainment use only. Roulette is a negative expected value game, and no calculator removes that edge.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="roulette.html">Roulette Hub</a>
+      <a href="roulette-calculator.html">Roulette Calculator</a>
+      <a href="roulette-strategy-simulator.html">Strategy Simulator</a>
+      <a href="blackjack-ev-calculator.html">Blackjack EV</a>
+      <a href="blackjack-bankroll-calculator.html">Bankroll</a>
+      <a href="slots.html">Slots</a>
+    </div>
+    <p class="gambling-warning">21+ only. Educational tools, not financial advice or guaranteed outcomes.</p>
+  </footer>
+
+  <script src="roulette-shared.js" defer></script>
+  <script src="roulette-calculator.js" defer></script>
+</body>
+</html>

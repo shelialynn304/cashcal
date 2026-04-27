@@ -76,8 +76,25 @@
     <lastmod>2026-04-14</lastmod>
   </url>
 
+
   <url>
     <loc>https://edgeoverluck.com/roulette.html</loc>
-    <lastmod>2026-04-16</lastmod>
+    <lastmod>2026-04-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://edgeoverluck.com/roulette-calculator.html</loc>
+    <lastmod>2026-04-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://edgeoverluck.com/roulette-strategy-simulator.html</loc>
+    <lastmod>2026-04-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
