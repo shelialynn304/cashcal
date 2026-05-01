@@ -164,10 +164,80 @@ overflow:hidden;
   }
 
   .hand{
-    min-height: 60px;
+min-height:clamp(120px,18vw,170px);
+display:flex;
+justify-content:center;
+align-items:flex-end;
+flex-wrap:nowrap;
+gap:0;
+padding:10px 12px;
+margin:8px auto;
+background:rgba(0,0,0,.28);
+border:1px solid rgba(255,255,255,.2);
+border-radius:14px;
+box-shadow: inset 0 8px 18px rgba(0,0,0,.32);
+}
+
+.hand img{
+margin-left:clamp(-26px,-2.6vw,-16px);
+}
+
+.hand img:first-child{
+margin-left:0;
+}
+
+.card{
+width:clamp(64px,9vw,96px);
+height:clamp(92px,13vw,140px);
+object-fit:cover;
+border-radius:10px;
+border:2px solid rgba(10,12,18,.85);
+box-shadow:0 8px 16px rgba(0,0,0,.5);
+background:#f8f8f5;
+filter:brightness(1.08) contrast(1.12) saturate(1.05);
+opacity:1;
+transform:translateY(0) scale(1);
+animation:dealCard .35s ease;
+}
+
+.card.card-back{
+background:
+radial-gradient(circle at 30% 25%, rgba(255,255,255,.18) 0, rgba(255,255,255,0) 45%),
+repeating-linear-gradient(45deg, rgba(255,255,255,.07) 0 6px, rgba(0,0,0,.08) 6px 12px),
+#243a68;
+border:2px solid #0b1734;
+filter:none;
+}
+
+@keyframes dealCard{
+from{
+opacity:0;
+transform:translateY(-30px) scale(.9);
+}
+to{
+opacity:1;
+transform:translateY(0) scale(1);
+}
+}
+
+@media (max-width: 768px) {
+  .hand{
+    min-height:clamp(98px,30vw,128px);
+    padding:8px 8px;
   }
 
-  .bet-spot{
+  .hand img{
+    margin-left:clamp(-20px,-6vw,-10px);
+  }
+
+  .card{
+    width:clamp(56px,16vw,72px) !important;
+    height:clamp(82px,23vw,104px) !important;
+    border-width:1.5px;
+  }
+}
+
+.bet-spot{
     height: 30px;
     margin: 2px auto;
   }
@@ -220,12 +290,16 @@ margin-left:0;
 width:65px;
 border-radius:8px;
 box-shadow:0 6px 12px rgba(0,0,0,.6);
-opacity:0;
-transform:translateY(-30px) scale(.9);
-animation:dealCard .35s ease forwards;
+opacity:1;
+transform:translateY(0) scale(1);
+animation:dealCard .35s ease;
 }
 
 @keyframes dealCard{
+from{
+opacity:0;
+transform:translateY(-30px) scale(.9);
+}
 to{
 opacity:1;
 transform:translateY(0) scale(1);
@@ -464,13 +538,6 @@ transform:translateY(-10px) scale(.98);
     font-size: 0.95rem;
   }
 
-  .hand img{
-    margin-left:-18px;
-  }
-
-  .card{
-    width:56px;
-  }
 }
 
   @media (max-width: 768px) {
@@ -489,11 +556,6 @@ transform:translateY(-10px) scale(.98);
 
   .hand {
     margin: 6px 0 !important;
-  }
-
-  .hand img,
-  .card {
-    width: 48px !important;
   }
 
   .chips-row img {
