@@ -204,6 +204,7 @@ function renderHand(hand,el,hideHole=false){
     img.alt = hideHole && i === 1 ? "Hidden dealer card" : `${c.rank} of ${c.suit}`
 
     if(hideHole && i===1){
+      img.classList.add("card-back")
       img.src="images/cards/card_back.png"
     }else{
       img.src=`images/cards/card_${c.suit}_${c.rank}.png`
