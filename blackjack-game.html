@@ -220,12 +220,16 @@ margin-left:0;
 width:65px;
 border-radius:8px;
 box-shadow:0 6px 12px rgba(0,0,0,.6);
-opacity:0;
-transform:translateY(-30px) scale(.9);
-animation:dealCard .35s ease forwards;
+opacity:1;
+transform:translateY(0) scale(1);
+animation:dealCard .35s ease;
 }
 
 @keyframes dealCard{
+from{
+opacity:0;
+transform:translateY(-30px) scale(.9);
+}
 to{
 opacity:1;
 transform:translateY(0) scale(1);
