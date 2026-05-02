@@ -11,6 +11,7 @@ let wrongMoves=0
 let lastStrategyMove=null
 let trainerHintsEnabled=true
 let hintDismissedForHand = false
+let splitModeActive=false
   
 const bankrollEl=document.getElementById("bankroll")
 const betEl=document.getElementById("bet")
@@ -552,6 +553,7 @@ function deal(){
 
   buildDeck()
   shuffle()
+  splitModeActive=false
   player = [draw(), draw()]
   dealer = [draw(), draw()]
   gameOver = false
@@ -582,6 +584,7 @@ function hit(){
   render()
 
 if(handValue(player) > 21){
+  splitModeActive=false
   bet = 0
   gameOver = true
   hideStrategyPopup()
@@ -635,7 +638,54 @@ if(handValue(player) > 21){
   let pt = handValue(player)
   let dt = handValue(dealer)
 
-  if(dt > 21){
+  if(splitModeActive && player.length >= 4){
+    const splitHands = [player.slice(0,2), player.slice(2,4)]
+    const perHandBet = bet / splitHands.length
+    const messages = []
+    let splitWins = 0
+    let splitPushes = 0
+
+    splitHands.forEach((singleHand, index)=>{
+      const handTotal = handValue(singleHand)
+
+      if(handTotal > 21){
+        messages.push(`Hand ${index+1}: busted with ${handTotal}.`)
+        return
+      }
+
+      if(dt > 21){
+        bankroll += perHandBet * 2
+        splitWins++
+        messages.push(`Hand ${index+1}: ${handTotal} beat the dealer’s ${dt}.`)
+      }
+      else if(handTotal > dt){
+        bankroll += perHandBet * 2
+        splitWins++
+        messages.push(`Hand ${index+1}: ${handTotal} beat the dealer’s ${dt}.`)
+      }
+      else if(handTotal === dt){
+        bankroll += perHandBet
+        splitPushes++
+        messages.push(`Hand ${index+1}: ${handTotal} pushed with the dealer’s ${dt}.`)
+      }
+      else{
+        messages.push(`Hand ${index+1}: ${handTotal} lost to the dealer’s ${dt}.`)
+      }
+    })
+
+    if(splitWins === splitHands.length){
+      setMessage("Both split hands win")
+      showImage(IMAGES.correct)
+    }else if(splitWins > 0 || splitPushes > 0){
+      setMessage("Split hand results")
+    }else{
+      setMessage("Dealer wins")
+      showImage(IMAGES.dealerLaugh)
+    }
+
+    setReason(`✅ ${messages.join(" ")}`)
+  }
+  else if(dt > 21){
     bankroll += bet * 2
     setMessage("Dealer busts. You win.")
     setReason("✅ Dealer busted by going over 21.")
@@ -736,6 +786,7 @@ function splitHand(){
   bankroll -= bet
   bet *= 2
   player = [player[0], draw(), player[1], draw()]
+  splitModeActive=true
   render()
   updateMoney()
   updateButtons()
@@ -748,6 +799,7 @@ function resetGame(){
   deck=[]
   player=[]
   dealer=[]
+  splitModeActive=false
   bankroll=1000
   bet=0
   gameOver=true
