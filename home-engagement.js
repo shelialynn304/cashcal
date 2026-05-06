@@ -5,6 +5,41 @@
   const paceOutput = document.getElementById("scenarioPace");
   const quickLinks = document.querySelectorAll("[data-tool-tab]");
   const toolCards = document.querySelectorAll("[data-tool-card]");
+  const scenarioChoices = document.querySelectorAll("[data-scenario-choice]");
+  const mythCards = document.querySelectorAll(".myth-card");
+
+  const recommendations = {
+    bankroll: {
+      title: "Bankroll Calculator",
+      text: "Start here to see how bet size, house edge, and number of wagers affect expected loss and bust risk.",
+      href: "blackjack-bankroll-calculator.html",
+      cta: "Open Bankroll Calculator"
+    },
+    blackjack: {
+      title: "Blackjack Strategy + Trainer",
+      text: "Use the strategy guide for the correct baseline, then practice decisions in the free blackjack trainer.",
+      href: "blackjack-game.html",
+      cta: "Open Blackjack Trainer"
+    },
+    roulette: {
+      title: "Roulette Odds Tool",
+      text: "Compare roulette bets, systems, and bankroll pressure without assuming a progression can beat the wheel.",
+      href: "roulette.html",
+      cta: "Open Roulette Tool"
+    },
+    slots: {
+      title: "Slot Simulator",
+      text: "Use the slot simulator to see how RTP and volatility can still create big drawdowns in short sessions.",
+      href: "slots.html",
+      cta: "Run Slot Simulator"
+    },
+    horses: {
+      title: "Horse Racing Guide",
+      text: "Start with bet types, odds formats, and bankroll basics before comparing risk across win, place, show, and exotic wagers.",
+      href: "horse-racing-guide.html",
+      cta: "Read Horse Racing Guide"
+    }
+  };
 
   function evaluateScenario() {
     const bankroll = Number(document.getElementById("scenarioBankroll")?.value || 250);
@@ -37,9 +72,42 @@
     });
   }
 
+  function updateScenarioChoice(choice) {
+    const recommendation = recommendations[choice];
+    const title = document.getElementById("scenarioChoiceTitle");
+    const text = document.getElementById("scenarioChoiceText");
+    const link = document.getElementById("scenarioChoiceLink");
+
+    if (!recommendation || !title || !text || !link) return;
+
+    scenarioChoices.forEach((button) => {
+      button.classList.toggle("active", button.dataset.scenarioChoice === choice);
+    });
+
+    title.textContent = recommendation.title;
+    text.textContent = recommendation.text;
+    link.href = recommendation.href;
+    link.textContent = recommendation.cta;
+  }
+
   if (quickLinks.length) {
     quickLinks.forEach((tab) => {
       tab.addEventListener("click", () => activateToolTab(tab.dataset.toolTab));
+    });
+  }
+
+  if (scenarioChoices.length) {
+    scenarioChoices.forEach((button) => {
+      button.addEventListener("click", () => updateScenarioChoice(button.dataset.scenarioChoice));
+    });
+  }
+
+  if (mythCards.length) {
+    mythCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const isExpanded = card.getAttribute("aria-expanded") === "true";
+        card.setAttribute("aria-expanded", String(!isExpanded));
+      });
     });
   }
 
