@@ -619,6 +619,117 @@ table td,
   display: inline-block;
 }
 
+
+/* HOMEPAGE EDUCATION / INTERACTIVE SECTIONS */
+.feature-card a,
+.risk-list a {
+  font-weight: 800;
+}
+
+.risk-list {
+  display: grid;
+  gap: 14px;
+}
+
+.risk-list > div {
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.03);
+}
+
+.risk-list strong {
+  display: block;
+  margin: 8px 0 4px;
+  color: #fff;
+}
+
+.risk-list p {
+  margin-bottom: 0;
+}
+
+.chooser-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 22px 0;
+}
+
+.chooser-grid .btn {
+  width: 100%;
+  margin-top: 0;
+}
+
+.chooser-grid .active,
+.quick-tool-tabs .active {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(241,196,91,0.12);
+}
+
+.scenario-recommendation {
+  border-color: var(--border-strong);
+}
+
+.scenario-recommendation .eyebrow {
+  margin-bottom: 10px;
+}
+
+.myth-grid {
+  align-items: stretch;
+}
+
+.myth-card {
+  width: 100%;
+  min-height: auto;
+  margin-top: 0;
+  text-align: left;
+  appearance: none;
+  font: inherit;
+  cursor: pointer;
+  color: var(--text);
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+  border-color: var(--border);
+  border-radius: var(--radius);
+  display: block;
+}
+
+.myth-card span {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.myth-card span::after {
+  content: "+";
+  color: var(--gold);
+}
+
+.myth-card[aria-expanded="true"] {
+  border-color: var(--border-strong);
+}
+
+.myth-card[aria-expanded="true"] span::after {
+  content: "−";
+}
+
+.myth-card small {
+  display: none;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.myth-card[aria-expanded="true"] small {
+  display: block;
+}
+
+.faq-grid h3 {
+  color: #fff;
+}
+
 /* FOOTER */
 .footer,
 .site-footer {
