@@ -1392,3 +1392,14 @@ table td,
   position: relative;
   z-index: 2;
 }
+
+/* ROULETTE CONTENT ENHANCEMENTS */
+.section-image {
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  margin: 0 auto 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow);
+}
