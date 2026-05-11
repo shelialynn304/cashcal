@@ -126,18 +126,27 @@
   </header>
 
   <main>
-    <section class="hero glow-hero hero-glow-overlay">
+    <section class="hero homepage-hero glow-hero hero-glow-overlay">
+      <div class="hero-atmosphere" aria-hidden="true"></div>
+      <div class="hero-accent hero-accent-chip" aria-hidden="true">$</div>
+      <div class="hero-accent hero-accent-card hero-accent-card-a" aria-hidden="true">A♠</div>
+      <div class="hero-accent hero-accent-card hero-accent-card-k" aria-hidden="true">K♦</div>
+      <div class="hero-accent hero-accent-suit" aria-hidden="true">♣</div>
+
       <div class="container hero-wrap">
-        <div>
+        <div class="homepage-hero-copy">
           <div class="eyebrow">Casino Math Tools</div>
-          <h1>Stop Guessing. Build a Smarter Game Plan.</h1>
+          <h1>Step Inside the Math Behind the Casino</h1>
+          <p class="hero-subheadline">
+            Big wins happen. Bad bankroll decisions happen faster.
+          </p>
           <p>
             EdgeOverLuck.com helps you test bankroll risk, train blackjack decisions, and run realistic slot simulations so you can make better calls before real money is on the table.
           </p>
 
           <div class="hero-actions">
-            <a class="btn btn-primary" href="blackjack-bankroll-calculator.html">Try Bankroll Calculator</a>
-            <a class="btn btn-secondary" href="blackjack-game.html">Play Blackjack Trainer</a>
+            <a class="btn btn-primary" href="#main-tools">Explore the Tools</a>
+            <a class="btn btn-secondary" href="gambler-personality-quiz.html">Take the Gambler Quiz</a>
           </div>
 
           <div class="quick-tool-tabs" aria-label="Quick tool jump links">
@@ -162,9 +171,22 @@
           </div>
         </aside>
       </div>
+
+      <div class="container simulation-feed-wrap" aria-label="Sample simulation feed">
+        <div class="sample-feed glass-card">
+          <span class="sample-feed-label">Sample simulation feed</span>
+          <div class="sample-feed-track">
+            <span>$100 blackjack bankroll lasted 43 hands</span>
+            <span>Heater Hunter hit +$380, then locked $200</span>
+            <span>Roulette sample: 72 spins, -$48 expected loss</span>
+            <span>Grinder session: 600 spins, tiny bets, slow bleed</span>
+            <span>Strategist run: fewer mistakes, variance still punched first</span>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="section section-divider">
+    <section class="section section-divider" id="main-tools">
       <div class="container">
         <h2 class="section-title">Main tools to improve your edge</h2>
         <p class="section-subtext">Start with the calculator, sharpen your decisions, then stress-test assumptions with simulation.</p>
@@ -194,6 +216,19 @@
             <a class="btn btn-secondary" href="roulette.html">Use Roulette Tool</a>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="section-tight homepage-quiz-cta">
+      <div class="container">
+        <article class="card premium-card glass-card micro-lift hover-glow quiz-cta-card">
+          <div>
+            <span class="eyebrow">Player profile quiz</span>
+            <h2 class="section-title">Which casino personality are you?</h2>
+            <p>Chaser, Grinder, Heater Hunter, Strategist, or Chaos Goblin? Get a quick personality read, then pair it with tools that keep the math in view.</p>
+          </div>
+          <a class="btn btn-primary" href="gambler-personality-quiz.html">Take the Gambler Quiz</a>
+        </article>
       </div>
     </section>
 
