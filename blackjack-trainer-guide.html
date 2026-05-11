@@ -64,18 +64,43 @@
 </head>
 <body>
   <header class="site-header">
-    <div class="container nav">
+    <div class="container nav site-nav">
       <a href="index.html" class="brand">EdgeOverLuck<span>.com</span></a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="blackjack-bankroll-calculator.html">Bankroll</a>
-        <a href="blackjack-ev-calculator.html">EV</a>
-        <a href="blackjack-strategy.html">Strategy</a>
-        <a href="blackjack-game.html">Trainer</a>
-        <a href="slots.html">Slots</a>
-        <a href="bubble-craps.html">Craps</a>
-        <a href="horse-racing-guide.html">Horse</a>
-        <a href="roulette.html">Roulette</a>
+      <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+        <span class="nav-toggle-label">Menu</span>
+      </button>
+      <nav id="primary-nav" class="nav-menu" aria-label="Primary navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-blackjack">Blackjack</button>
+          <div id="nav-blackjack" class="nav-panel">
+            <a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>
+            <a href="blackjack-ev-calculator.html">Blackjack EV Calculator</a>
+            <a href="blackjack-game.html">Blackjack Trainer</a>
+            <a href="blackjack-strategy.html">Blackjack Strategy Guide</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-casino-tools">Casino Tools</button>
+          <div id="nav-casino-tools" class="nav-panel nav-panel-wide">
+            <a href="slot-simulator.html">Slot Simulator</a>
+            <a href="roulette.html">Roulette Guide</a>
+            <a href="roulette-calculator.html">Roulette Calculator</a>
+            <a href="roulette-strategy-simulator.html">Roulette Strategy Simulator</a>
+            <a href="bubble-craps.html">Bubble Craps Simulator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-learn">Learn</button>
+          <div id="nav-learn" class="nav-panel">
+            <a href="blackjack-bankroll-calculator.html">Bankroll Guide</a>
+            <a href="slot-rtp-explained.html">RTP Guide</a>
+            <a href="slot-volatility-guide.html">Volatility Guide</a>
+            <a href="responsible-gambling.html">Responsible Gambling</a>
+          </div>
+        </div>
+        <a href="horse-racing-guide.html" class="nav-link">Horse Racing</a>
       </nav>
     </div>
   </header>
@@ -264,5 +289,6 @@
       <p class="copyright">© 2026 EdgeOverLuck.com — Casino math tools for education and entertainment.</p>
     </div>
   </footer>
+  <script src="nav.js" defer></script>
 </body>
 </html>
