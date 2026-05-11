@@ -11,127 +11,262 @@
   box-sizing: border-box;
 }
 
-body {
+:root {
+  --felt-black: #050507;
+  --casino-panel: rgba(14, 15, 18, .9);
+  --casino-panel-soft: rgba(21, 22, 27, .78);
+  --casino-border: rgba(245, 194, 82, .58);
+  --casino-gold: #f5c252;
+  --casino-gold-bright: #ffe09a;
+  --casino-red: #d94d42;
+  --muted-text: #c9c0a5;
+}
+
+body.blackjack-page {
   margin: 0;
   padding: 0;
   background:
-    radial-gradient(circle at top, #0f7a3a 0%, #0a5c2b 55%, #073d1d 100%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255,255,255,0.02),
-      rgba(255,255,255,0.02) 2px,
-      transparent 2px,
-      transparent 4px
-    );
+    radial-gradient(circle at 50% -12%, rgba(245, 194, 82, .28), transparent 31rem),
+    radial-gradient(circle at 14% 18%, rgba(166, 101, 24, .18), transparent 24rem),
+    linear-gradient(180deg, #101014 0%, #08090c 48%, #030304 100%);
   font-family: Arial, sans-serif;
-  color: white;
+  color: #fff8e7;
   text-align: center;
   min-height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
 }
 
-.wrap {
-  max-width: 1100px;
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: 8px 14px;
-  display: flex;
-  flex-direction: column;
+body.blackjack-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 214, 121, .04) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 214, 121, .025) 1px, transparent 1px);
+  background-size: 84px 84px;
+  mask-image: radial-gradient(circle at top, #000 0%, transparent 72%);
 }
 
-h1 {
-  margin: 4px 0 2px;
-  font-size: 1.8rem;
+.wrap.blackjack-shell {
+  width: min(100%, 1020px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 18px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  position: relative;
 }
 
 .home-btn {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  padding: 6px 10px;
-  font-size: .8rem;
-  background: #111;
-  color: #ffd54a;
-  border: 2px solid #ffd54a;
-  border-radius: 8px;
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 20;
+  padding: 9px 13px;
+  font-size: .78rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: rgba(10, 10, 12, .82);
+  color: var(--casino-gold-bright);
+  border: 1px solid rgba(245, 194, 82, .72);
+  border-radius: 999px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 800;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .08);
+  backdrop-filter: blur(10px);
 }
 
-.home-btn:hover {
-  background: #ffd54a;
+.home-btn:hover,
+.home-btn:focus-visible {
+  background: linear-gradient(135deg, #ffe09a, #c88b2e);
   color: #111;
+  outline: none;
+}
+
+.trainer-hero {
+  width: min(100%, 860px);
+  margin-top: 6px;
+  padding: 10px 16px 8px;
+  border: 1px solid rgba(245, 194, 82, .18);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .055), rgba(255, 255, 255, .018));
+  box-shadow: 0 18px 65px rgba(0, 0, 0, .38);
+}
+
+.brand-kicker {
+  margin: 0 0 2px;
+  color: var(--casino-gold);
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  line-height: .95;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  text-shadow: 0 0 22px rgba(245, 194, 82, .18);
+}
+
+.hero-tagline {
+  max-width: 620px;
+  margin: 7px auto 0;
+  color: var(--muted-text);
+  font-size: clamp(.88rem, 2vw, 1rem);
+}
+
+.trainer-panel {
+  width: min(100%, 860px);
+  padding: 12px;
+  border: 1px solid var(--casino-border);
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .065), rgba(255, 255, 255, .018)),
+    rgba(8, 9, 12, .88);
+  box-shadow: 0 26px 80px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .035) inset;
+  backdrop-filter: blur(14px);
+}
+
+.panel-topline {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .topbar {
   display: flex;
-  justify-content: center;
-  gap: 18px;
-  margin: 4px 0;
-  font-weight: bold;
-  flex-wrap: wrap;
-}
-
-.trainer-stats,
-.message {
-  font-size: .9rem;
-  opacity: .9;
-  margin: 2px 0 4px;
-}
-
-.message {
-  min-height: 18px;
-}
-
-.trainer-options {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin: 6px 0 10px;
-  font-size: .95rem;
-  flex-wrap: wrap;
-}
-
-.toggle-wrap {
-  display: flex;
-  align-items: center;
+  justify-content: flex-start;
   gap: 8px;
-  background: rgba(0,0,0,.2);
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.18);
+  margin: 0;
+  font-weight: 800;
+  flex-wrap: wrap;
 }
 
-.toggle-wrap input {
-  transform: scale(1.15);
+.status-tile,
+.trainer-pill,
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 34px;
+  padding: 7px 10px;
+  border: 1px solid rgba(245, 194, 82, .24);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .28);
+  color: #fff4d7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
+}
+
+.status-label,
+.pill-label,
+.stat-label {
+  color: var(--muted-text);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.status-value,
+.mode-value,
+.stat-value {
+  color: var(--casino-gold-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+.trainer-status-pill {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.trainer-pill,
+.stat-pill {
+  min-height: 32px;
+  padding: 6px 9px;
+  font-size: .82rem;
+}
+
+.trainer-pill input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--casino-gold);
   cursor: pointer;
 }
 
-.reason-box {
-  max-width: 760px;
-  margin: 0 auto 10px;
-  padding: 12px 14px;
-  background: rgba(0,0,0,.28);
-  border: 1px solid rgba(255,255,255,.14);
+.trainer-pill label {
+  cursor: pointer;
+}
+
+.message {
+  min-height: 24px;
+  margin: 0 0 8px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, .08);
   border-radius: 14px;
+  background: rgba(0, 0, 0, .22);
+  color: #ffffff;
+  font-size: .92rem;
+  font-weight: 700;
+}
+
+.reason-box {
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, .26);
+  border: 1px solid rgba(245, 194, 82, .19);
+  border-radius: 16px;
   text-align: left;
-  font-size: .95rem;
-  min-height: 46px;
+  color: #e8dec5;
+  font-size: .9rem;
+  line-height: 1.35;
+  min-height: 42px;
 }
 
 .table-area {
-  background: radial-gradient(circle, #0c6b35 0%, #084d26 70%, #053319 100%);
-  border: 4px solid #d4af37;
-  border-radius: 30px;
+  width: 100%;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(245, 194, 82, .09), transparent 34%),
+    linear-gradient(180deg, rgba(23, 24, 29, .96), rgba(8, 9, 12, .98));
+  border: 1px solid rgba(245, 194, 82, .62);
+  border-radius: 22px;
   padding: 12px;
-  box-shadow: inset 0 0 40px rgba(0,0,0,.6), 0 10px 25px rgba(0,0,0,.5);
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+  box-shadow: inset 0 0 34px rgba(0, 0, 0, .64), 0 16px 46px rgba(0, 0, 0, .45);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas:
+    "dealer bet player"
+    "chips chips chips"
+    "actions actions actions";
+  gap: 10px;
   position: relative;
   overflow: visible;
+}
+
+.dealer-section { grid-area: dealer; }
+.player-section { grid-area: player; }
+.bet-spot { grid-area: bet; align-self: center; }
+.bet-controls { grid-area: chips; }
+.action-controls { grid-area: actions; }
+
+.dealer-section,
+.player-section {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, .09);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .018));
 }
 
 .game-status,
@@ -143,55 +278,51 @@ h1 {
 }
 
 .section-title {
-  font-size: 1rem;
-  margin: 2px 0;
+  color: var(--casino-gold-bright);
+  font-size: .84rem;
+  font-weight: 900;
+  letter-spacing: .16em;
+  margin: 0 0 3px;
+  text-transform: uppercase;
 }
 
 .total {
-  font-size: .9rem;
+  color: var(--muted-text);
+  font-size: .82rem;
+  font-weight: 700;
 }
 
-/* HANDS */
 .hand {
-  min-height: clamp(70px, 12vw, 110px);
+  min-height: clamp(74px, 10vw, 102px);
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   flex-wrap: nowrap;
-  gap: clamp(4px, 1vw, 8px);
-  padding: 6px 8px;
-  margin: 6px auto;
-  background: rgba(0,0,0,.28);
-  border: 1px solid rgba(255,255,255,.2);
+  gap: clamp(3px, .8vw, 7px);
+  padding: 7px;
+  margin: 7px auto 0;
+  background: rgba(0, 0, 0, .26);
+  border: 1px solid rgba(245, 194, 82, .15);
   border-radius: 14px;
-  box-shadow: inset 0 6px 14px rgba(0,0,0,.32);
+  box-shadow: inset 0 8px 18px rgba(0, 0, 0, .35);
   overflow: visible;
 }
 
-/* PLAYING CARDS */
 .hand img.card,
 .card {
-  width: clamp(38px, 5.5vw, 60px);
-  height: clamp(54px, 8vw, 84px);
-
-  margin: 2px;
-
+  width: clamp(42px, 5vw, 58px);
+  height: clamp(60px, 7.1vw, 82px);
   display: block;
   padding: 0 !important;
-  margin: 2px;
-
+  margin: 1px;
   object-fit: contain !important;
-
-  border-radius: 8px;
-  border: 2px solid rgba(10,12,18,.85);
-  box-shadow: 0 5px 10px rgba(0,0,0,.45);
-
+  border-radius: 7px;
+  border: 1px solid rgba(10, 12, 18, .9);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, .52);
   background: #f8f8f5;
-
   opacity: 1;
   transform: translateY(0) scale(1);
   animation: dealCard .25s ease;
-
   flex: 0 0 auto;
 }
 
@@ -201,65 +332,57 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: clamp(3px, 0.8vw, 6px);
+  gap: clamp(3px, .8vw, 7px);
 }
 
-/* CARD BACK */
 .card.card-back {
-  width: clamp(46px, 6.5vw, 72px);
-  height: clamp(66px, 9.4vw, 104px);
-
+  width: clamp(42px, 5vw, 58px);
+  height: clamp(60px, 7.1vw, 82px);
   background:
     radial-gradient(circle at 30% 25%, rgba(255,255,255,.18), transparent 18%),
     repeating-linear-gradient(45deg, rgba(255,255,255,.07) 0 6px, transparent 6px 12px),
     #243a68;
-
-  border: 2px solid #0b1734;
+  border: 1px solid #0b1734;
   filter: none;
 }
 
 @keyframes dealCard {
-  from {
-    opacity: 0;
-    transform: translateY(-30px) scale(.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(-18px) scale(.92); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .correct-glow {
-  box-shadow: 0 0 14px #00ff88, 0 0 28px rgba(0,255,136,.45);
-  transform: scale(1.06);
+  box-shadow: 0 0 14px #00ff88, 0 0 28px rgba(0,255,136,.45), inset 0 1px 0 rgba(255,255,255,.15) !important;
+  transform: translateY(-1px) scale(1.03);
   outline: 2px solid #00ff88;
 }
 
-/* BETTING */
 .bet-spot {
-  height: 40px;
-  width: 140px;
-  margin: 4px auto;
-  border: 2px dashed rgba(255,255,255,.4);
-  border-radius: 40px;
-  background: rgba(0,0,0,.15);
+  height: 72px;
+  width: 118px;
+  margin: 0 auto;
+  border: 1px dashed rgba(245, 194, 82, .62);
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(245, 194, 82, .13), rgba(0, 0, 0, .2));
   position: relative;
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, .4);
 }
 
 .bet-spot::before {
   content: "BET";
   position: absolute;
-  top: -10px;
+  top: 9px;
   font-size: .6rem;
-  letter-spacing: 2px;
-  opacity: .5;
+  letter-spacing: .22em;
+  color: var(--casino-gold-bright);
+  opacity: .76;
 }
 
 .bet-chip {
-  width: 34px;
+  width: 32px;
   position: absolute;
 }
 
@@ -267,28 +390,36 @@ h1 {
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin-top: 4px;
+  margin-top: 0;
   flex-wrap: wrap;
 }
 
 .chip {
-  width: 40px;
+  width: 38px;
   cursor: pointer;
+  filter: drop-shadow(0 7px 10px rgba(0, 0, 0, .45));
+  transition: transform .15s ease, filter .15s ease;
+}
+
+.chip:hover,
+.chip:focus-visible {
+  transform: translateY(-2px) scale(1.04);
+  filter: drop-shadow(0 9px 15px rgba(245, 194, 82, .18));
 }
 
 .chip-fallback {
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   border: 2px solid #f7d16c;
   background: #1d1d1d;
   color: #ffd54a;
-  font-weight: 700;
-  font-size: .75rem;
+  font-weight: 800;
+  font-size: .72rem;
 }
 
 .controls {
-  margin-top: 4px;
+  margin-top: 0;
   display: flex;
   justify-content: center;
   gap: 8px;
@@ -297,29 +428,59 @@ h1 {
 
 button {
   padding: 10px 14px;
-  font-size: .92rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
+  font-size: .86rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 224, 154, .32);
+  border-radius: 12px;
   cursor: pointer;
-  color: white;
+  color: #15110a;
   min-height: 42px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, .32), inset 0 1px 0 rgba(255, 255, 255, .35);
+  transition: transform .16s ease, filter .16s ease, background .16s ease, opacity .16s ease;
 }
 
-#dealBtn { background: #1f7ae0; }
-#hitBtn { background: #21a35b; }
-#standBtn { background: #d64545; }
-#doubleBtn { background: #8b5cf6; }
-#splitBtn { background: #f59e0b; }
-#clearBetBtn { background: #6b7280; }
-#resetBtn { background: #0ea5a3; }
+#dealBtn,
+#hitBtn,
+#standBtn,
+#doubleBtn,
+#splitBtn {
+  min-width: 96px;
+  background: linear-gradient(135deg, #ffe6a6 0%, #f5c252 42%, #b56f1d 100%);
+}
+
+#clearBetBtn,
+#resetBtn,
+#strategyClose {
+  background: linear-gradient(135deg, #2b2d34, #121318);
+  color: var(--casino-gold-bright);
+  border-color: rgba(245, 194, 82, .42);
+}
+
+button:hover:not(:disabled),
+button:focus-visible:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+  outline: none;
+}
+
+#dealBtn:hover:not(:disabled),
+#hitBtn:hover:not(:disabled),
+#standBtn:hover:not(:disabled),
+#doubleBtn:hover:not(:disabled),
+#splitBtn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d1f25, #090a0d);
+  color: var(--casino-gold-bright);
+}
 
 button:disabled {
-  opacity: .5;
+  opacity: .38;
   cursor: not-allowed;
+  filter: grayscale(.55);
+  box-shadow: none;
 }
 
-/* STRATEGY POPUP */
 .strategy-popup {
   position: fixed;
   top: 110px;
@@ -360,7 +521,6 @@ button:disabled {
   display: none;
 }
 
-/* RESULT BUBBLE */
 .result-bubble {
   position: fixed;
   left: 50%;
@@ -391,14 +551,13 @@ button:disabled {
   100% { opacity: 0; top: 12%; }
 }
 
-/* FEEDBACK IMAGE */
 .feedback-image {
   position: absolute;
-  left: 40px;
-  top: 40px;
+  left: 24px;
+  top: 24px;
   z-index: 2000;
-  width: 220px;
-  max-width: 28vw;
+  width: 190px;
+  max-width: 26vw;
   border-radius: 16px;
   box-shadow: 0 14px 40px rgba(0,0,0,.55);
   opacity: 0;
@@ -408,34 +567,48 @@ button:disabled {
 }
 
 @keyframes tableImageFade {
-  0% {
-    opacity: 0;
-    transform: translateY(18px) scale(.96);
+  0% { opacity: 0; transform: translateY(18px) scale(.96); }
+  12% { opacity: 1; transform: translateY(0) scale(1); }
+  75% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-10px) scale(.98); }
+}
+
+@media (max-width: 900px) {
+  .wrap.blackjack-shell {
+    padding-top: 54px;
   }
-  12% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+
+  .home-btn {
+    position: absolute;
   }
-  75% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+
+  .panel-topline {
+    grid-template-columns: 1fr;
   }
-  100% {
-    opacity: 0;
-    transform: translateY(-10px) scale(.98);
+
+  .topbar,
+  .trainer-status-pill {
+    justify-content: center;
+  }
+
+  .table-area {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "dealer"
+      "bet"
+      "player"
+      "chips"
+      "actions";
+  }
+
+  .bet-spot {
+    height: 50px;
+    width: 132px;
   }
 }
 
-/* MOBILE */
 @media (max-width: 800px) {
-  body {
-    overflow: auto;
-    padding-bottom: 26vh;
-  }
-
-  .wrap {
-    height: auto;
-    min-height: 100vh;
+  body.blackjack-page {
     overflow: auto;
   }
 
@@ -468,176 +641,254 @@ button:disabled {
 }
 
 @media (max-width: 768px) {
-  body > .wrap {
+  .wrap.blackjack-shell {
     min-height: auto;
+    padding-inline: 10px;
+    gap: 8px;
+  }
+
+  .trainer-hero {
+    padding: 9px 12px;
+    border-radius: 20px;
+  }
+
+  .brand-kicker {
+    font-size: .7rem;
+    letter-spacing: .24em;
+  }
+
+  .trainer-panel {
+    padding: 9px;
+    border-radius: 22px;
+  }
+
+  .trainer-status-pill {
+    gap: 6px;
+  }
+
+  .trainer-pill,
+  .stat-pill,
+  .status-tile {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-width: 0;
+    padding: 6px 8px;
+  }
+
+  .message {
+    font-size: .86rem;
+    margin-bottom: 7px;
+  }
+
+  .reason-box {
+    font-size: .84rem;
+    padding: 8px 10px;
+    margin-bottom: 8px;
   }
 
   .table-area {
     padding: 8px !important;
-    border-width: 3px !important;
+    border-width: 1px !important;
+    gap: 8px;
     overflow: visible;
   }
 
-  .game-status,
   .dealer-section,
-  .player-section,
-  .bet-controls,
-  .action-controls {
-    margin-bottom: 10px;
+  .player-section {
+    padding: 8px;
   }
 
   .section-title {
-    font-size: 0.9rem;
-    margin: 2px 0;
+    font-size: .78rem;
+    margin: 0 0 2px;
   }
 
   .total {
-    font-size: 0.8rem;
+    font-size: .76rem;
   }
 
   .hand {
-    min-height: clamp(92px, 30vw, 128px);
-    gap: 4px;
-    padding: 8px;
-    margin: 6px 0 !important;
+    min-height: clamp(74px, 24vw, 102px);
+    gap: 3px;
+    padding: 6px;
+    margin: 5px 0 0 !important;
   }
 
   .hand img.card,
   .card,
   .card.card-back {
-    width: clamp(54px, 16vw, 72px) !important;
-    height: clamp(78px, 23vw, 104px) !important;
-    border-width: 1.5px;
-    margin: 2px;
+    width: clamp(44px, 13.7vw, 62px) !important;
+    height: clamp(62px, 19vw, 88px) !important;
+    border-width: 1px;
+    margin: 1px;
   }
 
   .bet-spot {
-    height: 30px;
-    margin: 2px auto;
+    height: 42px;
+    margin: 0 auto;
+  }
+
+  .bet-spot::before {
+    top: 5px;
   }
 
   .chips {
-    margin-top: 8px;
-    gap: 10px;
+    gap: 9px;
   }
 
   .chip {
     width: 34px;
   }
 
-  .chips-row img {
-    width: 38px !important;
-  }
-
   .controls {
-    margin-top: 2px;
-    gap: 10px;
+    gap: 8px;
   }
 
   .controls button {
-    flex: 1 1 calc(50% - 10px);
-  }
-
-  .action-buttons button,
-  .actions button,
-  button {
-    padding: 12px 10px !important;
-    font-size: 0.95rem !important;
+    flex: 1 1 calc(50% - 8px);
+    padding: 11px 9px !important;
+    font-size: .82rem !important;
     min-height: 44px !important;
   }
 
-  h1, h2, h3 {
-    margin: 6px 0 !important;
+  #dealBtn,
+  #hitBtn,
+  #standBtn,
+  #doubleBtn,
+  #splitBtn {
+    min-width: 0;
   }
 
-  .bankroll,
-  .status,
-  .bet-display,
-  .balance {
-    margin: 4px 0 !important;
-    font-size: 0.95rem !important;
+  .feedback-image {
+    left: 12px;
+    top: 12px;
+    width: 145px;
+    max-width: 42vw;
+  }
+}
+
+@media (max-width: 430px) {
+  .wrap.blackjack-shell {
+    padding-top: 50px;
+  }
+
+  .home-btn {
+    font-size: .7rem;
+    padding: 8px 10px;
+  }
+
+  h1 {
+    font-size: 1.55rem;
+  }
+
+  .hero-tagline {
+    font-size: .82rem;
+  }
+
+  .status-label,
+  .pill-label,
+  .stat-label {
+    font-size: .6rem;
+  }
+
+  .trainer-pill,
+  .stat-pill,
+  .status-tile {
+    font-size: .74rem;
   }
 }
 </style>
 </head>
 
-<body>
+<body class="blackjack-page">
 
-<div class="wrap">
+<div class="wrap blackjack-shell">
 
-<h1>Blackjack Trainer</h1>
-  
 <button id="homeBtn" class="home-btn">⬅ Back to Home</button>
-  
-<div class="topbar game-status">
-  <div>Bankroll: $<span id="bankroll">1000</span></div>
-  <div>Bet: $<span id="bet">0</span></div>
-</div>
 
-  <div style="margin-bottom:6px;">
-  <label style="font-size:14px;">
-    <input type="checkbox" id="explainToggle" checked>
-    Detailed explanations
-  </label>
-</div>
+<header class="trainer-hero" aria-labelledby="trainerTitle">
+  <p class="brand-kicker">Edge Over Luck</p>
+  <h1 id="trainerTitle">Blackjack Trainer</h1>
+  <p class="hero-tagline">Train smarter. Bet dumber less often.</p>
+</header>
 
-<div class="trainer-stats">
-  Correct: <span id="correctMoves">0</span> |
-  Mistakes: <span id="wrongMoves">0</span> |
-  Accuracy: <span id="accuracy">100</span>%
-</div>
+<main class="trainer-panel" aria-label="Interactive blackjack trainer">
+  <div class="panel-topline">
+    <div class="topbar game-status" aria-label="Bankroll and current bet">
+      <div class="status-tile"><span class="status-label">Bankroll</span> $<span id="bankroll" class="status-value">1000</span></div>
+      <div class="status-tile"><span class="status-label">Bet</span> $<span id="bet" class="status-value">0</span></div>
+    </div>
 
-<div id="message" class="message">Place a bet.</div>
-
-<div class="trainer-options">
-  <div class="toggle-wrap">
-    <label for="trainerToggle"><strong>Trainer Hints</strong></label>
-    <input type="checkbox" id="trainerToggle" checked>
-    <span id="trainerToggleText">ON</span>
-  </div>
-</div>
-
-<div id="reasonBox" class="reason-box">
-  <div id="reasonText">Turn trainer hints on for pre-move advice, or keep them off and get the explanation after your choice.</div>
-</div>
-
-<div class="table-area">
-
-  <div class="dealer-section">
-    <div class="section-title">Dealer</div>
-    <div class="total">Total: <span id="dealer-total">0</span></div>
-    <div id="dealer-hand" class="hand"></div>
-  </div>
-
-  <div id="betSpot" class="bet-spot"></div>
-
-  <div class="player-section">
-    <div class="section-title">Player</div>
-    <div class="total">Total: <span id="player-total">0</span></div>
-    <div id="player-hand" class="hand"></div>
-  </div>
-
-  <div class="bet-controls">
-    <div class="chips" id="chipsRow">
-      <img src="images/chips/chip-1.png" class="chip" data-amount="1" alt="$1 chip" loading="lazy">
-      <img src="images/chips/chip-5.png" class="chip" data-amount="5" alt="$5 chip" loading="lazy">
-      <img src="images/chips/chip-10.png" class="chip" data-amount="10" alt="$10 chip" loading="lazy">
-      <img src="images/chips/chip-25.png" class="chip" data-amount="25" alt="$25 chip" loading="lazy">
-      <img src="images/chips/chip-100.png" class="chip" data-amount="100" alt="$100 chip" loading="lazy">
+    <div class="trainer-status-pill" aria-label="Trainer status">
+      <div class="trainer-pill">
+        <label for="trainerToggle"><span class="pill-label">Hints</span></label>
+        <input type="checkbox" id="trainerToggle" checked>
+        <span id="trainerToggleText" class="mode-value">ON</span>
+      </div>
+      <div class="trainer-pill">
+        <label for="explainToggle"><span class="pill-label">Detailed</span></label>
+        <input type="checkbox" id="explainToggle" checked>
+        <span id="explainToggleText" class="mode-value">ON</span>
+      </div>
+      <div class="stat-pill trainer-stats">
+        <span class="stat-label">Accuracy</span>
+        <span><span id="accuracy" class="stat-value">100</span>%</span>
+      </div>
+      <div class="stat-pill trainer-stats">
+        <span class="stat-label">Mistakes</span>
+        <span id="wrongMoves" class="stat-value">0</span>
+      </div>
+      <div class="stat-pill trainer-stats">
+        <span class="stat-label">Correct</span>
+        <span id="correctMoves" class="stat-value">0</span>
+      </div>
     </div>
   </div>
 
-  <div class="controls action-controls">
-    <button id="dealBtn">Deal</button>
-    <button id="hitBtn" disabled>Hit</button>
-    <button id="standBtn" disabled>Stand</button>
-    <button id="doubleBtn" disabled>Double</button>
-    <button id="splitBtn" disabled>Split</button>
-    <button id="clearBetBtn">Clear Bet</button>
-    <button id="resetBtn">New Game</button>
+  <div id="message" class="message">Place a bet.</div>
+
+  <div id="reasonBox" class="reason-box">
+    <div id="reasonText">Turn trainer hints on for pre-move advice, or keep them off and get the explanation after your choice.</div>
   </div>
 
-</div>
+  <div class="table-area">
+
+    <div class="dealer-section">
+      <div class="section-title">Dealer</div>
+      <div class="total">Total: <span id="dealer-total">0</span></div>
+      <div id="dealer-hand" class="hand"></div>
+    </div>
+
+    <div id="betSpot" class="bet-spot"></div>
+
+    <div class="player-section">
+      <div class="section-title">Player</div>
+      <div class="total">Total: <span id="player-total">0</span></div>
+      <div id="player-hand" class="hand"></div>
+    </div>
+
+    <div class="bet-controls">
+      <div class="chips" id="chipsRow">
+        <img src="images/chips/chip-1.png" class="chip" data-amount="1" alt="$1 chip" loading="lazy">
+        <img src="images/chips/chip-5.png" class="chip" data-amount="5" alt="$5 chip" loading="lazy">
+        <img src="images/chips/chip-10.png" class="chip" data-amount="10" alt="$10 chip" loading="lazy">
+        <img src="images/chips/chip-25.png" class="chip" data-amount="25" alt="$25 chip" loading="lazy">
+        <img src="images/chips/chip-100.png" class="chip" data-amount="100" alt="$100 chip" loading="lazy">
+      </div>
+    </div>
+
+    <div class="controls action-controls">
+      <button id="dealBtn">Deal</button>
+      <button id="hitBtn" disabled>Hit</button>
+      <button id="standBtn" disabled>Stand</button>
+      <button id="doubleBtn" disabled>Double</button>
+      <button id="splitBtn" disabled>Split</button>
+      <button id="clearBetBtn">Clear Bet</button>
+      <button id="resetBtn">New Game</button>
+    </div>
+
+  </div>
+</main>
 </div>
 
 <div id="resultBubble" class="result-bubble hidden">WRONG!</div>

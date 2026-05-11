@@ -58,12 +58,16 @@ const trainerToggle=document.getElementById("trainerToggle")
 const trainerToggleText=document.getElementById("trainerToggleText")
 const reasonTextEl=document.getElementById("reasonText")
 const explainToggle = document.getElementById("explainToggle")
+const explainToggleText = document.getElementById("explainToggleText")
   
 if(explainToggle){
   explainToggle.addEventListener("change",()=>{
 
     // update mode
     detailedExplanations = explainToggle.checked
+    if(explainToggleText){
+      explainToggleText.textContent = detailedExplanations ? "ON" : "OFF"
+    }
 
     // 🔥 instant feedback (top message)
     setMessage(
