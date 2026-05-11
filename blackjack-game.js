@@ -20,7 +20,8 @@ const playerHandEl=document.getElementById("player-hand")
 const dealerTotalEl=document.getElementById("dealer-total")
 const playerTotalEl=document.getElementById("player-total")
 const messageEl=document.getElementById("message")
-const chipSound=document.getElementById("chipSound")
+const soundToggle=document.getElementById("soundToggle")
+const soundToggleText=document.getElementById("soundToggleText")
   
 const homeBtn = document.getElementById("homeBtn")
 const dealBtn=document.getElementById("dealBtn")
@@ -62,6 +63,7 @@ const explainToggleText = document.getElementById("explainToggleText")
   
 if(explainToggle){
   explainToggle.addEventListener("change",()=>{
+    playButtonSound()
 
     // update mode
     detailedExplanations = explainToggle.checked
@@ -88,6 +90,81 @@ if(explainToggle){
   })
 }
 
+
+const blackjackAudio = {
+  enabled: localStorage.getItem("blackjackSoundMuted") !== "true",
+  unlocked: false,
+  clips: {
+    chip: { src: "sounds/chips/placing-poker-chips.mp3", volume: 0.25 },
+    click: { src: "sounds/chips/chip-click.mp3", volume: 0.18 },
+    deal: { src: "sounds/cards/deal.mp3", volume: 0.22 },
+    flip: { src: "sounds/cards/card_slide.mp3", volume: 0.22 },
+    shuffle: { src: "sounds/cards/cards-being-shuffled.mp3", volume: 0.16 },
+    win: { src: "sounds/ui/subtle-win.mp3", volume: 0.22 },
+    fail: { src: "sounds/ui/subtle-fail.mp3", volume: 0.20 },
+    lose: { src: "sounds/ui/lose.mp3", volume: 0.18 },
+    blackjack: { src: "sounds/voices/blackjack.mp3", volume: 0.45 }
+  },
+  init(){
+    Object.keys(this.clips).forEach((name)=>{
+      const clip = this.clips[name]
+      const audio = new Audio(clip.src)
+      audio.preload = "auto"
+      audio.volume = clip.volume
+      clip.audio = audio
+    })
+    this.updateToggle()
+  },
+  unlock(){
+    this.unlocked = true
+  },
+  setEnabled(enabled){
+    this.enabled = enabled
+    localStorage.setItem("blackjackSoundMuted", enabled ? "false" : "true")
+    this.updateToggle()
+  },
+  toggle(){
+    this.unlock()
+    this.setEnabled(!this.enabled)
+    if(this.enabled){
+      this.play("click")
+    }
+  },
+  updateToggle(){
+    if(soundToggle){
+      soundToggle.setAttribute("aria-pressed", this.enabled ? "true" : "false")
+      soundToggle.setAttribute("aria-label", this.enabled ? "Sound on" : "Sound off")
+    }
+    if(soundToggleText){
+      soundToggleText.textContent = this.enabled ? "ON" : "OFF"
+    }
+  },
+  play(name){
+    if(!this.enabled || !this.unlocked) return
+    const clip = this.clips[name]
+    if(!clip || !clip.audio) return
+    try{
+      clip.audio.pause()
+      clip.audio.currentTime = 0
+      clip.audio.volume = clip.volume
+      clip.audio.play().catch(()=>{})
+    }catch(error){}
+  },
+  playBlackjack(){
+    this.play("blackjack")
+    window.setTimeout(()=>this.play("win"), 170)
+  }
+}
+
+blackjackAudio.init()
+
+document.addEventListener("pointerdown",()=>blackjackAudio.unlock(),{ once:true })
+document.addEventListener("keydown",()=>blackjackAudio.unlock(),{ once:true })
+
+if(soundToggle){
+  soundToggle.addEventListener("click",()=>blackjackAudio.toggle())
+}
+
 const IMAGES = {
   correct: "images/corrextmove.png",
   wrong: "images/wrong.png",
@@ -105,6 +182,7 @@ if(homeBtn){
 
 if(trainerToggle){
   trainerToggle.addEventListener("change",()=>{
+    playButtonSound()
     trainerHintsEnabled=trainerToggle.checked
     trainerToggleText.textContent=trainerHintsEnabled ? "ON" : "OFF"
 
@@ -243,10 +321,39 @@ function updateButtons(){
 }
 
 function playChipSound(){
-  if(!chipSound) return
-  chipSound.pause()
-  chipSound.currentTime=0
-  chipSound.play().catch(()=>{})
+  blackjackAudio.play("chip")
+}
+
+function playButtonSound(){
+  blackjackAudio.play("click")
+}
+
+function playDealSound(){
+  blackjackAudio.play("deal")
+}
+
+function playFlipSound(){
+  blackjackAudio.play("flip")
+}
+
+function playShuffleSound(){
+  blackjackAudio.play("shuffle")
+}
+
+function playWinSound(){
+  blackjackAudio.play("win")
+}
+
+function playFailSound(){
+  blackjackAudio.play("fail")
+}
+
+function playLoseSound(){
+  blackjackAudio.play("lose")
+}
+
+function playBlackjackSound(){
+  blackjackAudio.playBlackjack()
 }
 
 function getMoveClass(move){
@@ -485,11 +592,13 @@ function explainMove(action){
   if(action === advice.move){
     correctMoves++
     showCorrect()
+    playWinSound()
     setReason(`✅ Correct. ${advice.text}`)
     showImage(IMAGES.correct)
   }else{
     wrongMoves++
     showWrong()
+    playFailSound()
     setReason(`❌ ${action} was not the best move. The correct play is <strong>${advice.move}</strong>. ${advice.text}`)
     showImage(IMAGES.wrong)
   }
@@ -533,6 +642,7 @@ function addBet(a){
 }
 
 function clearBet(){
+  playButtonSound()
   bankroll+=bet
   bet=0
   betSpot.innerHTML=""
@@ -555,6 +665,7 @@ function deal(){
     return
   }
 
+  playShuffleSound()
   buildDeck()
   shuffle()
   splitModeActive=false
@@ -563,12 +674,14 @@ function deal(){
   gameOver = false
 
   render()
+  playDealSound()
   updateButtons()
   setMessage("Your move")
 
   if(handValue(player) === 21){
     render(false)
     setReason("🎉 Blackjack. You hit 21 immediately, which is the dream before the casino remembers whose building this is.")
+    playBlackjackSound()
     showImage(IMAGES.blackjack)
   }else{
     setReason(trainerHintsEnabled
@@ -585,6 +698,7 @@ function hit(){
 
   explainMove("Hit")
   player.push(draw())
+  playDealSound()
   render()
 
 if(handValue(player) > 21){
@@ -603,6 +717,7 @@ if(handValue(player) > 21){
  setMessage("Bust")
  setReason("💥 You busted. You went over 21, so the hand is dead.")
   showImage(IMAGES.playerBust)
+  playLoseSound()
 
   if(bankroll<=0){
     setTimeout(()=>{
@@ -637,6 +752,7 @@ if(handValue(player) > 21){
     dealer.push(draw())
   }
 
+  playFlipSound()
   render(true)
 
   let pt = handValue(player)
@@ -679,11 +795,14 @@ if(handValue(player) > 21){
 
     if(splitWins === splitHands.length){
       setMessage("Both split hands win")
+      playWinSound()
       showImage(IMAGES.correct)
     }else if(splitWins > 0 || splitPushes > 0){
       setMessage("Split hand results")
+      playWinSound()
     }else{
       setMessage("Dealer wins")
+      playLoseSound()
       showImage(IMAGES.dealerLaugh)
     }
 
@@ -693,12 +812,14 @@ if(handValue(player) > 21){
     bankroll += bet * 2
     setMessage("Dealer busts. You win.")
     setReason("✅ Dealer busted by going over 21.")
+    playWinSound()
     showImage(IMAGES.correct)
   }
   else if(pt > dt){
     bankroll += bet * 2
     setMessage("You win")
     setReason(`✅ Your ${pt} beat the dealer’s ${dt}.`)
+    playWinSound()
     showImage(IMAGES.correct)
   }
   else if(pt === dt){
@@ -709,6 +830,7 @@ if(handValue(player) > 21){
   else{
     setMessage("Dealer wins")
     setReason(`❌ Dealer ${dt} beats your ${pt}.`)
+    playLoseSound()
     showImage(IMAGES.dealerLaugh)
   }
 
@@ -745,7 +867,9 @@ function doubleDown(){
 
   bankroll -= bet
   bet *= 2
+  playChipSound()
   player.push(draw())
+  playDealSound()
   render()
 
   if(handValue(player) > 21){
@@ -760,6 +884,7 @@ function doubleDown(){
     updateButtons()
     setMessage("Bust after double")
     setReason("💥 You doubled and busted. Aggressive, educational, and financially unfortunate.")
+    playLoseSound()
     showImage(IMAGES.playerBust)
 
     if(bankroll<=0){
@@ -789,7 +914,9 @@ function splitHand(){
   explainMove("Split")
   bankroll -= bet
   bet *= 2
+  playChipSound()
   player = [player[0], draw(), player[1], draw()]
+  playDealSound()
   splitModeActive=true
   render()
   updateMoney()
@@ -800,6 +927,7 @@ function splitHand(){
 }
 
 function resetGame(){
+  playShuffleSound()
   deck=[]
   player=[]
   dealer=[]

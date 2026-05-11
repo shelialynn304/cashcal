@@ -208,6 +208,22 @@ h1 {
   cursor: pointer;
 }
 
+.sound-toggle {
+  min-height: 32px;
+  color: #fff4d7;
+  background: rgba(0, 0, 0, .28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
+}
+
+.sound-toggle[aria-pressed="false"] {
+  border-color: rgba(255, 255, 255, .14);
+  color: var(--muted-text);
+}
+
+.sound-toggle[aria-pressed="false"] .mode-value {
+  color: #d6ccb6;
+}
+
 .message {
   min-height: 24px;
   margin: 0 0 8px;
@@ -825,6 +841,10 @@ button:disabled {
         <input type="checkbox" id="trainerToggle" checked>
         <span id="trainerToggleText" class="mode-value">ON</span>
       </div>
+      <button id="soundToggle" class="trainer-pill sound-toggle" type="button" aria-pressed="true">
+        <span class="pill-label">Sound</span>
+        <span id="soundToggleText" class="mode-value">ON</span>
+      </button>
       <div class="trainer-pill">
         <label for="explainToggle"><span class="pill-label">Detailed</span></label>
         <input type="checkbox" id="explainToggle" checked>
@@ -927,8 +947,6 @@ button:disabled {
     <p class="copyright">© 2026 EdgeOverLuck.com — Casino math tools for education and entertainment.</p>
   </div>
 </footer>
-
-<audio id="chipSound" src="sounds/chip-click.mp3"></audio>
 
 <script src="blackjack-game.js" defer></script>
 
