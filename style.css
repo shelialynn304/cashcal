@@ -1912,3 +1912,206 @@ table td,
     padding: 14px 15px;
   }
 }
+
+/* EDGEOVERLUCK EXPERIENCE BLOCKS */
+.experience-strip {
+  padding: 24px 0 8px;
+}
+
+.experience-strip + .section,
+.experience-strip + .section-tight {
+  padding-top: 30px;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: var(--gold);
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+}
+
+.reality-card,
+.scenario-card,
+.myth-math-card,
+.quiz-cta-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.reality-card::before,
+.scenario-card::before,
+.myth-math-card::before,
+.quiz-cta-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--gold), rgba(77,182,255,0.4));
+}
+
+.reality-card strong,
+.scenario-card strong,
+.myth-math-card strong {
+  display: block;
+  color: #fff;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+.scenario-card .chip,
+.myth-math-card .chip,
+.quiz-cta-card .chip {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(241,196,91,0.12);
+  border: 1px solid rgba(241,196,91,0.2);
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.25px;
+  text-transform: uppercase;
+}
+
+.scenario-card {
+  min-height: 100%;
+}
+
+.myth-math-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.myth-math-card {
+  border-color: rgba(241,196,91,0.18);
+}
+
+.myth-math-card .myth {
+  color: #ffb3b3;
+}
+
+.myth-math-card .math {
+  color: var(--success);
+}
+
+.quiz-cta-card {
+  border-color: rgba(77,182,255,0.28);
+  background:
+    radial-gradient(circle at top right, rgba(77,182,255,0.16), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+}
+
+.quiz-cta-card h2,
+.quiz-cta-card h3 {
+  margin-bottom: 8px;
+}
+
+.tool-link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.tool-link-row a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.03);
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.tool-link-row a:hover,
+.tool-link-row a:focus-visible {
+  border-color: var(--border-strong);
+  color: var(--gold);
+  background: rgba(241,196,91,0.08);
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.comparison-table th {
+  color: var(--gold);
+  background: rgba(241,196,91,0.08);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25px;
+}
+
+.comparison-table td {
+  color: var(--muted);
+}
+
+.comparison-table tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .experience-strip {
+    padding-top: 14px;
+  }
+
+  .myth-math-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-table,
+  .comparison-table tbody,
+  .comparison-table tr,
+  .comparison-table td,
+  .comparison-table th {
+    display: block;
+    width: 100%;
+  }
+
+  .comparison-table thead {
+    display: none;
+  }
+
+  .comparison-table tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-table td {
+    border-bottom: 0;
+  }
+
+  .comparison-table td::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--gold);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.25px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+}
