@@ -83,7 +83,7 @@
 
 <main>
 
-  <section class="hero">
+  <section class="hero glow-hero hero-glow-overlay">
     <div class="container hero-wrap">
       <div>
         <div class="eyebrow">Blackjack Tool</div>
@@ -100,7 +100,7 @@
         </div>
       </div>
 
-      <div class="info-box">
+      <div class="info-box glass-panel glow-gold hover-glow">
         <img class="section-image" src="images/bankroll-risk-section.webp" loading="lazy" width="1298" height="974" alt="Blackjack bankroll risk chart and casino chips with gold probability design" />
         <h3 class="mt-0">Reality Check</h3>
         <p>
@@ -113,21 +113,21 @@
     </div>
   </section>
 
-  <section class="experience-strip" aria-label="Blackjack bankroll reality checks">
+  <section class="experience-strip section-divider" aria-label="Blackjack bankroll reality checks">
     <div class="container">
       <div class="grid grid-3">
-        <article class="card reality-card"><span class="kicker">Reality Check</span><strong>Big wins happen. Giving them back is optional.</strong><p class="mb-0">Use the calculator before a hot table turns into oversized bets.</p></article>
-        <article class="card reality-card"><span class="kicker">Bankroll Math</span><strong>The house edge is slow. Bad bet sizing is fast.</strong><p class="mb-0">A small edge can still destroy a thin bankroll during normal variance.</p></article>
-        <article class="card reality-card"><span class="kicker">Table Mood</span><strong>A good decision can still lose one hand.</strong><p class="mb-0">The point is better repeatable choices, not predicting the next card.</p></article>
+        <article class="card reality-card premium-card interactive-card"><span class="kicker">Reality Check</span><strong>Big wins happen. Giving them back is optional.</strong><p class="mb-0">Use the calculator before a hot table turns into oversized bets.</p></article>
+        <article class="card reality-card premium-card interactive-card"><span class="kicker">Bankroll Math</span><strong>The house edge is slow. Bad bet sizing is fast.</strong><p class="mb-0">A small edge can still destroy a thin bankroll during normal variance.</p></article>
+        <article class="card reality-card premium-card interactive-card"><span class="kicker">Table Mood</span><strong>A good decision can still lose one hand.</strong><p class="mb-0">The point is better repeatable choices, not predicting the next card.</p></article>
       </div>
     </div>
   </section>
 
 
-  <section class="section" id="calculator">
+  <section class="section casino-divider" id="calculator">
     <div class="container">
-      <div class="card">
-        <div class="bankroll-lasts-stat info-box text-center">
+      <div class="card glass-panel glow-gold hover-glow">
+        <div class="bankroll-lasts-stat info-box text-center glass-card">
           <p class="small-note mb-0">Quick Reality Check</p>
           <div id="lastsHandsStat" class="lasts-hands-stat-value">
             YOU LAST ~0 HANDS
@@ -193,37 +193,37 @@
 
         <div class="results results-spacing">
           <div class="result-list">
-            <div class="result-item">
+            <div class="result-item glass-card">
               <span>Expected Loss</span>
               <strong id="expectedLoss">$0.00</strong>
             </div>
 
-            <div class="result-item">
+            <div class="result-item glass-card">
               <span>Average Ending Bankroll</span>
               <strong id="endingBankroll">$0.00</strong>
             </div>
 
-            <div class="result-item">
+            <div class="result-item glass-card">
               <span>Bust Risk</span>
               <strong id="bustRisk">0%</strong>
             </div>
 
-            <div class="result-item">
+            <div class="result-item glass-card">
               <span>Profit Chance</span>
               <strong id="profitChance">0%</strong>
             </div>
 
-            <div class="result-item">
+            <div class="result-item glass-card">
               <span>P10 Ending Bankroll</span>
               <strong id="p10Ending">$0.00</strong>
             </div>
 
-            <div class="result-item">
+            <div class="result-item glass-card">
               <span>P90 Ending Bankroll</span>
               <strong id="p90Ending">$0.00</strong>
             </div>
 
-            <div class="result-item">
+            <div class="result-item glass-card">
               <span>Recommended Max Bet</span>
               <strong id="recommendedBet">$0.00</strong>
             </div>
@@ -235,7 +235,7 @@
         </div>
 
         <div class="grid grid-2 chart-grid-spacing">
-          <div class="card">
+          <div class="card premium-card interactive-card">
             <h3>Outcome Breakdown</h3>
             <p class="small-note">
               Busts vs sessions that lost money vs sessions that finished ahead.
@@ -243,7 +243,7 @@
             <canvas id="resultsChart"></canvas>
           </div>
 
-          <div class="card">
+          <div class="card premium-card interactive-card">
             <h3>Sample Session</h3>
             <p class="small-note">
               One simulated bankroll path through the session.
@@ -256,9 +256,9 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section gold-divider">
     <div class="container grid grid-2">
-      <div class="info-box">
+      <div class="info-box glass-panel hover-glow">
         <h2>What this means</h2>
         <p>
           A survivable session does not mean you have an edge. It only means your bankroll may survive that session length at that bet size.
@@ -268,7 +268,7 @@
         </p>
       </div>
 
-      <div class="warning-box">
+      <div class="warning-box glass-panel hover-glow">
         <h2>What this does not mean</h2>
         <p>
           This does not prove blackjack is beatable for normal players. It only shows how likely your bankroll is to get mauled before you stop playing.
@@ -282,21 +282,21 @@
 
 
 
-  <section class="section" aria-labelledby="bankroll-scenarios-title">
+  <section class="section section-divider" aria-labelledby="bankroll-scenarios-title">
     <div class="container">
       <h2 id="bankroll-scenarios-title" class="section-title">Blackjack bankroll scenarios that matter</h2>
       <p class="section-subtext">Same game, different behavior. Use these quick reads before changing your bet size.</p>
       <div class="grid grid-4">
-        <article class="card scenario-card"><span class="chip">If you bring $100</span><strong>Keep the unit small.</strong><p class="mb-0">A $10 average bet creates a much shorter fuse than it feels like at the table.</p></article>
-        <article class="card scenario-card"><span class="chip">If you bring $300</span><strong>You get room, not immunity.</strong><p class="mb-0">More buy-in helps absorb streaks, but overbetting still compresses the session.</p></article>
-        <article class="card scenario-card"><span class="chip">If you chase losses</span><strong>The calculator gets uglier fast.</strong><p class="mb-0">Raising stakes after losses can turn normal variance into a quick exit.</p></article>
-        <article class="card scenario-card"><span class="chip">If you want longer play</span><strong>Reduce bet size before blaming luck.</strong><p class="mb-0">Lower units do not remove house edge, but they usually buy more decisions.</p></article>
+        <article class="card scenario-card premium-card interactive-card"><span class="chip">If you bring $100</span><strong>Keep the unit small.</strong><p class="mb-0">A $10 average bet creates a much shorter fuse than it feels like at the table.</p></article>
+        <article class="card scenario-card premium-card interactive-card"><span class="chip">If you bring $300</span><strong>You get room, not immunity.</strong><p class="mb-0">More buy-in helps absorb streaks, but overbetting still compresses the session.</p></article>
+        <article class="card scenario-card premium-card interactive-card"><span class="chip">If you chase losses</span><strong>The calculator gets uglier fast.</strong><p class="mb-0">Raising stakes after losses can turn normal variance into a quick exit.</p></article>
+        <article class="card scenario-card premium-card interactive-card"><span class="chip">If you want longer play</span><strong>Reduce bet size before blaming luck.</strong><p class="mb-0">Lower units do not remove house edge, but they usually buy more decisions.</p></article>
       </div>
     </div>
   </section>
 
   <section class="section-tight" aria-labelledby="bankroll-quiz-title">
-    <div class="container quiz-cta-card card">
+    <div class="container quiz-cta-card card glass-panel glow-cyan hover-glow">
       <span class="chip">Personality leak check</span>
       <h2 id="bankroll-quiz-title" class="section-title">Some players lose from bad odds. Others lose from emotional decisions.</h2>
       <p>Are you a Chaser, Grinder, Strategist, Heater Hunter, or Chaos Goblin? Your biggest bankroll leak may not be mathematical.</p>
