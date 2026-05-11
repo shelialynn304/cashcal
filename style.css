@@ -2645,3 +2645,197 @@ table td,
     margin-bottom: 4px;
   }
 }
+
+/* STEP 3 ENGAGEMENT UPGRADES */
+.scenario-grid,
+.streak-grid,
+.odds-display,
+.image-anchor-grid,
+.result-insight-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.scenario-grid {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
+.streak-grid,
+.odds-display,
+.result-insight-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.image-anchor-grid {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+.myth-vs-math-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.myth-card,
+.math-card,
+.streak-card,
+.odds-display-card,
+.result-insight,
+.image-anchor {
+  position: relative;
+  overflow: hidden;
+}
+
+.myth-card,
+.math-card,
+.streak-card,
+.result-insight,
+.image-anchor,
+.odds-display-card {
+  border-color: rgba(255,255,255,0.12);
+}
+
+.math-card {
+  border-color: rgba(88,214,141,0.22);
+  background:
+    radial-gradient(circle at top right, rgba(88,214,141,0.12), transparent 36%),
+    linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015)),
+    var(--glass-bg-strong);
+}
+
+.myth-card::before,
+.math-card::before,
+.streak-card::before,
+.result-insight::before,
+.odds-display-card::before,
+.image-anchor::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--gold), rgba(77,182,255,0.42));
+}
+
+.myth-label,
+.math-label,
+.stat-label,
+.streak-label {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 10px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.28px;
+  text-transform: uppercase;
+}
+
+.myth-label {
+  color: #ffb3b3;
+  background: rgba(255,113,113,0.1);
+  border: 1px solid rgba(255,113,113,0.18);
+}
+
+.math-label,
+.stat-label {
+  color: var(--gold);
+  background: rgba(241,196,91,0.11);
+  border: 1px solid rgba(241,196,91,0.2);
+}
+
+.streak-label {
+  color: var(--accent);
+  background: rgba(77,182,255,0.1);
+  border: 1px solid rgba(77,182,255,0.18);
+}
+
+.myth-card h3,
+.math-card h3,
+.streak-card h3,
+.result-insight h3,
+.image-anchor h3 {
+  color: #fff;
+}
+
+.odds-display-card strong {
+  display: block;
+  color: #fff;
+  font-size: clamp(1.65rem, 3vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin: 8px 0 10px;
+}
+
+.odds-display-card p,
+.streak-card p,
+.result-insight p,
+.image-anchor p {
+  margin-bottom: 0;
+}
+
+.odds-display-card {
+  min-height: 150px;
+  background:
+    radial-gradient(circle at 28% 0%, rgba(241,196,91,0.14), transparent 44%),
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.018)),
+    var(--glass-bg-strong);
+  animation: oddsDisplaySettle 700ms ease both;
+}
+
+.odds-display-card:nth-child(2) { animation-delay: 80ms; }
+.odds-display-card:nth-child(3) { animation-delay: 160ms; }
+.odds-display-card:nth-child(4) { animation-delay: 240ms; }
+
+.streak-card {
+  box-shadow: var(--shadow-depth), 0 0 24px rgba(241,196,91,0.06);
+}
+
+.streak-card.is-danger {
+  border-color: rgba(255,113,113,0.24);
+  box-shadow: var(--shadow-depth), 0 0 24px rgba(255,113,113,0.08);
+}
+
+.streak-card.is-good {
+  border-color: rgba(88,214,141,0.22);
+  box-shadow: var(--shadow-depth), 0 0 24px rgba(88,214,141,0.08);
+}
+
+.image-anchor img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin-bottom: 14px;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.28);
+}
+
+.emotional-line {
+  color: var(--gold);
+  font-weight: 900;
+  letter-spacing: -0.015em;
+}
+
+@keyframes oddsDisplaySettle {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .odds-display-card {
+    animation: none;
+  }
+}
+
+.myth-card .myth-label::after,
+.myth-card .math-label::after,
+.myth-card .stat-label::after,
+.myth-card .streak-label::after {
+  content: none;
+}
