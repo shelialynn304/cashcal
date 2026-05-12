@@ -75,8 +75,12 @@ function availableBankroll() {
 
 function playSound(audioEl) {
   if (!audioEl) return;
-  audioEl.currentTime = 0;
-  audioEl.play().catch(() => {});
+
+  try {
+    audioEl.pause();
+    audioEl.currentTime = 0;
+    audioEl.play().catch(() => {});
+  } catch (error) {}
 }
 
 function setExplanation(text) {
