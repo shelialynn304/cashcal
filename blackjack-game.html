@@ -198,6 +198,11 @@ h1 {
   color: #d6ccb6;
 }
 
+.sound-toggle:disabled {
+  cursor: not-allowed;
+  opacity: .58;
+}
+
 .message {
   min-height: 24px;
   margin: 0 0 8px;
@@ -860,6 +865,10 @@ h1 {
       <button id="soundToggle" class="trainer-pill sound-toggle" type="button" aria-pressed="true">
         <span class="pill-label">Sound</span>
         <span id="soundToggleText" class="mode-value">ON</span>
+      </button>
+      <button id="voiceToggle" class="trainer-pill sound-toggle" type="button" aria-pressed="true">
+        <span class="pill-label">Dealer Voice</span>
+        <span id="voiceToggleText" class="mode-value">ON</span>
       </button>
       <div class="trainer-pill">
         <label for="explainToggle"><span class="pill-label">Detailed</span></label>
