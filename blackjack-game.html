@@ -51,7 +51,7 @@ body.blackjack-page::before {
 
 .wrap.blackjack-shell {
   width: min(100%, 1020px);
-  min-height: 100vh;
+  min-height: calc(100vh - 72px);
   margin: 0 auto;
   padding: 18px 16px 24px;
   display: flex;
@@ -59,32 +59,6 @@ body.blackjack-page::before {
   align-items: center;
   gap: 10px;
   position: relative;
-}
-
-.home-btn {
-  position: fixed;
-  top: 14px;
-  left: 14px;
-  z-index: 20;
-  padding: 9px 13px;
-  font-size: .78rem;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  background: rgba(10, 10, 12, .82);
-  color: var(--casino-gold-bright);
-  border: 1px solid rgba(245, 194, 82, .72);
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: 800;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .08);
-  backdrop-filter: blur(10px);
-}
-
-.home-btn:hover,
-.home-btn:focus-visible {
-  background: linear-gradient(135deg, #ffe09a, #c88b2e);
-  color: #111;
-  outline: none;
 }
 
 .trainer-hero {
@@ -442,7 +416,9 @@ h1 {
   flex-wrap: wrap;
 }
 
-button {
+.blackjack-shell button,
+.strategy-popup button,
+.chip-fallback {
   padding: 10px 14px;
   font-size: .86rem;
   font-weight: 900;
@@ -474,8 +450,12 @@ button {
   border-color: rgba(245, 194, 82, .42);
 }
 
-button:hover:not(:disabled),
-button:focus-visible:not(:disabled) {
+.blackjack-shell button:hover:not(:disabled),
+.blackjack-shell button:focus-visible:not(:disabled),
+.strategy-popup button:hover:not(:disabled),
+.strategy-popup button:focus-visible:not(:disabled),
+.chip-fallback:hover:not(:disabled),
+.chip-fallback:focus-visible:not(:disabled) {
   transform: translateY(-1px);
   filter: brightness(1.08);
   outline: none;
@@ -490,7 +470,9 @@ button:focus-visible:not(:disabled) {
   color: var(--casino-gold-bright);
 }
 
-button:disabled {
+.blackjack-shell button:disabled,
+.strategy-popup button:disabled,
+.chip-fallback:disabled {
   opacity: .38;
   cursor: not-allowed;
   filter: grayscale(.55);
@@ -591,11 +573,7 @@ button:disabled {
 
 @media (max-width: 900px) {
   .wrap.blackjack-shell {
-    padding-top: 54px;
-  }
-
-  .home-btn {
-    position: absolute;
+    padding-top: 18px;
   }
 
   .panel-topline {
@@ -785,12 +763,7 @@ button:disabled {
 
 @media (max-width: 430px) {
   .wrap.blackjack-shell {
-    padding-top: 50px;
-  }
-
-  .home-btn {
-    font-size: .7rem;
-    padding: 8px 10px;
+    padding-top: 14px;
   }
 
   h1 {
@@ -818,9 +791,52 @@ button:disabled {
 
 <body class="blackjack-page">
 
-<div class="wrap blackjack-shell">
+<header class="site-header">
+  <div class="container nav site-nav">
+    <a href="index.html" class="brand">EdgeOverLuck<span>.com</span></a>
+    <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false">
+      <span class="nav-toggle-bars" aria-hidden="true"></span>
+      <span class="nav-toggle-label">Menu</span>
+    </button>
+    <nav id="primary-nav" class="nav-menu" aria-label="Primary navigation">
+      <a href="index.html" class="nav-link">Home</a>
+      <div class="nav-item nav-item-dropdown">
+        <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-games">Games</button>
+        <div id="nav-games" class="nav-panel">
+          <a href="blackjack-game.html">Blackjack Trainer</a>
+          <a href="slot-simulator.html">Slot Simulator</a>
+          <a href="roulette-strategy-simulator.html">Roulette Strategy Simulator</a>
+          <a href="bubble-craps.html">Bubble Craps Simulator</a>
+        </div>
+      </div>
+      <div class="nav-item nav-item-dropdown">
+        <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-calculators">Calculators</button>
+        <div id="nav-calculators" class="nav-panel nav-panel-wide">
+          <a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>
+          <a href="blackjack-ev-calculator.html">Blackjack EV Calculator</a>
+          <a href="roulette-calculator.html">Roulette Calculator</a>
+          <a href="bankroll-survival-slots.html">Slot Bankroll Survival Calculator</a>
+        </div>
+      </div>
+      <div class="nav-item nav-item-dropdown">
+        <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-learn">Learn</button>
+        <div id="nav-learn" class="nav-panel nav-panel-wide">
+          <a href="blackjack-strategy.html">Blackjack Strategy Guide</a>
+          <a href="roulette.html">Roulette Guide</a>
+          <a href="slots.html">Slots Guide</a>
+          <a href="slot-rtp-explained.html">RTP Guide</a>
+          <a href="slot-volatility-guide.html">Volatility Guide</a>
+          <a href="blackjack-bankroll-calculator.html">Bankroll Guide</a>
+          <a href="horse-racing-guide.html">Horse Racing Guide</a>
+        </div>
+      </div>
+      <a href="gambler-personality-quiz.html" class="nav-link">Quiz</a>
+      <a href="responsible-gambling.html" class="nav-link">Responsible</a>
+    </nav>
+  </div>
+</header>
 
-<button id="homeBtn" class="home-btn">⬅ Back to Home</button>
+<div class="wrap blackjack-shell">
 
 <header class="trainer-hero" aria-labelledby="trainerTitle">
   <p class="brand-kicker">EdgeOverLuck.com</p>
@@ -950,6 +966,7 @@ button:disabled {
 </footer>
 
 <script src="blackjack-game.js" defer></script>
+<script src="nav.js" defer></script>
 
 </body>
 </html>
