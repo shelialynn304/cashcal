@@ -257,7 +257,9 @@ const blackjackAudio = {
     this.activeVoice = null
   },
   playBlackjack(){
-    this.playVoice("blackjack", { category: "blackjack", cooldownMs: 20000 })
+    if(this.playVoice("blackjack", { category: "blackjack", cooldownMs: 20000 })){
+      this.firstVoicePlayed = true
+    }
     window.setTimeout(()=>this.play("win"), 170)
   }
 }
