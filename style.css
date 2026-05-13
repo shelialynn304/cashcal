@@ -2160,7 +2160,7 @@ table td,
   white-space: nowrap;
 }
 
-.quiz-cta-card {
+.homepage-quiz-cta .quiz-cta-card {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 22px;
@@ -2256,7 +2256,7 @@ table td,
     min-width: 210px;
   }
 
-  .quiz-cta-card {
+  .homepage-quiz-cta .quiz-cta-card {
     grid-template-columns: 1fr;
   }
 }
