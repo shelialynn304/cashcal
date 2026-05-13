@@ -294,6 +294,13 @@ function dealerVoiceRandom(names, options={}){
   return blackjackAudio.playRandomVoice(names, options)
 }
 
+function maybeDealerWelcome(){
+  if(blackjackAudio.firstVoicePlayed) return
+  if(dealerVoice("blackjack", { category: "intro", cooldownMs: 45000 })){
+    blackjackAudio.firstVoicePlayed = true
+  }
+}
+
 function maybeBetVoice(amount){
   const now = Date.now()
   recentBetActions = recentBetActions.filter((time)=>now-time<5000)
@@ -865,6 +872,10 @@ function deal(){
     return
   }
 
+  maybeDealerWelcome()
+  if(!blackjackAudio.firstVoicePlayed){
+    dealerVoice("placeBets", { category: "betting", cooldownMs: 24000, chance: 0.28 })
+  }
   handHadCorrectDecision=false
   playShuffleSound()
   buildDeck()
