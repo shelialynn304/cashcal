@@ -12,6 +12,11 @@ let lastStrategyMove=null
 let trainerHintsEnabled=true
 let hintDismissedForHand = false
 let splitModeActive=false
+let handHadCorrectDecision=false
+let losingStreak=0
+let lastHandNet=0
+let lastSettledBet=0
+let recentBetActions=[]
   
 const bankrollEl=document.getElementById("bankroll")
 const betEl=document.getElementById("bet")
@@ -22,6 +27,8 @@ const playerTotalEl=document.getElementById("player-total")
 const messageEl=document.getElementById("message")
 const soundToggle=document.getElementById("soundToggle")
 const soundToggleText=document.getElementById("soundToggleText")
+const voiceToggle=document.getElementById("voiceToggle")
+const voiceToggleText=document.getElementById("voiceToggleText")
   
 const homeBtn = document.getElementById("homeBtn")
 const dealBtn=document.getElementById("dealBtn")
@@ -93,17 +100,35 @@ if(explainToggle){
 
 const blackjackAudio = {
   enabled: localStorage.getItem("blackjackSoundMuted") !== "true",
+  voiceEnabled: localStorage.getItem("blackjackVoiceMuted") !== "true",
   unlocked: false,
+  firstVoicePlayed: false,
+  activeVoice: null,
+  lastVoiceAt: 0,
+  voiceCooldownMs: 8500,
+  voiceCategoryCooldowns: {},
   clips: {
     chip: { src: "sounds/chips/placing-poker-chips.mp3", volume: 0.25 },
     click: { src: "sounds/chips/chip-click.mp3", volume: 0.18 },
-    deal: { src: "sounds/cards/deal.mp3", volume: 0.22 },
+    deal: { src: "sounds/cards/card_slide.mp3", volume: 0.22 },
     flip: { src: "sounds/cards/card_slide.mp3", volume: 0.22 },
     shuffle: { src: "sounds/cards/cards-being-shuffled.mp3", volume: 0.16 },
     win: { src: "sounds/ui/subtle-win.mp3", volume: 0.22 },
     fail: { src: "sounds/ui/subtle-fail.mp3", volume: 0.20 },
-    lose: { src: "sounds/ui/lose.mp3", volume: 0.18 },
-    blackjack: { src: "sounds/voices/blackjack.mp3", volume: 0.45 }
+    lose: { src: "sounds/ui/lose.mp3", volume: 0.18 }
+  },
+  voices: {
+    blackjack: { src: "sounds/voices/blackjack.mp3", volume: 0.26 },
+    cardsInTheAir: { src: "sounds/voices/cards-in-th-air.mp3", volume: 0.24 },
+    dealerBusts: { src: "sounds/voices/dealer-busts.mp3", volume: 0.26 },
+    houseWin: { src: "sounds/voices/house-win.mp3", volume: 0.24 },
+    interestingDecision: { src: "sounds/voices/interstng-decision.mp3", volume: 0.24 },
+    placeBets: { src: "sounds/voices/place-bets.mp3", volume: 0.22 },
+    push: { src: "sounds/voices/push.mp3", volume: 0.24 },
+    questionableStats: { src: "sounds/voices/statis-questionbl.mp3", volume: 0.23 },
+    mathApproves: { src: "sounds/voices/the-math-approves.mp3", volume: 0.24 },
+    varianceUndefeated: { src: "sounds/voices/varianc-remains-undefeat.mp3", volume: 0.24 },
+    emotionallyInvested: { src: "sounds/voices/you-appear-emotinally-invested.mp3", volume: 0.23 }
   },
   init(){
     Object.keys(this.clips).forEach((name)=>{
@@ -114,6 +139,7 @@ const blackjackAudio = {
       clip.audio = audio
     })
     this.updateToggle()
+    this.updateVoiceToggle()
   },
   unlock(){
     this.unlocked = true
@@ -121,11 +147,26 @@ const blackjackAudio = {
   setEnabled(enabled){
     this.enabled = enabled
     localStorage.setItem("blackjackSoundMuted", enabled ? "false" : "true")
+    if(!enabled) this.stopVoice()
     this.updateToggle()
+    this.updateVoiceToggle()
+  },
+  setVoiceEnabled(enabled){
+    this.voiceEnabled = enabled
+    localStorage.setItem("blackjackVoiceMuted", enabled ? "false" : "true")
+    if(!enabled) this.stopVoice()
+    this.updateVoiceToggle()
   },
   toggle(){
     this.unlock()
     this.setEnabled(!this.enabled)
+    if(this.enabled){
+      this.play("click")
+    }
+  },
+  toggleVoice(){
+    this.unlock()
+    this.setVoiceEnabled(!this.voiceEnabled)
     if(this.enabled){
       this.play("click")
     }
@@ -139,6 +180,17 @@ const blackjackAudio = {
       soundToggleText.textContent = this.enabled ? "ON" : "OFF"
     }
   },
+  updateVoiceToggle(){
+    const effectiveVoiceOn = this.enabled && this.voiceEnabled
+    if(voiceToggle){
+      voiceToggle.setAttribute("aria-pressed", effectiveVoiceOn ? "true" : "false")
+      voiceToggle.setAttribute("aria-label", effectiveVoiceOn ? "Dealer voice on" : "Dealer voice off")
+      voiceToggle.disabled = !this.enabled
+    }
+    if(voiceToggleText){
+      voiceToggleText.textContent = effectiveVoiceOn ? "ON" : "OFF"
+    }
+  },
   play(name){
     if(!this.enabled || !this.unlocked) return
     const clip = this.clips[name]
@@ -150,8 +202,62 @@ const blackjackAudio = {
       clip.audio.play().catch(()=>{})
     }catch(error){}
   },
+  getVoice(name){
+    const clip = this.voices[name]
+    if(!clip) return null
+    if(!clip.audio){
+      const audio = new Audio(clip.src)
+      audio.preload = "none"
+      audio.volume = clip.volume
+      audio.addEventListener("error",()=>{ clip.failed = true },{ once:true })
+      clip.audio = audio
+    }
+    return clip
+  },
+  canPlayVoice(category, cooldownMs){
+    const now = Date.now()
+    if(now - this.lastVoiceAt < this.voiceCooldownMs) return false
+    if(category && now - (this.voiceCategoryCooldowns[category] || 0) < cooldownMs) return false
+    if(this.activeVoice && !this.activeVoice.paused && !this.activeVoice.ended) return false
+    return true
+  },
+  playVoice(name, options={}){
+    if(!this.enabled || !this.voiceEnabled || !this.unlocked) return false
+    const chance = options.chance ?? 1
+    if(Math.random() > chance) return false
+    const category = options.category || name
+    const cooldownMs = options.cooldownMs ?? 18000
+    if(!this.canPlayVoice(category, cooldownMs)) return false
+    const clip = this.getVoice(name)
+    if(!clip || clip.failed || !clip.audio) return false
+    try{
+      this.stopVoice()
+      clip.audio.currentTime = 0
+      clip.audio.volume = clip.volume
+      this.activeVoice = clip.audio
+      this.lastVoiceAt = Date.now()
+      this.voiceCategoryCooldowns[category] = this.lastVoiceAt
+      clip.audio.play().catch(()=>{})
+      return true
+    }catch(error){
+      return false
+    }
+  },
+  playRandomVoice(names, options={}){
+    if(!Array.isArray(names) || names.length===0) return false
+    const name = names[Math.floor(Math.random()*names.length)]
+    return this.playVoice(name, options)
+  },
+  stopVoice(){
+    if(!this.activeVoice) return
+    try{
+      this.activeVoice.pause()
+      this.activeVoice.currentTime = 0
+    }catch(error){}
+    this.activeVoice = null
+  },
   playBlackjack(){
-    this.play("blackjack")
+    this.playVoice("blackjack", { category: "blackjack", cooldownMs: 20000 })
     window.setTimeout(()=>this.play("win"), 170)
   }
 }
@@ -165,6 +271,10 @@ if(soundToggle){
   soundToggle.addEventListener("click",()=>blackjackAudio.toggle())
 }
 
+if(voiceToggle){
+  voiceToggle.addEventListener("click",()=>blackjackAudio.toggleVoice())
+}
+
 const IMAGES = {
   correct: "images/corrextmove.png",
   wrong: "images/wrong.png",
@@ -172,6 +282,98 @@ const IMAGES = {
   playerBust: "images/dealerbust.png",
   dealerLaugh: "images/laughdealer.png",
   broke: "images/dealershrugemptytray.png"
+}
+
+function dealerVoice(name, options={}){
+  return blackjackAudio.playVoice(name, options)
+}
+
+function dealerVoiceRandom(names, options={}){
+  return blackjackAudio.playRandomVoice(names, options)
+}
+
+function maybeDealerWelcome(){
+  if(blackjackAudio.firstVoicePlayed) return
+  if(dealerVoice("blackjack", { category: "intro", cooldownMs: 45000 })){
+    blackjackAudio.firstVoicePlayed = true
+  }
+}
+
+function maybeBetVoice(amount){
+  const now = Date.now()
+  recentBetActions = recentBetActions.filter((time)=>now-time<5000)
+  recentBetActions.push(now)
+
+  if(lastHandNet < 0 && recentBetActions.length >= 3 && amount >= 25 && amount >= lastSettledBet){
+    dealerVoice("emotionallyInvested", { category: "tilt", cooldownMs: 65000, chance: 0.35 })
+    return
+  }
+
+  dealerVoice("placeBets", { category: "betting", cooldownMs: 24000, chance: 0.22 })
+}
+
+function isRecklessMove(action){
+  const total = handValue(player)
+  const hardTotal = !isSoftHand(player)
+  if(action === "Hit" && hardTotal && total >= 17) return true
+  if(action === "Double" && (total <= 8 || total >= 17)) return true
+  return false
+}
+
+function isDramaticHit(){
+  const total = handValue(player)
+  return total >= 15 && total < 21
+}
+
+function reactToStrategyDecision(action, advice){
+  if(action === advice.move){
+    handHadCorrectDecision = true
+    if(["Double", "Split"].includes(action)){
+      dealerVoiceRandom(["mathApproves", "interestingDecision"], { category: "smart-move", cooldownMs: 26000, chance: 0.42 })
+    }else if(action === "Stand" && handValue(player) >= 17){
+      dealerVoice("mathApproves", { category: "smart-move", cooldownMs: 30000, chance: 0.26 })
+    }else{
+      dealerVoice("mathApproves", { category: "smart-move", cooldownMs: 30000, chance: 0.16 })
+    }
+    return
+  }
+
+  if(isRecklessMove(action)){
+    dealerVoice("questionableStats", { category: "questionable", cooldownMs: 36000, chance: 0.45 })
+    return
+  }
+
+  dealerVoice("interestingDecision", { category: "interesting", cooldownMs: 30000, chance: 0.28 })
+}
+
+function handleHandSettled(netChange, outcome, context={}){
+  lastHandNet = netChange
+  lastSettledBet = context.betAmount || 0
+  losingStreak = netChange < 0 ? losingStreak + 1 : 0
+
+  if(outcome === "dealer-bust"){
+    dealerVoice("dealerBusts", { category: "result", cooldownMs: 18000, chance: 0.82 })
+    return
+  }
+
+  if(outcome === "push"){
+    dealerVoice("push", { category: "result", cooldownMs: 18000, chance: 0.72 })
+    return
+  }
+
+  if(outcome === "loss"){
+    const dealerMiracle = context.dealerTotal >= 20 && context.playerTotal >= 17
+    if((handHadCorrectDecision && dealerMiracle) || losingStreak >= 3){
+      dealerVoice("varianceUndefeated", { category: "bad-beat", cooldownMs: 52000, chance: 0.48 })
+    }else if(context.betAmount >= 100 || losingStreak >= 2){
+      dealerVoice("houseWin", { category: "house-win", cooldownMs: 30000, chance: 0.46 })
+    }
+    return
+  }
+
+  if(outcome === "win" && handHadCorrectDecision){
+    dealerVoice("mathApproves", { category: "smart-result", cooldownMs: 32000, chance: 0.26 })
+  }
 }
 
 if(homeBtn){
@@ -589,6 +791,8 @@ function explainMove(action){
   const advice=getStrategyExplanation(player,dealer[0])
   lastStrategyMove=advice.move
 
+  reactToStrategyDecision(action, advice)
+
   if(action === advice.move){
     correctMoves++
     showCorrect()
@@ -612,6 +816,7 @@ function addBet(a){
   bankroll-=a
   bet+=a
   playChipSound()
+  maybeBetVoice(a)
   updateMoney()
 
   let chip=document.createElement("img")
@@ -665,6 +870,11 @@ function deal(){
     return
   }
 
+  maybeDealerWelcome()
+  if(!blackjackAudio.firstVoicePlayed){
+    dealerVoice("placeBets", { category: "betting", cooldownMs: 24000, chance: 0.28 })
+  }
+  handHadCorrectDecision=false
   playShuffleSound()
   buildDeck()
   shuffle()
@@ -682,6 +892,7 @@ function deal(){
     render(false)
     setReason("🎉 Blackjack. You hit 21 immediately, which is the dream before the casino remembers whose building this is.")
     playBlackjackSound()
+    dealerVoice("cardsInTheAir", { category: "big-card", cooldownMs: 26000, chance: 0.38 })
     showImage(IMAGES.blackjack)
   }else{
     setReason(trainerHintsEnabled
@@ -697,11 +908,15 @@ function hit(){
   if(gameOver) return
 
   explainMove("Hit")
+  if(isDramaticHit()){
+    dealerVoice("cardsInTheAir", { category: "big-card", cooldownMs: 28000, chance: 0.28 })
+  }
   player.push(draw())
   playDealSound()
   render()
 
 if(handValue(player) > 21){
+  const resolvedBet = bet
   splitModeActive=false
   bet = 0
   gameOver = true
@@ -718,6 +933,7 @@ if(handValue(player) > 21){
  setReason("💥 You busted. You went over 21, so the hand is dead.")
   showImage(IMAGES.playerBust)
   playLoseSound()
+  handleHandSettled(-resolvedBet, "loss", { betAmount: resolvedBet, playerTotal: handValue(player), dealerTotal: handValue(dealer) })
 
   if(bankroll<=0){
     setTimeout(()=>{
@@ -755,6 +971,7 @@ if(handValue(player) > 21){
   playFlipSound()
   render(true)
 
+  const settledBet = bet
   let pt = handValue(player)
   let dt = handValue(dealer)
 
@@ -807,6 +1024,9 @@ if(handValue(player) > 21){
     }
 
     setReason(`✅ ${messages.join(" ")}`)
+    const splitNet = (splitWins * perHandBet * 2) + (splitPushes * perHandBet) - settledBet
+    const splitOutcome = dt > 21 ? "dealer-bust" : (splitNet > 0 ? "win" : (splitNet === 0 ? "push" : "loss"))
+    handleHandSettled(splitNet, splitOutcome, { betAmount: settledBet, playerTotal: pt, dealerTotal: dt })
   }
   else if(dt > 21){
     bankroll += bet * 2
@@ -814,6 +1034,7 @@ if(handValue(player) > 21){
     setReason("✅ Dealer busted by going over 21.")
     playWinSound()
     showImage(IMAGES.correct)
+    handleHandSettled(settledBet, "dealer-bust", { betAmount: settledBet, playerTotal: pt, dealerTotal: dt })
   }
   else if(pt > dt){
     bankroll += bet * 2
@@ -821,17 +1042,20 @@ if(handValue(player) > 21){
     setReason(`✅ Your ${pt} beat the dealer’s ${dt}.`)
     playWinSound()
     showImage(IMAGES.correct)
+    handleHandSettled(settledBet, "win", { betAmount: settledBet, playerTotal: pt, dealerTotal: dt })
   }
   else if(pt === dt){
     bankroll += bet
     setMessage("Push")
     setReason(`🤝 Push. You and the dealer both finished with ${pt}, so your bet comes back.`)
+    handleHandSettled(0, "push", { betAmount: settledBet, playerTotal: pt, dealerTotal: dt })
   }
   else{
     setMessage("Dealer wins")
     setReason(`❌ Dealer ${dt} beats your ${pt}.`)
     playLoseSound()
     showImage(IMAGES.dealerLaugh)
+    handleHandSettled(-settledBet, "loss", { betAmount: settledBet, playerTotal: pt, dealerTotal: dt })
   }
 
   bet = 0
@@ -859,6 +1083,7 @@ function doubleDown(){
   if(gameOver) return
 
   explainMove("Double")
+  dealerVoice("interestingDecision", { category: "interesting", cooldownMs: 30000, chance: 0.25 })
 
   if(bankroll < bet){
     setMessage("Not enough bankroll to double.")
@@ -873,6 +1098,7 @@ function doubleDown(){
   render()
 
   if(handValue(player) > 21){
+    const resolvedBet = bet
     bet = 0
     gameOver = true
     hideStrategyPopup()
@@ -886,6 +1112,7 @@ function doubleDown(){
     setReason("💥 You doubled and busted. Aggressive, educational, and financially unfortunate.")
     playLoseSound()
     showImage(IMAGES.playerBust)
+    handleHandSettled(-resolvedBet, "loss", { betAmount: resolvedBet, playerTotal: handValue(player), dealerTotal: handValue(dealer) })
 
     if(bankroll<=0){
       setTimeout(()=>{
@@ -912,6 +1139,7 @@ function splitHand(){
   }
 
   explainMove("Split")
+  dealerVoiceRandom(["cardsInTheAir", "interestingDecision"], { category: "split", cooldownMs: 30000, chance: 0.46 })
   bankroll -= bet
   bet *= 2
   playChipSound()
@@ -932,6 +1160,11 @@ function resetGame(){
   player=[]
   dealer=[]
   splitModeActive=false
+  handHadCorrectDecision=false
+  losingStreak=0
+  lastHandNet=0
+  lastSettledBet=0
+  recentBetActions=[]
   bankroll=1000
   bet=0
   gameOver=true
