@@ -159,6 +159,57 @@ ol {
   margin-bottom: 14px;
 }
 
+
+.brand-lockup {
+  max-width: 780px;
+  margin: 16px auto 22px;
+  padding: 16px 18px;
+  border: 1px solid rgba(241,196,91,0.20);
+  border-radius: 18px;
+  background: rgba(241,196,91,0.07);
+  box-shadow: 0 14px 32px rgba(0,0,0,0.18);
+}
+
+.hero-wrap .brand-lockup {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.brand-lockup strong,
+.brand-lockup span {
+  display: block;
+}
+
+.brand-lockup strong {
+  color: var(--gold);
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.brand-lockup span {
+  margin-top: 4px;
+  color: #fff;
+  font-size: clamp(1.1rem, 2.4vw, 1.45rem);
+  font-weight: 900;
+}
+
+.brand-lockup p {
+  margin: 8px 0 0;
+  max-width: none;
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+.brand-tagline {
+  color: #fff3cf;
+  font-weight: 800;
+}
+
+.trust-hero .brand-tagline {
+  margin-top: 12px;
+}
+
 /* HEADER / NAV */
 .site-header {
   position: sticky;
