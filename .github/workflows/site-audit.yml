@@ -1,0 +1,35 @@
+name: Weekly Site Audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 14 * * 1"
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Run basic site audit
+        run: |
+          echo "Checking HTML files..."
+          find . -name "*.html"
+
+          echo "Checking for missing canonical tags..."
+          for file in *.html; do
+            if ! grep -qi 'rel="canonical"' "$file"; then
+              echo "Missing canonical: $file"
+            fi
+          done
+
+          echo "Checking referenced sound files..."
+          grep -Rho 'sounds/[^"]*\.mp3' . | sort -u | while read file; do
+            if [ ! -f "$file" ]; then
+              echo "Missing sound file: $file"
+            fi
+          done
+
+          echo "Audit finished."
