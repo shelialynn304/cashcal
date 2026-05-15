@@ -16,6 +16,7 @@ let handHadCorrectDecision=false
 let losingStreak=0
 let lastHandNet=0
 let lastSettledBet=0
+let lastValidBetAmount=0
 let recentBetActions=[]
   
 const bankrollEl=document.getElementById("bankroll")
@@ -37,6 +38,7 @@ const standBtn=document.getElementById("standBtn")
 const doubleBtn=document.getElementById("doubleBtn")
 const splitBtn=document.getElementById("splitBtn")
 const clearBetBtn=document.getElementById("clearBetBtn")
+const repeatBetBtn=document.getElementById("repeatBetBtn")
 const resetBtn=document.getElementById("resetBtn")
 
 const chipsRow=document.getElementById("chipsRow")
@@ -530,6 +532,9 @@ function updateButtons(){
   doubleBtn.disabled=gameOver || player.length!==2 || bankroll<bet
   splitBtn.disabled=gameOver || !isPair(player) || bankroll<bet
   clearBetBtn.disabled=!gameOver || bet===0
+  if(repeatBetBtn){
+    repeatBetBtn.disabled=!gameOver || bet>0 || lastValidBetAmount<=0
+  }
 }
 
 function playChipSound(){
@@ -820,25 +825,46 @@ function explainMove(action){
   updateAccuracy()
 }
   
-function addBet(a){
-  if(!gameOver) return
-  if(bankroll<a) return
-  bankroll-=a
-  bet+=a
-  playChipSound()
-  maybeBetVoice(a)
-  updateMoney()
+function getBetValidation(amount, options={}){
+  const requestedBet = Number(amount)
+  const action = options.action || "bet"
 
+  if(!Number.isFinite(requestedBet) || requestedBet <= 0){
+    return { ok:false, message:"Enter a valid bet amount." }
+  }
+
+  if(requestedBet > bankroll){
+    if(action === "repeat"){
+      return { ok:false, message:"You don’t have enough bankroll to repeat that bet. The math goblin says no." }
+    }
+    if(action === "double"){
+      return { ok:false, message:"You don’t have enough bankroll to double down. The math goblin says no." }
+    }
+    if(action === "split"){
+      return { ok:false, message:"You don’t have enough bankroll to split. The math goblin says no." }
+    }
+    return { ok:false, message:"You don’t have enough bankroll for that bet. The math goblin says no." }
+  }
+
+  return { ok:true, amount:requestedBet }
+}
+
+function showBetValidationMessage(message){
+  setMessage(message)
+  setReason(message)
+}
+
+function renderBetChip(amount){
   let chip=document.createElement("img")
-  chip.src=`images/chips/chip-${a}.png`
-  chip.alt=`$${a} bet chip`
+  chip.src=`images/chips/chip-${amount}.png`
+  chip.alt=`$${amount} bet chip`
   chip.className="bet-chip"
   chip.style.bottom=`${betSpot.children.length*4}px`
   chip.onerror=()=>{
     chip.remove()
     const textChip=document.createElement("span")
     textChip.className="bet-chip"
-    textChip.textContent=`$${a}`
+    textChip.textContent=`$${amount}`
     textChip.style.width="34px"
     textChip.style.height="34px"
     textChip.style.display="inline-flex"
@@ -854,6 +880,36 @@ function addBet(a){
     betSpot.appendChild(textChip)
   }
   betSpot.appendChild(chip)
+}
+
+function addBet(a){
+  if(!gameOver) return
+
+  const validation = getBetValidation(a)
+  if(!validation.ok){
+    showBetValidationMessage(validation.message)
+    return
+  }
+
+  bankroll-=validation.amount
+  bet+=validation.amount
+  playChipSound()
+  maybeBetVoice(validation.amount)
+  updateMoney()
+  updateButtons()
+  renderBetChip(validation.amount)
+}
+
+function repeatBet(){
+  if(!gameOver || bet>0) return
+
+  const validation = getBetValidation(lastValidBetAmount, { action:"repeat" })
+  if(!validation.ok){
+    showBetValidationMessage(validation.message)
+    return
+  }
+
+  addBet(validation.amount)
 }
 
 function clearBet(){
@@ -879,6 +935,8 @@ function deal(){
     setMessage("Place bet")
     return
   }
+
+  lastValidBetAmount = bet
 
   maybeDealerWelcome()
   if(!blackjackAudio.firstVoicePlayed){
@@ -1092,16 +1150,17 @@ if(handValue(player) > 21){
 function doubleDown(){
   if(gameOver) return
 
-  explainMove("Double")
-  dealerVoice("interestingDecision", { category: "interesting", cooldownMs: 30000, chance: 0.25 })
-
-  if(bankroll < bet){
-    setMessage("Not enough bankroll to double.")
+  const validation = getBetValidation(bet, { action:"double" })
+  if(!validation.ok){
+    showBetValidationMessage(validation.message)
     return
   }
 
-  bankroll -= bet
-  bet *= 2
+  explainMove("Double")
+  dealerVoice("interestingDecision", { category: "interesting", cooldownMs: 30000, chance: 0.25 })
+
+  bankroll -= validation.amount
+  bet += validation.amount
   playChipSound()
   player.push(draw())
   playDealSound()
@@ -1143,15 +1202,16 @@ function splitHand(){
     setMessage("Split only works on pairs.")
     return
   }
-  if(bankroll < bet){
-    setMessage("Not enough bankroll to split.")
+  const validation = getBetValidation(bet, { action:"split" })
+  if(!validation.ok){
+    showBetValidationMessage(validation.message)
     return
   }
 
   explainMove("Split")
   dealerVoiceRandom(["cardsInTheAir", "interestingDecision"], { category: "split", cooldownMs: 30000, chance: 0.46 })
-  bankroll -= bet
-  bet *= 2
+  bankroll -= validation.amount
+  bet += validation.amount
   playChipSound()
   player = [player[0], draw(), player[1], draw()]
   playDealSound()
@@ -1174,6 +1234,7 @@ function resetGame(){
   losingStreak=0
   lastHandNet=0
   lastSettledBet=0
+  lastValidBetAmount=0
   recentBetActions=[]
   bankroll=1000
   bet=0
@@ -1219,6 +1280,9 @@ standBtn.onclick=stand
 doubleBtn.onclick=doubleDown
 splitBtn.onclick=splitHand
 clearBetBtn.onclick=clearBet
+if(repeatBetBtn){
+  repeatBetBtn.onclick=repeatBet
+}
 if(resetBtn){
   resetBtn.onclick=resetGame
 }
