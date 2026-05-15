@@ -97,13 +97,25 @@
     return number >= 0 && number <= 36;
   }
 
-  function betLabel() {
-    const type = els.betType.value;
-    if (type === 'single') {
-      const singleNumber = getSingleNumber();
-      return `Single ${singleNumber ? normalizeSingleNumber(singleNumber, els.wheelType.value) : '—'}`;
+  function currentBetDetails() {
+    const wheelType = els.wheelType.value;
+    const betType = els.betType.value;
+    const singleNumber = betType === 'single' ? normalizeSingleNumber(getSingleNumber(), wheelType) : '';
+
+    return {
+      wheelType,
+      betType,
+      singleNumber,
+      betAmount: getBetAmount()
+    };
+  }
+
+  function betLabel(betDetails) {
+    const details = betDetails || currentBetDetails();
+    if (details.betType === 'single') {
+      return `Single ${details.singleNumber || '—'}`;
     }
-    return type.charAt(0).toUpperCase() + type.slice(1);
+    return details.betType.charAt(0).toUpperCase() + details.betType.slice(1);
   }
 
   function playSound(name) {
@@ -151,8 +163,17 @@
 
   function updateControls() {
     const singleSelected = els.betType.value === 'single';
-    els.singleNumber.disabled = !singleSelected;
-    els.singleNumber.setAttribute('aria-disabled', String(!singleSelected));
+    const disableBetControls = state.spinning;
+    [els.startingBankroll, els.betAmount, els.wheelType, els.betType].forEach(function (control) {
+      control.disabled = disableBetControls;
+      control.setAttribute('aria-disabled', String(disableBetControls));
+    });
+    els.singleNumber.disabled = disableBetControls || !singleSelected;
+    els.singleNumber.setAttribute('aria-disabled', String(disableBetControls || !singleSelected));
+    els.table.querySelectorAll('button').forEach(function (button) {
+      button.disabled = disableBetControls;
+      button.setAttribute('aria-disabled', String(disableBetControls));
+    });
     if (els.wheelType.value === 'european' && getSingleNumber() === '00') {
       els.singleNumber.value = '0';
     }
@@ -225,16 +246,14 @@
     highlightSelection();
   }
 
-  function highlightSelection(winningValue) {
+  function highlightSelection(winningValue, betDetails) {
+    const details = betDetails || currentBetDetails();
     els.table.querySelectorAll('button').forEach(function (button) {
       button.classList.remove('is-selected', 'is-winning');
-      if (button.dataset.bet === els.betType.value && els.betType.value !== 'single') {
+      if (button.dataset.bet === details.betType && details.betType !== 'single') {
         button.classList.add('is-selected');
       }
-      if (
-        els.betType.value === 'single'
-        && button.dataset.number === normalizeSingleNumber(getSingleNumber(), els.wheelType.value)
-      ) {
+      if (details.betType === 'single' && button.dataset.number === details.singleNumber) {
         button.classList.add('is-selected');
       }
       if (winningValue && button.dataset.number === winningValue) {
@@ -254,15 +273,15 @@
     return { ok: true };
   }
 
-  function spinOutcome() {
-    const numbers = wheelNumbers(els.wheelType.value);
+  function spinOutcome(wheelType) {
+    const numbers = wheelNumbers(wheelType);
     return numbers[Math.floor(Math.random() * numbers.length)];
   }
 
-  function didBetWin(value) {
+  function didBetWin(value, betDetails) {
     const color = numberColor(value);
     const number = Number(value);
-    switch (els.betType.value) {
+    switch (betDetails.betType) {
       case 'red':
         return color === 'red';
       case 'black':
@@ -272,15 +291,15 @@
       case 'even':
         return value !== '0' && value !== '00' && number % 2 === 0;
       case 'single':
-        return normalizeSingleNumber(getSingleNumber(), els.wheelType.value) === value;
+        return betDetails.singleNumber === value;
       default:
         return false;
     }
   }
 
-  function resultExplanation(value, won, net) {
+  function resultExplanation(value, won, net, betDetails) {
     const color = numberColor(value);
-    const betType = els.betType.value;
+    const betType = betDetails.betType;
     const gainText = `You gained ${toMoney(net)}.`;
 
     if (betType === 'single') {
@@ -300,14 +319,14 @@
       return `${color.charAt(0).toUpperCase() + color.slice(1)} hit while you bet ${betType}. You lost the bet amount.`;
     }
 
-    return `The wheel landed on ${value}. Your ${betLabel().toLowerCase()} bet missed, so you lost the bet amount.`;
+    return `The wheel landed on ${value}. Your ${betLabel(betDetails).toLowerCase()} bet missed, so you lost the bet amount.`;
   }
 
-  function finishSpin(value, betAmount) {
+  function finishSpin(value, betDetails) {
     const color = numberColor(value);
-    const won = didBetWin(value);
-    const payout = els.betType.value === 'single' ? 35 : 1;
-    const net = won ? betAmount * payout : -betAmount;
+    const won = didBetWin(value, betDetails);
+    const payout = betDetails.betType === 'single' ? 35 : 1;
+    const net = won ? betDetails.betAmount * payout : -betDetails.betAmount;
 
     state.bankroll += net;
     state.totalSpins += 1;
@@ -325,19 +344,20 @@
     els.winningColor.textContent = color.charAt(0).toUpperCase() + color.slice(1);
     els.outcome.textContent = won ? 'Win' : 'Loss';
     els.amountResult.textContent = won ? `+${toMoney(net)}` : `-${toMoney(Math.abs(net))}`;
-    els.explanation.textContent = resultExplanation(value, won, net);
+    els.explanation.textContent = resultExplanation(value, won, net, betDetails);
     els.wheelResult.textContent = value;
     els.wheel.setAttribute('aria-label', `Roulette wheel landed on ${value}`);
     els.wheel.classList.toggle('roulette-wheel-win', won);
     els.wheel.classList.toggle('roulette-wheel-loss', !won);
 
-    highlightSelection(value);
+    highlightSelection(value, betDetails);
     updateDisplays();
     setStatus(`${won ? 'Win' : 'Loss'} on ${value}. Bankroll is now ${toMoney(state.bankroll)}.`);
     playSound(won ? 'win' : 'lose');
 
     state.spinning = false;
     els.spinButton.disabled = false;
+    updateControls();
   }
 
   function spin() {
@@ -350,10 +370,11 @@
       return;
     }
 
-    const betAmount = getBetAmount();
-    const value = spinOutcome();
+    const betDetails = currentBetDetails();
+    const value = spinOutcome(betDetails.wheelType);
     state.spinning = true;
     els.spinButton.disabled = true;
+    updateControls();
     els.wheel.classList.remove('roulette-wheel-win', 'roulette-wheel-loss');
     highlightSelection();
     setStatus('Wheel spinning...');
@@ -361,7 +382,7 @@
     stopSound('spin');
     playSound('spin');
 
-    const numbers = wheelNumbers(els.wheelType.value);
+    const numbers = wheelNumbers(betDetails.wheelType);
     const pocketIndex = numbers.indexOf(value);
     const pocketDegrees = 360 / numbers.length;
     state.rotation += 1080 + (360 - pocketIndex * pocketDegrees) + Math.random() * pocketDegrees;
@@ -371,7 +392,7 @@
     state.spinTimer = window.setTimeout(function () {
       state.spinTimer = null;
       stopSound('spin');
-      finishSpin(value, betAmount);
+      finishSpin(value, betDetails);
     }, 2100);
   }
 
@@ -400,6 +421,7 @@
     els.amountResult.textContent = '—';
     els.explanation.textContent = 'Spin once to see how roulette variance treats this bet.';
     setStatus('Simulator reset. Choose a bet, set your stake, then spin.');
+    updateControls();
     highlightSelection();
     updateDisplays();
     playSound('chips');
@@ -407,7 +429,7 @@
 
   els.table.addEventListener('click', function (event) {
     const button = event.target.closest('button');
-    if (!button) return;
+    if (!button || state.spinning) return;
     initAudio();
     if (button.dataset.number) {
       els.betType.value = 'single';
