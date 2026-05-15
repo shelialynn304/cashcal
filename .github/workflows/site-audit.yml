@@ -28,6 +28,8 @@ jobs:
           ROOT = Path.cwd()
           EXCLUDED_DIRS = {".git", ".github", "node_modules", "dist", "build"}
           IMAGE_EXTENSIONS = {".apng", ".avif", ".gif", ".ico", ".jpg", ".jpeg", ".png", ".svg", ".webp"}
+          ASSET_EXTENSIONS = IMAGE_EXTENSIONS | {".css", ".js"}
+          LINK_ASSET_RELS = {"apple-touch-icon", "icon", "mask-icon", "modulepreload", "preload", "stylesheet"}
           warnings = []
 
           def warn(message, file=None, line=None):
@@ -47,7 +49,7 @@ jobs:
               def __init__(self):
                   super().__init__(convert_charrefs=True)
                   self.links = []
-                  self.images = []
+                  self.assets = []
                   self.ids = set()
 
               def handle_starttag(self, tag, attrs):
@@ -61,31 +63,37 @@ jobs:
                   if tag in {"a", "area"} and attrs.get("href"):
                       self.links.append((attrs["href"], line))
 
-                  if tag == "img" and attrs.get("src"):
-                      self.images.append((attrs["src"], line))
+                  if tag in {"img", "source"} and attrs.get("src"):
+                      self.assets.append((attrs["src"], line))
 
                   if tag in {"img", "source"} and attrs.get("srcset"):
                       for candidate in attrs["srcset"].split(","):
                           src = candidate.strip().split()[0] if candidate.strip() else ""
                           if src:
-                              self.images.append((src, line))
+                              self.assets.append((src, line))
 
                   if tag == "link" and attrs.get("href"):
-                      rel = " ".join(attrs.get("rel", "").lower().split())
+                      rel_tokens = set(attrs.get("rel", "").lower().split())
                       href = attrs["href"]
-                      if any(token in rel.split() for token in {"icon", "apple-touch-icon", "mask-icon"}) or Path(urlparse(href).path).suffix.lower() in IMAGE_EXTENSIONS:
-                          self.images.append((href, line))
+                      suffix = Path(urlparse(href).path).suffix.lower()
+                      if rel_tokens & LINK_ASSET_RELS or suffix in ASSET_EXTENSIONS:
+                          self.assets.append((href, line))
+
+                  if tag == "script" and attrs.get("src"):
+                      self.assets.append((attrs["src"], line))
 
                   if tag == "meta" and attrs.get("content"):
                       prop = (attrs.get("property") or attrs.get("name") or "").lower()
                       if prop in {"og:image", "twitter:image", "twitter:image:src"}:
-                          self.images.append((attrs["content"], line))
+                          self.assets.append((attrs["content"], line))
+
+              def handle_startendtag(self, tag, attrs):
+                  self.handle_starttag(tag, attrs)
 
           def is_external_or_ignored(value):
               parsed = urlparse(value.strip())
               return (
                   not value.strip()
-                  or value.strip().startswith("#")
                   or parsed.scheme in {"http", "https", "mailto", "tel", "sms", "javascript", "data"}
                   or value.strip().startswith("//")
               )
@@ -93,6 +101,7 @@ jobs:
           def resolve_path(current_file, reference):
               parsed = urlparse(reference.strip())
               raw_path = unquote(parsed.path)
+              fragment = unquote(parsed.fragment)
               if not raw_path:
                   target = current_file
               elif raw_path.startswith("/"):
@@ -104,13 +113,13 @@ jobs:
               try:
                   target.relative_to(ROOT)
               except ValueError:
-                  return None, parsed.fragment
+                  return None, fragment
 
               if target.is_dir():
                   target = target / "index.html"
               elif not target.exists() and not target.suffix:
                   target = target.with_suffix(".html")
-              return target, parsed.fragment
+              return target, fragment
 
           parsed_pages = {}
           html_files = sorted(repo_html_files())
@@ -145,15 +154,15 @@ jobs:
                       if target_parser and fragment not in target_parser.ids:
                           warn(f"Broken internal anchor '{href}' in {rel_file}", file=rel_file, line=line)
 
-          print("Checking missing image assets...")
+          print("Checking missing referenced assets...")
           for file, parser in parsed_pages.items():
-              for src, line in parser.images:
+              for src, line in parser.assets:
                   if is_external_or_ignored(src):
                       continue
                   target, _fragment = resolve_path(file, src)
                   rel_file = file.relative_to(ROOT)
                   if target is None or not target.exists():
-                      warn(f"Missing image asset '{src}' in {rel_file}", file=rel_file, line=line)
+                      warn(f"Missing referenced asset '{src}' in {rel_file}", file=rel_file, line=line)
 
           print("Checking referenced sound files...")
           sound_pattern = re.compile(r"sounds/[^\"'\s)]+\.mp3", re.IGNORECASE)
