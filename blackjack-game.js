@@ -425,6 +425,14 @@ function updateAccuracy(){
   correctMovesEl.textContent=correctMoves
   wrongMovesEl.textContent=wrongMoves
   accuracyEl.textContent=acc
+
+  if(total){
+    localStorage.setItem("blackjackTrainerStats", JSON.stringify({
+      correct: correctMoves,
+      wrong: wrongMoves,
+      updatedAt: new Date().toISOString()
+    }))
+  }
 }
 
 function setMessage(t){
