@@ -54,7 +54,7 @@
       if (!result) return;
 
       if (button.dataset.quizAnswer === "hit") {
-        result.textContent = "✅ Correct. 16 vs 10 is ugly, but hitting is still the best long-run move.";
+        result.textContent = "✅ Correct. 16 vs 10 is uncomfortable, but hitting is still the best long-run move.";
       } else {
         result.textContent = "❌ Not this time. Hit is the better long-run decision in this spot.";
       }

@@ -13,9 +13,9 @@
   const recommendations = {
     bankroll: {
       title: "Bankroll Calculator",
-      text: "Start here to see whether bet size, house edge, and volume are quietly loading the trapdoor.",
+      text: "Start here to see whether bet size, house edge, and volume are putting too much pressure on your bankroll.",
       href: "blackjack-bankroll-calculator.html",
-      cta: "Open the Damage Gauge"
+      cta: "Open Bankroll Calculator"
     },
     blackjack: {
       title: "Blackjack Strategy + Trainer",
@@ -37,7 +37,7 @@
     },
     horses: {
       title: "Horse Racing Guide",
-      text: "Start with bet types, odds formats, and bankroll basics before exotic wagers make simple mistakes expensive.",
+      text: "Start with bet types, odds formats, and bankroll basics before exotic wagers make simple mistakes costly.",
       href: "horse-racing-guide.html",
       cta: "Read the Horse Racing Guide"
     }
@@ -82,7 +82,7 @@
 
     if (riskOutput) riskOutput.textContent = `${adjustedRisk.toFixed(1)}%`;
     if (walkOutput) walkOutput.textContent = `$${walkAway.toFixed(0)}`;
-    if (paceOutput) paceOutput.textContent = pressure >= 4 ? "High burn rate" : pressure >= 2 ? "Manageable, not immortal" : "Low burn, still burning";
+    if (paceOutput) paceOutput.textContent = pressure >= 4 ? "High burn rate" : pressure >= 2 ? "Manageable, still finite" : "Low burn, still burning";
 
     scenarioRows.forEach((row) => row.classList.toggle("is-strong", pressure < 3.5 && adjustedRisk < 40));
   }

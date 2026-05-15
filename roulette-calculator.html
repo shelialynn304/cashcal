@@ -146,7 +146,7 @@
       <div class="container">
         <div class="grid grid-3">
           <article class="card reality-card"><span class="kicker">Reality Check</span><strong>Roulette is simple. Bankroll pressure is not.</strong><p class="mb-0">Even-money bets feel calm until a normal streak ignores your plan.</p></article>
-          <article class="card reality-card"><span class="kicker">Wheel Math</span><strong>The zero is small, patient, and expensive.</strong><p class="mb-0">European roulette is friendlier than American, but neither owes a profit.</p></article>
+          <article class="card reality-card"><span class="kicker">Wheel Math</span><strong>The zero is small, patient, and costly.</strong><p class="mb-0">European roulette is friendlier than American, but neither owes a profit.</p></article>
           <article class="card reality-card"><span class="kicker">System Check</span><strong>A progression changes ride quality, not the road.</strong><p class="mb-0">Compare the math here, then stress-test systems in the simulator.</p></article>
         </div>
       </div>
@@ -160,7 +160,7 @@
           <li>Pick the bankroll you are actually willing to lose.</li>
           <li>Choose a bet size or strategy.</li>
           <li>Run the calculator or simulation.</li>
-          <li>Read the plain-English damage report.</li>
+          <li>Read the plain-English risk report.</li>
           <li>Change one setting and watch the pressure move.</li>
         </ol>
       </div>
@@ -201,7 +201,7 @@
             </div>
           </div>
           <div class="hero-actions">
-            <button type="button" id="calcBtn" class="btn btn-primary">Calculate the Damage</button>
+            <button type="button" id="calcBtn" class="btn btn-primary">Calculate Roulette Risk</button>
             <button type="button" id="spinDemoBtn" class="btn btn-secondary">Run Demo Session</button>
           </div>
           <p class="small-note mb-0">This is educational modeling. Winning runs happen; roulette still keeps the long-run edge.</p>
@@ -230,8 +230,8 @@
 
     <section class="section-tight">
       <div class="container card">
-        <h2 class="section-title">Demo spin log (one possible punchline)</h2>
-        <p class="small-note">A quick variance demo. Increase bet size if you want to watch bankroll swings get louder.</p>
+        <h2 class="section-title">Demo spin log (one possible session)</h2>
+        <p class="small-note">A quick variance demo. Increase bet size to see how bankroll swings widen.</p>
         <div id="spinLog" class="result-list" aria-live="polite"></div>
       </div>
     </section>
@@ -248,7 +248,7 @@
           <article class="card roulette-learn-card">
             <span class="roulette-learn-pill">House Edge + Wheel Type</span>
             <h3>One zero versus two zeros</h3>
-            <p><strong>House edge</strong> is the casino’s built-in advantage over time. European roulette has one zero. American roulette adds double-zero, because apparently one trapdoor was not enough.</p>
+            <p><strong>House edge</strong> is the casino’s built-in advantage over time. European roulette has one zero. American roulette adds double-zero, which increases the long-run cost.</p>
             <div class="roulette-learn-control">
               <label for="roulette-learn-wheel">European Wheel ←→ American Wheel</label>
               <input id="roulette-learn-wheel" type="range" min="0" max="1" step="1" value="0" />
@@ -276,7 +276,7 @@
               <span class="roulette-learn-stat">Risk label<strong id="roulette-learn-bet-risk">Low</strong></span>
             </div>
             <p id="roulette-learn-bet-copy" class="summary">This bankroll can handle many flat bets before a cold streak gets serious.</p>
-            <p class="roulette-learn-takeaway"><strong>What this shows:</strong> Bigger bets can create bigger wins, but they also give bad streaks less time to punch you before you run out of money.</p>
+            <p class="roulette-learn-takeaway"><strong>What this shows:</strong> Bigger bets can create bigger wins, but they also give bad streaks less time before the bankroll runs out.</p>
           </article>
 
           <article class="card roulette-learn-card">
@@ -289,14 +289,14 @@
               <div class="roulette-learn-range-labels"><span>Steady Ride</span><span>Casino Chaos</span></div>
             </div>
             <div class="roulette-learn-meter" aria-hidden="true"><span id="roulette-learn-volatility-meter"></span></div>
-            <p id="roulette-learn-volatility-copy" class="summary">Medium volatility means noticeable swings without the full fireworks show.</p>
-            <p class="roulette-learn-takeaway"><strong>What this shows:</strong> High volatility is exciting because wild wins can happen. The ugly twin brother is that wild losses can happen too.</p>
+            <p id="roulette-learn-volatility-copy" class="summary">Medium volatility means noticeable swings without extreme spikes.</p>
+            <p class="roulette-learn-takeaway"><strong>What this shows:</strong> High volatility can create larger wins and larger losses in the same session model.</p>
           </article>
 
           <article class="card roulette-learn-card">
             <span class="roulette-learn-pill">Expected Value + Session Risk</span>
             <h3>Short run luck versus long run math</h3>
-            <p><strong>Expected value</strong> is the average long-term result. <strong>Session risk</strong> is the chance your bankroll gets hurt or wiped out before luck swings back.</p>
+            <p><strong>Expected value</strong> is the average long-term result. <strong>Session risk</strong> is the chance your bankroll drops sharply or runs out before variance swings back.</p>
             <div class="roulette-learn-control">
               <label for="roulette-learn-session">Short Session ←→ Long Session</label>
               <input id="roulette-learn-session" type="range" min="20" max="300" step="20" value="100" />
@@ -312,7 +312,7 @@
 
           <article class="card roulette-learn-card">
             <span class="roulette-learn-pill">Inside Bets + Outside Bets</span>
-            <h3>Frequent taps or fireworks</h3>
+            <h3>Frequent small hits or rare big hits</h3>
             <p><strong>Inside bets</strong> hit less often but pay more. <strong>Outside bets</strong> hit more often but pay less.</p>
             <div class="roulette-learn-control">
               <label for="roulette-learn-bet-style">Outside Bets ←→ Inside Bets</label>
@@ -324,7 +324,7 @@
               <span class="roulette-learn-stat">Risk feel<strong id="roulette-learn-style-risk">Lower drama</strong></span>
             </div>
             <p id="roulette-learn-style-copy" class="summary">Outside bets hit more often and pay smaller amounts, so the ride often feels smoother.</p>
-            <p class="roulette-learn-takeaway"><strong>What this shows:</strong> Outside bets feel safer. Inside bets feel like fireworks. Both still live on the same roulette wheel.</p>
+            <p class="roulette-learn-takeaway"><strong>What this shows:</strong> Outside bets feel smoother. Inside bets pay less often but more sharply. Both still live on the same roulette wheel.</p>
           </article>
 
           <article class="card roulette-learn-card">
@@ -342,7 +342,7 @@
               <span class="roulette-learn-stat">Danger meter<strong id="roulette-learn-martingale-risk">Calm</strong></span>
             </div>
             <p id="roulette-learn-martingale-copy" class="summary">Flat betting keeps each spin the same size, so the session is easier to understand.</p>
-            <p class="roulette-learn-takeaway"><strong>What this shows:</strong> Martingale can look genius during a normal streak. Then one ugly losing run shows up with a baseball bat.</p>
+            <p class="roulette-learn-takeaway"><strong>What this shows:</strong> Martingale can look stable during normal streaks, then one long losing run can overwhelm the bankroll.</p>
           </article>
         </div>
 
@@ -447,7 +447,7 @@
         <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
         <a href="editorial-policy.html">Editorial Policy</a>
         <a href="credits.html">Credits &amp; Sources</a>
-        <a href="how-we-calculate-odds.html">How We Calculate the Damage Odds</a>
+        <a href="how-we-calculate-odds.html">How We Calculate the Odds</a>
       </div>
       <p class="affiliate-note">This site may contain affiliate links and may earn commissions at no extra cost to you. Rankings and recommendations should be based on analysis, math, user value, and responsible play.</p>
       <p class="gambling-warning">21+ only. Gambling involves financial risk and can be addictive. EdgeOverLuck.com is educational and does not guarantee wins or profit.</p>

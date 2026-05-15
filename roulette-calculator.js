@@ -169,8 +169,8 @@
     const messages = {
       1: 'Low volatility: smaller wins/losses and a calmer bankroll line.',
       2: 'Mild volatility: mostly steady with occasional bumps.',
-      3: 'Medium volatility means noticeable swings without the full fireworks show.',
-      4: 'High volatility: bigger spikes, harder drops, and louder emotions.',
+      3: 'Medium volatility means noticeable swings without extreme spikes.',
+      4: 'High volatility: bigger spikes, harder drops, and wider bankroll swings.',
       5: 'Casino chaos: huge excitement when it hits, brutal drops when it misses.'
     };
     setMeter('roulette-learn-volatility-meter', level * 20);
@@ -198,7 +198,7 @@
     setText(
       'roulette-learn-style-copy',
       inside
-        ? 'Inside bets hit less often, but the payout can feel like fireworks when the number lands.'
+        ? 'Inside bets hit less often, but the payout is much larger when the number lands.'
         : 'Outside bets hit more often and pay smaller amounts, so the ride often feels smoother.'
     );
   }
@@ -210,8 +210,8 @@
     const copy = level < 2
       ? 'Flat or light progression betting keeps the session easier to understand.'
       : level < 4
-        ? 'Bet sizes are growing fast now, which can make a normal losing run feel expensive.'
-        : 'This is where the chase gets loud: one ugly streak can demand an $80 bet after starting at $5.';
+        ? 'Bet sizes are growing fast now, which can make a normal losing run costly.'
+        : 'This is where the chase gets costly: one losing streak can demand an $80 bet after starting at $5.';
 
     setMeter('roulette-learn-martingale-meter', (level + 1) * 20);
     setText('roulette-learn-martingale-growth', bets.map((bet) => formatMoney(bet)).join(' → '));
