@@ -16,14 +16,14 @@ const quizQuestions = [
       { type: 'grinder', text: 'Drop to tiny bets and slowly dissolve.' },
       { type: 'hunter', text: 'One big hit fixes this.' },
       { type: 'strategist', text: 'Stop or reduce risk. The session plan exists for a reason.' },
-      { type: 'chaos', text: 'Switch games. Obviously the vibes are cursed.' }
+      { type: 'chaos', text: 'Switch games because the current one feels cold.' }
     ]
   },
   {
     question: 'Pick your casino superpower.',
     answers: [
       { type: 'chaser', text: 'Refusing to leave down.' },
-      { type: 'grinder', text: 'Turning $100 into seven hours of emotional fog.' },
+      { type: 'grinder', text: 'Turning $100 into a very long low-stakes session.' },
       { type: 'hunter', text: 'Finding the highest-volatility thing in the building.' },
       { type: 'strategist', text: 'Making better decisions than the person next to me.' },
       { type: 'chaos', text: 'Being absolutely incorrect with confidence.' }
@@ -92,7 +92,7 @@ const quizQuestions = [
   {
     question: 'Your biggest gambling weakness is probably:',
     answers: [
-      { type: 'chaser', text: 'Emotional revenge betting.' },
+      { type: 'chaser', text: 'Reactive betting after losses.' },
       { type: 'grinder', text: 'Confusing long playtime with winning.' },
       { type: 'hunter', text: 'Chasing massive upside and ignoring the crash.' },
       { type: 'strategist', text: 'Thinking good decisions eliminate risk.' },
@@ -105,10 +105,10 @@ const resultData = {
   chaser: {
     name: 'The Chaser',
     image: 'images/quiz/chaser.webp',
-    headline: 'You don’t hate losing. You hate stopping while losing.',
-    description: 'You turn a bad session into a revenge mission. The danger is that every loss starts feeling like a temporary inconvenience before the legendary comeback.',
-    riskLeak: 'Tilt, reloads, doubling bets, and trying to emotionally negotiate with math.',
-    playSmarter: 'Set a stop-loss before you start. If you win, pocket part of it immediately. Your bankroll is not a hostage rescue operation.',
+    headline: 'Losses make stopping harder.',
+    description: 'You are most vulnerable when a bad session starts feeling unfinished. The risk is chasing recovery instead of following the original limit.',
+    riskLeak: 'Tilt, reloads, doubled bets, and changing risk after losses.',
+    playSmarter: 'Set a stop-loss before you start. If you win, pocket part of it immediately so the session has a clear exit.',
     links: [
       { label: 'Blackjack Bankroll Calculator', href: 'blackjack-bankroll-calculator.html' },
       { label: 'EV Calculator', href: 'blackjack-ev-calculator.html' },
@@ -118,10 +118,10 @@ const resultData = {
   grinder: {
     name: 'The Grinder',
     image: 'images/quiz/grinder.webp',
-    headline: 'You don’t lose fast. You lose forever.',
-    description: 'You stretch sessions with tiny bets and call it discipline. Sometimes it is. Sometimes it is just a very slow donation with free carpet smells.',
+    headline: 'Low stakes can still add up.',
+    description: 'You stretch sessions with tiny bets and call it discipline. Sometimes it is. Sometimes it is just high volume with a low unit size.',
     riskLeak: 'Underestimating cumulative loss, time-on-device, and slow bankroll bleed.',
-    playSmarter: 'Track total spins, not just bet size. Tiny bets still add up when you run them through the machine long enough to qualify for a pension.',
+    playSmarter: 'Track total spins, not just bet size. Tiny bets still add up when the session volume gets high.',
     links: [
       { label: 'Slot Simulator', href: 'slot-simulator.html' },
       { label: 'Bankroll Calculator', href: 'blackjack-bankroll-calculator.html' },
@@ -131,10 +131,10 @@ const resultData = {
   hunter: {
     name: 'The Heater Hunter',
     image: 'images/quiz/hunter.webp',
-    headline: 'You came for the lightning strike.',
-    description: 'You love volatility, big hits, and the feeling that tonight could become a story. Big wins can happen. The problem is surviving the swings and not feeding the win back.',
+    headline: 'You are drawn to high-variance upside.',
+    description: 'You like volatility and big-hit potential. Big wins can happen, but the key is surviving dry stretches and protecting part of any win.',
     riskLeak: 'High variance, oversized bets, jackpot chasing, and pressing too hard after wins.',
-    playSmarter: 'Decide your win-lock rule before the first spin. If you hit big, protect part of it like it owes you child support.',
+    playSmarter: 'Decide your win-lock rule before the first spin. If you hit big, protect part of it before variance asks for it back.',
     links: [
       { label: 'Slot Simulator', href: 'slot-simulator.html' },
       { label: 'Roulette Calculator', href: 'roulette-calculator.html' },
@@ -144,10 +144,10 @@ const resultData = {
   strategist: {
     name: 'The Strategist',
     image: 'images/quiz/strategist.webp',
-    headline: 'You can’t control the cards. You can control the damage.',
+    headline: 'You can’t control the cards. You can control the process.',
     description: 'You like games where decisions matter. You care about odds, strategy, and reducing mistakes. Good. Just don’t confuse better decisions with guaranteed profit.',
-    riskLeak: 'Overconfidence, analysis paralysis, and forgetting variance can still punch you in the mouth.',
-    playSmarter: 'Use strategy to reduce mistakes. Use bankroll rules to survive variance. The goal is not magic. The goal is fewer stupid losses.',
+    riskLeak: 'Overconfidence, analysis paralysis, and forgetting that variance still applies.',
+    playSmarter: 'Use strategy to reduce mistakes. Use bankroll rules to survive variance. The goal is better process and fewer avoidable losses.',
     links: [
       { label: 'Blackjack Trainer', href: 'blackjack-game.html' },
       { label: 'Blackjack Strategy Guide', href: 'blackjack-strategy.html' },
@@ -155,12 +155,12 @@ const resultData = {
     ]
   },
   chaos: {
-    name: 'The Chaos Goblin',
+    name: 'The Wild Card',
     image: 'images/quiz/chaos.webp',
-    headline: 'No strategy. Only vibes.',
-    description: 'You are pure casino weather. You switch games, trust random feelings, and somehow turn a $12 win into a full financial side quest.',
-    riskLeak: 'Random bet sizing, superstition, game hopping, and calling chaos a system.',
-    playSmarter: 'Give yourself a hard budget and a time limit. You can still chase vibes. Just put the vibes in a cage first.',
+    headline: 'Fast moves, loose rules.',
+    description: 'You move fast, switch games often, and make decisions from momentum more than a plan.',
+    riskLeak: 'Random bet sizing, superstition, game hopping, and calling momentum a system.',
+    playSmarter: 'Give yourself a hard budget and a time limit. Keep the fun, but put a clear frame around it first.',
     links: [
       { label: 'Gambler Personality Quiz', href: 'gambler-personality-quiz.html' },
       { label: 'Bankroll Calculator', href: 'blackjack-bankroll-calculator.html' },
@@ -286,7 +286,7 @@ function copyResultLink(event) {
 
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(shareUrl).then(() => {
-      shareStatus.textContent = 'Copied. Send it to someone who needs emotional damage with citations.';
+      shareStatus.textContent = 'Copied. Send it to someone who likes gambling math with receipts.';
     }).catch(() => {
       shareStatus.textContent = shareUrl;
     });

@@ -870,7 +870,7 @@ function deal(){
 
   if(bankroll <= 0 && bet <= 0){
     setMessage("You are out of money.")
-    setReason("Bankroll destroyed. The dealer now has an empty tray and your chips are extinct.")
+    setReason("Bankroll depleted. The tray is empty and the session is over.")
     showImage(IMAGES.broke)
     return
   }
