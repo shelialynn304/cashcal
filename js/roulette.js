@@ -84,6 +84,12 @@
     return els.singleNumber.value.trim().toUpperCase();
   }
 
+  function normalizeSingleNumber(value, wheelType) {
+    if (wheelType === 'american' && value === '00') return value;
+    if (!/^\d+$/.test(value)) return value;
+    return String(Number(value));
+  }
+
   function isValidSingleNumber(value, wheelType) {
     if (wheelType === 'american' && value === '00') return true;
     if (!/^\d+$/.test(value)) return false;
@@ -93,7 +99,10 @@
 
   function betLabel() {
     const type = els.betType.value;
-    if (type === 'single') return `Single ${getSingleNumber() || '—'}`;
+    if (type === 'single') {
+      const singleNumber = getSingleNumber();
+      return `Single ${singleNumber ? normalizeSingleNumber(singleNumber, els.wheelType.value) : '—'}`;
+    }
     return type.charAt(0).toUpperCase() + type.slice(1);
   }
 
@@ -222,7 +231,10 @@
       if (button.dataset.bet === els.betType.value && els.betType.value !== 'single') {
         button.classList.add('is-selected');
       }
-      if (els.betType.value === 'single' && button.dataset.number === getSingleNumber()) {
+      if (
+        els.betType.value === 'single'
+        && button.dataset.number === normalizeSingleNumber(getSingleNumber(), els.wheelType.value)
+      ) {
         button.classList.add('is-selected');
       }
       if (winningValue && button.dataset.number === winningValue) {
@@ -260,7 +272,7 @@
       case 'even':
         return value !== '0' && value !== '00' && number % 2 === 0;
       case 'single':
-        return getSingleNumber() === value;
+        return normalizeSingleNumber(getSingleNumber(), els.wheelType.value) === value;
       default:
         return false;
     }
