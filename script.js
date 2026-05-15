@@ -151,11 +151,6 @@ function updateCalculator() {
     });
   }
 
-  const engagement = document.getElementById("engagementScore");
-  if (engagement) {
-    const score = Math.max(5, Math.min(100, Math.round((100 - results.bustRisk) * 0.7 + results.profitChance * 0.3)));
-    engagement.textContent = `${score}/100`;
-  }
 }
 
 function setPreset(game) {

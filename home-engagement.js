@@ -7,6 +7,8 @@
   const toolCards = document.querySelectorAll("[data-tool-card]");
   const scenarioChoices = document.querySelectorAll("[data-scenario-choice]");
   const mythCards = document.querySelectorAll(".myth-card");
+  const strategyAccuracyMetric = document.getElementById("strategyAccuracyMetric");
+  const strategyAccuracyHelper = document.getElementById("strategyAccuracyHelper");
 
   const recommendations = {
     bankroll: {
@@ -40,6 +42,33 @@
       cta: "Read the Horse Racing Guide"
     }
   };
+
+  function getSavedStrategyStats() {
+    try {
+      return JSON.parse(localStorage.getItem("blackjackTrainerStats") || "{}");
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function updateStrategyAccuracyMetric() {
+    if (!strategyAccuracyMetric || !strategyAccuracyHelper) return;
+
+    const savedStats = getSavedStrategyStats();
+    const correct = Number(savedStats.correct || 0);
+    const wrong = Number(savedStats.wrong || 0);
+    const total = correct + wrong;
+
+    if (!total) {
+      strategyAccuracyMetric.textContent = "—";
+      strategyAccuracyHelper.textContent = "Train blackjack hands to build a decision sample.";
+      return;
+    }
+
+    const accuracy = Math.round((correct / total) * 100);
+    strategyAccuracyMetric.textContent = `${accuracy}%`;
+    strategyAccuracyHelper.textContent = `Based on ${total} recent training decision${total === 1 ? "" : "s"}.`;
+  }
 
   function evaluateScenario() {
     const bankroll = Number(document.getElementById("scenarioBankroll")?.value || 250);
@@ -116,5 +145,6 @@
     if (input) input.addEventListener("input", evaluateScenario);
   });
 
+  updateStrategyAccuracyMetric();
   evaluateScenario();
 })();

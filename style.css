@@ -962,6 +962,14 @@ button:hover,
   color: #fff;
 }
 
+.result-helper {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
 .summary {
   margin-top: 18px;
 }
