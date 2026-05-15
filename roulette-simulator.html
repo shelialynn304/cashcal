@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+
+  <title>Roulette Simulator: Spin the Wheel, Track Bankroll & Odds | EdgeOverLuck.com</title>
+  <meta name="description" content="Use the free EdgeOverLuck roulette simulator to spin European or American roulette, test red, black, odd, even, and single-number bets, and watch bankroll swings without risking money." />
+  <link rel="canonical" href="https://edgeoverluck.com/roulette-simulator.html" />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Roulette Simulator",
+    "url": "https://edgeoverluck.com/roulette-simulator.html",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Any",
+    "description": "Educational roulette simulator for testing bankroll swings, roulette bet outcomes, and short-term variance."
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav site-nav">
+      <a href="index.html" class="brand">EdgeOverLuck<span>.com</span></a>
+      <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+        <span class="nav-toggle-label">Menu</span>
+      </button>
+      <nav id="primary-nav" class="nav-menu" aria-label="Primary navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-games">Games</button>
+          <div id="nav-games" class="nav-panel">
+            <a href="blackjack-game.html">Blackjack Trainer</a>
+            <a href="slot-simulator.html">Slot Simulator</a>
+            <a href="roulette-strategy-simulator.html">Roulette Strategy Simulator</a>
+            <a href="bubble-craps.html">Bubble Craps Simulator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-calculators">Calculators</button>
+          <div id="nav-calculators" class="nav-panel nav-panel-wide">
+            <a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>
+            <a href="blackjack-ev-calculator.html">Blackjack EV Calculator</a>
+            <a href="roulette-calculator.html">Roulette Calculator</a>
+            <a href="bankroll-survival-slots.html">Slot Bankroll Survival Calculator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-learn">Learn</button>
+          <div id="nav-learn" class="nav-panel nav-panel-wide">
+            <a href="blackjack-strategy.html">Blackjack Strategy Guide</a>
+            <a href="roulette.html">Roulette Guide</a>
+            <a href="slots.html">Slots Guide</a>
+            <a href="slot-rtp-explained.html">RTP Guide</a>
+            <a href="slot-volatility-guide.html">Volatility Guide</a>
+            <a href="blackjack-bankroll-calculator.html">Bankroll Guide</a>
+            <a href="horse-racing-guide.html">Horse Racing Guide</a>
+          </div>
+        </div>
+        <a href="gambler-personality-quiz.html" class="nav-link">Quiz</a>
+        <a href="responsible-gambling.html" class="nav-link">Responsible</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero roulette-sim-hero glow-hero">
+      <div class="container hero-wrap">
+        <div>
+          <div class="eyebrow">EdgeOverLuck.com</div>
+          <h1>Spin the Wheel — Roulette Simulator</h1>
+          <p class="lead">Pick a bet, spin the wheel, and watch wins, losses, streaks, and bankroll swings play out. Short-term wins happen all the time — this simulator helps you see the chaos before you risk real money.</p>
+          <div class="brand-lockup">
+            <strong>EdgeOverLuck.com</strong>
+            <span>Real Math. Real Odds. Real Fun.</span>
+            <p>Play with the numbers before you play with your money.</p>
+          </div>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#roulette-simulator-app">Start Spinning</a>
+            <a class="btn btn-secondary" href="roulette-calculator.html">Compare Roulette Odds</a>
+          </div>
+        </div>
+        <aside class="card roulette-sim-hero-card glow-gold" aria-label="Roulette simulator highlights">
+          <h2 class="section-title">Built for fast math play</h2>
+          <div class="result-list">
+            <div class="result-item"><span>Wheel Types</span><strong>European + American</strong></div>
+            <div class="result-item"><span>Bet Types</span><strong>Outside + Single</strong></div>
+            <div class="result-item"><span>Audio</span><strong>No voice clips</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section-tight" id="roulette-simulator-app" aria-labelledby="roulette-sim-title">
+      <div class="container roulette-sim-layout">
+        <article class="card roulette-sim-panel roulette-wheel-panel">
+          <div class="roulette-sim-panel-head">
+            <div>
+              <span class="chip">Live Spin</span>
+              <h2 id="roulette-sim-title" class="section-title">Animated roulette wheel</h2>
+            </div>
+            <button id="rouletteSoundToggle" class="btn btn-secondary roulette-sound-toggle" type="button" aria-pressed="false">Sound On</button>
+          </div>
+
+          <div class="roulette-wheel-wrap" aria-live="polite">
+            <div id="rouletteWheel" class="roulette-wheel" role="img" aria-label="Roulette wheel ready to spin">
+              <div class="roulette-wheel-ring"></div>
+              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-top">0</div>
+              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-right">17</div>
+              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-bottom">32</div>
+              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-left">5</div>
+              <div id="rouletteWheelResult" class="roulette-wheel-center">Ready</div>
+            </div>
+            <div class="roulette-pointer" aria-hidden="true"></div>
+          </div>
+
+          <div class="hero-actions roulette-spin-actions">
+            <button id="rouletteSpinButton" class="btn btn-primary" type="button">Spin the Wheel</button>
+            <button id="rouletteResetButton" class="btn btn-secondary" type="button">Reset Simulator</button>
+          </div>
+          <p id="rouletteStatus" class="summary roulette-status" role="status">Choose a bet, set your stake, then spin. No strategy here guarantees profit.</p>
+        </article>
+
+        <aside class="card roulette-sim-panel">
+          <span class="chip">Bankroll Setup</span>
+          <h2 class="section-title">Set your session</h2>
+          <div class="form-row roulette-control-grid">
+            <div class="field">
+              <label for="rouletteStartingBankroll">Starting bankroll</label>
+              <input id="rouletteStartingBankroll" type="number" min="1" step="1" value="200" inputmode="decimal" />
+            </div>
+            <div class="field">
+              <label for="rouletteBetAmount">Bet amount</label>
+              <input id="rouletteBetAmount" type="number" min="1" step="1" value="5" inputmode="decimal" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="rouletteWheelType">Wheel type</label>
+            <select id="rouletteWheelType">
+              <option value="european" selected>European: 0–36</option>
+              <option value="american">American: 0, 00, 1–36</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="rouletteBetType">Bet type</label>
+            <select id="rouletteBetType">
+              <option value="red" selected>Red — 1:1</option>
+              <option value="black">Black — 1:1</option>
+              <option value="odd">Odd — 1:1</option>
+              <option value="even">Even — 1:1</option>
+              <option value="single">Single Number — 35:1</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="rouletteSingleNumber">Single number</label>
+            <input id="rouletteSingleNumber" type="text" value="0" disabled aria-describedby="singleNumberHelp" />
+            <p id="singleNumberHelp" class="small-note">Enabled only for single-number bets. American roulette accepts 00.</p>
+          </div>
+          <div class="result-list roulette-bankroll-list">
+            <div class="result-item"><span>Current Bankroll</span><strong id="rouletteBankrollDisplay">$200.00</strong></div>
+            <div class="result-item"><span>Selected Bet</span><strong id="rouletteSelectedBetDisplay">Red / $5.00</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="roulette-table-title">
+      <div class="container card roulette-sim-panel">
+        <div class="roulette-sim-panel-head">
+          <div>
+            <span class="chip">Code-Built Table</span>
+            <h2 id="roulette-table-title" class="section-title">Pick bets from the felt</h2>
+          </div>
+          <p class="small-note mb-0">Click a number for single-number betting or choose an outside bet below.</p>
+        </div>
+        <div id="rouletteBettingTable" class="roulette-betting-table" aria-label="Roulette betting table"></div>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="roulette-results-title">
+      <div class="container grid grid-2">
+        <article class="card roulette-sim-panel">
+          <span class="chip">Last Result</span>
+          <h2 id="roulette-results-title" class="section-title">What happened?</h2>
+          <div class="result-list roulette-result-grid">
+            <div class="result-item"><span>Winning Number</span><strong id="rouletteWinningNumber">—</strong></div>
+            <div class="result-item"><span>Winning Color</span><strong id="rouletteWinningColor">—</strong></div>
+            <div class="result-item"><span>Outcome</span><strong id="rouletteOutcome">—</strong></div>
+            <div class="result-item"><span>Amount Won/Lost</span><strong id="rouletteAmountResult">—</strong></div>
+          </div>
+          <p id="rouletteExplanation" class="roulette-explanation">Spin once to see how roulette variance treats this bet.</p>
+        </article>
+
+        <article class="card roulette-sim-panel">
+          <span class="chip">Session Stats</span>
+          <h2 class="section-title">Bankroll swing tracker</h2>
+          <div class="result-list roulette-result-grid">
+            <div class="result-item"><span>Updated Bankroll</span><strong id="rouletteUpdatedBankroll">$200.00</strong></div>
+            <div class="result-item"><span>Current Streak</span><strong id="rouletteCurrentStreak">0</strong></div>
+            <div class="result-item"><span>Biggest Win</span><strong id="rouletteBiggestWin">$0.00</strong></div>
+            <div class="result-item"><span>Biggest Loss</span><strong id="rouletteBiggestLoss">$0.00</strong></div>
+            <div class="result-item"><span>Total Spins</span><strong id="rouletteTotalSpins">0</strong></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="roulette-next-title">
+      <div class="container cta-box">
+        <h2 id="roulette-next-title" class="section-title">Keep testing before real money is involved</h2>
+        <p>Roulette can create short-term heaters and ugly streaks back-to-back. Compare the simulator with odds tools, bankroll planning, and other casino math pages before you play.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="roulette-calculator.html">Open Roulette Calculator</a>
+          <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Bankroll Calculator</a>
+          <a class="btn btn-secondary" href="slot-simulator.html">Slot Simulator</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container warning-box">
+        <h2 class="section-title">Responsible gambling and 21+ notice</h2>
+        <p>For adults 21+ where legal. This simulator is for education and entertainment only. Roulette has negative expected value, and no betting system guarantees profit.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="blackjack-bankroll-calculator.html">Bankroll</a>
+        <a href="blackjack-game.html">Blackjack Trainer</a>
+        <a href="slots.html">Slots</a>
+        <a href="roulette.html">Roulette</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="responsible-gambling.html">Responsible Gambling</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
+        <a href="editorial-policy.html">Editorial Policy</a>
+        <a href="credits.html">Credits &amp; Sources</a>
+        <a href="how-we-calculate-odds.html">How We Calculate Odds</a>
+      </div>
+      <p class="affiliate-note">This site may contain affiliate links and may earn commissions at no extra cost to you. Rankings and recommendations should be based on analysis, math, user value, and responsible play.</p>
+      <p class="gambling-warning">21+ only. Gambling involves financial risk and can be addictive. EdgeOverLuck.com is educational and does not guarantee wins or profit.</p>
+      <p class="responsible">Play legally, set limits, and never risk money you cannot afford to lose. If gambling is causing problems, visit <a href="responsible-gambling.html">responsible gambling resources</a> or <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">ncpgambling.org</a>.</p>
+      <p class="copyright">© 2026 EdgeOverLuck.com — Casino math tools for education and entertainment.</p>
+    </div>
+  </footer>
+
+  <script src="js/roulette.js" defer></script>
+  <script src="nav.js" defer></script>
+</body>
+</html>
