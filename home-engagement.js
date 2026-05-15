@@ -11,33 +11,33 @@
   const recommendations = {
     bankroll: {
       title: "Bankroll Calculator",
-      text: "Start here to see how bet size, house edge, and number of wagers affect expected loss and bust risk.",
+      text: "Start here to see whether bet size, house edge, and volume are quietly loading the trapdoor.",
       href: "blackjack-bankroll-calculator.html",
-      cta: "Open Bankroll Calculator"
+      cta: "Open the Damage Gauge"
     },
     blackjack: {
       title: "Blackjack Strategy + Trainer",
-      text: "Use the strategy guide for the correct baseline, then practice decisions in the free blackjack trainer.",
+      text: "Study the baseline, then train decisions before the dealer trains you with real money.",
       href: "blackjack-game.html",
-      cta: "Open Blackjack Trainer"
+      cta: "Train Before the Dealer"
     },
     roulette: {
       title: "Roulette Odds Tool",
-      text: "Compare roulette bets, systems, and bankroll pressure without assuming a progression can beat the wheel.",
+      text: "Compare roulette bets, systems, and bankroll pressure before a progression starts pretending it found an exit.",
       href: "roulette.html",
-      cta: "Open Roulette Tool"
+      cta: "Interrogate the Wheel"
     },
     slots: {
       title: "Slot Simulator",
-      text: "Use the slot simulator to see how RTP and volatility can still create big drawdowns in short sessions.",
+      text: "Use the slot simulator to see how RTP and volatility can still ambush a short session.",
       href: "slots.html",
-      cta: "Run Slot Simulator"
+      cta: "Spin the Simulator"
     },
     horses: {
       title: "Horse Racing Guide",
-      text: "Start with bet types, odds formats, and bankroll basics before comparing risk across win, place, show, and exotic wagers.",
+      text: "Start with bet types, odds formats, and bankroll basics before exotic wagers make simple mistakes expensive.",
       href: "horse-racing-guide.html",
-      cta: "Read Horse Racing Guide"
+      cta: "Read the Horse Racing Guide"
     }
   };
 
@@ -53,7 +53,7 @@
 
     if (riskOutput) riskOutput.textContent = `${adjustedRisk.toFixed(1)}%`;
     if (walkOutput) walkOutput.textContent = `$${walkAway.toFixed(0)}`;
-    if (paceOutput) paceOutput.textContent = pressure >= 4 ? "High burn rate" : pressure >= 2 ? "Manageable burn rate" : "Low burn rate";
+    if (paceOutput) paceOutput.textContent = pressure >= 4 ? "High burn rate" : pressure >= 2 ? "Manageable, not immortal" : "Low burn, still burning";
 
     scenarioRows.forEach((row) => row.classList.toggle("is-strong", pressure < 3.5 && adjustedRisk < 40));
   }
