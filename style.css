@@ -3006,9 +3006,18 @@ table td,
 .roulette-wheel-pocket-label {
   position: absolute;
   z-index: 2;
-  color: #fff6db;
+  min-width: 2.25em;
+  padding: 0.24em 0.42em;
+  border-radius: 999px;
+  background: rgba(4, 8, 9, 0.72);
+  color: #fff8df;
+  font-size: clamp(1rem, 3vw, 1.45rem);
   font-weight: 900;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.85);
+  line-height: 1;
+  text-align: center;
+  border: 1px solid rgba(255, 248, 223, 0.28);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.48);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.95), 0 0 8px rgba(241,196,91,0.28);
 }
 
 .roulette-wheel-pocket-label-top { top: 8%; left: 50%; transform: translateX(-50%); }

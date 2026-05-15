@@ -92,45 +92,17 @@
           <div class="result-list">
             <div class="result-item"><span>Wheel Types</span><strong>European + American</strong></div>
             <div class="result-item"><span>Bet Types</span><strong>Outside + Single</strong></div>
-            <div class="result-item"><span>Audio</span><strong>No voice clips</strong></div>
+            <div class="result-item"><span>Sound Effects</span><strong>Wheel + table audio</strong></div>
           </div>
         </aside>
       </div>
     </section>
 
-    <section class="section-tight" id="roulette-simulator-app" aria-labelledby="roulette-sim-title">
-      <div class="container roulette-sim-layout">
-        <article class="card roulette-sim-panel roulette-wheel-panel">
-          <div class="roulette-sim-panel-head">
-            <div>
-              <span class="chip">Live Spin</span>
-              <h2 id="roulette-sim-title" class="section-title">Animated roulette wheel</h2>
-            </div>
-            <button id="rouletteSoundToggle" class="btn btn-secondary roulette-sound-toggle" type="button" aria-pressed="false">Sound On</button>
-          </div>
-
-          <div class="roulette-wheel-wrap" aria-live="polite">
-            <div id="rouletteWheel" class="roulette-wheel" role="img" aria-label="Roulette wheel ready to spin">
-              <div class="roulette-wheel-ring"></div>
-              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-top">0</div>
-              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-right">17</div>
-              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-bottom">32</div>
-              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-left">5</div>
-              <div id="rouletteWheelResult" class="roulette-wheel-center">Ready</div>
-            </div>
-            <div class="roulette-pointer" aria-hidden="true"></div>
-          </div>
-
-          <div class="hero-actions roulette-spin-actions">
-            <button id="rouletteSpinButton" class="btn btn-primary" type="button">Spin the Wheel</button>
-            <button id="rouletteResetButton" class="btn btn-secondary" type="button">Reset Simulator</button>
-          </div>
-          <p id="rouletteStatus" class="summary roulette-status" role="status">Choose a bet, set your stake, then spin. No strategy here guarantees profit.</p>
-        </article>
-
+    <section class="section-tight" id="roulette-simulator-app" aria-labelledby="roulette-bankroll-title">
+      <div class="container">
         <aside class="card roulette-sim-panel">
           <span class="chip">Bankroll Setup</span>
-          <h2 class="section-title">Set your session</h2>
+          <h2 id="roulette-bankroll-title" class="section-title">Set your session</h2>
           <div class="form-row roulette-control-grid">
             <div class="field">
               <label for="rouletteStartingBankroll">Starting bankroll</label>
@@ -175,12 +147,44 @@
       <div class="container card roulette-sim-panel">
         <div class="roulette-sim-panel-head">
           <div>
-            <span class="chip">Code-Built Table</span>
+            <span class="chip">Betting Felt</span>
             <h2 id="roulette-table-title" class="section-title">Pick bets from the felt</h2>
           </div>
           <p class="small-note mb-0">Click a number for single-number betting or choose an outside bet below.</p>
         </div>
         <div id="rouletteBettingTable" class="roulette-betting-table" aria-label="Roulette betting table"></div>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="roulette-sim-title">
+      <div class="container">
+        <article class="card roulette-sim-panel roulette-wheel-panel">
+          <div class="roulette-sim-panel-head">
+            <div>
+              <span class="chip">Live Spin</span>
+              <h2 id="roulette-sim-title" class="section-title">Animated roulette wheel</h2>
+            </div>
+            <button id="rouletteSoundToggle" class="btn btn-secondary roulette-sound-toggle" type="button" aria-pressed="false">Sound On</button>
+          </div>
+
+          <div class="roulette-wheel-wrap" aria-live="polite">
+            <div id="rouletteWheel" class="roulette-wheel" role="img" aria-label="Roulette wheel ready to spin">
+              <div class="roulette-wheel-ring"></div>
+              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-top">0</div>
+              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-right">17</div>
+              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-bottom">32</div>
+              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-left">5</div>
+              <div id="rouletteWheelResult" class="roulette-wheel-center">Ready</div>
+            </div>
+            <div class="roulette-pointer" aria-hidden="true"></div>
+          </div>
+
+          <div class="hero-actions roulette-spin-actions">
+            <button id="rouletteSpinButton" class="btn btn-primary" type="button">Spin the Wheel</button>
+            <button id="rouletteResetButton" class="btn btn-secondary" type="button">Reset Simulator</button>
+          </div>
+          <p id="rouletteStatus" class="summary roulette-status" role="status">Choose a bet, set your stake, then spin. No strategy here guarantees profit.</p>
+        </article>
       </div>
     </section>
 
