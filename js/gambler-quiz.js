@@ -104,7 +104,7 @@ const quizQuestions = [
 const resultData = {
   chaser: {
     name: 'The Chaser',
-    image: 'images/quiz/chaser.webp',
+    image: 'assets/images/quiz/chaser.webp',
     headline: 'Losses make stopping harder.',
     description: 'You are most vulnerable when a bad session starts feeling unfinished. The risk is chasing recovery instead of following the original limit.',
     riskLeak: 'Tilt, reloads, doubled bets, and changing risk after losses.',
@@ -117,7 +117,7 @@ const resultData = {
   },
   grinder: {
     name: 'The Grinder',
-    image: 'images/quiz/grinder.webp',
+    image: 'assets/images/quiz/grinder.webp',
     headline: 'Low stakes can still add up.',
     description: 'You stretch sessions with tiny bets and call it discipline. Sometimes it is. Sometimes it is just high volume with a low unit size.',
     riskLeak: 'Underestimating cumulative loss, time-on-device, and slow bankroll bleed.',
@@ -130,7 +130,7 @@ const resultData = {
   },
   hunter: {
     name: 'The Heater Hunter',
-    image: 'images/quiz/hunter.webp',
+    image: 'assets/images/quiz/hunter.webp',
     headline: 'You are drawn to high-variance upside.',
     description: 'You like volatility and big-hit potential. Big wins can happen, but the key is surviving dry stretches and protecting part of any win.',
     riskLeak: 'High variance, oversized bets, jackpot chasing, and pressing too hard after wins.',
@@ -143,7 +143,7 @@ const resultData = {
   },
   strategist: {
     name: 'The Strategist',
-    image: 'images/quiz/strategist.webp',
+    image: 'assets/images/quiz/strategist.webp',
     headline: 'You can’t control the cards. You can control the process.',
     description: 'You like games where decisions matter. You care about odds, strategy, and reducing mistakes. Good. Just don’t confuse better decisions with guaranteed profit.',
     riskLeak: 'Overconfidence, analysis paralysis, and forgetting that variance still applies.',
@@ -156,7 +156,7 @@ const resultData = {
   },
   chaos: {
     name: 'The Wild Card',
-    image: 'images/quiz/chaos.webp',
+    image: 'assets/images/quiz/chaos.webp',
     headline: 'Fast moves, loose rules.',
     description: 'You move fast, switch games often, and make decisions from momentum more than a plan.',
     riskLeak: 'Random bet sizing, superstition, game hopping, and calling momentum a system.',
