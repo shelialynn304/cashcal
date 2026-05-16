@@ -975,22 +975,6 @@ button:hover,
 }
 
 
-.bankroll-lasts-stat {
-  margin-bottom: 24px;
-}
-
-.lasts-hands-stat-value {
-  font-size: clamp(1.4rem, 3.2vw, 2.2rem);
-  font-weight: 800;
-  color: var(--gold);
-  line-height: 1.15;
-  margin-top: 8px;
-}
-
-.lasts-hands-actions {
-  justify-content: center;
-  margin-top: 16px;
-}
 
 .results-spacing,
 .chart-grid-spacing {
@@ -1038,9 +1022,7 @@ button:hover,
   overflow-x: auto;
 }
 
-table,
-.strategy-table,
-.strategy-chart {
+table {
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
@@ -1049,72 +1031,22 @@ table,
 }
 
 table th,
-table td,
-.strategy-table th,
-.strategy-table td,
-.strategy-chart th,
-.strategy-chart td {
+table td {
   text-align: left;
   padding: 12px;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
 }
 
-table th,
-.strategy-table th,
-.strategy-chart th {
+table th {
   background: rgba(255,255,255,0.03);
   color: #fff;
   font-size: 0.95rem;
 }
 
-table td,
-.strategy-table td,
-.strategy-chart td {
+table td {
   color: var(--muted);
   background: rgba(255,255,255,0.015);
-}
-
-.strategy-table,
-.strategy-chart {
-  text-align: center;
-}
-
-.strategy-table tr:hover {
-  background: rgba(255,255,255,0.03);
-}
-
-.strategy-chart th,
-.strategy-chart td {
-  border: 1px solid var(--border);
-}
-
-/* STRATEGY MOVE COLORS */
-.hit {
-  background: #1f77b4 !important;
-  color: #fff !important;
-}
-
-.stand {
-  background: #2ecc71 !important;
-  color: #111 !important;
-}
-
-.double {
-  background: #f1c40f !important;
-  color: #111 !important;
-}
-
-.split {
-  background: #9b59b6 !important;
-  color: #fff !important;
-}
-
-.legend span {
-  padding: 4px 8px;
-  border-radius: 4px;
-  margin-right: 6px;
-  display: inline-block;
 }
 
 
@@ -1426,11 +1358,7 @@ table td,
   }
 
   table th,
-  table td,
-  .strategy-table th,
-  .strategy-table td,
-  .strategy-chart th,
-  .strategy-chart td {
+  table td {
     padding: 8px;
     font-size: 0.92rem;
   }
