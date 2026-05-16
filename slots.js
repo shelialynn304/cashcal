@@ -30,11 +30,71 @@
     return list.find((preset) => preset.id === id) || list[0];
   }
 
+  const SLOT_SYMBOLS = ["7", "BAR", "🔔", "🍒", "🍋", "♦", "☠", "♠"];
+
   function getPayoutMultiplier(preset) {
     const vol = VOL_MULTIPLIER[preset.volatility] || VOL_MULTIPLIER.medium;
     const baseMean = preset.rtp / Math.max(0.01, preset.hitFrequency);
     const randomPart = Math.abs(normalRandom()) * vol.variance;
     return clamp(baseMean * (0.35 + randomPart), 0.15, preset.maxWinMulti);
+  }
+
+  function pickDifferentSymbol(excluded) {
+    const choices = SLOT_SYMBOLS.filter((symbol) => !excluded.includes(symbol));
+    return choices[Math.floor(Math.random() * choices.length)] || SLOT_SYMBOLS[0];
+  }
+
+  function getDisplaySymbols(resultType, payoutMultiplier = 0) {
+    if (resultType === "bonus") {
+      const anchor = payoutMultiplier >= 20 ? "7" : "♦";
+      return [anchor, anchor, anchor, "🔔", anchor];
+    }
+
+    if (resultType === "base") {
+      const anchor = payoutMultiplier >= 8 ? "7" : payoutMultiplier >= 3 ? "BAR" : "🍒";
+      const symbols = [anchor, anchor, anchor, pickDifferentSymbol([anchor]), pickDifferentSymbol([anchor])];
+      return symbols.sort(() => Math.random() - 0.5);
+    }
+
+    const shuffled = [...SLOT_SYMBOLS].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 5);
+  }
+
+  function spinOnce({ betSize, preset, activeMissStreak = 0 }) {
+    const vol = VOL_MULTIPLIER[preset.volatility] || VOL_MULTIPLIER.medium;
+    const missFactor = clamp(1 - (activeMissStreak * 0.01 * vol.missStreak), 0.72, 1.08);
+    const didBaseHit = Math.random() < preset.hitFrequency * missFactor;
+    const didBonusHit = Math.random() < preset.bonusRate;
+
+    let payout = 0;
+    let baseMultiplier = 0;
+    let bonusMultiplier = 0;
+
+    if (didBaseHit) {
+      baseMultiplier = getPayoutMultiplier(preset);
+      payout += betSize * baseMultiplier;
+    }
+
+    if (didBonusHit) {
+      bonusMultiplier = clamp((2 + Math.abs(normalRandom()) * 6) * vol.winStreak, 1.5, 35);
+      payout += betSize * bonusMultiplier;
+    }
+
+    payout = Math.round(payout * 100) / 100;
+
+    const resultType = didBonusHit ? "bonus" : didBaseHit ? "base" : "loss";
+    const nextMissStreak = didBaseHit ? 0 : activeMissStreak + 1;
+
+    return {
+      payout,
+      resultType,
+      symbols: getDisplaySymbols(resultType, baseMultiplier + bonusMultiplier),
+      didBaseHit,
+      didBonusHit,
+      baseMultiplier,
+      bonusMultiplier,
+      nextMissStreak
+    };
   }
 
   function spinSession({ bankroll, betSize, preset, spins }) {
@@ -60,24 +120,10 @@
       balance -= betSize;
       wagered += betSize;
 
-      const missFactor = clamp(1 - (activeMissStreak * 0.01 * vol.missStreak), 0.72, 1.08);
-      const didBaseHit = Math.random() < preset.hitFrequency * missFactor;
-      const didBonusHit = Math.random() < preset.bonusRate;
-
-      let payout = 0;
-      if (didBaseHit) {
-        payout += betSize * getPayoutMultiplier(preset);
-        activeMissStreak = 0;
-      } else {
-        activeMissStreak += 1;
-        longestMissStreak = Math.max(longestMissStreak, activeMissStreak);
-      }
-
-      if (didBonusHit) {
-        payout += betSize * clamp((2 + Math.abs(normalRandom()) * 6) * vol.winStreak, 1.5, 35);
-      }
-
-      payout = Math.round(payout * 100) / 100;
+      const spin = spinOnce({ betSize, preset, activeMissStreak });
+      const payout = spin.payout;
+      activeMissStreak = spin.nextMissStreak;
+      longestMissStreak = Math.max(longestMissStreak, activeMissStreak);
       balance += payout;
       returned += payout;
 
@@ -178,6 +224,7 @@
     toMoney,
     toPercent,
     getPresetById,
+    spinOnce,
     spinSession,
     runMonteCarlo,
     drawBalanceBars
