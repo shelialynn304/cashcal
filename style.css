@@ -3095,8 +3095,8 @@ table td,
   display: grid;
   place-items: center;
   background:
-    radial-gradient(circle, rgba(4, 18, 16, 0.95) 0 26%, transparent 27%),
-    repeating-conic-gradient(from -4deg, #b8212a 0 9deg, #111 9deg 18deg, #0f7a45 18deg 20deg, #111 20deg 29deg, #b8212a 29deg 38deg);
+    radial-gradient(circle, rgba(4, 18, 16, 0.95) 0 26%, rgba(8, 19, 20, 0.82) 27% 57%, transparent 58%),
+    conic-gradient(from -4deg, #b8212a, #111, #0f7a45, #111, #b8212a);
   border: 10px solid #d2a43c;
   box-shadow:
     inset 0 0 0 7px rgba(255,255,255,0.08),
@@ -3106,9 +3106,51 @@ table td,
   will-change: transform;
 }
 
+.roulette-wheel-numbers {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.roulette-wheel-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.roulette-wheel-pocket {
+  stroke: rgba(255, 248, 223, 0.34);
+  stroke-width: 0.65;
+}
+
+.roulette-wheel-pocket-red {
+  fill: #b8212a;
+}
+
+.roulette-wheel-pocket-black {
+  fill: #101216;
+}
+
+.roulette-wheel-pocket-green {
+  fill: #0f7a45;
+}
+
+.roulette-wheel-pocket-number {
+  fill: #fff8df;
+  font-size: 8px;
+  font-weight: 900;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.88);
+  stroke-width: 1.3px;
+  letter-spacing: -0.04em;
+}
+
 .roulette-wheel-ring {
   position: absolute;
-  inset: 16%;
+  inset: 28%;
+  z-index: 2;
   border-radius: 50%;
   border: 2px dashed rgba(255,255,255,0.22);
   box-shadow: inset 0 0 20px rgba(0,0,0,0.58);
@@ -3130,28 +3172,6 @@ table td,
   box-shadow: 0 0 20px rgba(241,196,91,0.3);
 }
 
-.roulette-wheel-pocket-label {
-  position: absolute;
-  z-index: 2;
-  min-width: 2.25em;
-  padding: 0.24em 0.42em;
-  border-radius: 999px;
-  background: rgba(4, 8, 9, 0.72);
-  color: #fff8df;
-  font-size: clamp(1rem, 3vw, 1.45rem);
-  font-weight: 900;
-  line-height: 1;
-  text-align: center;
-  border: 1px solid rgba(255, 248, 223, 0.28);
-  box-shadow: 0 3px 12px rgba(0,0,0,0.48);
-  text-shadow: 0 2px 4px rgba(0,0,0,0.95), 0 0 8px rgba(241,196,91,0.28);
-}
-
-.roulette-wheel-pocket-label-top { top: 8%; left: 50%; transform: translateX(-50%); }
-.roulette-wheel-pocket-label-right { right: 10%; top: 50%; transform: translateY(-50%); }
-.roulette-wheel-pocket-label-bottom { bottom: 8%; left: 50%; transform: translateX(-50%); }
-.roulette-wheel-pocket-label-left { left: 10%; top: 50%; transform: translateY(-50%); }
-
 .roulette-wheel-win {
   box-shadow:
     inset 0 0 0 7px rgba(255,255,255,0.08),
@@ -3168,6 +3188,43 @@ table td,
 
 .roulette-control-grid {
   margin-bottom: 16px;
+}
+
+.roulette-chip-row,
+.roulette-bet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.roulette-chip-button {
+  min-width: 76px;
+  padding-inline: 16px;
+}
+
+.roulette-chip-button.is-selected,
+.roulette-table-cell.has-active-bet,
+.roulette-outside-bet.has-active-bet {
+  outline: 2px solid #fff3cf;
+  box-shadow: 0 0 14px rgba(255,243,207,0.42), inset 0 0 14px rgba(0,0,0,0.28);
+}
+
+.roulette-active-bets {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(241,196,91,0.14);
+}
+
+.roulette-table-cell.is-dimmed,
+.roulette-outside-bet.is-dimmed,
+.roulette-chip-button.is-dimmed,
+.roulette-bet-actions .is-dimmed {
+  opacity: 0.42;
+  cursor: not-allowed;
+  filter: grayscale(0.28);
 }
 
 .roulette-betting-table {
@@ -3276,6 +3333,22 @@ table td,
 
   .roulette-sound-toggle {
     width: 100%;
+  }
+
+  .roulette-chip-row,
+  .roulette-bet-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .roulette-chip-button,
+  .roulette-bet-actions .btn {
+    width: 100%;
+  }
+
+  .roulette-wheel-pocket-number {
+    font-size: 7.2px;
+    stroke-width: 1.15px;
   }
 
   .roulette-betting-table {
