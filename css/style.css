@@ -1657,7 +1657,6 @@ table td {
 
 .hero {
   position: relative;
-  background: url('../slots-hero-machine.webp') center/cover no-repeat;
 }
 
 .hero::before {
