@@ -135,9 +135,23 @@
             <input id="rouletteSingleNumber" type="text" value="0" disabled aria-describedby="singleNumberHelp" />
             <p id="singleNumberHelp" class="small-note">Enabled only for single-number bets. American roulette accepts 00.</p>
           </div>
+          <div class="roulette-chip-row" aria-label="Quick bet chips">
+            <button class="btn btn-secondary roulette-chip-button" type="button" data-chip="5">$5</button>
+            <button class="btn btn-secondary roulette-chip-button" type="button" data-chip="25">$25</button>
+            <button class="btn btn-secondary roulette-chip-button" type="button" data-chip="100">$100</button>
+            <button class="btn btn-secondary roulette-chip-button" type="button" data-chip="500">$500</button>
+          </div>
           <div class="result-list roulette-bankroll-list">
             <div class="result-item"><span>Current Bankroll</span><strong id="rouletteBankrollDisplay">$200.00</strong></div>
             <div class="result-item"><span>Selected Bet</span><strong id="rouletteSelectedBetDisplay">Red / $5.00</strong></div>
+            <div class="result-item"><span>Active Bets</span><strong id="rouletteActiveBetTotal">$0.00</strong></div>
+          </div>
+          <div class="roulette-active-bets" aria-live="polite">
+            <p class="small-note mb-0" id="rouletteActiveBetList">No active bets yet. Click the felt to place chips.</p>
+            <div class="hero-actions roulette-bet-actions">
+              <button id="rouletteRepeatBetButton" class="btn btn-secondary" type="button">Repeat Bet</button>
+              <button id="rouletteClearBetsButton" class="btn btn-secondary" type="button">Clear Bets</button>
+            </div>
           </div>
         </aside>
       </div>
@@ -169,11 +183,8 @@
 
           <div class="roulette-wheel-wrap" aria-live="polite">
             <div id="rouletteWheel" class="roulette-wheel" role="img" aria-label="Roulette wheel ready to spin">
+              <div id="rouletteWheelNumbers" class="roulette-wheel-numbers" aria-hidden="true"></div>
               <div class="roulette-wheel-ring"></div>
-              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-top">0</div>
-              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-right">17</div>
-              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-bottom">32</div>
-              <div class="roulette-wheel-pocket-label roulette-wheel-pocket-label-left">5</div>
               <div id="rouletteWheelResult" class="roulette-wheel-center">Ready</div>
             </div>
             <div class="roulette-pointer" aria-hidden="true"></div>
