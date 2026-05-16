@@ -336,6 +336,11 @@ ol {
   min-width: 290px;
 }
 
+.nav-menu > .nav-item-dropdown:last-child > .nav-panel {
+  right: 0;
+  left: auto;
+}
+
 .nav-item-dropdown:hover > .nav-panel,
 .nav-item-dropdown:focus-within > .nav-panel,
 .nav-item-dropdown.open > .nav-panel {
