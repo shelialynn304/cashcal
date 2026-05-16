@@ -95,28 +95,38 @@ CasCal
 ├── blackjack-bankroll-calculator.html
 
 │
-├── images
+├── assets
 
-│   ├── cards
+│   ├── images
 
-│   ├── chips
+│   │   ├── cards
 
-│   ├── corrextmove.png
+│   │   ├── chips
 
-│   ├── wrong.png
+│   │   ├── corrextmove.png
 
-│   ├── blackjackjackpot.png
+│   │   ├── wrong.png
 
-│   ├── dealerbust.png
+│   │   ├── blackjackjackpot.png
 
-│   ├── laughdealer.png
+│   │   ├── dealerbust.png
 
-│   └── dealershrugemptytray.png
+│   │   ├── laughdealer.png
+
+│   │   └── dealershrugemptytray.png
 
 │
-├── sounds
+│   └── sounds
 
-│   └── chip-click.mp3
+│       ├── cards
+
+│       ├── chips
+
+│       ├── games
+
+│       ├── ui
+
+│       └── voices
 
 │
 └── README

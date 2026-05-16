@@ -110,27 +110,27 @@ const blackjackAudio = {
   voiceCooldownMs: 8500,
   voiceCategoryCooldowns: {},
   clips: {
-    chip: { src: "sounds/chips/placing-poker-chips.mp3", volume: 0.25 },
-    click: { src: "sounds/chips/chip-click.mp3", volume: 0.18 },
-    deal: { src: "sounds/cards/card_slide.mp3", volume: 0.22 },
-    flip: { src: "sounds/cards/card_slide.mp3", volume: 0.22 },
-    shuffle: { src: "sounds/cards/cards-being-shuffled.mp3", volume: 0.16 },
-    win: { src: "sounds/ui/subtle-win.mp3", volume: 0.22 },
-    fail: { src: "sounds/ui/subtle-fail.mp3", volume: 0.20 },
-    lose: { src: "sounds/ui/lose.mp3", volume: 0.18 }
+    chip: { src: "assets/sounds/chips/placing-poker-chips.mp3", volume: 0.25 },
+    click: { src: "assets/sounds/chips/chip-click.mp3", volume: 0.18 },
+    deal: { src: "assets/sounds/cards/card_slide.mp3", volume: 0.22 },
+    flip: { src: "assets/sounds/cards/card_slide.mp3", volume: 0.22 },
+    shuffle: { src: "assets/sounds/cards/cards-being-shuffled.mp3", volume: 0.16 },
+    win: { src: "assets/sounds/ui/subtle-win.mp3", volume: 0.22 },
+    fail: { src: "assets/sounds/ui/subtle-fail.mp3", volume: 0.20 },
+    lose: { src: "assets/sounds/ui/lose.mp3", volume: 0.18 }
   },
   voices: {
-    blackjack: { src: "sounds/voices/blackjack.mp3", volume: 0.26 },
-    cardsInTheAir: { src: "sounds/voices/cards-in-th-air.mp3", volume: 0.24 },
-    dealerBusts: { src: "sounds/voices/dealer-busts.mp3", volume: 0.26 },
-    houseWin: { src: "sounds/voices/house-win.mp3", volume: 0.24 },
-    interestingDecision: { src: "sounds/voices/interstng-decision.mp3", volume: 0.24 },
-    placeBets: { src: "sounds/voices/place-bets.mp3", volume: 0.22 },
-    push: { src: "sounds/voices/push.mp3", volume: 0.24 },
-    questionableStats: { src: "sounds/voices/statis-questionbl.mp3", volume: 0.23 },
-    mathApproves: { src: "sounds/voices/the-math-approves.mp3", volume: 0.24 },
-    varianceUndefeated: { src: "sounds/voices/varianc-remains-undefeat.mp3", volume: 0.24 },
-    emotionallyInvested: { src: "sounds/voices/you-appear-emotinally-invested.mp3", volume: 0.23 }
+    blackjack: { src: "assets/sounds/voices/blackjack.mp3", volume: 0.26 },
+    cardsInTheAir: { src: "assets/sounds/voices/cards-in-th-air.mp3", volume: 0.24 },
+    dealerBusts: { src: "assets/sounds/voices/dealer-busts.mp3", volume: 0.26 },
+    houseWin: { src: "assets/sounds/voices/house-win.mp3", volume: 0.24 },
+    interestingDecision: { src: "assets/sounds/voices/interstng-decision.mp3", volume: 0.24 },
+    placeBets: { src: "assets/sounds/voices/place-bets.mp3", volume: 0.22 },
+    push: { src: "assets/sounds/voices/push.mp3", volume: 0.24 },
+    questionableStats: { src: "assets/sounds/voices/statis-questionbl.mp3", volume: 0.23 },
+    mathApproves: { src: "assets/sounds/voices/the-math-approves.mp3", volume: 0.24 },
+    varianceUndefeated: { src: "assets/sounds/voices/varianc-remains-undefeat.mp3", volume: 0.24 },
+    emotionallyInvested: { src: "assets/sounds/voices/you-appear-emotinally-invested.mp3", volume: 0.23 }
   },
   init(){
     Object.keys(this.clips).forEach((name)=>{
@@ -280,12 +280,12 @@ if(voiceToggle){
 }
 
 const IMAGES = {
-  correct: "images/corrextmove.png",
-  wrong: "images/wrong.png",
-  blackjack: "images/blackjackjackpot.png",
-  playerBust: "images/dealerbust.png",
-  dealerLaugh: "images/laughdealer.png",
-  broke: "images/dealershrugemptytray.png"
+  correct: "assets/images/corrextmove.png",
+  wrong: "assets/images/wrong.png",
+  blackjack: "assets/images/blackjackjackpot.png",
+  playerBust: "assets/images/dealerbust.png",
+  dealerLaugh: "assets/images/laughdealer.png",
+  broke: "assets/images/dealershrugemptytray.png"
 }
 
 function dealerVoice(name, options={}){
@@ -502,14 +502,14 @@ function renderHand(hand,el,hideHole=false){
 
     if(hideHole && i===1){
       img.classList.add("card-back")
-      img.src="images/cards/card_back.png"
+      img.src="assets/images/cards/card_back.png"
     }else{
-      img.src=`images/cards/card_${c.suit}_${c.rank}.png`
+      img.src=`assets/images/cards/card_${c.suit}_${c.rank}.png`
     }
     img.onerror=()=>{
       if(img.dataset.fallbackApplied === "1") return
       img.dataset.fallbackApplied = "1"
-      img.src="images/cards/card_back.png"
+      img.src="assets/images/cards/card_back.png"
       img.alt="Card image unavailable"
     }
 
@@ -856,7 +856,7 @@ function showBetValidationMessage(message){
 
 function renderBetChip(amount){
   let chip=document.createElement("img")
-  chip.src=`images/chips/chip-${amount}.png`
+  chip.src=`assets/images/chips/chip-${amount}.png`
   chip.alt=`$${amount} bet chip`
   chip.className="bet-chip"
   chip.style.bottom=`${betSpot.children.length*4}px`
