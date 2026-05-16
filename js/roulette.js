@@ -414,6 +414,13 @@
     return true;
   }
 
+  function clearBetsForWheelChange() {
+    state.activeBets = [];
+    state.lastBets = [];
+    buildTable();
+    buildWheelNumbers();
+  }
+
   function spinOutcome(wheelType) {
     const numbers = wheelNumbers(wheelType);
     return numbers[Math.floor(Math.random() * numbers.length)];
@@ -640,9 +647,7 @@
         if (activeBetTotal() > state.bankroll) state.activeBets = [];
       }
       if (control === els.wheelType) {
-        state.activeBets = [];
-        buildTable();
-        buildWheelNumbers();
+        clearBetsForWheelChange();
       }
       updateControls();
       highlightSelection();
@@ -652,9 +657,7 @@
     control.addEventListener('change', function () {
       initAudio();
       if (control === els.wheelType) {
-        state.activeBets = [];
-        buildTable();
-        buildWheelNumbers();
+        clearBetsForWheelChange();
       }
       updateControls();
       highlightSelection();
