@@ -1,1 +1,343 @@
 /* Roulette-specific styles. Shared/global styles stay in style.css. */
+
+/* ROULETTE SIMULATOR */
+.roulette-sim-hero-card .result-list,
+.roulette-bankroll-list,
+.roulette-result-grid {
+  gap: 12px;
+}
+
+.roulette-sim-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.roulette-sim-panel {
+  overflow: hidden;
+}
+
+.roulette-sim-panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.roulette-sound-toggle {
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+.roulette-wheel-panel {
+  background:
+    radial-gradient(circle at 50% 38%, rgba(241,196,91,0.12), transparent 34%),
+    linear-gradient(180deg, rgba(3, 74, 43, 0.36), rgba(6, 15, 17, 0.78)),
+    var(--glass-bg-strong);
+}
+
+.roulette-wheel-wrap {
+  position: relative;
+  width: min(420px, 88vw);
+  aspect-ratio: 1;
+  margin: 18px auto 6px;
+  display: grid;
+  place-items: center;
+}
+
+.roulette-pointer {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: translateX(-50%);
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 30px solid var(--gold);
+  filter: drop-shadow(0 0 12px rgba(241,196,91,0.55));
+  z-index: 4;
+}
+
+.roulette-wheel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle, rgba(4, 18, 16, 0.95) 0 26%, rgba(8, 19, 20, 0.82) 27% 57%, transparent 58%),
+    conic-gradient(from -4deg, #b8212a, #111, #0f7a45, #111, #b8212a);
+  border: 10px solid #d2a43c;
+  box-shadow:
+    inset 0 0 0 7px rgba(255,255,255,0.08),
+    inset 0 0 34px rgba(0,0,0,0.72),
+    0 0 42px rgba(241,196,91,0.22);
+  transition: transform 2.1s cubic-bezier(0.16, 0.78, 0.22, 1);
+  will-change: transform;
+}
+
+.roulette-wheel-numbers {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.roulette-wheel-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.roulette-wheel-pocket {
+  stroke: rgba(255, 248, 223, 0.34);
+  stroke-width: 0.65;
+}
+
+.roulette-wheel-pocket-red {
+  fill: #b8212a;
+}
+
+.roulette-wheel-pocket-black {
+  fill: #101216;
+}
+
+.roulette-wheel-pocket-green {
+  fill: #0f7a45;
+}
+
+.roulette-wheel-pocket-number {
+  fill: #fff8df;
+  font-size: 8px;
+  font-weight: 900;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.88);
+  stroke-width: 1.3px;
+  letter-spacing: -0.04em;
+}
+
+.roulette-wheel-ring {
+  position: absolute;
+  inset: 28%;
+  z-index: 2;
+  border-radius: 50%;
+  border: 2px dashed rgba(255,255,255,0.22);
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.58);
+}
+
+.roulette-wheel-center {
+  position: relative;
+  z-index: 3;
+  width: 34%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 38% 28%, #ffe19b, #b77a1f 54%, #2a1605 100%);
+  color: #140d05;
+  font-size: clamp(1.35rem, 6vw, 2.8rem);
+  font-weight: 900;
+  border: 4px solid rgba(255,255,255,0.28);
+  box-shadow: 0 0 20px rgba(241,196,91,0.3);
+}
+
+.roulette-wheel-win {
+  box-shadow:
+    inset 0 0 0 7px rgba(255,255,255,0.08),
+    inset 0 0 34px rgba(0,0,0,0.72),
+    0 0 48px rgba(88,214,141,0.36);
+}
+
+.roulette-wheel-loss {
+  box-shadow:
+    inset 0 0 0 7px rgba(255,255,255,0.08),
+    inset 0 0 34px rgba(0,0,0,0.72),
+    0 0 42px rgba(255,113,113,0.22);
+}
+
+.roulette-control-grid {
+  margin-bottom: 16px;
+}
+
+.roulette-chip-row,
+.roulette-bet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.roulette-chip-button {
+  min-width: 76px;
+  padding-inline: 16px;
+}
+
+.roulette-chip-button.is-selected,
+.roulette-table-cell.has-active-bet,
+.roulette-outside-bet.has-active-bet {
+  outline: 2px solid #fff3cf;
+  box-shadow: 0 0 14px rgba(255,243,207,0.42), inset 0 0 14px rgba(0,0,0,0.28);
+}
+
+.roulette-active-bets {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(241,196,91,0.14);
+}
+
+.roulette-table-cell.is-dimmed,
+.roulette-outside-bet.is-dimmed,
+.roulette-chip-button.is-dimmed,
+.roulette-bet-actions .is-dimmed {
+  opacity: 0.42;
+  cursor: not-allowed;
+  filter: grayscale(0.28);
+}
+
+.roulette-betting-table {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  background:
+    radial-gradient(circle at 22% 8%, rgba(241,196,91,0.1), transparent 32%),
+    linear-gradient(135deg, #063c27, #052216 58%, #041611);
+  border: 1px solid rgba(241,196,91,0.24);
+  box-shadow: inset 0 0 34px rgba(0,0,0,0.35);
+  overflow-x: auto;
+}
+
+.roulette-table-zero-row,
+.roulette-table-outside {
+  display: grid;
+  gap: 8px;
+}
+
+.roulette-table-zero-row {
+  grid-template-columns: repeat(2, minmax(72px, 1fr));
+}
+
+.roulette-table-numbers {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(48px, 1fr));
+  gap: 6px;
+}
+
+.roulette-table-outside {
+  grid-template-columns: repeat(4, minmax(84px, 1fr));
+}
+
+.roulette-table-cell,
+.roulette-outside-bet {
+  min-height: 46px;
+  margin-top: 0;
+  border-radius: 10px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.24);
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: inset 0 0 14px rgba(0,0,0,0.28);
+}
+
+.roulette-table-cell-red,
+.roulette-outside-red {
+  background: linear-gradient(180deg, #c62936, #73131c);
+}
+
+.roulette-table-cell-black,
+.roulette-outside-black,
+.roulette-outside-odd,
+.roulette-outside-even {
+  background: linear-gradient(180deg, #1d2027, #07080b);
+}
+
+.roulette-table-cell-green {
+  background: linear-gradient(180deg, #118752, #064327);
+}
+
+.roulette-table-cell.is-selected,
+.roulette-outside-bet.is-selected {
+  outline: 3px solid var(--gold);
+  box-shadow: 0 0 16px rgba(241,196,91,0.46), inset 0 0 14px rgba(0,0,0,0.28);
+}
+
+.roulette-table-cell.is-winning {
+  outline: 3px solid #fff3cf;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(255,243,207,0.55), inset 0 0 14px rgba(0,0,0,0.28);
+}
+
+.roulette-spin-actions {
+  justify-content: center;
+}
+
+.roulette-status,
+.roulette-explanation {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(241,196,91,0.08);
+  border: 1px solid rgba(241,196,91,0.2);
+}
+
+@media (max-width: 900px) {
+  .roulette-sim-layout,
+  .roulette-sim-layout.grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .roulette-sim-panel-head,
+  .roulette-control-grid,
+  .roulette-table-outside {
+    grid-template-columns: 1fr;
+  }
+
+  .roulette-sim-panel-head {
+    display: grid;
+  }
+
+  .roulette-sound-toggle {
+    width: 100%;
+  }
+
+  .roulette-chip-row,
+  .roulette-bet-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .roulette-chip-button,
+  .roulette-bet-actions .btn {
+    width: 100%;
+  }
+
+  .roulette-wheel-pocket-number {
+    font-size: 7.2px;
+    stroke-width: 1.15px;
+  }
+
+  .roulette-betting-table {
+    padding: 12px;
+    overflow-x: visible;
+  }
+
+  .roulette-table-numbers {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .roulette-table-cell,
+  .roulette-outside-bet {
+    min-width: 0;
+    min-height: 44px;
+    padding: 8px 6px;
+  }
+}
