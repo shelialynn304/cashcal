@@ -1177,6 +1177,14 @@ table td {
   border-top: 1px solid var(--border);
 }
 
+.footer-brand {
+  margin-bottom: 8px;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
 .footer-links {
   margin-bottom: 20px;
 }
