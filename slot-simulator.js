@@ -7,6 +7,14 @@
   const betInput = document.getElementById("simBetSize");
   const spinsInput = document.getElementById("simSpins");
   const autoplayBtn = document.getElementById("runAutoplay");
+  const singleSpinBtn = document.getElementById("singleSpinBtn");
+  const spinWarning = document.getElementById("slotSpinWarning");
+  const spinMessage = document.getElementById("slotSpinMessage");
+  const slotReels = Array.from(document.querySelectorAll("#slotReels .slot-reel"));
+  const lastSpinBet = document.getElementById("lastSpinBet");
+  const lastSpinSymbols = document.getElementById("lastSpinSymbols");
+  const lastSpinPayout = document.getElementById("lastSpinPayout");
+  const lastSpinChange = document.getElementById("lastSpinChange");
 
   const endBankroll = document.getElementById("simEndBankroll");
   const bustChance = document.getElementById("simBustChance");
@@ -15,6 +23,11 @@
   const actualRtp = document.getElementById("simActualRtp");
   const narrative = document.getElementById("simNarrative");
   const bars = document.getElementById("simBalanceBars");
+
+  const reelSymbols = ["7", "BAR", "🔔", "🍒", "🍋", "♦", "☠", "♠"];
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let activeMissStreak = 0;
+  let isSpinning = false;
 
   function fillPresetOptions() {
     (window.SLOT_PRESETS || []).forEach((preset) => {
@@ -27,11 +40,110 @@
     presetSelect.value = "medium-96";
   }
 
+  function getInputs() {
+    return {
+      preset: window.SlotsTools.getPresetById(presetSelect.value),
+      bankroll: Math.max(0, Number(bankrollInput.value) || 0),
+      betSize: Math.max(0, Number(betInput.value) || 0),
+      spins: Math.max(1, Number(spinsInput.value) || 1)
+    };
+  }
+
+  function setReelSymbols(symbols) {
+    slotReels.forEach((reel, index) => {
+      const symbol = symbols[index] || reelSymbols[index % reelSymbols.length];
+      const symbolNode = reel.querySelector(".slot-symbol");
+      if (symbolNode) symbolNode.textContent = symbol;
+    });
+  }
+
+  function updateSpinAvailability() {
+    const { bankroll, betSize } = getInputs();
+    const blocked = isSpinning || betSize <= 0 || bankroll < betSize;
+
+    if (singleSpinBtn) {
+      singleSpinBtn.disabled = blocked;
+      singleSpinBtn.textContent = isSpinning ? "Spinning…" : "Spin Once";
+    }
+
+    if (!spinWarning) return;
+
+    if (betSize <= 0) {
+      spinWarning.textContent = "Enter a bet size above $0 to spin.";
+    } else if (bankroll < betSize) {
+      spinWarning.textContent = `Bankroll too low: ${window.SlotsTools.toMoney(bankroll)} cannot cover a ${window.SlotsTools.toMoney(betSize)} spin.`;
+    } else {
+      spinWarning.textContent = "";
+    }
+  }
+
+  function updateLastSpin({ betSize, symbols, payout, bankrollChange }) {
+    lastSpinBet.textContent = window.SlotsTools.toMoney(betSize);
+    lastSpinSymbols.textContent = symbols.join(" · ");
+    lastSpinPayout.textContent = window.SlotsTools.toMoney(payout);
+    lastSpinChange.textContent = `${bankrollChange >= 0 ? "+" : ""}${window.SlotsTools.toMoney(bankrollChange)}`;
+    lastSpinChange.classList.toggle("result-small-win", bankrollChange > 0);
+    lastSpinChange.classList.toggle("result-loss", bankrollChange < 0);
+  }
+
+  function describeSpin(spin, bankrollChange, newBankroll) {
+    const changeText = `${bankrollChange >= 0 ? "+" : ""}${window.SlotsTools.toMoney(bankrollChange)}`;
+
+    if (spin.resultType === "bonus") {
+      return `Bonus hit. Symbols ${spin.symbols.join(" · ")} paid ${window.SlotsTools.toMoney(spin.payout)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
+    }
+
+    if (spin.payout > 0) {
+      return `Line hit. Symbols ${spin.symbols.join(" · ")} paid ${window.SlotsTools.toMoney(spin.payout)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
+    }
+
+    return `No payline. Symbols ${spin.symbols.join(" · ")} returned ${window.SlotsTools.toMoney(0)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
+  }
+
+  function resetReelState() {
+    slotReels.forEach((reel) => {
+      reel.classList.remove("reel-spinning", "slot-win", "slot-jackpot");
+    });
+  }
+
+  function animateReels(finalSymbols, resultType) {
+    resetReelState();
+
+    if (reduceMotion.matches) {
+      setReelSymbols(finalSymbols);
+      slotReels.forEach((reel) => {
+        if (resultType === "bonus") reel.classList.add("slot-jackpot");
+        if (resultType === "base") reel.classList.add("slot-win");
+      });
+      return Promise.resolve();
+    }
+
+    const timers = [];
+    slotReels.forEach((reel, reelIndex) => {
+      reel.classList.add("reel-spinning");
+      timers.push(window.setInterval(() => {
+        const symbolNode = reel.querySelector(".slot-symbol");
+        if (symbolNode) {
+          symbolNode.textContent = reelSymbols[Math.floor(Math.random() * reelSymbols.length)];
+        }
+      }, 70 + reelIndex * 8));
+    });
+
+    return Promise.all(slotReels.map((reel, reelIndex) => new Promise((resolve) => {
+      window.setTimeout(() => {
+        window.clearInterval(timers[reelIndex]);
+        const symbolNode = reel.querySelector(".slot-symbol");
+        if (symbolNode) symbolNode.textContent = finalSymbols[reelIndex];
+        reel.classList.remove("reel-spinning");
+        if (resultType === "bonus") reel.classList.add("slot-jackpot");
+        if (resultType === "base") reel.classList.add("slot-win");
+        resolve();
+      }, 520 + reelIndex * 180);
+    })));
+  }
+
   function updateSimulator() {
-    const preset = window.SlotsTools.getPresetById(presetSelect.value);
-    const bankroll = Number(bankrollInput.value);
-    const betSize = Number(betInput.value);
-    const spins = Number(spinsInput.value);
+    const { preset, bankroll, betSize, spins } = getInputs();
 
     const scenario = window.SlotsTools.spinSession({ bankroll, betSize, preset, spins });
     const monteCarlo = window.SlotsTools.runMonteCarlo({ bankroll, betSize, preset, spins, trials: 220 });
@@ -49,6 +161,38 @@
       : "Bankroll survival is stronger, but expected value remains negative over time.";
 
     narrative.textContent = `${preset.note} ${bustMsg}`;
+    updateSpinAvailability();
+  }
+
+  async function handleSingleSpin() {
+    const { preset, bankroll, betSize } = getInputs();
+
+    if (isSpinning || betSize <= 0 || bankroll < betSize) {
+      updateSpinAvailability();
+      return;
+    }
+
+    isSpinning = true;
+    updateSpinAvailability();
+
+    const spin = window.SlotsTools.spinOnce({ betSize, preset, activeMissStreak });
+    activeMissStreak = spin.nextMissStreak;
+
+    const newBankroll = Math.max(0, Math.round((bankroll - betSize + spin.payout) * 100) / 100);
+    const bankrollChange = Math.round((spin.payout - betSize) * 100) / 100;
+
+    await animateReels(spin.symbols, spin.resultType);
+
+    bankrollInput.value = newBankroll.toFixed(2);
+    updateLastSpin({ betSize, symbols: spin.symbols, payout: spin.payout, bankrollChange });
+
+    spinMessage.classList.toggle("result-jackpot", spin.resultType === "bonus");
+    spinMessage.classList.toggle("result-small-win", spin.payout > betSize && spin.resultType !== "bonus");
+    spinMessage.classList.toggle("result-loss", spin.payout < betSize);
+    spinMessage.textContent = describeSpin(spin, bankrollChange, newBankroll);
+
+    isSpinning = false;
+    updateSimulator();
   }
 
   autoplayBtn.addEventListener("click", updateSimulator);
@@ -57,6 +201,16 @@
     updateSimulator();
   });
 
+  [bankrollInput, betInput, spinsInput, presetSelect].forEach((control) => {
+    control.addEventListener("input", updateSpinAvailability);
+    control.addEventListener("change", updateSpinAvailability);
+  });
+
+  if (singleSpinBtn) {
+    singleSpinBtn.addEventListener("click", handleSingleSpin);
+  }
+
   fillPresetOptions();
+  updateSpinAvailability();
   updateSimulator();
 })();
