@@ -604,6 +604,455 @@ ol {
   }
 }
 
+/* REUSABLE EDGE OVER LUCK PAGE SYSTEM
+   Use these opt-in classes to upgrade interior pages toward the homepage visual language
+   without changing page-specific game or calculator logic. Compose with existing
+   .container, .section, .card, .grid, .btn, .eyebrow, .glass-card, and .premium-card classes. */
+.page-shell {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 14% 0%, rgba(241,196,91,0.09), transparent 30rem),
+    radial-gradient(circle at 88% 12%, rgba(77,182,255,0.06), transparent 28rem),
+    linear-gradient(180deg, #080b10 0%, var(--bg-alt) 100%);
+}
+
+.page-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.8), transparent 72%);
+  opacity: 0.42;
+}
+
+.page-shell > * {
+  position: relative;
+}
+
+.page-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(48px, 8vw, 96px) 0 clamp(34px, 6vw, 68px);
+  border-bottom: 1px solid var(--border);
+  background:
+    radial-gradient(circle at 16% 14%, rgba(241,196,91,0.20), transparent 30rem),
+    radial-gradient(circle at 84% 18%, rgba(77,182,255,0.12), transparent 28rem),
+    linear-gradient(135deg, #07090d 0%, #0d121b 52%, #121722 100%);
+}
+
+.page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 72px 72px;
+  opacity: 0.18;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.92), transparent 88%);
+}
+
+.page-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(241,196,91,0.30), transparent 25rem),
+    radial-gradient(circle at 78% 22%, rgba(77,182,255,0.20), transparent 24rem),
+    linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.28));
+  opacity: 0.54;
+}
+
+.page-hero > .container,
+.page-hero-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.page-hero-inner,
+.page-hero-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+  gap: clamp(24px, 5vw, 56px);
+  align-items: center;
+}
+
+.page-hero-copy {
+  max-width: 760px;
+}
+
+.page-hero-title {
+  max-width: 860px;
+  color: #fff;
+  font-size: clamp(2.55rem, 6.2vw, 5.8rem);
+  line-height: 0.96;
+  letter-spacing: -0.07em;
+  text-align: left;
+  text-shadow: 0 0 34px rgba(241,196,91,0.14);
+}
+
+.page-hero-subtitle {
+  max-width: 720px;
+  color: #fff3cf;
+  font-size: clamp(1.08rem, 2.1vw, 1.55rem);
+  font-weight: 800;
+  line-height: 1.32;
+  text-shadow: 0 0 24px rgba(241,196,91,0.12);
+}
+
+.page-hero-text {
+  max-width: 720px;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.eyebrow-muted,
+.eyebrow-cyan,
+.eyebrow-danger {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+}
+
+.eyebrow-muted {
+  color: #fff3cf;
+  background: rgba(255,255,255,0.055);
+  border: 1px solid var(--glass-border);
+}
+
+.eyebrow-cyan {
+  color: var(--accent);
+  background: rgba(77,182,255,0.10);
+  border: 1px solid rgba(77,182,255,0.18);
+}
+
+.eyebrow-danger {
+  color: #ffb3b3;
+  background: rgba(255,113,113,0.10);
+  border: 1px solid rgba(255,113,113,0.18);
+}
+
+.section-gradient,
+.section-gradient-gold,
+.section-gradient-cyan,
+.section-panel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow: var(--shadow-soft);
+}
+
+.section-gradient {
+  background:
+    radial-gradient(circle at 16% 0%, rgba(241,196,91,0.11), transparent 28rem),
+    radial-gradient(circle at 86% 14%, rgba(77,182,255,0.08), transparent 24rem),
+    linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.016)),
+    var(--glass-bg);
+}
+
+.section-gradient-gold {
+  border-color: rgba(241,196,91,0.18);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(241,196,91,0.18), transparent 28rem),
+    linear-gradient(180deg, rgba(241,196,91,0.08), rgba(255,255,255,0.014)),
+    var(--glass-bg);
+}
+
+.section-gradient-cyan {
+  border-color: rgba(77,182,255,0.18);
+  background:
+    radial-gradient(circle at 84% 0%, rgba(77,182,255,0.14), transparent 26rem),
+    linear-gradient(180deg, rgba(77,182,255,0.075), rgba(255,255,255,0.014)),
+    var(--glass-bg);
+}
+
+.section-panel {
+  padding: clamp(22px, 4vw, 34px);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.018)),
+    var(--glass-bg-strong);
+}
+
+.section-header {
+  max-width: 820px;
+  margin-bottom: clamp(20px, 3vw, 32px);
+}
+
+.section-header-centered {
+  max-width: 860px;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.section-header-centered .section-subtext,
+.section-header-centered .page-hero-text {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.edge-divider,
+.section-divider-soft {
+  position: relative;
+}
+
+.edge-divider::before,
+.section-divider-soft::before {
+  content: "";
+  display: block;
+  width: min(92%, var(--max));
+  height: 1px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, transparent, rgba(241,196,91,0.42), rgba(77,182,255,0.15), transparent);
+}
+
+.section-divider-soft::after {
+  content: "";
+  display: block;
+  width: min(92%, var(--max));
+  height: 28px;
+  margin: 0 auto -28px;
+  background: linear-gradient(180deg, rgba(241,196,91,0.045), transparent);
+  pointer-events: none;
+}
+
+.feature-grid,
+.stat-grid,
+.pressure-grid,
+.myth-math-grid,
+.cta-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.feature-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.stat-grid,
+.pressure-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.myth-math-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.cta-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: center;
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cta-row .btn {
+  margin-top: 0;
+}
+
+.card-grid-tight {
+  gap: 12px;
+}
+
+.glass-card-strong,
+.card-glass,
+.stat-card,
+.pressure-card,
+.disclaimer-block {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018)),
+    var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-depth);
+}
+
+.card-glass,
+.glass-card-strong,
+.stat-card,
+.pressure-card,
+.disclaimer-block {
+  padding: 22px;
+}
+
+.stat-card,
+.pressure-card {
+  min-height: 150px;
+}
+
+.stat-card strong,
+.stat-card .num,
+.pressure-card strong,
+.pressure-card .num {
+  display: block;
+  color: #fff;
+  font-size: clamp(1.65rem, 3vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin: 8px 0 10px;
+}
+
+.stat-card::before,
+.pressure-card::before,
+.myth-panel::before,
+.math-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--gold), rgba(77,182,255,0.42));
+}
+
+.pressure-card.is-danger {
+  border-color: rgba(255,113,113,0.24);
+  box-shadow: var(--shadow-depth), 0 0 24px rgba(255,113,113,0.08);
+}
+
+.pressure-card.is-good {
+  border-color: rgba(241,196,91,0.28);
+  box-shadow: var(--shadow-depth), 0 0 24px rgba(241,196,91,0.08);
+}
+
+.myth-panel,
+.math-panel {
+  position: relative;
+  overflow: hidden;
+  padding: 22px;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015)),
+    var(--glass-bg-strong);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: var(--shadow-depth);
+}
+
+.math-panel {
+  border-color: rgba(241,196,91,0.24);
+  background:
+    radial-gradient(circle at top right, rgba(241,196,91,0.13), transparent 38%),
+    linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015)),
+    var(--glass-bg-strong);
+}
+
+.disclaimer-block {
+  border-color: rgba(255,113,113,0.22);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(255,113,113,0.12), transparent 20rem),
+    linear-gradient(180deg, rgba(255,113,113,0.09), rgba(255,113,113,0.03)),
+    var(--glass-bg);
+}
+
+.disclaimer-block strong {
+  color: #fff;
+}
+
+.btn-cta-primary,
+.btn-gold,
+.button-primary {
+  background: linear-gradient(180deg, #ffd978, var(--gold));
+  color: #131313;
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 14px 34px rgba(241,196,91,0.18), inset 0 1px 0 rgba(255,255,255,0.28);
+}
+
+.btn-outline,
+.button-outline {
+  background: rgba(255,255,255,0.035);
+  color: var(--text);
+  border-color: var(--glass-border);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-outline:hover,
+.button-outline:hover {
+  background: rgba(255,255,255,0.065);
+  border-color: rgba(241,196,91,0.28);
+  color: #fff;
+}
+
+@supports ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))) {
+  .section-gradient,
+  .section-gradient-gold,
+  .section-gradient-cyan,
+  .section-panel,
+  .glass-card-strong,
+  .card-glass,
+  .stat-card,
+  .pressure-card,
+  .myth-panel,
+  .math-panel,
+  .disclaimer-block {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+}
+
+@media (max-width: 1000px) {
+  .page-hero-inner,
+  .page-hero-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-hero {
+    padding: 44px 0 34px;
+  }
+
+  .page-hero-title {
+    font-size: clamp(2.35rem, 13vw, 4rem);
+    line-height: 0.98;
+  }
+
+  .page-hero-subtitle {
+    font-size: 1.08rem;
+  }
+
+  .section-panel,
+  .card-glass,
+  .glass-card-strong,
+  .stat-card,
+  .pressure-card,
+  .myth-panel,
+  .math-panel,
+  .disclaimer-block {
+    padding: 18px;
+  }
+
+  .cta-row {
+    flex-direction: column;
+  }
+
+  .cta-row .btn {
+    width: 100%;
+  }
+}
+
 /* GLOBAL VISUAL SYSTEM UTILITIES */
 .glow-hero,
 .hero-glow-overlay,
