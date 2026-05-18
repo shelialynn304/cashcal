@@ -36,7 +36,7 @@
   </script>
 </head>
 
-<body>
+<body class="page-shell">
   <header class="site-header">
     <div class="container nav site-nav">
       <a href="index.html" class="brand">Edge Over Luck</a>
@@ -96,25 +96,25 @@
 
 <main>
 
-  <section class="hero glow-hero hero-glow-overlay">
-    <div class="container hero-wrap">
-      <div>
+  <section class="page-hero">
+    <div class="container page-hero-split">
+      <div class="page-hero-copy">
         <div class="eyebrow">Blackjack Tool</div>
-        <h1>Blackjack Bankroll Calculator</h1>
-        <p class="brand-tagline">Bankroll size, bet size, house edge, and variance decide how much room your session really has.</p>
-        <p>
+        <h1 class="page-hero-title">Blackjack Bankroll Calculator</h1>
+        <p class="page-hero-subtitle">Bankroll size, bet size, house edge, and variance decide how much room your session really has.</p>
+        <p class="page-hero-text">
           See how long your bankroll can last when bet size, house edge, and variance work together.
           A practical pressure test for expected loss, bust risk, and session range.
         </p>
 
-        <div class="hero-actions">
-          <a class="btn" href="#calculator">Run the Bankroll Check</a>
-          <a class="btn btn-secondary" href="blackjack-strategy.html">Study the Rules</a>
-          <a class="btn btn-secondary" href="blackjack-game.html">Train Free</a>
+        <div class="cta-row">
+          <a class="btn btn-cta-primary" href="#calculator">Run the Bankroll Check</a>
+          <a class="btn btn-outline" href="blackjack-strategy.html">Study the Rules</a>
+          <a class="btn btn-outline" href="blackjack-game.html">Train Free</a>
         </div>
       </div>
 
-      <div class="info-box glass-panel glow-gold hover-glow">
+      <div class="card-glass glow-gold hover-glow">
         <img class="section-image" src="assets/images/bankroll-risk-section.webp" loading="lazy" width="1298" height="974" alt="Blackjack bankroll risk chart and casino chips with gold probability design" />
         <h3 class="mt-0">Reality Check</h3>
         <p>
@@ -127,21 +127,21 @@
     </div>
   </section>
 
-  <section class="experience-strip section-divider" aria-label="Blackjack bankroll reality checks">
+  <section class="section-tight edge-divider" aria-label="Blackjack bankroll reality checks">
     <div class="container">
-      <div class="grid grid-3">
-        <article class="card reality-card premium-card interactive-card"><span class="kicker">Reality Check</span><strong>Big wins happen. Giving them back is optional.</strong><p class="mb-0">Use the calculator before a hot table turns into oversized bets.</p></article>
-        <article class="card reality-card premium-card interactive-card"><span class="kicker">Bankroll Math</span><strong>The house edge is slow. Bad bet sizing is fast.</strong><p class="mb-0">A small edge can still pressure a thin bankroll during normal variance.</p></article>
-        <article class="card reality-card premium-card interactive-card"><span class="kicker">Table Mood</span><strong>A good decision can still lose one hand.</strong><p class="mb-0">The point is better repeatable choices, not predicting the next card.</p></article>
+      <div class="stat-grid">
+        <article class="pressure-card is-good interactive-card"><span class="kicker">Reality Check</span><strong>Bank wins can vanish</strong><p class="mb-0">Use the calculator before a hot table turns into oversized bets.</p></article>
+        <article class="pressure-card interactive-card"><span class="kicker">Bankroll Math</span><strong>Edge is slow. Oversizing is fast.</strong><p class="mb-0">A small edge can still pressure a thin bankroll during normal variance.</p></article>
+        <article class="pressure-card interactive-card"><span class="kicker">Table Mood</span><strong>Good decisions can lose hands</strong><p class="mb-0">The point is better repeatable choices, not predicting the next card.</p></article>
       </div>
     </div>
   </section>
 
 
-  <section class="section casino-divider" id="calculator">
+  <section class="section edge-divider" id="calculator">
     <div class="container">
-      <div class="card glass-panel glow-gold hover-glow">
-        <div class="bankroll-lasts-stat info-box text-center glass-card">
+      <div class="section-panel section-gradient-gold glow-gold">
+        <div class="bankroll-lasts-stat stat-card text-center">
           <p class="small-note mb-0">Quick Reality Check</p>
           <div id="lastsHandsStat" class="lasts-hands-stat-value">
             YOU LAST ~0 HANDS
@@ -149,10 +149,10 @@
           <p id="lastsHandsNote" class="summary mb-0">
             Run the calculator to see when your plan starts sweating.
           </p>
-          <div class="hero-actions lasts-hands-actions">
-            <a class="btn" href="#bankrollForm">Stress-Test My Bet Size</a>
-            <a class="btn btn-secondary" href="blackjack-game.html">Train the Decisions</a>
-            <a class="btn btn-secondary" href="blackjack-ev-calculator.html">Compare EV Spots</a>
+          <div class="cta-row lasts-hands-actions">
+            <a class="btn btn-cta-primary" href="#bankrollForm">Stress-Test My Bet Size</a>
+            <a class="btn btn-outline" href="blackjack-game.html">Train the Decisions</a>
+            <a class="btn btn-outline" href="blackjack-ev-calculator.html">Compare EV Spots</a>
           </div>
         </div>
 
@@ -170,74 +170,74 @@
         </div>
 
         <form id="bankrollForm">
-          <div class="grid">
-            <div class="field">
+          <div class="feature-grid card-grid-tight">
+            <div class="field card-glass">
               <label for="bankroll">Starting Bankroll ($)</label>
               <input type="number" id="bankroll" value="200" min="1" step="1" required />
             </div>
 
-            <div class="field">
+            <div class="field card-glass">
               <label for="betSize">Bet Size ($)</label>
               <input type="number" id="betSize" value="5" min="0.01" step="0.01" required />
             </div>
 
-            <div class="field">
+            <div class="field card-glass">
               <label for="houseEdge">House Edge (%)</label>
               <input type="number" id="houseEdge" value="0.5" min="0" step="0.01" required />
             </div>
 
-            <div class="field">
+            <div class="field card-glass">
               <label for="bets">Hands Played</label>
               <input type="number" id="bets" value="100" min="1" step="1" required />
             </div>
 
-            <div class="field">
+            <div class="field card-glass">
               <label for="simulations">Simulations</label>
               <input type="number" id="simulations" value="5000" min="500" max="50000" step="100" required />
             </div>
 
-            <div class="field">
+            <div class="field card-glass">
               <label for="riskTarget">Target Bust Risk (%)</label>
               <input type="number" id="riskTarget" value="20" min="1" max="99" step="1" required />
             </div>
           </div>
 
-          <button type="submit" class="btn">Calculate Bankroll Risk</button>
+          <button type="submit" class="btn btn-cta-primary">Calculate Bankroll Risk</button>
         </form>
 
         <div class="results results-spacing">
           <div class="result-list">
-            <div class="result-item glass-card">
+            <div class="result-item stat-card">
               <span>Expected Loss</span>
               <strong id="expectedLoss">$0.00</strong>
             </div>
 
-            <div class="result-item glass-card">
+            <div class="result-item stat-card">
               <span>Average Ending Bankroll</span>
               <strong id="endingBankroll">$0.00</strong>
             </div>
 
-            <div class="result-item glass-card">
+            <div class="result-item stat-card">
               <span>Bust Risk</span>
               <strong id="bustRisk">0%</strong>
             </div>
 
-            <div class="result-item glass-card">
+            <div class="result-item stat-card">
               <span>Profit Chance</span>
               <strong id="profitChance">0%</strong>
             </div>
 
-            <div class="result-item glass-card">
+            <div class="result-item stat-card">
               <span>P10 Ending Bankroll</span>
               <strong id="p10Ending">$0.00</strong>
             </div>
 
-            <div class="result-item glass-card">
+            <div class="result-item stat-card">
               <span>P90 Ending Bankroll</span>
               <strong id="p90Ending">$0.00</strong>
             </div>
 
-            <div class="result-item glass-card">
+            <div class="result-item stat-card">
               <span>Recommended Max Bet</span>
               <strong id="recommendedBet">$0.00</strong>
             </div>
@@ -249,7 +249,7 @@
         </div>
 
         <div class="grid grid-2 chart-grid-spacing">
-          <div class="card premium-card interactive-card">
+          <div class="card-glass interactive-card">
             <h3>Outcome Breakdown</h3>
             <p class="small-note">
               Busts vs sessions that lost money vs sessions that finished ahead.
@@ -257,7 +257,7 @@
             <canvas id="resultsChart"></canvas>
           </div>
 
-          <div class="card premium-card interactive-card">
+          <div class="card-glass interactive-card">
             <h3>Sample Session</h3>
             <p class="small-note">
               One simulated bankroll path through the session.
@@ -270,9 +270,9 @@
     </div>
   </section>
 
-  <section class="section gold-divider">
+  <section class="section edge-divider">
     <div class="container grid grid-2">
-      <div class="info-box glass-panel hover-glow">
+      <div class="math-panel hover-glow">
         <h2>What this means</h2>
         <p>
           A survivable session does not mean you have an edge. It only means your bankroll may survive that session length at that bet size.
@@ -282,7 +282,7 @@
         </p>
       </div>
 
-      <div class="warning-box glass-panel hover-glow">
+      <div class="disclaimer-block hover-glow">
         <h2>What this does not mean</h2>
         <p>
           This does not prove blackjack is beatable for normal players. It only shows how likely your bankroll is to get mauled before you stop playing.
@@ -298,14 +298,14 @@
 
 
 
-  <section class="section-tight" aria-labelledby="bankroll-result-insight-title">
+  <section class="section-tight section-divider-soft" aria-labelledby="bankroll-result-insight-title">
     <div class="container">
       <h2 id="bankroll-result-insight-title" class="section-title">What the numbers show about your bankroll</h2>
       <p class="section-subtext">These numbers are not a prophecy. They are a pressure gauge for how much risk your plan puts on your money.</p>
       <div class="result-insight-grid">
-        <article class="card result-insight glass-card hover-glow"><span class="stat-label">Bust risk</span><h3>If this number is high, your unit size is doing too much work.</h3><p>Lower the bet before blaming the shoe. House edge is gradual; overbetting is immediate.</p></article>
-        <article class="card result-insight glass-card hover-glow"><span class="stat-label">P10 / P90</span><h3>This is the likely outcome range.</h3><p>The same plan can finish poorly or well. Neither result changes the underlying edge.</p></article>
-        <article class="card result-insight glass-card hover-glow"><span class="stat-label">Max bet</span><h3>Discipline is the point.</h3><p>The recommended max bet is a risk ceiling, not a challenge to exceed.</p></article>
+        <article class="pressure-card result-insight hover-glow"><span class="stat-label">Bust risk</span><h3>If this number is high, your unit size is doing too much work.</h3><p>Lower the bet before blaming the shoe. House edge is gradual; overbetting is immediate.</p></article>
+        <article class="pressure-card result-insight hover-glow"><span class="stat-label">P10 / P90</span><h3>This is the likely outcome range.</h3><p>The same plan can finish poorly or well. Neither result changes the underlying edge.</p></article>
+        <article class="pressure-card result-insight hover-glow"><span class="stat-label">Max bet</span><h3>Discipline is the point.</h3><p>The recommended max bet is a risk ceiling, not a challenge to exceed.</p></article>
       </div>
     </div>
   </section>
@@ -315,10 +315,10 @@
       <h2 id="bankroll-myth-math-title" class="section-title">Blackjack myth vs bankroll math</h2>
       <p class="section-subtext">Even a decent game can become risky when bet sizing starts changing under pressure.</p>
       <div class="myth-vs-math-grid">
-        <article class="card myth-card glass-card"><span class="myth-label">Myth</span><h3>“Blackjack is low edge, so I’m safe.”</h3><p>Low edge does not protect an oversized bet from normal losing streaks.</p></article>
-        <article class="card math-card glass-card"><span class="math-label">Math</span><h3>Bet sizing controls survival.</h3><p>A good strategy still needs enough bankroll to absorb normal losing stretches.</p></article>
-        <article class="card myth-card glass-card"><span class="myth-label">Myth</span><h3>“I’m due after losing five hands.”</h3><p>The next hand is independent of how the last few hands felt.</p></article>
-        <article class="card math-card glass-card"><span class="math-label">Math</span><h3>Chasing changes your risk, not the cards.</h3><p>Raising stakes after losses can turn a routine downswing into a fast exit.</p></article>
+        <article class="myth-panel myth-card"><span class="myth-label">Myth</span><h3>“Blackjack is low edge, so I’m safe.”</h3><p>Low edge does not protect an oversized bet from normal losing streaks.</p></article>
+        <article class="math-panel math-card"><span class="math-label">Math</span><h3>Bet sizing controls survival.</h3><p>A good strategy still needs enough bankroll to absorb normal losing stretches.</p></article>
+        <article class="myth-panel myth-card"><span class="myth-label">Myth</span><h3>“I’m due after losing five hands.”</h3><p>The next hand is independent of how the last few hands felt.</p></article>
+        <article class="math-panel math-card"><span class="math-label">Math</span><h3>Chasing changes your risk, not the cards.</h3><p>Raising stakes after losses can turn a routine downswing into a fast exit.</p></article>
       </div>
     </div>
   </section>
@@ -328,33 +328,33 @@
       <h2 id="blackjack-streak-title" class="section-title">Blackjack streak examples</h2>
       <p class="section-subtext">Variance creates the range of outcomes. Your bet size decides how much pressure that range puts on the bankroll.</p>
       <div class="streak-grid">
-        <article class="card streak-card is-good premium-card"><span class="streak-label">Walk-away win</span><h3>Up 30%, still leaves.</h3><p>Strategy did not guarantee the win. Discipline protected it.</p></article>
-        <article class="card streak-card premium-card"><span class="streak-label">Slow bleed</span><h3>Lots of close hands, bankroll lower.</h3><p>Nothing “wrong” happened. This is what house edge can look like.</p></article>
-        <article class="card streak-card is-danger premium-card"><span class="streak-label">Tilt spiral</span><h3>Doubles bet size to feel in control.</h3><p>The calculator gets uglier fast when emotion edits the plan.</p></article>
-        <article class="card streak-card premium-card"><span class="streak-label">Hot table</span><h3>Confidence rises faster than EV.</h3><p>Variance is real. So is overconfidence.</p></article>
+        <article class="pressure-card streak-card is-good"><span class="streak-label">Walk-away win</span><h3>Up 30%, still leaves.</h3><p>Strategy did not guarantee the win. Discipline protected it.</p></article>
+        <article class="pressure-card streak-card"><span class="streak-label">Slow bleed</span><h3>Lots of close hands, bankroll lower.</h3><p>Nothing “wrong” happened. This is what house edge can look like.</p></article>
+        <article class="pressure-card streak-card is-danger"><span class="streak-label">Tilt spiral</span><h3>Doubles bet size to feel in control.</h3><p>The calculator gets uglier fast when emotion edits the plan.</p></article>
+        <article class="pressure-card streak-card"><span class="streak-label">Hot table</span><h3>Confidence rises faster than EV.</h3><p>Variance is real. So is overconfidence.</p></article>
       </div>
     </div>
   </section>
 
-  <section class="section section-divider" aria-labelledby="bankroll-scenarios-title">
+  <section class="section edge-divider" aria-labelledby="bankroll-scenarios-title">
     <div class="container">
       <h2 id="bankroll-scenarios-title" class="section-title">Blackjack bankroll scenarios that matter</h2>
       <p class="section-subtext">Same game, different behavior. Use these quick reads before changing your bet size.</p>
-      <div class="grid grid-4">
-        <article class="card scenario-card premium-card interactive-card"><span class="chip">If you bring $100</span><strong>Keep the unit small.</strong><p class="mb-0">A $10 average bet creates a much shorter fuse than it feels like at the table.</p></article>
-        <article class="card scenario-card premium-card interactive-card"><span class="chip">If you bring $300</span><strong>You get room, not immunity.</strong><p class="mb-0">More buy-in helps absorb streaks, but overbetting still compresses the session.</p></article>
-        <article class="card scenario-card premium-card interactive-card"><span class="chip">If you chase losses</span><strong>The calculator gets uglier fast.</strong><p class="mb-0">Raising stakes after losses can turn normal variance into a quick exit.</p></article>
-        <article class="card scenario-card premium-card interactive-card"><span class="chip">If you want longer play</span><strong>Reduce bet size before blaming luck.</strong><p class="mb-0">Lower units do not remove house edge, but they usually buy more decisions.</p></article>
+      <div class="feature-grid">
+        <article class="pressure-card scenario-card interactive-card"><span class="chip">If you bring $100</span><strong>Keep the unit small.</strong><p class="mb-0">A $10 average bet creates a much shorter fuse than it feels like at the table.</p></article>
+        <article class="pressure-card scenario-card interactive-card"><span class="chip">If you bring $300</span><strong>You get room, not immunity.</strong><p class="mb-0">More buy-in helps absorb streaks, but overbetting still compresses the session.</p></article>
+        <article class="pressure-card scenario-card interactive-card"><span class="chip">If you chase losses</span><strong>The calculator gets uglier fast.</strong><p class="mb-0">Raising stakes after losses can turn normal variance into a quick exit.</p></article>
+        <article class="pressure-card scenario-card interactive-card"><span class="chip">If you want longer play</span><strong>Reduce bet size before blaming luck.</strong><p class="mb-0">Lower units do not remove house edge, but they usually buy more decisions.</p></article>
       </div>
     </div>
   </section>
 
   <section class="section-tight" aria-labelledby="bankroll-quiz-title">
-    <div class="container quiz-cta-card card glass-panel glow-cyan hover-glow">
+    <div class="container quiz-cta-card section-panel section-gradient-cyan glow-cyan hover-glow">
       <span class="chip">Personality leak check</span>
       <h2 id="bankroll-quiz-title" class="section-title">Some players lose from bad odds. Others lose from reactive decisions.</h2>
       <p>Find out whether your biggest bankroll leak comes from chasing, overplaying, overconfidence, or poor session planning.</p>
-      <div class="hero-actions"><a class="btn" href="gambler-personality-quiz.html">Take the Gambler Personality Quiz</a><a class="btn btn-secondary" href="responsible-gambling.html">Set safer limits</a></div>
+      <div class="cta-row"><a class="btn btn-cta-primary" href="gambler-personality-quiz.html">Take the Gambler Personality Quiz</a><a class="btn btn-outline" href="responsible-gambling.html">Set safer limits</a></div>
     </div>
   </section>
 </main>
