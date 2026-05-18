@@ -17,460 +17,489 @@
   <meta property="og:url" content="https://edgeoverluck.com/bubble-craps.html">
 
   <style>
-    body{
-      font-family: Arial, sans-serif;
-      text-align:center;
-      background:#1b1b1b;
-      color:white;
-      margin:0;
-      padding:0;
+    .craps-main .container {
+      padding-top: 38px;
+      padding-bottom: 38px;
     }
 
-.page-wrap{
-  max-width:1000px;
-  margin:0 auto;
-  padding:10px;
-}
-
-.hero{
-  margin-top:6px;
-  margin-bottom:10px;
-}
-
-.hero h1{
-  margin:0 0 6px;
-  font-size:1.7rem;
-}
-
-.hero p{
-  max-width:640px;
-  margin:0 auto;
-  line-height:1.35;
-  font-size:.95rem;
-}
-
-.craps-probability-image{
-  display:block;
-  width:100%;
-  max-width:560px;
-  height:auto;
-  margin:16px auto 0;
-  border:1px solid #3a3a3a;
-  border-radius:16px;
-  box-shadow:0 8px 24px rgba(0,0,0,.35);
-}
-
-.game-panel{
-  padding:12px;
-  max-width:860px;
-  margin:0 auto 18px;
-}
-
-    .game-panel{
-      background:#242424;
-      border:1px solid #3a3a3a;
-      border-radius:16px;
-      padding:24px;
-      max-width:900px;
-      margin:0 auto 35px;
-      box-shadow:0 8px 24px rgba(0,0,0,.35);
+    .craps-hero-card {
+      padding: 18px;
     }
 
-.chip-row{
-  display:flex;
-  justify-content:center;
-  gap:8px;
-  margin:10px 0 6px;
-  flex-wrap:wrap;
-}
-
-.chip-btn{
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  border:2px dashed #f4d35e;
-  background:radial-gradient(circle at 30% 30%, #fff2b8, #c59a18);
-  color:#111;
-  font-weight:700;
-  font-size:.85rem;
-  cursor:pointer;
-  transition:transform .15s, box-shadow .15s, border-color .15s;
-}
-
-.chip-btn:hover{
-  transform:scale(1.08);
-}
-
-.chip-btn.selected{
-  box-shadow:0 0 0 3px rgba(255,213,74,.25), 0 0 14px rgba(255,213,74,.45);
-  border-color:#fff;
-  transform:scale(1.08);
-}
-
-.selected-chip-wrap{
-  margin-bottom:10px;
-  color:#ddd;
-  font-size:.92rem;
-}
-
-  .table-wrap{
-  background:linear-gradient(180deg, #165b35, #0f4729);
-  border:2px solid #d4af37;
-  border-radius:16px;
-  padding:12px;
-  margin:8px auto 12px;
-  max-width:720px;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
-}
-
-    .table-status{
-      display:inline-block;
-      margin-bottom:14px;
-      padding:8px 14px;
-      border-radius:999px;
-      background:#1a1a1a;
-      color:#ffd54a;
-      font-weight:700;
-      border:1px solid #444;
-      letter-spacing:.5px;
+    .craps-probability-image {
+      width: 100%;
+      border: 1px solid var(--glass-border);
+      border-radius: calc(var(--radius) - 2px);
+      box-shadow: var(--shadow-depth);
     }
 
-    .point-puck{
-      display:inline-block;
-      margin:0 auto 16px;
-      padding:10px 18px;
-      border-radius:999px;
-      background:#2b2b2b;
-      border:2px solid #ffd54a;
-      color:#ffd54a;
-      font-weight:700;
-      letter-spacing:.5px;
+    .craps-hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
     }
 
-    .point-puck.on{
-      box-shadow:0 0 18px rgba(255,213,74,.35);
+    .craps-hero-stat {
+      padding: 12px 10px;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 14px;
+      background: rgba(0,0,0,0.24);
+      text-align: center;
     }
 
-    .betting-table{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:14px;
-      max-width:620px;
-      margin:0 auto;
+    .craps-hero-stat strong {
+      display: block;
+      color: #fff;
+      font-size: 1.15rem;
+      line-height: 1.1;
     }
 
-    .field-spot{
-      grid-column:1 / -1;
+    .craps-hero-stat span {
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
-    .bet-spot{
-      background:rgba(0,0,0,.18);
-      color:white;
-      border:2px solid rgba(255,213,74,.8);
-      border-radius:12px;
-      padding:12px 8px;
-      font-size:.9rem;
-      font-weight:700;
-      cursor:pointer;
-      transition:transform .15s, background .15s, box-shadow .15s;
-   }
-
-.bet-spot:hover{
-  transform:translateY(-1px);
-  background:rgba(0,0,0,.28);
-}
-
-.bet-spot.active-bet{
-  box-shadow:0 0 12px rgba(255,213,74,.25);
-}
-
-.bet-amount{
-  margin-top:4px;
-  font-size:.9rem;
-}
-
-.button-row{
-  display:grid;
-  grid-template-columns:repeat(4, auto);
-  justify-content:center;
-  gap:8px;
-}
-
-button{
-  padding:8px 12px;
-  font-size:.9rem;
-  cursor:pointer;
-  border:none;
-  border-radius:6px;
-}
-
-.roll-btn{
-  background:#2e8b57;
-  color:white;
-}
-
-.reset-btn{
-  background:#444;
-  color:white;
-}
-
-.dice-area{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  margin:12px 0 10px;
-}
-
-.die{
-  width:56px;
-  height:56px;
-  background:#fff;
-  border-radius:12px;
-  border:2px solid #ddd;
-  position:relative;
-  box-shadow:0 6px 12px rgba(0,0,0,.25);
-}
-
-    .pip{
-      width:11px;
-      height:11px;
-      background:#111;
-      border-radius:50%;
-      position:absolute;
-      opacity:0;
+    .game-panel {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: clamp(18px, 4vw, 30px);
+      text-align: center;
     }
 
-    .p1{ top:12px; left:12px; }
-    .p2{ top:12px; left:50%; transform:translateX(-50%); }
-    .p3{ top:12px; right:12px; }
-    .p4{ top:50%; left:12px; transform:translateY(-50%); }
-    .p5{ top:50%; left:50%; transform:translate(-50%,-50%); }
-    .p6{ top:50%; right:12px; transform:translateY(-50%); }
-    .p7{ bottom:12px; left:50%; transform:translateX(-50%); }
+    .chip-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 8px 0 10px;
+      flex-wrap: wrap;
+    }
 
-    .face-1 .p5{ opacity:1; }
+    .chip-btn {
+      width: 56px;
+      height: 56px;
+      min-height: 56px;
+      margin-top: 0;
+      padding: 0;
+      border-radius: 50%;
+      border: 2px dashed #fff3cf;
+      background: radial-gradient(circle at 30% 30%, #fff7cf 0%, #ffd978 34%, #c99316 72%, #805c08 100%);
+      color: #111;
+      font-weight: 900;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.24), inset 0 0 0 3px rgba(0,0,0,0.16);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
 
+    .chip-btn:hover,
+    .chip-btn.selected {
+      transform: translateY(-2px) scale(1.06);
+      border-color: #fff;
+      box-shadow: 0 0 0 3px rgba(255,213,74,0.24), 0 0 22px rgba(255,213,74,0.34), inset 0 0 0 3px rgba(0,0,0,0.14);
+    }
+
+    .selected-chip-wrap {
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .selected-chip-wrap span {
+      color: #fff3cf;
+    }
+
+    .table-wrap {
+      position: relative;
+      overflow: hidden;
+      max-width: 760px;
+      margin: 8px auto 18px;
+      padding: clamp(16px, 3vw, 24px);
+      border: 2px solid rgba(241,196,91,0.72);
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 18% 10%, rgba(255,255,255,0.10), transparent 18rem),
+        linear-gradient(180deg, #17683d, #0b3d25 72%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 22px 50px rgba(0,0,0,0.30);
+    }
+
+    .table-status,
+    .point-puck {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(8,11,16,0.86);
+      color: #ffd978;
+      font-weight: 900;
+      border: 1px solid rgba(241,196,91,0.30);
+      letter-spacing: 0.05em;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+    }
+
+    .point-puck {
+      display: flex;
+      width: fit-content;
+      margin-right: auto;
+      margin-left: auto;
+      background: #11151d;
+    }
+
+    .point-puck.on {
+      box-shadow: 0 0 22px rgba(255,213,74,0.35);
+    }
+
+    .betting-table {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 14px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .field-spot {
+      grid-column: 1 / -1;
+    }
+
+    .bet-spot {
+      min-height: 82px;
+      margin-top: 0;
+      padding: 14px 10px;
+      border: 2px solid rgba(255,217,120,0.84);
+      border-radius: 16px;
+      background: rgba(0,0,0,0.20);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: none;
+      transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .bet-spot:hover,
+    .bet-spot.active-bet {
+      transform: translateY(-2px);
+      background: rgba(0,0,0,0.32);
+      box-shadow: 0 0 18px rgba(255,213,74,0.24);
+    }
+
+    .bet-amount {
+      display: block;
+      margin-top: 4px;
+      color: #fff3cf;
+      font-size: 1rem;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 4px 0 18px;
+    }
+
+    .button-row button {
+      margin-top: 0;
+    }
+
+    .roll-btn {
+      background: linear-gradient(180deg, #61d898, #228b5a);
+      color: #07120d;
+      border-color: rgba(255,255,255,0.16);
+    }
+
+    .reset-btn {
+      background: rgba(255,255,255,0.045);
+      color: var(--text);
+      border-color: var(--glass-border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .dice-area {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin: 16px 0;
+    }
+
+    .die {
+      width: 62px;
+      height: 62px;
+      background: linear-gradient(145deg, #fff, #dce3ef);
+      border-radius: 14px;
+      border: 2px solid rgba(255,255,255,0.74);
+      position: relative;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.28);
+    }
+
+    .pip {
+      width: 11px;
+      height: 11px;
+      background: #111;
+      border-radius: 50%;
+      position: absolute;
+      opacity: 0;
+    }
+
+    .p1 { top: 12px; left: 12px; }
+    .p2 { top: 12px; left: 50%; transform: translateX(-50%); }
+    .p3 { top: 12px; right: 12px; }
+    .p4 { top: 50%; left: 12px; transform: translateY(-50%); }
+    .p5 { top: 50%; left: 50%; transform: translate(-50%,-50%); }
+    .p6 { top: 50%; right: 12px; transform: translateY(-50%); }
+    .p7 { bottom: 12px; left: 50%; transform: translateX(-50%); }
+
+    .face-1 .p5 { opacity: 1; }
     .face-2 .p1,
-    .face-2 .p3{ opacity:1; }
-
+    .face-2 .p3 { opacity: 1; }
     .face-3 .p1,
     .face-3 .p5,
-    .face-3 .p3{ opacity:1; }
-
+    .face-3 .p3 { opacity: 1; }
     .face-4 .p1,
     .face-4 .p3,
     .face-4 .p4,
-    .face-4 .p6{ opacity:1; }
-
+    .face-4 .p6 { opacity: 1; }
     .face-5 .p1,
     .face-5 .p3,
     .face-5 .p4,
     .face-5 .p6,
-    .face-5 .p5{ opacity:1; }
-
+    .face-5 .p5 { opacity: 1; }
     .face-6 .p1,
     .face-6 .p3,
     .face-6 .p4,
     .face-6 .p6,
     .face-6 .p2,
-    .face-6 .p7{ opacity:1; }
+    .face-6 .p7 { opacity: 1; }
 
-    .shake{
-      animation:shakeDice .28s ease;
+    .shake {
+      animation: shakeDice 0.28s ease;
     }
 
-    @keyframes shakeDice{
-      0%{ transform:translate(0,0) rotate(0deg); }
-      20%{ transform:translate(-3px,2px) rotate(-6deg); }
-      40%{ transform:translate(4px,-2px) rotate(6deg); }
-      60%{ transform:translate(-3px,1px) rotate(-4deg); }
-      80%{ transform:translate(3px,-1px) rotate(4deg); }
-      100%{ transform:translate(0,0) rotate(0deg); }
+    @keyframes shakeDice {
+      0% { transform: translate(0,0) rotate(0deg); }
+      20% { transform: translate(-3px,2px) rotate(-6deg); }
+      40% { transform: translate(4px,-2px) rotate(6deg); }
+      60% { transform: translate(-3px,1px) rotate(-4deg); }
+      80% { transform: translate(3px,-1px) rotate(4deg); }
+      100% { transform: translate(0,0) rotate(0deg); }
     }
 
- .results, 
-.stats-grid{
-  background:#1d1d1d;
-  border:1px solid #333;
-  border-radius:12px;
-  padding:14px;
-}
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+      margin-top: 10px;
+    }
 
-.results{
-  margin-top:0;
-  text-align:left;
-}
+    .results,
+    .stats-grid,
+    .explain-box {
+      background: rgba(8,11,16,0.56);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: var(--shadow-soft);
+    }
 
-.results h3,
-.history-wrap h3{
-  margin:0 0 8px;
-  font-size:1.05rem;
-}
+    .results {
+      padding: 16px;
+      text-align: left;
+    }
 
-.results p{
-  margin:6px 0;
-}
+    .results h3,
+    .history-wrap h3,
+    .explain-box h3 {
+      margin: 0 0 8px;
+      color: #fff3cf;
+      font-size: 1.05rem;
+    }
 
-.info-grid{
-  display:grid;
-  grid-template-columns:1.3fr 1fr;
-  gap:12px;
-  align-items:start;
-  margin-top:10px;
-}
+    .results p {
+      margin: 6px 0;
+      color: var(--muted);
+    }
 
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(3, 1fr);
-  gap:8px;
-  margin-top:0;
-  text-align:center;
-}
+    .results span {
+      color: #fff;
+      font-weight: 800;
+    }
 
-.stat-box{
-  background:#1a1a1a;
-  border:1px solid #333;
-  border-radius:10px;
-  padding:10px 8px;
-}
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 14px;
+      text-align: center;
+    }
 
-.stat-box strong{
-  display:block;
-  font-size:.9rem;
-  color:#bbb;
-  margin-bottom:6px;
-}
+    .stat-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 92px;
+      padding: 10px 8px;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+    }
 
-.history-wrap{
-  margin-top:14px;
-}
+    .stat-box strong {
+      display: block;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
 
-.roll-history{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  justify-content:center;
-  margin-top:8px;
-}
+    .stat-box span {
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: 900;
+    }
 
-.roll-badge{
-  background:#1a1a1a;
-  border:1px solid #444;
-  border-radius:999px;
-  padding:6px 10px;
-  font-size:.88rem;
-}
+    .history-wrap {
+      margin-top: 16px;
+      text-align: left;
+    }
 
-.history-empty{
-  color:#999;
-}
+    .roll-history {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
 
-.flash-win{
-  animation:flashWin .45s ease;
-}
+    .roll-badge {
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: #fff3cf;
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
 
-.flash-loss{
-  animation:flashLoss .45s ease;
-}
+    .history-empty {
+      color: var(--muted);
+    }
 
-  @media (max-width:768px){
-  .info-grid{
-    grid-template-columns:1fr;
-  }
+    .explain-box {
+      margin-top: 14px;
+      padding: 16px;
+      text-align: left;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(241,196,91,0.11), transparent 16rem),
+        rgba(8,11,16,0.56);
+    }
 
-  .stats-grid{
-    grid-template-columns:repeat(3, 1fr);
-  }
+    .explain-box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
 
-  .roll-history{
-    justify-content:flex-start;
-    overflow-x:auto;
-    flex-wrap:nowrap;
-    padding-bottom:4px;
-  }
+    .flash-win {
+      animation: flashWin 0.45s ease;
+    }
 
-  .results{
-   text-align:left; 
-  }
-}
+    .flash-loss {
+      animation: flashLoss 0.45s ease;
+    }
 
-   @keyframes flashWin{
-    0%{ color:white; }
-    50%{ color:#00ff88; transform:scale(1.05); }
-    100%{ color:white; }
-}
+    @keyframes flashWin {
+      0% { color: white; }
+      50% { color: #00ff88; transform: scale(1.05); }
+      100% { color: white; }
+    }
 
-  @keyframes flashLoss{
-    0%{ color:white; }
-    50%{ color:#ff5a5a; transform:scale(1.05); }
-    100%{ color:white; }
-}
+    @keyframes flashLoss {
+      0% { color: white; }
+      50% { color: #ff5a5a; transform: scale(1.05); }
+      100% { color: white; }
+    }
 
-    .seo-content{
-      max-width:900px;
-      margin:40px auto 60px;
-      text-align:left;
-      line-height:1.75;
-      color:#e6e6e6;
+    .seo-content {
+      text-align: left;
+      line-height: 1.75;
     }
 
     .seo-content h2,
-    .seo-content h3{
-      color:#ffd54a;
-      margin-top:30px;
+    .seo-content h3 {
+      color: #fff3cf;
+      margin-top: 28px;
     }
 
-    .seo-content ul{
-      padding-left:20px;
+    .seo-content h2:first-child {
+      margin-top: 0;
     }
 
-    @media (max-width:768px){
-      .game-panel{
-        padding:18px 14px;
+    .seo-content ul {
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .seo-content p {
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      .craps-main .container {
+        padding-top: 28px;
+        padding-bottom: 28px;
       }
 
-      .chip-btn{
-        width:58px;
-        height:58px;
-        font-size:.95rem;
+      .craps-hero-stats,
+      .info-grid {
+        grid-template-columns: 1fr;
       }
 
-      .betting-table{
-        grid-template-columns:1fr;
+      .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
       }
 
-      .field-spot{
-        grid-column:auto;
+      .chip-btn {
+        width: 58px;
+        height: 58px;
+        min-height: 58px;
+        font-size: 0.95rem;
       }
 
-      .die{
-        width:64px;
-        height:64px;
+      .betting-table {
+        grid-template-columns: 1fr;
+      }
+
+      .field-spot {
+        grid-column: auto;
+      }
+
+      .button-row {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .button-row button {
+        width: 100%;
+      }
+
+      .die {
+        width: 64px;
+        height: 64px;
+      }
+
+      .roll-history {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 4px;
       }
     }
-    
-.explain-box{
-  margin-top:12px;
-  background:#1d1d1d;
-  border:1px solid #333;
-  border-radius:12px;
-  padding:12px;
-  text-align:left;
-}
-
-.explain-box h3{
-  margin:0 0 6px;
-  font-size:.95rem;
-  color:#ffd54a;
-}
-
-.explain-box p{
-  margin:0;
-  font-size:.9rem;
-  line-height:1.5;
-  color:#e6e6e6;
-}
-    
   </style>
 
   <script type="application/ld+json">
@@ -547,148 +576,202 @@ button{
     </div>
   </header>
 
-  <div class="page-wrap">
-    <header class="hero">
-      <h1>Bubble Craps Simulator</h1>
-      <p>
-        Practice a simple bubble craps style game with Pass Line, Don’t Pass, and Field bets without torching real money.
-      </p>
-      <p class="brand-tagline">Play with the numbers before you play with your money.</p>
-      <img class="craps-probability-image" src="assets/images/craps-probability-section.webp" loading="lazy" width="1448" height="1086" alt="Craps dice probability table with gold casino math design">
-    </header>
-
-    <main>
-      <section class="game-panel">
-        <div class="chip-row">
-          <button class="chip-btn" data-value="1">$1</button>
-          <button class="chip-btn" data-value="5">$5</button>
-          <button class="chip-btn" data-value="10">$10</button>
-          <button class="chip-btn" data-value="25">$25</button>
-          <button class="chip-btn" data-value="100">$100</button>
-        </div>
-
-        <div class="selected-chip-wrap">
-          Selected Chip: <span id="selectedChipLabel">None</span>
-        </div>
-
-        <div class="table-wrap">
-          <div class="table-status" id="tableStatus">COME OUT ROLL</div>
-
-          <div class="point-puck" id="pointPuck">
-            POINT: <span id="pointValue">OFF</span>
-          </div>
-
-          <div class="betting-table">
-            <button class="bet-spot" data-bet="pass">
-              Pass Line
-              <span class="bet-amount" id="passBetAmount">$0</span>
-            </button>
-
-            <button class="bet-spot" data-bet="dontpass">
-              Don't Pass
-              <span class="bet-amount" id="dontPassBetAmount">$0</span>
-            </button>
-
-            <button class="bet-spot field-spot" data-bet="field">
-              Field
-              <span class="bet-amount" id="fieldBetAmount">$0</span>
-            </button>
+  <div class="page-shell">
+    <section class="page-hero">
+      <div class="container page-hero-split">
+        <div class="page-hero-copy">
+          <p class="eyebrow-cyan">Bubble craps practice</p>
+          <h1 class="page-hero-title">Bubble Craps Simulator</h1>
+          <p class="page-hero-subtitle">Practice Pass Line, Don’t Pass, and Field bets before variance gets a vote.</p>
+          <p class="page-hero-text">
+            Run a lightweight craps-style session, track bankroll swings, and learn what each roll means without risking real money.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-cta-primary" href="#craps-game">Start rolling</a>
+            <a class="btn btn-outline" href="blackjack-bankroll-calculator.html">Plan your bankroll</a>
           </div>
         </div>
 
-        <div class="button-row">
-          <button id="rollBtn" class="roll-btn">Roll Dice</button>
-          <button id="clearBetBtn" class="reset-btn">Clear Bet</button>
-          <button id="repeatBetBtn" class="reset-btn">Repeat Bet</button>
-          <button id="resetGame" class="reset-btn">Reset Game</button>
-        </div>
-
-        <div class="dice-area">
-          <div class="die face-1" id="die1">
-            <span class="pip p1"></span>
-            <span class="pip p2"></span>
-            <span class="pip p3"></span>
-            <span class="pip p4"></span>
-            <span class="pip p5"></span>
-            <span class="pip p6"></span>
-            <span class="pip p7"></span>
-          </div>
-
-          <div class="die face-1" id="die2">
-            <span class="pip p1"></span>
-            <span class="pip p2"></span>
-            <span class="pip p3"></span>
-            <span class="pip p4"></span>
-            <span class="pip p5"></span>
-            <span class="pip p6"></span>
-            <span class="pip p7"></span>
+        <div class="craps-hero-card card-glass">
+          <img class="craps-probability-image" src="assets/images/craps-probability-section.webp" loading="lazy" width="1448" height="1086" alt="Craps dice probability table with gold casino math design">
+          <div class="craps-hero-stats" aria-label="Simulator highlights">
+            <div class="craps-hero-stat">
+              <strong>3</strong>
+              <span>Bet types</span>
+            </div>
+            <div class="craps-hero-stat">
+              <strong>$100</strong>
+              <span>Starting bank</span>
+            </div>
+            <div class="craps-hero-stat">
+              <strong>0</strong>
+              <span>Real risk</span>
+            </div>
           </div>
         </div>
+      </div>
+    </section>
 
-<div class="info-grid">
-  <div class="results">
-    <h3>Results</h3>
-    <p>Dice Roll: <span id="diceResult">-</span></p>
-    <p>Result: <span id="roundResult">-</span></p>
-    <p>Bankroll: $<span id="bankroll">100</span></p>
-    <p>Total Bet: $<span id="betTotal">0</span></p>
-  </div>
+    <main class="craps-main">
+      <section class="section" id="craps-game" aria-labelledby="craps-game-title">
+        <div class="container">
+          <div class="section-header section-header-centered">
+            <p class="eyebrow-muted">Interactive table</p>
+            <h2 id="craps-game-title" class="section-title">Choose a chip, place a bet, then roll.</h2>
+            <p class="section-subtext">
+              The simulator keeps the rules simple: Pass Line, Don’t Pass, and Field bets with clear results after every roll.
+            </p>
+          </div>
 
-  <div class="stats-grid">
-    <div class="stat-box">
-      <strong>Rolls</strong>
-      <span id="rollCount">0</span>
-    </div>
-    <div class="stat-box">
-      <strong>Wins</strong>
-      <span id="winCount">0</span>
-    </div>
-    <div class="stat-box">
-      <strong>Losses</strong>
-      <span id="lossCount">0</span>
-    </div>
-  </div>
-</div>
+          <div class="game-panel section-gradient-gold">
+            <div class="chip-row" aria-label="Chip values">
+              <button class="chip-btn" data-value="1">$1</button>
+              <button class="chip-btn" data-value="5">$5</button>
+              <button class="chip-btn" data-value="10">$10</button>
+              <button class="chip-btn" data-value="25">$25</button>
+              <button class="chip-btn" data-value="100">$100</button>
+            </div>
 
-<div class="history-wrap">
-  <h3>Recent Rolls</h3>
-  <div id="rollHistory" class="roll-history">
-    <span class="history-empty">No rolls yet.</span>
-  </div>
-</div>
+            <div class="selected-chip-wrap">
+              Selected Chip: <span id="selectedChipLabel">None</span>
+            </div>
 
-<div class="explain-box">
-  <h3>Why That Happened</h3>
-  <p id="explainText">
-    Make a bet and roll the dice. This will explain what just happened.
-  </p>
-</div>
-     
+            <div class="table-wrap">
+              <div class="table-status" id="tableStatus">COME OUT ROLL</div>
+
+              <div class="point-puck" id="pointPuck">
+                POINT: <span id="pointValue">OFF</span>
+              </div>
+
+              <div class="betting-table">
+                <button class="bet-spot" data-bet="pass">
+                  Pass Line
+                  <span class="bet-amount" id="passBetAmount">$0</span>
+                </button>
+
+                <button class="bet-spot" data-bet="dontpass">
+                  Don't Pass
+                  <span class="bet-amount" id="dontPassBetAmount">$0</span>
+                </button>
+
+                <button class="bet-spot field-spot" data-bet="field">
+                  Field
+                  <span class="bet-amount" id="fieldBetAmount">$0</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="button-row">
+              <button id="rollBtn" class="roll-btn">Roll Dice</button>
+              <button id="clearBetBtn" class="reset-btn">Clear Bet</button>
+              <button id="repeatBetBtn" class="reset-btn">Repeat Bet</button>
+              <button id="resetGame" class="reset-btn">Reset Game</button>
+            </div>
+
+            <div class="dice-area" aria-label="Dice result display">
+              <div class="die face-1" id="die1">
+                <span class="pip p1"></span>
+                <span class="pip p2"></span>
+                <span class="pip p3"></span>
+                <span class="pip p4"></span>
+                <span class="pip p5"></span>
+                <span class="pip p6"></span>
+                <span class="pip p7"></span>
+              </div>
+
+              <div class="die face-1" id="die2">
+                <span class="pip p1"></span>
+                <span class="pip p2"></span>
+                <span class="pip p3"></span>
+                <span class="pip p4"></span>
+                <span class="pip p5"></span>
+                <span class="pip p6"></span>
+                <span class="pip p7"></span>
+              </div>
+            </div>
+
+            <div class="info-grid">
+              <div class="results">
+                <h3>Results</h3>
+                <p>Dice Roll: <span id="diceResult">-</span></p>
+                <p>Result: <span id="roundResult">-</span></p>
+                <p>Bankroll: $<span id="bankroll">100</span></p>
+                <p>Total Bet: $<span id="betTotal">0</span></p>
+              </div>
+
+              <div class="stats-grid">
+                <div class="stat-box">
+                  <strong>Rolls</strong>
+                  <span id="rollCount">0</span>
+                </div>
+                <div class="stat-box">
+                  <strong>Wins</strong>
+                  <span id="winCount">0</span>
+                </div>
+                <div class="stat-box">
+                  <strong>Losses</strong>
+                  <span id="lossCount">0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="history-wrap">
+              <h3>Recent Rolls</h3>
+              <div id="rollHistory" class="roll-history">
+                <span class="history-empty">No rolls yet.</span>
+              </div>
+            </div>
+
+            <div class="explain-box">
+              <h3>Why That Happened</h3>
+              <p id="explainText">
+                Make a bet and roll the dice. This will explain what just happened.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section class="seo-content">
-        <h2>How This Bubble Craps Simulator Works</h2>
-        <p>
-          This free bubble craps simulator lets you practice basic craps-style betting without risking real money. You can test Pass Line, Don’t Pass, and Field bets while watching how streaks and bankroll swings affect the session.
-        </p>
+      <section class="section edge-divider" aria-labelledby="bubble-craps-guide">
+        <div class="container">
+          <div class="seo-content section-panel">
+            <p class="eyebrow-muted">Craps math basics</p>
+            <h2 id="bubble-craps-guide">How This Bubble Craps Simulator Works</h2>
+            <p>
+              This free bubble craps simulator lets you practice basic craps-style betting without risking real money. You can test Pass Line, Don’t Pass, and Field bets while watching how streaks and bankroll swings affect the session.
+            </p>
 
-        <h2>Why Use a Craps Simulator?</h2>
-        <p>
-          Craps can chew through a bankroll fast when bets get sloppy. A simulator helps you see how short-term luck, point numbers, and side bets affect the outcome before you ever sit down at a real table.
-        </p>
+            <h2>Why Use a Craps Simulator?</h2>
+            <p>
+              Craps can chew through a bankroll fast when bets get sloppy. A simulator helps you see how short-term luck, point numbers, and side bets affect the outcome before you ever sit down at a real table.
+            </p>
 
-        <h2>What You Can Practice</h2>
-        <ul>
-          <li>Pass Line and Don’t Pass come-out roll results</li>
-          <li>How the point works after 4, 5, 6, 8, 9, or 10</li>
-          <li>Field bet volatility</li>
-          <li>Basic bankroll discipline and betting size control</li>
-        </ul>
+            <h2>What You Can Practice</h2>
+            <ul>
+              <li>Pass Line and Don’t Pass come-out roll results</li>
+              <li>How the point works after 4, 5, 6, 8, 9, or 10</li>
+              <li>Field bet volatility</li>
+              <li>Basic bankroll discipline and betting size control</li>
+            </ul>
 
-        <h2>Entertainment Only</h2>
-        <p>
-          This simulator is for entertainment and practice only. It does not use real money and should not be treated like a guarantee of real-world gambling results.
-        </p>
+            <h2>Keep Testing the Math</h2>
+            <p>
+              Compare this craps session with the <a href="roulette-simulator.html">roulette simulator</a>, pressure-test a staking plan in the <a href="blackjack-bankroll-calculator.html">bankroll calculator</a>, or see variance from another angle in the <a href="slot-simulator.html">slot simulator</a>.
+            </p>
+
+            <div class="cta-row">
+              <a class="btn btn-cta-primary" href="#craps-game">Roll another session</a>
+              <a class="btn btn-outline" href="responsible-gambling.html">Set safer limits</a>
+            </div>
+
+            <div class="disclaimer-block">
+              <h2>Entertainment Only</h2>
+              <p>
+                This simulator is for entertainment and practice only. It does not use real money and should not be treated like a guarantee of real-world gambling results.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
   </div>
