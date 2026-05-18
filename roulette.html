@@ -112,7 +112,7 @@
   }
   </script>
 </head>
-<body>
+<body class="page-shell">
   <header class="site-header">
     <div class="container nav site-nav">
       <a href="index.html" class="brand">Edge Over Luck</a>
@@ -171,47 +171,58 @@
   </header>
 
   <main>
-    <section class="hero">
-      <div class="container">
-        <div class="eyebrow">Roulette Guide + Calculators</div>
-        <h1>Roulette Odds, Bet Risk, and Strategy Myths — Explained With Real Math</h1>
-        <p class="section-subtext">
-          Compare roulette bets, European vs American wheels, session risk, and the brutal little truth: systems change volatility, not the casino edge.
-        </p>
-        <div class="brand-lockup">
-          <strong>EdgeOverLuck.com</strong>
-          <span>Smart casino math. Dangerous curiosity. No mercy from the wheel.</span>
-          <p>Roulette calculators and casino math tools for players who want the odds before the wheel starts spinning.</p>
+    <section class="page-hero">
+      <div class="container page-hero-inner">
+        <div class="page-hero-copy">
+          <div class="eyebrow eyebrow-cyan">Roulette Guide + Calculators</div>
+          <h1 class="page-hero-title">Roulette Odds, Bet Risk, and Strategy Myths — Explained With Real Math</h1>
+          <p class="page-hero-subtitle">
+            Compare roulette bets, European vs American wheels, session risk, and the brutal little truth: systems change volatility, not the casino edge.
+          </p>
+          <div class="brand-lockup">
+            <strong>EdgeOverLuck.com</strong>
+            <span>Smart casino math. Dangerous curiosity. No mercy from the wheel.</span>
+            <p>Roulette calculators and casino math tools for players who want the odds before the wheel starts spinning.</p>
+          </div>
+          <div class="hero-actions">
+            <a class="btn btn-cta-primary" href="#roulette-calculator">Interrogate a Bet</a>
+            <a class="btn btn-secondary" href="#risk-style-selector">Find Your Risk Style</a>
+            <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Build a Bankroll Plan</a>
+          </div>
         </div>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#roulette-calculator">Interrogate a Bet</a>
-          <a class="btn btn-secondary" href="#risk-style-selector">Find Your Risk Style</a>
-          <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Build a Bankroll Plan</a>
-        </div>
+        <aside class="glass-card-strong hover-glow" aria-label="Roulette quick truth">
+          <span class="eyebrow-muted">Wheel truth</span>
+          <h2 class="section-title">The ball does not negotiate.</h2>
+          <p>Start with wheel type, then compare volatility. European roulette cuts the standard edge nearly in half versus American roulette, but every standard bet is still negative EV.</p>
+          <div class="stat-grid card-grid-tight">
+            <div class="stat-card"><span class="stat-label">European</span><strong>2.70%</strong><p>One zero pocket.</p></div>
+            <div class="stat-card"><span class="stat-label">American</span><strong>5.26%</strong><p>Zero and double zero.</p></div>
+          </div>
+        </aside>
       </div>
     </section>
 
-    <section class="experience-strip" aria-label="Roulette reality checks">
+    <section class="experience-strip section-divider-soft" aria-label="Roulette reality checks">
       <div class="container">
         <div class="grid grid-3">
-          <article class="card reality-card"><span class="kicker">Reality Check</span><strong>Red/black feels safe because it hits often.</strong><p class="mb-0">The zero pockets are where the house edge quietly lives.</p></article>
-          <article class="card reality-card"><span class="kicker">Systems</span><strong>Roulette systems still face the same wheel odds.</strong><p class="mb-0">Progressions can be useful to study, not safe to trust.</p></article>
-          <article class="card reality-card"><span class="kicker">Next Move</span><strong>Calculate first, hallucinate never.</strong><p class="mb-0">Use odds, bankroll, and demo sessions before a system starts sounding intelligent.</p></article>
+          <article class="pressure-card reality-card micro-lift"><span class="kicker">Reality Check</span><strong>Red/black feels safe because it hits often.</strong><p class="mb-0">The zero pockets are where the house edge quietly lives.</p></article>
+          <article class="pressure-card reality-card micro-lift"><span class="kicker">Systems</span><strong>Roulette systems still face the same wheel odds.</strong><p class="mb-0">Progressions can be useful to study, not safe to trust.</p></article>
+          <article class="pressure-card reality-card micro-lift"><span class="kicker">Next Move</span><strong>Calculate first, hallucinate never.</strong><p class="mb-0">Use odds, bankroll, and demo sessions before a system starts sounding intelligent.</p></article>
         </div>
       </div>
     </section>
 
 
-    <section class="section">
+    <section class="section edge-divider">
       <div class="container grid grid-2">
-        <article class="card">
+        <article class="card-glass">
           <h2 class="section-title">Roulette Odds, Without the Table Whispering Back</h2>
           <p><strong>Single-zero European roulette</strong> has 37 pockets: numbers 1–36 plus one green 0. Most standard bets carry about a <strong>2.70% house edge</strong>.</p>
           <p><strong>Double-zero American roulette</strong> has 38 pockets: numbers 1–36 plus 0 and 00. The extra 00 creates one more losing outcome on most bets, raising the house edge to about <strong>5.26%</strong>.</p>
           <p>The house edge exists because payouts are slightly short of the true odds. A straight-up number pays 35:1, but a European wheel has 37 possible outcomes and an American wheel has 38.</p>
           <p class="mb-0">That gap is the casino's long-term advantage. Winning sessions happen; the wheel simply does not owe you a sequel.</p>
         </article>
-        <article class="card info-box">
+        <article class="card-glass info-box glow-gold">
           <img class="section-image" src="assets/images/roulette-odds-section.webp" loading="lazy" width="724" height="543" alt="Roulette wheel and casino odds graphic with gold probability design" />
           <h2 class="section-title">Start with the wheel type</h2>
           <p>Before choosing a bet or system, pick the lower-edge wheel. If both are available, European roulette gives the math fewer teeth.</p>
@@ -224,7 +235,7 @@
     </section>
 
     <section class="section-tight" id="roulette-calculator">
-      <div class="container card" id="quick-roulette-compare">
+      <div class="container section-panel section-gradient-gold" id="quick-roulette-compare">
         <h2 class="section-title">Quick Roulette Bet Odds Calculator</h2>
         <p class="small-note">Select a wheel and bet type to see payout, hit chance, house edge, and what a $10 stake is expected to leak.</p>
         <div class="form-row">
@@ -250,9 +261,11 @@
     </section>
 
     <section class="section">
-      <div class="container">
-        <h2 class="section-title">Roulette Bets Ranked by Risk</h2>
-        <p class="section-subtext">Roulette bets mostly share the same house edge on the same wheel, but they feel very different because payouts and hit rates change volatility.</p>
+      <div class="container section-panel section-gradient">
+        <div class="section-header">
+          <h2 class="section-title">Roulette Bets Ranked by Risk</h2>
+          <p class="section-subtext">Roulette bets mostly share the same house edge on the same wheel, but they feel very different because payouts and hit rates change volatility.</p>
+        </div>
         <div class="table-wrap">
           <table>
             <thead>
@@ -320,19 +333,21 @@
       </div>
     </section>
 
-    <section class="section" id="european-vs-american">
+    <section class="section edge-divider" id="european-vs-american">
       <div class="container">
-        <h2 class="section-title">European vs American Roulette</h2>
-        <p class="section-subtext">The wheel is the first decision that matters because the zero pockets are where optimism goes to die.</p>
-        <div class="grid grid-2">
-          <article class="card info-box">
-            <div class="eyebrow">European Roulette</div>
+        <div class="section-header-centered">
+          <h2 class="section-title">European vs American Roulette</h2>
+          <p class="section-subtext">The wheel is the first decision that matters because the zero pockets are where optimism goes to die.</p>
+        </div>
+        <div class="myth-math-grid">
+          <article class="math-panel">
+            <div class="eyebrow eyebrow-cyan">European Roulette</div>
             <h3>One zero</h3>
             <p>European roulette has 37 pockets: 0 plus 1–36. With one zero, the standard house edge is about 2.70%.</p>
             <p class="mb-0"><strong>Best use:</strong> choose this version when available because expected loss is lower over time.</p>
           </article>
-          <article class="card warning-box">
-            <div class="eyebrow">American Roulette</div>
+          <article class="myth-panel">
+            <div class="eyebrow eyebrow-danger">American Roulette</div>
             <h3>Zero and double zero</h3>
             <p>American roulette has 38 pockets: 0, 00, and 1–36. The extra 00 raises the standard house edge to about 5.26%.</p>
             <p class="mb-0"><strong>Blunt math:</strong> the same bet size generally drains faster on American roulette.</p>
@@ -343,7 +358,7 @@
 
     <section class="section" id="systems-work">
       <div class="container grid grid-2">
-        <article class="card">
+        <article class="card-glass">
           <h2 class="section-title">Do Roulette Systems Work, or Just Look Busy?</h2>
           <p>Roulette systems can organize your bets, but they do <strong>not</strong> beat roulette. Martingale, Fibonacci, Labouchere, and D’Alembert change bet sizing after wins or losses. They do not change where the ball lands.</p>
           <ul>
@@ -354,7 +369,7 @@
           </ul>
           <p class="mb-0">The killer is simple: table limits and finite bankrolls. Systems can stack small wins, then introduce one loss with a clipboard.</p>
         </article>
-        <article class="cta-box">
+        <article class="cta-box glass-panel glow-cyan">
           <h2 class="section-title">Model the risk before playing</h2>
           <p>Use the simulator and bankroll tools to see how streaks hit real sessions. Treat every progression as a stress test, not a secret exit.</p>
           <div class="hero-actions">
@@ -366,7 +381,7 @@
     </section>
 
     <section class="section-tight" id="risk-style-selector">
-      <div class="container card">
+      <div class="container section-panel section-gradient-cyan">
         <h2 class="section-title">Which Roulette Bet Fits Your Risk Appetite?</h2>
         <p class="small-note">Pick the style closest to your goal. This is education, not a profit spell.</p>
         <div class="chooser-grid" role="group" aria-label="Choose roulette risk style">
@@ -383,9 +398,9 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section edge-divider">
       <div class="container grid grid-2">
-        <article class="card">
+        <article class="card-glass">
           <h2 class="section-title">Best Beginner Roulette Approach</h2>
           <ul class="check-list">
             <li>Prefer European roulette if available.</li>
@@ -395,7 +410,7 @@
             <li>Decide your stop-loss and walk-away win amount before playing.</li>
           </ul>
         </article>
-        <article class="warning-box">
+        <article class="disclaimer-block">
           <h2 class="section-title">Common Roulette Mistakes</h2>
           <ul>
             <li>Believing red is due after a black streak.</li>
@@ -411,7 +426,7 @@
 
     <section class="section" id="strategy-comparison">
       <div class="container grid grid-2">
-        <article class="card">
+        <article class="card-glass hover-glow">
           <h2 class="section-title">Keep the wheel under interrogation</h2>
           <p>Use the roulette calculators to model payouts, probability, bankroll drain, and strategy variance before the wheel gets a vote.</p>
           <div class="hero-actions">
@@ -419,7 +434,7 @@
             <a class="btn btn-secondary" href="roulette-strategy-simulator.html">Bankroll + Strategy Simulator</a>
           </div>
         </article>
-        <article class="cta-box">
+        <article class="cta-box glass-panel glow-cyan">
           <h2 class="section-title">Compare roulette to other casino risk models</h2>
           <p>Roulette is simple, which is part of the trap. Compare it with bankroll planning and other tools before deciding how much risk your ego can afford.</p>
           <div class="hero-actions">
@@ -432,35 +447,37 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section edge-divider">
       <div class="container">
-        <h2 class="section-title">Roulette FAQ</h2>
+        <div class="section-header-centered">
+          <h2 class="section-title">Roulette FAQ</h2>
+        </div>
         <div class="faq-list">
-          <details class="card">
+          <details class="card-glass micro-lift">
             <summary>What is the best roulette bet for beginners?</summary>
             <p>Even-money bets such as red/black, odd/even, and high/low are usually easiest for beginners because they hit more often than inside bets. They still lose to the zero pockets over time.</p>
           </details>
-          <details class="card">
+          <details class="card-glass micro-lift">
             <summary>Is European roulette better than American roulette?</summary>
             <p>Yes, if you have the choice. European roulette has one zero and about a 2.70% house edge. American roulette has 0 and 00, which raises the standard edge to about 5.26%.</p>
           </details>
-          <details class="card">
+          <details class="card-glass micro-lift">
             <summary>Can Martingale beat roulette?</summary>
             <p>No. Martingale changes how much you bet after losses, not the wheel odds. Table limits and finite bankrolls are why the system eventually runs into costly sessions.</p>
           </details>
-          <details class="card">
+          <details class="card-glass micro-lift">
             <summary>Why does double zero matter?</summary>
             <p>Double zero adds another losing pocket on most bets while the payout remains the same. That extra pocket is why American roulette has a much higher house edge.</p>
           </details>
-          <details class="card">
+          <details class="card-glass micro-lift">
             <summary>Are roulette spins independent?</summary>
             <p>Yes. On a fair wheel, each spin is independent. A long red, black, odd, even, or number streak does not predict the next spin.</p>
           </details>
-          <details class="card">
+          <details class="card-glass micro-lift">
             <summary>What is the safest roulette strategy?</summary>
             <p>The lowest-volatility approach is European roulette, small flat bets, a strict stop-loss, and no chasing. It is safer for bankroll swings, but it does not beat the house edge.</p>
           </details>
-          <details class="card">
+          <details class="card-glass micro-lift">
             <summary>How much bankroll do I need for roulette?</summary>
             <p>It depends on bet size and session length. Keep bets small relative to your bankroll and test the numbers with the bankroll calculator before playing.</p>
           </details>
@@ -472,44 +489,50 @@
 
     <section class="section-tight casino-divider" aria-labelledby="roulette-step3-title">
       <div class="container">
-        <h2 id="roulette-step3-title" class="section-title">Roulette myth vs math</h2>
-        <p class="section-subtext">The wheel has no memory. Your bankroll absolutely does.</p>
-        <div class="myth-vs-math-grid">
-          <article class="card myth-card glass-card"><span class="myth-label">Myth</span><h3>“Red is due after all that black.”</h3><p>The next spin is independent of the previous streak.</p></article>
-          <article class="card math-card glass-card"><span class="math-label">Math</span><h3>Each spin starts over.</h3><p>Past colors do not change the pocket probabilities on a fair wheel.</p></article>
-          <article class="card myth-card glass-card"><span class="myth-label">Myth</span><h3>“Martingale just needs one win.”</h3><p>It also needs infinite bankroll and no table limits. Casinos noticed.</p></article>
-          <article class="card math-card glass-card"><span class="math-label">Math</span><h3>Progressions resize losses.</h3><p>They do not change the house edge or make the zero pockets friendly.</p></article>
+        <div class="section-header-centered">
+          <h2 id="roulette-step3-title" class="section-title">Roulette myth vs math</h2>
+          <p class="section-subtext">The wheel has no memory. Your bankroll absolutely does.</p>
+        </div>
+        <div class="myth-math-grid">
+          <article class="myth-panel myth-card"><span class="myth-label">Myth</span><h3>“Red is due after all that black.”</h3><p>The next spin is independent of the previous streak.</p></article>
+          <article class="math-panel math-card"><span class="math-label">Math</span><h3>Each spin starts over.</h3><p>Past colors do not change the pocket probabilities on a fair wheel.</p></article>
+          <article class="myth-panel myth-card"><span class="myth-label">Myth</span><h3>“Martingale just needs one win.”</h3><p>It also needs infinite bankroll and no table limits. Casinos noticed.</p></article>
+          <article class="math-panel math-card"><span class="math-label">Math</span><h3>Progressions resize losses.</h3><p>They do not change the house edge or make the zero pockets friendly.</p></article>
         </div>
       </div>
     </section>
 
     <section class="section-tight" aria-labelledby="roulette-stats-title">
       <div class="container">
-        <h2 id="roulette-stats-title" class="section-title">Roulette pressure points</h2>
-        <p class="section-subtext">Use these stats as table-side warning lights, not winning-system decorations.</p>
-        <div class="odds-display">
-          <article class="card odds-display-card glass-card"><span class="stat-label">European edge</span><strong>2.70%</strong><p>Lower than American roulette, still negative expected value.</p></article>
-          <article class="card odds-display-card glass-card"><span class="stat-label">American edge</span><strong>5.26%</strong><p>The double zero is small on the felt and significant in the math.</p></article>
-          <article class="card odds-display-card glass-card"><span class="stat-label">Even-money streaks</span><strong>Normal</strong><p>Several losses in a row are not proof that a comeback is scheduled.</p></article>
+        <div class="section-header">
+          <h2 id="roulette-stats-title" class="section-title">Roulette pressure points</h2>
+          <p class="section-subtext">Use these stats as table-side warning lights, not winning-system decorations.</p>
+        </div>
+        <div class="pressure-grid">
+          <article class="pressure-card odds-display-card"><span class="stat-label">European edge</span><strong>2.70%</strong><p>Lower than American roulette, still negative expected value.</p></article>
+          <article class="pressure-card odds-display-card"><span class="stat-label">American edge</span><strong>5.26%</strong><p>The double zero is small on the felt and significant in the math.</p></article>
+          <article class="pressure-card odds-display-card"><span class="stat-label">Even-money streaks</span><strong>Normal</strong><p>Several losses in a row are not proof that a comeback is scheduled.</p></article>
         </div>
       </div>
     </section>
 
     <section class="section-tight" aria-labelledby="roulette-streak-title">
       <div class="container">
-        <h2 id="roulette-streak-title" class="section-title">Roulette streak examples</h2>
-        <p class="section-subtext">The comeback that never came is usually just a progression meeting a limit.</p>
-        <div class="streak-grid">
-          <article class="card streak-card is-good premium-card"><span class="streak-label">Walk-away win</span><h3>Hits early, locks profit.</h3><p>Leaving while up is not quitting. It is punctuation.</p></article>
-          <article class="card streak-card premium-card"><span class="streak-label">Color drought</span><h3>Six wrong colors in a row.</h3><p>Annoying, common, and not a cosmic promise.</p></article>
-          <article class="card streak-card is-danger premium-card"><span class="streak-label">Tilt spiral</span><h3>“Double until it works.”</h3><p>The table limit is waiting with paperwork.</p></article>
-          <article class="card streak-card premium-card"><span class="streak-label">Inside-bet fever</span><h3>One hit erases the warning signs.</h3><p>Big payouts can hide long dry spells until bankroll says no.</p></article>
+        <div class="section-header">
+          <h2 id="roulette-streak-title" class="section-title">Roulette streak examples</h2>
+          <p class="section-subtext">The comeback that never came is usually just a progression meeting a limit.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="pressure-card streak-card is-good"><span class="streak-label">Walk-away win</span><h3>Hits early, locks profit.</h3><p>Leaving while up is not quitting. It is punctuation.</p></article>
+          <article class="pressure-card streak-card"><span class="streak-label">Color drought</span><h3>Six wrong colors in a row.</h3><p>Annoying, common, and not a cosmic promise.</p></article>
+          <article class="pressure-card streak-card is-danger"><span class="streak-label">Tilt spiral</span><h3>“Double until it works.”</h3><p>The table limit is waiting with paperwork.</p></article>
+          <article class="pressure-card streak-card"><span class="streak-label">Inside-bet fever</span><h3>One hit erases the warning signs.</h3><p>Big payouts can hide long dry spells until bankroll says no.</p></article>
         </div>
       </div>
     </section>
 
     <section class="section-tight">
-      <div class="container warning-box">
+      <div class="container disclaimer-block">
         <h2 class="section-title">Responsible gambling note</h2>
         <p>21+ only where legal. These tools are for education and entertainment. Roulette is a negative expected value game, and no betting system can guarantee long-term profit.</p>
         <p class="mb-0">If gambling stops being fun, stop play and seek support from <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">NCPG</a>.</p>
@@ -518,11 +541,11 @@
 
 
     <section class="section-tight" aria-labelledby="roulette-ecosystem-title">
-      <div class="container quiz-cta-card card">
+      <div class="container quiz-cta-card section-panel section-gradient-gold">
         <span class="chip">Chaos check</span>
         <h2 id="roulette-ecosystem-title" class="section-title">Want to check your roulette habits?</h2>
         <p>If your roulette plan starts with “double until it works,” test the odds, then test yourself.</p>
-        <div class="hero-actions"><a class="btn" href="gambler-personality-quiz.html">Take the Gambler Personality Quiz</a><a class="btn btn-secondary" href="roulette-calculator.html">Open Roulette Calculator</a><a class="btn btn-secondary" href="roulette-strategy-simulator.html">Stress-Test Systems</a></div>
+        <div class="hero-actions"><a class="btn btn-cta-primary" href="gambler-personality-quiz.html">Take the Gambler Personality Quiz</a><a class="btn btn-secondary" href="roulette-calculator.html">Open Roulette Calculator</a><a class="btn btn-secondary" href="roulette-strategy-simulator.html">Stress-Test Systems</a></div>
       </div>
     </section>
 </main>
