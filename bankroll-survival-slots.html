@@ -84,30 +84,45 @@
     </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="container">
-        <div class="eyebrow">Interactive Tool</div>
-        <h1>How Long Will Your Slot Bankroll Last?</h1>
-        <p class="lead">Stress-test your bankroll against bet size, RTP, volatility, and spin count before the reels turn curiosity into a bill.</p>
-        <p class="brand-tagline">Most slot bankrolls die slowly. Some explode immediately.</p>
-        <p><strong>Disclaimer:</strong> Slots are negative-EV games. This tool helps estimate risk, not beat it.</p>
+  <main class="page-shell">
+    <section class="page-hero">
+      <div class="container page-hero-split">
+        <div class="page-hero-copy">
+          <div class="eyebrow-muted">Interactive Tool</div>
+          <h1 class="page-hero-title">How Long Will Your Slot Bankroll Last?</h1>
+          <p class="page-hero-subtitle">Stress-test your bankroll against bet size, RTP, volatility, and spin count before the reels turn curiosity into a bill.</p>
+          <p class="page-hero-text">Most slot bankrolls die slowly. Some explode immediately. Use the calculator before the session starts so your spin size matches the risk you are actually taking.</p>
+          <div class="cta-row">
+            <a class="btn btn-cta-primary" href="#slot-survival-calculator">Estimate survival odds</a>
+            <a class="btn btn-outline" href="slot-simulator.html">Run slot simulator</a>
+          </div>
+        </div>
+        <aside class="section-panel section-gradient-gold" aria-label="Slot bankroll survival reminder">
+          <span class="eyebrow-danger">Risk Reminder</span>
+          <h2 class="section-title">This tool estimates pressure. It does not beat slots.</h2>
+          <p class="page-hero-text"><strong>Disclaimer:</strong> Slots are negative-EV games. The goal is to understand ruin risk, not pretend variance can be outsmarted.</p>
+        </aside>
       </div>
     </section>
 
-    <section class="experience-strip" aria-label="Slot bankroll reality checks">
+    <section class="experience-strip section-divider-soft" aria-label="Slot bankroll reality checks">
       <div class="container">
         <div class="grid grid-3">
-          <article class="card reality-card"><span class="kicker">Reality Check</span><strong>Your bankroll has a timer.</strong><p class="mb-0">The question is whether your bet size makes the timer reasonable.</p></article>
-          <article class="card reality-card"><span class="kicker">Session Plan</span><strong>If you want longer play time, lower the spin size.</strong><p class="mb-0">It will not change the edge, but it can change how fast variance hits.</p></article>
-          <article class="card reality-card"><span class="kicker">Behavior Leak</span><strong>Chasing losses turns slow math into faster bankroll pressure.</strong><p class="mb-0">Set the stop point before the session starts.</p></article>
+          <article class="card reality-card glass-card hover-glow"><span class="kicker">Reality Check</span><strong>Your bankroll has a timer.</strong><p class="mb-0">The question is whether your bet size makes the timer reasonable.</p></article>
+          <article class="card reality-card glass-card hover-glow"><span class="kicker">Session Plan</span><strong>If you want longer play time, lower the spin size.</strong><p class="mb-0">It will not change the edge, but it can change how fast variance hits.</p></article>
+          <article class="card reality-card glass-card hover-glow"><span class="kicker">Behavior Leak</span><strong>Chasing losses turns slow math into faster bankroll pressure.</strong><p class="mb-0">Set the stop point before the session starts.</p></article>
         </div>
       </div>
     </section>
 
 
-    <section class="section-tight">
-      <div class="container card">
+    <section id="slot-survival-calculator" class="section-tight">
+      <div class="container section-panel section-gradient">
+        <div class="section-header">
+          <span class="eyebrow-cyan">Calculator</span>
+          <h2 class="section-title">Enter your slot session plan</h2>
+          <p class="section-subtext">Compare bankroll, spin size, RTP, and volatility before a normal losing streak becomes the whole session.</p>
+        </div>
         <form id="slotSurvivalForm">
           <div class="grid grid-2">
             <div class="field">
@@ -127,37 +142,48 @@
               <input id="survivalTargetSpins" type="number" min="50" step="50" value="600" required />
             </div>
           </div>
-          <button type="submit">Estimate Survival Odds</button>
+          <button class="btn-cta-primary" type="submit">Estimate Survival Odds</button>
         </form>
       </div>
     </section>
 
     <section class="section-tight">
-      <div class="container results" aria-live="polite">
+      <div class="container results section-panel section-gradient-cyan" aria-live="polite">
         <div class="result-list">
-          <div class="result-item"><span>Estimated survival odds</span><strong id="survivalOdds">0%</strong></div>
-          <div class="result-item"><span>Likely spin range</span><strong id="survivalRange">-</strong></div>
-          <div class="result-item"><span>Ruin risk</span><strong id="survivalRuinRisk">0%</strong></div>
-          <div class="result-item"><span>Median ending bankroll</span><strong id="survivalMedianEnd">$0.00</strong></div>
+          <div class="result-item stat-card"><span>Estimated survival odds</span><strong id="survivalOdds">0%</strong></div>
+          <div class="result-item stat-card"><span>Likely spin range</span><strong id="survivalRange">-</strong></div>
+          <div class="result-item stat-card pressure-card is-danger"><span>Ruin risk</span><strong id="survivalRuinRisk">0%</strong></div>
+          <div class="result-item stat-card pressure-card is-good"><span>Median ending bankroll</span><strong id="survivalMedianEnd">$0.00</strong></div>
         </div>
       </div>
     </section>
 
     <section class="section-tight">
-      <div class="container card">
-        <h2 class="section-title">Interpretation</h2>
-        <p id="survivalDetail" class="section-subtext"></p>
-        <h3>What this tool highlights</h3>
-        <ul>
-          <li>Bet size usually drives bust risk faster than small RTP differences.</li>
-          <li>High volatility creates wider outcome ranges around the same average return.</li>
-          <li>Bonus value can soften losses, but it does not remove long-run house edge.</li>
-        </ul>
+      <div class="container section-panel">
+        <div class="section-header">
+          <span class="eyebrow-muted">Interpretation</span>
+          <h2 class="section-title">Read the result like a risk report</h2>
+          <p id="survivalDetail" class="section-subtext"></p>
+        </div>
+        <div class="myth-math-grid">
+          <article class="math-panel">
+            <h3>Bet size drives bust risk</h3>
+            <p>Small RTP differences matter over time, but oversized spins can end a session before the long-run average has any room to show up.</p>
+          </article>
+          <article class="myth-panel">
+            <h3>Volatility widens the range</h3>
+            <p>High volatility creates wider outcome ranges around the same average return, which means longer droughts and sharper drawdowns.</p>
+          </article>
+          <article class="disclaimer-block">
+            <h3>Bonus value is not a shield</h3>
+            <p>Bonus value can soften losses, but it does not remove the long-run house edge or make a slot session predictable.</p>
+          </article>
+        </div>
       </div>
     </section>
 
     <section class="section-tight">
-      <div class="container cta-box">
+      <div class="container cta-box glass-panel section-gradient-cyan">
         <h2 class="section-title">Next step: compare strategy across tools</h2>
         <p>Use this survival estimate, then run the same scenario in the slot simulator for a visual streak profile.</p>
         <div class="hero-actions">
@@ -168,9 +194,17 @@
     </section>
 
     <section class="section-tight">
-      <div class="container card">
-        <h2 class="section-title">Related slot pages</h2>
-        <p><a href="slots.html">Slots hub</a> • <a href="slot-rtp-explained.html">RTP explained</a> • <a href="slot-volatility-guide.html">Volatility guide</a></p>
+      <div class="container section-panel section-gradient-gold">
+        <div class="section-header">
+          <span class="eyebrow-muted">Keep Learning</span>
+          <h2 class="section-title">Related slot pages</h2>
+          <p class="section-subtext">Use these pages to compare survival estimates against RTP, volatility, and simulated streaks.</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-secondary" href="slots.html">Slots hub</a>
+          <a class="btn btn-secondary" href="slot-rtp-explained.html">RTP explained</a>
+          <a class="btn btn-secondary" href="slot-volatility-guide.html">Volatility guide</a>
+        </div>
       </div>
     </section>
   </main>
