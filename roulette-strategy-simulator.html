@@ -116,27 +116,44 @@
     </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="container">
-        <div class="eyebrow">Roulette Strategy Lab</div>
-        <h1>Roulette Strategy Comparison + Bankroll Drain Simulator</h1>
-        <p class="brand-tagline">The wheel has no memory. Your bankroll does.</p>
-        <p class="section-subtext">Compare flat betting, Martingale, Fibonacci, and D’Alembert with the same wheel, bankroll, and spin count. Watch progressions change stress, not the edge.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#strategy-lab">Stress-Test a System</a>
-          <a class="btn btn-secondary" href="roulette-calculator.html">Roulette Odds Calculator</a>
-          <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Bankroll Calculator</a>
+  <main class="page-shell">
+    <section class="hero page-hero glow-hero">
+      <div class="container page-hero-split">
+        <div class="page-hero-copy">
+          <div class="eyebrow eyebrow-muted">Roulette Strategy Lab</div>
+          <h1 class="page-hero-title">Roulette Strategy Comparison + Bankroll Drain Simulator</h1>
+          <p class="page-hero-subtitle">The wheel has no memory. Your bankroll does.</p>
+          <p class="page-hero-text">Compare flat betting, Martingale, Fibonacci, and D’Alembert with the same wheel, bankroll, and spin count. Watch progressions change stress, not the edge.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary btn-cta-primary" href="#strategy-lab">Stress-Test a System</a>
+            <a class="btn btn-secondary btn-outline" href="roulette-calculator.html">Roulette Odds Calculator</a>
+            <a class="btn btn-secondary btn-outline" href="blackjack-bankroll-calculator.html">Bankroll Calculator</a>
+          </div>
         </div>
+        <aside class="section-panel section-gradient-gold glow-gold" aria-label="Roulette system reality snapshot">
+          <span class="eyebrow-cyan">System Reality</span>
+          <div class="stat-grid">
+            <div class="stat-card">
+              <span class="kicker">Flat</span>
+              <strong>Lower swing</strong>
+              <p class="mb-0">Most stable stake size, same negative expectation.</p>
+            </div>
+            <div class="stat-card">
+              <span class="kicker">Martingale</span>
+              <strong>Higher crash</strong>
+              <p class="mb-0">Recovery attempts can collide with bankroll limits fast.</p>
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
 
-    <section class="experience-strip" aria-label="Roulette strategy reality checks">
+    <section class="experience-strip section-divider-soft" aria-label="Roulette strategy reality checks">
       <div class="container">
-        <div class="grid grid-3">
-          <article class="card reality-card"><span class="kicker">Reality Check</span><strong>Betting systems can feel powerful while losing money.</strong><p class="mb-0">The simulator shows how often the table limit or bankroll says no.</p></article>
-          <article class="card reality-card"><span class="kicker">Scenario</span><strong>If you chase losses, variance gets more costly.</strong><p class="mb-0">Progressions make individual spins carry more bankroll risk.</p></article>
-          <article class="card reality-card"><span class="kicker">Quiz Tie-In</span><strong>Different styles fail for different reasons.</strong><p class="mb-0"><a href="gambler-personality-quiz.html">Take the quiz</a> after testing your favorite system.</p></article>
+        <div class="pressure-grid">
+          <article class="pressure-card is-danger"><span class="kicker">Reality Check</span><strong>Betting systems can feel powerful while losing money.</strong><p class="mb-0">The simulator shows how often the table limit or bankroll says no.</p></article>
+          <article class="pressure-card"><span class="kicker">Scenario</span><strong>If you chase losses, variance gets more costly.</strong><p class="mb-0">Progressions make individual spins carry more bankroll risk.</p></article>
+          <article class="pressure-card is-good"><span class="kicker">Quiz Tie-In</span><strong>Different styles fail for different reasons.</strong><p class="mb-0"><a href="gambler-personality-quiz.html">Take the quiz</a> after testing your favorite system.</p></article>
         </div>
       </div>
     </section>
@@ -144,7 +161,8 @@
 
     <section class="section" id="strategy-lab">
       <div class="container grid grid-2">
-        <article class="card">
+        <article class="section-panel section-gradient">
+          <span class="eyebrow-muted">Run the model</span>
           <h2 class="section-title">Simulation settings</h2>
           <div class="form-row">
             <div class="field">
@@ -175,13 +193,14 @@
               <input id="targetProfit" type="number" min="0" step="5" value="60" />
             </div>
           </div>
-          <div class="hero-actions">
-            <button id="compareBtn" type="button" class="btn btn-primary">Compare System Risk</button>
-            <button id="drainBtn" type="button" class="btn btn-secondary">Run Bankroll Drain Demo</button>
+          <div class="cta-row">
+            <button id="compareBtn" type="button" class="btn btn-primary btn-cta-primary">Compare System Risk</button>
+            <button id="drainBtn" type="button" class="btn btn-secondary btn-outline">Run Bankroll Drain Demo</button>
           </div>
         </article>
 
-        <article class="warning-box">
+        <article class="disclaimer-block">
+          <span class="eyebrow-danger">Read the results correctly</span>
           <h2 class="section-title">Important interpretation note</h2>
           <p>These systems only alter bet sizing patterns. They do not bribe the wheel, rewrite payouts, or erase the zero pockets.</p>
           <ul>
@@ -196,23 +215,30 @@
     </section>
 
     <section class="section-tight">
-      <div class="container card">
-        <h2 class="section-title">Strategy comparison output</h2>
+      <div class="container section-panel section-gradient-cyan">
+        <div class="section-header">
+          <span class="eyebrow-cyan">Monte Carlo output</span>
+          <h2 class="section-title">Strategy comparison output</h2>
+        </div>
         <div id="strategyResults" class="result-list" aria-live="polite"></div>
       </div>
     </section>
 
     <section class="section-tight">
-      <div class="container card">
-        <h2 class="section-title">Bankroll drain simulator (single-session log)</h2>
-        <p class="small-note">This produces one random session per strategy so you can watch a progression negotiate with a finite bankroll and lose leverage.</p>
+      <div class="container section-panel section-gradient-gold">
+        <div class="section-header">
+          <span class="eyebrow-muted">One possible ride</span>
+          <h2 class="section-title">Bankroll drain simulator (single-session log)</h2>
+          <p class="small-note">This produces one random session per strategy so you can watch a progression negotiate with a finite bankroll and lose leverage.</p>
+        </div>
         <div id="drainResults" class="result-list" aria-live="polite"></div>
       </div>
     </section>
 
     <section class="section">
       <div class="container grid grid-2">
-        <article class="card">
+        <article class="card-glass glow-gold">
+          <span class="eyebrow-muted">Player takeaway</span>
           <h2 class="section-title">Beginner strategy takeaway</h2>
           <p>Roulette systems shape the ride; they do not create an edge. They can make short runs feel clever while expected value keeps its boots on the table.</p>
           <ul>
@@ -222,15 +248,16 @@
           </ul>
         </article>
 
-        <article class="cta-box">
+        <article class="cta-box glass-panel hover-glow">
+          <span class="eyebrow-cyan">Next step</span>
           <h2 class="section-title">Try this next</h2>
           <p>Pair strategy tests with payout math so you can see both <em>probability</em> and <em>variance</em> before your favorite system gets dramatic.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="roulette-calculator.html">Roulette Calculator</a>
-            <a class="btn btn-secondary" href="roulette.html">Roulette Guide Hub</a>
-            <a class="btn btn-secondary" href="blackjack-ev-calculator.html">Blackjack EV</a>
-            <a class="btn btn-secondary" href="slots.html">Slots Page</a>
-            <a class="btn btn-secondary" href="index.html">Homepage</a>
+          <div class="cta-row">
+            <a class="btn btn-primary btn-cta-primary" href="roulette-calculator.html">Roulette Calculator</a>
+            <a class="btn btn-secondary btn-outline" href="roulette.html">Roulette Guide Hub</a>
+            <a class="btn btn-secondary btn-outline" href="blackjack-ev-calculator.html">Blackjack EV</a>
+            <a class="btn btn-secondary btn-outline" href="slots.html">Slots Page</a>
+            <a class="btn btn-secondary btn-outline" href="index.html">Homepage</a>
           </div>
         </article>
       </div>
@@ -238,17 +265,20 @@
 
     <section class="section">
       <div class="container">
-        <h2 class="section-title">Roulette strategy FAQ</h2>
+        <div class="section-header section-header-centered">
+          <span class="eyebrow-muted">Quick answers</span>
+          <h2 class="section-title">Roulette strategy FAQ</h2>
+        </div>
         <div class="faq-list">
-          <details class="card">
+          <details class="card-glass">
             <summary>Can any progression system remove house edge?</summary>
             <p>No. Progression systems only change stake sizing. The house edge comes from wheel structure and payout schedule.</p>
           </details>
-          <details class="card">
+          <details class="card-glass">
             <summary>Why compare strategies if all are negative EV?</summary>
             <p>Because variance and bust risk still matter for session planning. This helps players understand risk before wagering.</p>
           </details>
-          <details class="card">
+          <details class="card-glass">
             <summary>Should I treat this as gambling advice?</summary>
             <p>No. This is educational simulation content. It does not provide financial, legal, or gambling advice.</p>
           </details>
@@ -257,7 +287,8 @@
     </section>
 
     <section class="section-tight">
-      <div class="container warning-box">
+      <div class="container disclaimer-block">
+        <span class="eyebrow-danger">Before you play</span>
         <h2 class="section-title">Responsible gambling and 21+ notice</h2>
         <p>Adults 21+ only where legal. Entertainment and education only. If play feels stressful or compulsive, stop and seek help at <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">ncpgambling.org</a>.</p>
       </div>
@@ -265,7 +296,7 @@
 
 
     <section class="section-tight" aria-labelledby="roulette-system-myth-title">
-      <div class="container myth-math-card card">
+      <div class="container myth-math-card card section-gradient">
         <span class="chip">Myth vs Math</span>
         <h2 id="roulette-system-myth-title" class="section-title">Progressions are entertaining stress tests, not secret exits.</h2>
         <div class="myth-math-grid">
