@@ -6,7 +6,7 @@
   <meta name="robots" content="index, follow" />
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
 
-  <title>Blackjack EV Calculator & Decision Tool | EdgeOverLuck.com</title>
+  <title>Blackjack EV Calculator & Decision Tool | Edge Over Luck</title>
   <meta name="description" content="Free blackjack EV calculator. Compare the expected value of hit, stand, and double based on your hand, dealer upcard, decks, payout rules, and table conditions." />
   <link rel="canonical" href="https://edgeoverluck.com/blackjack-ev-calculator.html" />
 
@@ -85,35 +85,47 @@
     </div>
   </header>
 
-<main>
-  <section class="hero">
+<main class="page-shell">
+  <section class="page-hero">
+    <div class="container page-hero-split">
+      <div class="page-hero-copy">
+        <div class="eyebrow-cyan">Blackjack Decision Tool</div>
+        <h1 class="page-hero-title">Blackjack EV Calculator &amp; Decision Tool</h1>
+        <p class="page-hero-subtitle">Compare hit, stand, and double by expected value before the table pressure gets loud.</p>
+        <p class="page-hero-text">Enter your total, the dealer upcard, deck count, payout rules, and a rough true count to see which move has the strongest math for the spot.</p>
+        <div class="cta-row">
+          <a class="btn btn-cta-primary" href="#ev-calculator">Run the Calculator</a>
+          <a class="btn btn-outline" href="blackjack-strategy.html">Learn Strategy</a>
+          <a class="btn btn-outline" href="blackjack-game.html">Practice Free</a>
+        </div>
+      </div>
+
+      <aside class="card glass-card-strong glow-gold" aria-label="Blackjack EV calculator highlights">
+        <span class="eyebrow-muted">Edge Before Action</span>
+        <h2 class="section-title">Turn one close hand into a clean comparison.</h2>
+        <div class="stat-grid card-grid-tight">
+          <div class="stat-card"><span class="small-note">Actions scored</span><strong>Hit / Stand / Double</strong><p class="mb-0">Rank the legal choices by estimated return.</p></div>
+          <div class="stat-card"><span class="small-note">Inputs that matter</span><strong>Rules + Count</strong><p class="mb-0">Adjust decks, payout, bet size, and a rough count.</p></div>
+        </div>
+        <p class="small-note mb-0">Educational approximation only — the tool explains risk; it does not predict outcomes.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="experience-strip edge-divider" aria-label="Blackjack EV reality checks">
     <div class="container">
-      <div class="eyebrow">Blackjack Decision Tool</div>
-      <h1>Blackjack EV Calculator & Decision Tool</h1>
-      <p class="section-subtext">Compare the expected value of hitting, standing, or doubling based on your hand, dealer upcard, and table conditions.</p>
-      <p class="brand-tagline">Play with the numbers before you play with your money.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#ev-calculator">Run the Calculator</a>
-        <a class="btn btn-secondary" href="blackjack-strategy.html">Learn Strategy</a>
-        <a class="btn btn-secondary" href="blackjack-game.html">Practice Free</a>
+      <div class="pressure-grid">
+        <article class="pressure-card"><span class="kicker">Reality Check</span><strong>EV is the scoreboard before the cards finish talking.</strong><p class="mb-0">Use it to compare decisions, not to predict the next hand.</p></article>
+        <article class="pressure-card is-danger"><span class="kicker">Decision Pressure</span><strong>Doubling can be correct and still lose.</strong><p class="mb-0">Good math does not cancel variance; it gives you a better reason.</p></article>
+        <article class="pressure-card is-good"><span class="kicker">Next Drill</span><strong>Calculate the spot, then play it.</strong><p class="mb-0">Move from EV numbers to repetition in the trainer.</p></article>
       </div>
     </div>
   </section>
 
-  <section class="experience-strip" aria-label="Blackjack EV reality checks">
-    <div class="container">
-      <div class="grid grid-3">
-        <article class="card reality-card"><span class="kicker">Reality Check</span><strong>EV is the scoreboard before the cards finish talking.</strong><p class="mb-0">Use it to compare decisions, not to predict the next hand.</p></article>
-        <article class="card reality-card"><span class="kicker">Decision Pressure</span><strong>Doubling can be correct and still lose.</strong><p class="mb-0">Good math does not cancel variance; it gives you a better reason.</p></article>
-        <article class="card reality-card"><span class="kicker">Next Drill</span><strong>Calculate the spot, then play it.</strong><p class="mb-0">Move from EV numbers to repetition in the trainer.</p></article>
-      </div>
-    </div>
-  </section>
 
-
-  <section class="section" id="ev-calculator">
+  <section class="section edge-divider" id="ev-calculator">
     <div class="container grid grid-2">
-      <div class="card">
+      <div class="card glass-card-strong">
         <h2 class="section-title">Enter Your Spot</h2>
 
         <div class="form-row">
@@ -128,15 +140,15 @@
         <div class="field input-spaced"><label for="trueCount">True Count (optional rough boost)</label><input id="trueCount" type="number" min="-10" max="10" step="1" value="0" /></div>
 
         <div class="hero-actions">
-          <button class="btn btn-primary" id="calcBtn" type="button">Calculate EV</button>
-          <button class="btn btn-secondary" id="demoBtn" type="button">Load Demo Spot</button>
-          <button class="btn btn-secondary" id="resetBtn" type="button">Reset</button>
+          <button class="btn btn-cta-primary" id="calcBtn" type="button">Calculate EV</button>
+          <button class="btn btn-outline" id="demoBtn" type="button">Load Demo Spot</button>
+          <button class="btn btn-outline" id="resetBtn" type="button">Reset</button>
         </div>
 
         <p class="small-note">Approximation tool for training and learning — not a full composition-dependent solver.</p>
       </div>
 
-      <div class="card">
+      <div class="card glass-card-strong glow-cyan">
         <h2 class="section-title">Results</h2>
 
         <div class="info-box" id="bestMoveBox">
@@ -147,7 +159,7 @@
 
         <div id="results" class="grid top-gap"></div>
 
-        <div class="card top-gap subtle-card">
+        <div class="card top-gap subtle-card card-glass">
           <strong>How to read this:</strong>
           <ul>
             <li>EV is the average return per base bet.</li>
@@ -159,29 +171,33 @@
     </div>
   </section>
 
-  <section class="section-tight">
-    <div class="container cta-box">
-      <h2 class="section-title">What affects EV most?</h2>
-      <div class="grid grid-3">
-        <article class="card"><h3>Dealer upcard strength</h3><p>7 through Ace puts pressure on player totals and often forces improvement plays.</p></article>
-        <article class="card"><h3>Hand type</h3><p>Soft totals give extra flexibility because the Ace can drop from 11 to 1.</p></article>
-        <article class="card"><h3>Rule quality</h3><p>3:2 payouts and fewer decks are generally better for players than 6:5 games.</p></article>
+  <section class="section-tight section-divider-soft">
+    <div class="container section-panel section-gradient">
+      <div class="section-header">
+        <span class="eyebrow-muted">EV Drivers</span>
+        <h2 class="section-title">What affects EV most?</h2>
+        <p class="section-subtext">The same total can swing from disciplined stand to aggressive double when the dealer card, hand type, or table rules change.</p>
       </div>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="blackjack-strategy.html">Read Strategy Guide</a>
-        <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Estimate Bankroll Risk</a>
+      <div class="feature-grid">
+        <article class="card-glass"><h3>Dealer upcard strength</h3><p>7 through Ace puts pressure on player totals and often forces improvement plays.</p></article>
+        <article class="card-glass"><h3>Hand type</h3><p>Soft totals give extra flexibility because the Ace can drop from 11 to 1.</p></article>
+        <article class="card-glass"><h3>Rule quality</h3><p>3:2 payouts and fewer decks are generally better for players than 6:5 games.</p></article>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-cta-primary" href="blackjack-strategy.html">Read Strategy Guide</a>
+        <a class="btn btn-outline" href="blackjack-bankroll-calculator.html">Estimate Bankroll Risk</a>
       </div>
     </div>
   </section>
 
 
   <section class="section-tight" aria-labelledby="blackjack-ev-myth-title">
-    <div class="container myth-math-card card">
+    <div class="container myth-math-card card section-gradient-gold">
       <span class="chip">Myth vs Math</span>
       <h2 id="blackjack-ev-myth-title" class="section-title">Good blackjack math can still feel wrong in the moment.</h2>
       <div class="myth-math-grid">
-        <div><strong class="myth">Myth: “I lost after doubling, so it was a bad play.”</strong><p class="mb-0">Math: EV judges decisions over repeated spots, not one painful result.</p></div>
-        <div><strong class="math">Myth: “A correct chart move guarantees safety.”</strong><p class="mb-0">Math: Strategy lowers mistakes; bankroll planning handles the swings.</p></div>
+        <div class="myth-panel"><strong class="myth">Myth: “I lost after doubling, so it was a bad play.”</strong><p class="mb-0">Math: EV judges decisions over repeated spots, not one painful result.</p></div>
+        <div class="math-panel"><strong class="math">Myth: “A correct chart move guarantees safety.”</strong><p class="mb-0">Math: Strategy lowers mistakes; bankroll planning handles the swings.</p></div>
       </div>
       <div class="tool-link-row"><a href="blackjack-game.html">Practice trainer</a><a href="blackjack-bankroll-calculator.html">Bankroll calculator</a><a href="gambler-personality-quiz.html">Take the quiz</a></div>
     </div>
