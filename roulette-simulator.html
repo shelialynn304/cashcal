@@ -82,24 +82,25 @@
     </div>
   </header>
 
-  <main>
-    <section class="hero roulette-sim-hero glow-hero">
-      <div class="container hero-wrap">
-        <div>
-          <div class="eyebrow">EdgeOverLuck.com</div>
-          <h1>Spin the Wheel — Roulette Simulator</h1>
-          <p class="lead">Pick a bet, spin the wheel, and watch wins, losses, streaks, and bankroll swings play out. Short-term wins happen all the time — this simulator helps you see the chaos before you risk real money.</p>
+  <main class="page-shell">
+    <section class="page-hero roulette-sim-hero glow-hero">
+      <div class="container page-hero-split">
+        <div class="page-hero-copy">
+          <div class="eyebrow-cyan">EdgeOverLuck.com</div>
+          <h1 class="page-hero-title">Spin the Wheel — Roulette Simulator</h1>
+          <p class="page-hero-subtitle">Pick a bet, spin the wheel, and watch wins, losses, streaks, and bankroll swings play out.</p>
+          <p class="page-hero-text">Short-term wins happen all the time — this simulator helps you see the chaos before you risk real money.</p>
           <div class="brand-lockup">
             <strong>EdgeOverLuck.com</strong>
             <span>Real Math. Real Odds. Real Fun.</span>
             <p>Play with the numbers before you play with your money.</p>
           </div>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#roulette-simulator-app">Start Spinning</a>
-            <a class="btn btn-secondary" href="roulette-calculator.html">Compare Roulette Odds</a>
+            <a class="btn btn-primary btn-cta-primary" href="#roulette-simulator-app">Start Spinning</a>
+            <a class="btn btn-secondary btn-outline" href="roulette-calculator.html">Compare Roulette Odds</a>
           </div>
         </div>
-        <aside class="card roulette-sim-hero-card glow-gold" aria-label="Roulette simulator highlights">
+        <aside class="card glass-card-strong roulette-sim-hero-card glow-gold" aria-label="Roulette simulator highlights">
           <h2 class="section-title">Built for fast math play</h2>
           <div class="result-list">
             <div class="result-item"><span>Wheel Types</span><strong>European + American</strong></div>
@@ -110,10 +111,10 @@
       </div>
     </section>
 
-    <section class="section-tight" id="roulette-simulator-app" aria-labelledby="roulette-bankroll-title">
+    <section class="section-tight edge-divider" id="roulette-simulator-app" aria-labelledby="roulette-bankroll-title">
       <div class="container">
-        <aside class="card roulette-sim-panel">
-          <span class="chip">Bankroll Setup</span>
+        <aside class="card section-panel section-gradient-gold roulette-sim-panel">
+          <span class="eyebrow-muted">Bankroll Setup</span>
           <h2 id="roulette-bankroll-title" class="section-title">Set your session</h2>
           <div class="form-row roulette-control-grid">
             <div class="field">
@@ -148,10 +149,10 @@
             <p id="singleNumberHelp" class="small-note">Enabled only for single-number bets. American roulette accepts 00.</p>
           </div>
           <div class="roulette-chip-row" aria-label="Quick bet chips">
-            <button class="btn btn-secondary roulette-chip-button" type="button" data-chip="5">$5</button>
-            <button class="btn btn-secondary roulette-chip-button" type="button" data-chip="25">$25</button>
-            <button class="btn btn-secondary roulette-chip-button" type="button" data-chip="100">$100</button>
-            <button class="btn btn-secondary roulette-chip-button" type="button" data-chip="500">$500</button>
+            <button class="btn btn-secondary btn-outline roulette-chip-button" type="button" data-chip="5">$5</button>
+            <button class="btn btn-secondary btn-outline roulette-chip-button" type="button" data-chip="25">$25</button>
+            <button class="btn btn-secondary btn-outline roulette-chip-button" type="button" data-chip="100">$100</button>
+            <button class="btn btn-secondary btn-outline roulette-chip-button" type="button" data-chip="500">$500</button>
           </div>
           <div class="result-list roulette-bankroll-list">
             <div class="result-item"><span>Current Bankroll</span><strong id="rouletteBankrollDisplay">$200.00</strong></div>
@@ -161,8 +162,8 @@
           <div class="roulette-active-bets" aria-live="polite">
             <p class="small-note mb-0" id="rouletteActiveBetList">No active bets yet. Click the felt to place chips.</p>
             <div class="hero-actions roulette-bet-actions">
-              <button id="rouletteRepeatBetButton" class="btn btn-secondary" type="button">Repeat Bet</button>
-              <button id="rouletteClearBetsButton" class="btn btn-secondary" type="button">Clear Bets</button>
+              <button id="rouletteRepeatBetButton" class="btn btn-secondary btn-outline" type="button">Repeat Bet</button>
+              <button id="rouletteClearBetsButton" class="btn btn-secondary btn-outline" type="button">Clear Bets</button>
             </div>
           </div>
         </aside>
@@ -170,10 +171,10 @@
     </section>
 
     <section class="section-tight" aria-labelledby="roulette-table-title">
-      <div class="container card roulette-sim-panel">
+      <div class="container card section-panel section-gradient roulette-sim-panel">
         <div class="roulette-sim-panel-head">
           <div>
-            <span class="chip">Betting Felt</span>
+            <span class="eyebrow-cyan">Betting Felt</span>
             <h2 id="roulette-table-title" class="section-title">Pick bets from the felt</h2>
           </div>
           <p class="small-note mb-0">Click a number for single-number betting or choose an outside bet below.</p>
@@ -184,13 +185,13 @@
 
     <section class="section-tight" aria-labelledby="roulette-sim-title">
       <div class="container">
-        <article class="card roulette-sim-panel roulette-wheel-panel">
+        <article class="card section-panel section-gradient-cyan roulette-sim-panel roulette-wheel-panel">
           <div class="roulette-sim-panel-head">
             <div>
-              <span class="chip">Live Spin</span>
+              <span class="eyebrow-cyan">Live Spin</span>
               <h2 id="roulette-sim-title" class="section-title">Animated roulette wheel</h2>
             </div>
-            <button id="rouletteSoundToggle" class="btn btn-secondary roulette-sound-toggle" type="button" aria-pressed="false">Sound On</button>
+            <button id="rouletteSoundToggle" class="btn btn-secondary btn-outline roulette-sound-toggle" type="button" aria-pressed="false">Sound On</button>
           </div>
 
           <div class="roulette-wheel-wrap" aria-live="polite">
@@ -203,8 +204,8 @@
           </div>
 
           <div class="hero-actions roulette-spin-actions">
-            <button id="rouletteSpinButton" class="btn btn-primary" type="button">Spin the Wheel</button>
-            <button id="rouletteResetButton" class="btn btn-secondary" type="button">Reset Simulator</button>
+            <button id="rouletteSpinButton" class="btn btn-primary btn-cta-primary" type="button">Spin the Wheel</button>
+            <button id="rouletteResetButton" class="btn btn-secondary btn-outline" type="button">Reset Simulator</button>
           </div>
           <p id="rouletteStatus" class="summary roulette-status" role="status">Choose a bet, set your stake, then spin. No strategy here guarantees profit.</p>
         </article>
@@ -213,8 +214,8 @@
 
     <section class="section-tight" aria-labelledby="roulette-results-title">
       <div class="container grid grid-2">
-        <article class="card roulette-sim-panel">
-          <span class="chip">Last Result</span>
+        <article class="card glass-card-strong roulette-sim-panel">
+          <span class="eyebrow-muted">Last Result</span>
           <h2 id="roulette-results-title" class="section-title">What happened?</h2>
           <div class="result-list roulette-result-grid">
             <div class="result-item"><span>Winning Number</span><strong id="rouletteWinningNumber">—</strong></div>
@@ -225,8 +226,8 @@
           <p id="rouletteExplanation" class="roulette-explanation">Spin once to see how roulette variance treats this bet.</p>
         </article>
 
-        <article class="card roulette-sim-panel">
-          <span class="chip">Session Stats</span>
+        <article class="card glass-card-strong roulette-sim-panel">
+          <span class="eyebrow-muted">Session Stats</span>
           <h2 class="section-title">Bankroll swing tracker</h2>
           <div class="result-list roulette-result-grid">
             <div class="result-item"><span>Updated Bankroll</span><strong id="rouletteUpdatedBankroll">$200.00</strong></div>
@@ -240,19 +241,19 @@
     </section>
 
     <section class="section" aria-labelledby="roulette-next-title">
-      <div class="container cta-box">
+      <div class="container cta-box section-panel section-gradient-gold">
         <h2 id="roulette-next-title" class="section-title">Keep testing before real money is involved</h2>
         <p>Roulette can create short-term heaters and ugly streaks back-to-back. Compare the simulator with odds tools, bankroll planning, and other casino math pages before you play.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="roulette-calculator.html">Open Roulette Calculator</a>
-          <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Bankroll Calculator</a>
-          <a class="btn btn-secondary" href="slot-simulator.html">Slot Simulator</a>
+          <a class="btn btn-primary btn-cta-primary" href="roulette-calculator.html">Open Roulette Calculator</a>
+          <a class="btn btn-secondary btn-outline" href="blackjack-bankroll-calculator.html">Bankroll Calculator</a>
+          <a class="btn btn-secondary btn-outline" href="slot-simulator.html">Slot Simulator</a>
         </div>
       </div>
     </section>
 
     <section class="section-tight">
-      <div class="container warning-box">
+      <div class="container warning-box disclaimer-block">
         <h2 class="section-title">Responsible gambling and 21+ notice</h2>
         <p>For adults 21+ where legal. This simulator is for education and entertainment only. Roulette has negative expected value, and no betting system guarantees profit.</p>
       </div>
