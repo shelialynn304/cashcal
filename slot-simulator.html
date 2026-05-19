@@ -137,6 +137,14 @@
               <div class="slot-reel"><span class="slot-symbol">🍒</span></div>
               <div class="slot-reel"><span class="slot-symbol">♦</span></div>
             </div>
+            <div class="slot-machine-controls" aria-label="Slot machine controls">
+              <div class="reel-toggle" role="group" aria-label="Reel count">
+                <span class="toggle-label">Reels</span>
+                <button id="reelMode3" class="slot-toggle-btn" type="button" data-reels="3" aria-pressed="false">3</button>
+                <button id="reelMode5" class="slot-toggle-btn is-active" type="button" data-reels="5" aria-pressed="true">5</button>
+              </div>
+              <button id="soundToggleBtn" class="slot-toggle-btn" type="button" aria-pressed="false">Sound: Off</button>
+            </div>
             <button id="singleSpinBtn" class="slot-spin-btn" type="button">Spin Once</button>
             <p id="slotSpinWarning" class="slot-spin-warning" role="status" aria-live="polite"></p>
             <div id="slotSpinMessage" class="slot-result-box" aria-live="polite">Set your bankroll, bet size, and preset — then spin one realistic result.</div>
