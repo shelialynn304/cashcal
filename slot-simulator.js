@@ -57,8 +57,19 @@
     }
   }
 
-  function getVisibleSymbols(symbols) {
-    return symbols.slice(0, reelCount);
+  function getVisibleSymbols(symbols, resultType) {
+    if (reelCount === 5) return symbols.slice(0, 5);
+
+    if (resultType !== "loss") {
+      const counts = symbols.reduce((acc, symbol) => {
+        acc[symbol] = (acc[symbol] || 0) + 1;
+        return acc;
+      }, {});
+      const winningSymbol = Object.keys(counts).find((symbol) => counts[symbol] >= 3);
+      if (winningSymbol) return [winningSymbol, winningSymbol, winningSymbol];
+    }
+
+    return symbols.slice(0, 3);
   }
 
   function initAudio() {
@@ -160,18 +171,18 @@
     lastSpinChange.classList.toggle("result-loss", bankrollChange < 0);
   }
 
-  function describeSpin(spin, bankrollChange, newBankroll) {
+  function describeSpin(spin, bankrollChange, newBankroll, symbolsToShow) {
     const changeText = `${bankrollChange >= 0 ? "+" : ""}${window.SlotsTools.toMoney(bankrollChange)}`;
 
     if (spin.resultType === "bonus") {
-      return `Bonus hit. Symbols ${spin.symbols.join(" · ")} paid ${window.SlotsTools.toMoney(spin.payout)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
+      return `Bonus hit. Symbols ${symbolsToShow.join(" · ")} paid ${window.SlotsTools.toMoney(spin.payout)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
     }
 
     if (spin.payout > 0) {
-      return `Line hit. Symbols ${spin.symbols.join(" · ")} paid ${window.SlotsTools.toMoney(spin.payout)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
+      return `Line hit. Symbols ${symbolsToShow.join(" · ")} paid ${window.SlotsTools.toMoney(spin.payout)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
     }
 
-    return `No payline. Symbols ${spin.symbols.join(" · ")} returned ${window.SlotsTools.toMoney(0)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
+    return `No payline. Symbols ${symbolsToShow.join(" · ")} returned ${window.SlotsTools.toMoney(0)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
   }
 
   function resetReelState() {
@@ -258,7 +269,7 @@
     const newBankroll = Math.max(0, Math.round((bankroll - betSize + spin.payout) * 100) / 100);
     const bankrollChange = Math.round((spin.payout - betSize) * 100) / 100;
 
-    const visibleSymbols = getVisibleSymbols(spin.symbols);
+    const visibleSymbols = getVisibleSymbols(spin.symbols, spin.resultType);
     await animateReels(visibleSymbols, spin.resultType);
 
     bankrollInput.value = newBankroll.toFixed(2);
@@ -267,7 +278,7 @@
     spinMessage.classList.toggle("result-jackpot", spin.resultType === "bonus");
     spinMessage.classList.toggle("result-small-win", spin.payout > betSize && spin.resultType !== "bonus");
     spinMessage.classList.toggle("result-loss", spin.payout < betSize);
-    spinMessage.textContent = describeSpin(spin, bankrollChange, newBankroll);
+    spinMessage.textContent = describeSpin(spin, bankrollChange, newBankroll, visibleSymbols);
 
     isSpinning = false;
     updateSimulator();
