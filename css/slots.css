@@ -358,3 +358,50 @@
 .last-spin-readout .result-loss {
   color: #f0d7d7;
 }
+
+.slot-machine-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.reel-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle-label {
+  font-size: 0.86rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.slot-toggle-btn {
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  background: rgba(0, 0, 0, 0.35);
+  color: #f7f7f7;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.slot-toggle-btn.is-active {
+  background: linear-gradient(180deg, #f3c94b, #b98307);
+  color: #121212;
+  border-color: rgba(255, 215, 0, 0.8);
+}
+
+.slot-sim-reels[data-reels="3"] {
+  grid-template-columns: repeat(3, minmax(66px, 1fr));
+}
+
+.slot-sim-reels[data-reels="5"] {
+  grid-template-columns: repeat(5, minmax(54px, 1fr));
+}
