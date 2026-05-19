@@ -86,6 +86,7 @@
   }
 
   function setReelMode(nextReelCount) {
+    if (isSpinning) return;
     reelCount = nextReelCount === 3 ? 3 : 5;
     if (reelMode3Btn && reelMode5Btn) {
       const threeActive = reelCount === 3;
@@ -132,6 +133,11 @@
     if (singleSpinBtn) {
       singleSpinBtn.disabled = blocked;
       singleSpinBtn.textContent = isSpinning ? "Spinning…" : "Spin Once";
+    }
+
+    if (reelMode3Btn && reelMode5Btn) {
+      reelMode3Btn.disabled = isSpinning;
+      reelMode5Btn.disabled = isSpinning;
     }
 
     if (!spinWarning) return;
