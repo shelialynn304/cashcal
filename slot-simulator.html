@@ -84,18 +84,29 @@
     </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="container">
-        <div class="eyebrow">Interactive Tool</div>
-        <h1>Slot Machine Simulator for Realistic Session Swings</h1>
-        <p class="lead">Test bankroll, bet size, RTP, volatility, and spin count. Watch a “reasonable” slot plan get dragged through streaks, droughts, and bust risk.</p>
-        <p class="brand-tagline">The reels have no memory. Your wallet does.</p>
-        <p><strong>Disclaimer:</strong> Slots are negative-EV games. This simulator is for education and entertainment only.</p>
+  <main class="page-shell">
+    <section class="page-hero">
+      <div class="container page-hero-inner">
+        <div class="page-hero-copy">
+          <div class="eyebrow-cyan">Interactive Tool</div>
+          <h1 class="page-hero-title">Slot Machine Simulator for Realistic Session Swings</h1>
+          <p class="page-hero-subtitle">Test bankroll, bet size, RTP, volatility, and spin count before variance starts taking bites.</p>
+          <p class="page-hero-text">Watch a “reasonable” slot plan get dragged through streaks, droughts, and bust risk. The reels have no memory. Your wallet does.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#slotSimulatorForm">Configure a Session</a>
+            <a class="btn btn-secondary" href="bankroll-survival-slots.html">Check Survival Odds</a>
+          </div>
+        </div>
+        <aside class="section-panel section-gradient-gold" aria-label="Slot simulator warning">
+          <span class="eyebrow-danger">Reality Check</span>
+          <h2>Negative EV still has hot streaks.</h2>
+          <p>Use the simulator to understand bankroll pressure, not to predict a machine or justify bigger bets.</p>
+          <p class="small-note"><strong>Disclaimer:</strong> Slots are negative-EV games. This simulator is for education and entertainment only.</p>
+        </aside>
       </div>
     </section>
 
-    <section class="experience-strip" aria-label="Slot simulation reality checks">
+    <section class="experience-strip section-divider-soft" aria-label="Slot simulation reality checks">
       <div class="container">
         <div class="grid grid-3">
           <article class="card reality-card"><span class="kicker">Reality Check</span><strong>Run the downside scenario before risking real money.</strong><p class="mb-0">Simulate droughts, bonus misses, and bankroll drain before risking real money.</p></article>
@@ -106,10 +117,13 @@
     </section>
 
 
-    <section class="section-tight">
-      <div class="container card">
-        <h2 class="section-title">Spin the machine, then stress-test the session</h2>
-        <p class="section-subtext">The reels below use the same RTP and volatility preset as the calculator, so each visual spin is tied to the payout math.</p>
+    <section class="section-tight edge-divider">
+      <div class="container card section-panel section-gradient">
+        <div class="section-header">
+          <span class="eyebrow-muted">Live Tool</span>
+          <h2 class="section-title">Spin the machine, then stress-test the session</h2>
+          <p class="section-subtext">The reels below use the same RTP and volatility preset as the calculator, so each visual spin is tied to the payout math.</p>
+        </div>
         <div class="slot-sim-layout">
           <div class="slot-machine-panel" aria-labelledby="slotMachineTitle">
             <div class="slot-machine-topline">
@@ -134,7 +148,7 @@
             </div>
           </div>
 
-          <form id="slotSimulatorForm" class="slot-control-panel">
+          <form id="slotSimulatorForm" class="slot-control-panel card-glass">
             <h3>Configure your scenario</h3>
             <div class="grid grid-2">
               <div class="field">
@@ -155,7 +169,7 @@
               </div>
             </div>
             <div class="hero-actions">
-              <button id="runAutoplay" type="submit">Run Slot Simulation</button>
+              <button id="runAutoplay" class="btn btn-primary" type="submit">Run Slot Simulation</button>
               <a class="btn btn-secondary" href="bankroll-survival-slots.html">Check Survival Odds</a>
             </div>
           </form>
@@ -164,7 +178,7 @@
     </section>
 
     <section class="section-tight">
-      <div class="container results" aria-live="polite">
+      <div class="container results section-panel section-gradient-cyan" aria-live="polite">
         <div class="result-list">
           <div class="result-item"><span>Estimated end bankroll</span><strong id="simEndBankroll">$0.00</strong></div>
           <div class="result-item"><span>Bust chance</span><strong id="simBustChance">0%</strong></div>
@@ -178,9 +192,12 @@
 
 
     <section class="section-tight" aria-labelledby="slot-result-insight-title">
-      <div class="container">
-        <h2 id="slot-result-insight-title" class="section-title">What this means after the spin run</h2>
-        <p class="section-subtext">Slots do not adjust because of prior misses. Use the outputs to read bankroll pressure before chasing the next bonus round.</p>
+      <div class="container section-panel section-gradient">
+        <div class="section-header">
+          <span class="eyebrow-cyan">Read the output</span>
+          <h2 id="slot-result-insight-title" class="section-title">What this means after the spin run</h2>
+          <p class="section-subtext">Slots do not adjust because of prior misses. Use the outputs to read bankroll pressure before chasing the next bonus round.</p>
+        </div>
         <div class="result-insight-grid">
           <article class="card result-insight glass-card hover-glow"><span class="stat-label">RTP</span><h3>Long-run average, not tonight’s forecast.</h3><p>A 96% game can still produce a losing short session.</p></article>
           <article class="card result-insight glass-card hover-glow"><span class="stat-label">Bust chance</span><h3>This is the pain gauge.</h3><p>If bust chance jumps, reduce bet size or session length before increasing hope.</p></article>
@@ -190,9 +207,12 @@
     </section>
 
     <section class="section-tight" aria-labelledby="slot-myth-math-title">
-      <div class="container">
-        <h2 id="slot-myth-math-title" class="section-title">Slot myth vs math</h2>
-        <p class="section-subtext">The machine is not due. Independent spins can still make “one more spin” sound reasonable.</p>
+      <div class="container section-panel section-gradient-gold">
+        <div class="section-header">
+          <span class="eyebrow-muted">Myth vs Math</span>
+          <h2 id="slot-myth-math-title" class="section-title">Slot myth vs math</h2>
+          <p class="section-subtext">The machine is not due. Independent spins can still make “one more spin” sound reasonable.</p>
+        </div>
         <div class="myth-vs-math-grid">
           <article class="card myth-card glass-card"><span class="myth-label">Myth</span><h3>“This machine is due.”</h3><p>Past spins do not make the next win more likely.</p></article>
           <article class="card math-card glass-card"><span class="math-label">Math</span><h3>Random means no apology spin.</h3><p>Past misses do not make the next paid result more likely.</p></article>
@@ -204,8 +224,11 @@
 
     <section class="section-tight" aria-labelledby="slot-scenarios-title">
       <div class="container">
-        <h2 id="slot-scenarios-title" class="section-title">Slot session scenarios</h2>
-        <p class="section-subtext">Same bankroll, different settings, very different risk profile.</p>
+        <div class="section-header">
+          <span class="eyebrow-cyan">Session Planning</span>
+          <h2 id="slot-scenarios-title" class="section-title">Slot session scenarios</h2>
+          <p class="section-subtext">Same bankroll, different settings, very different risk profile.</p>
+        </div>
         <div class="scenario-grid">
           <article class="card scenario-card premium-card interactive-card"><span class="chip">If you bring $100</span><strong>Keep spins cheap.</strong><p class="mb-0">High bet size makes even normal dry spells feel personal.</p></article>
           <article class="card scenario-card premium-card interactive-card"><span class="chip">If you want longer play</span><strong>Lower volatility helps pacing.</strong><p class="mb-0">It does not erase the edge, but it can reduce violent swings.</p></article>
@@ -217,8 +240,11 @@
 
     <section class="section-tight" aria-labelledby="slot-streak-title">
       <div class="container">
-        <h2 id="slot-streak-title" class="section-title">Slot streak examples</h2>
-        <p class="section-subtext">Variance is the show. Bankroll planning is the exit sign.</p>
+        <div class="section-header">
+          <span class="eyebrow-muted">Variance Patterns</span>
+          <h2 id="slot-streak-title" class="section-title">Slot streak examples</h2>
+          <p class="section-subtext">Variance is the show. Bankroll planning is the exit sign.</p>
+        </div>
         <div class="streak-grid">
           <article class="card streak-card is-good premium-card"><span class="streak-label">Bonus hit</span><h3>Big win, decision point.</h3><p>Giving it back is optional; set the decision point early.</p></article>
           <article class="card streak-card premium-card"><span class="streak-label">Gradual drawdown</span><h3>Lots of small misses.</h3><p>Nothing dramatic, just volume and negative expectation.</p></article>
@@ -238,23 +264,28 @@
     </section>
 
     <section class="section-tight">
-      <div class="container card">
-        <h2 class="section-title">Session bankroll trail</h2>
-        <p class="section-subtext">Bars below show one autoplay run so you can spot drawdowns, recoveries, and changing bankroll pressure.</p>
+      <div class="container card section-panel section-gradient-cyan">
+        <div class="section-header">
+          <span class="eyebrow-cyan">Bankroll Trail</span>
+          <h2 class="section-title">Session bankroll trail</h2>
+          <p class="section-subtext">Bars below show one autoplay run so you can spot drawdowns, recoveries, and changing bankroll pressure.</p>
+        </div>
         <div id="simBalanceBars" class="slot-bars"></div>
         <p id="simNarrative" class="small-note"></p>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section edge-divider">
       <div class="container grid grid-2">
-        <article class="card">
+        <article class="card glass-card-strong hover-glow">
+          <span class="eyebrow-muted">RTP</span>
           <h2>What RTP can and cannot save you from</h2>
           <p>RTP is the long-run average over huge samples. It does not promise your next 100 or 500 spins will behave.</p>
           <p>Use this simulator to compare equal bankrolls at 94% vs 96.5% RTP and observe how short-run variance shapes session outcomes.</p>
           <a class="btn btn-secondary" href="slot-rtp-explained.html">Read the RTP Reality Check</a>
         </article>
-        <article class="card">
+        <article class="card glass-card-strong hover-glow">
+          <span class="eyebrow-cyan">Volatility</span>
           <h2>Volatility vs bankroll pain</h2>
           <p>Higher volatility often means longer dead zones, sharper drawdowns, and occasional spikes. Your bankroll has to survive the dry stretches between large hits.</p>
           <a class="btn btn-secondary" href="slot-volatility-guide.html">Read the Volatility Guide</a>
@@ -263,8 +294,11 @@
     </section>
 
     <section class="section-tight">
-      <div class="container card">
-        <h2 class="section-title">Related slot pages</h2>
+      <div class="container card section-panel section-gradient-gold">
+        <div class="section-header">
+          <span class="eyebrow-muted">Keep Learning</span>
+          <h2 class="section-title">Related slot pages</h2>
+        </div>
         <p><a href="slots.html">Back to slots hub</a> • <a href="slot-rtp-explained.html">RTP explained</a> • <a href="slot-volatility-guide.html">Volatility guide</a> • <a href="bankroll-survival-slots.html">Bankroll survival</a></p>
       </div>
     </section>
