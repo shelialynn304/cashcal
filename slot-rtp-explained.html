@@ -81,26 +81,70 @@
     </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="container">
-        <div class="eyebrow">Educational Guide</div>
-        <h1>Slot RTP Explained (Without the Marketing Spin)</h1>
-        <p class="lead">RTP is useful, but it is not a promise or a short-session forecast. Here is what it can tell you—and what it cannot.</p>
-        <p class="brand-tagline">RTP is the average. Variance is the bruise.</p>
+  <main class="page-shell">
+    <section class="page-hero">
+      <div class="container page-hero-split">
+        <div class="page-hero-copy">
+          <div class="eyebrow eyebrow-muted">Educational Guide</div>
+          <h1 class="page-hero-title">Slot RTP Explained Without the Marketing Spin</h1>
+          <p class="page-hero-subtitle">RTP is useful, but it is not a promise or a short-session forecast.</p>
+          <p class="page-hero-text">Learn what return to player can tell you, why house edge still matters, and how variance can make a technically high-RTP slot feel brutal in a normal session.</p>
+          <div class="hero-actions cta-row" aria-label="Slot RTP guide actions">
+            <a class="btn btn-cta-primary" href="slot-simulator.html">Test RTP in the simulator</a>
+            <a class="btn btn-outline" href="bankroll-survival-slots.html">Check bankroll survival</a>
+          </div>
+        </div>
+        <aside class="section-panel section-gradient-gold" aria-label="RTP quick facts">
+          <div class="kicker">Quick read</div>
+          <h2 class="section-title">The number is long-run math. Your session is short-run chaos.</h2>
+          <div class="stat-grid card-grid-tight">
+            <div class="stat-card">
+              <span class="eyebrow-muted">Example RTP</span>
+              <strong>96%</strong>
+              <p>Expected return across a huge pool of wagers, not your next 100 spins.</p>
+            </div>
+            <div class="stat-card">
+              <span class="eyebrow-danger">House edge</span>
+              <strong>4%</strong>
+              <p>Every spin still carries a built-in mathematical cost over time.</p>
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container grid grid-2">
-        <article class="card">
-          <h2>What RTP is</h2>
+    <section class="experience-strip" aria-label="Slot RTP reality checks">
+      <div class="container feature-grid">
+        <article class="card reality-card">
+          <span class="kicker">Long Run</span>
+          <strong>RTP describes the average across massive volume.</strong>
+          <p class="mb-0">It helps compare games, but it does not schedule when wins arrive.</p>
+        </article>
+        <article class="card reality-card">
+          <span class="kicker">Short Run</span>
+          <strong>Variance can overpower the RTP number quickly.</strong>
+          <p class="mb-0">A high-RTP slot can still drain a small bankroll before the math has room to smooth out.</p>
+        </article>
+        <article class="card reality-card">
+          <span class="kicker">Next Step</span>
+          <strong>Use RTP with bet size and volatility together.</strong>
+          <p class="mb-0">Session length usually depends more on stake sizing than a tiny RTP difference.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="rtp-basics-title">
+      <div class="container feature-grid">
+        <article class="card-glass">
+          <div class="kicker">Definition</div>
+          <h2 id="rtp-basics-title">What RTP is</h2>
           <p>RTP (Return to Player) is the percentage of total wager expected to be returned over a huge number of spins. A 96% RTP game implies a 4% house edge in the long run.</p>
           <h3>Quick formula</h3>
           <p><strong>House edge = 100% - RTP.</strong> So 94% RTP means 6% edge, and 98% RTP means 2% edge.</p>
         </article>
-        <article class="card">
-          <h2>What RTP is NOT</h2>
+        <article class="disclaimer-block">
+          <div class="kicker">Reality Check</div>
+          <h2>What RTP is not</h2>
           <ul>
             <li>It is not a promise for one session.</li>
             <li>It is not a timing signal for the next spin.</li>
@@ -111,12 +155,15 @@
       </div>
     </section>
 
-    <section class="section-tight">
-      <div class="container card">
-        <h2 class="section-title">Why short sessions vary wildly</h2>
-        <p>Short sessions have fewer spins, so random variance can drive the result. In a few hundred spins, outcomes can swing far above or below long-run RTP expectations.</p>
+    <section class="section-tight edge-divider" aria-labelledby="session-variance-title">
+      <div class="container section-panel">
+        <div class="section-header">
+          <div class="eyebrow eyebrow-cyan">Session Reality</div>
+          <h2 id="session-variance-title" class="section-title">Why short sessions vary wildly</h2>
+          <p class="section-subtext">Short sessions have fewer spins, so random variance can drive the result. In a few hundred spins, outcomes can swing far above or below long-run RTP expectations.</p>
+        </div>
         <div class="table-wrap">
-          <table>
+          <table class="comparison-table">
             <thead>
               <tr>
                 <th>Scenario</th>
@@ -127,22 +174,22 @@
             </thead>
             <tbody>
               <tr>
-                <td>Weekend short session</td>
-                <td>96%</td>
-                <td>120 spins</td>
-                <td>Large deviation possible in either direction</td>
+                <td data-label="Scenario">Weekend short session</td>
+                <td data-label="RTP">96%</td>
+                <td data-label="Session spins">120 spins</td>
+                <td data-label="Likely reality">Large deviation possible in either direction</td>
               </tr>
               <tr>
-                <td>Long autoplay test</td>
-                <td>96%</td>
-                <td>5,000+ spins</td>
-                <td>Average results tend to move closer to RTP</td>
+                <td data-label="Scenario">Long autoplay test</td>
+                <td data-label="RTP">96%</td>
+                <td data-label="Session spins">5,000+ spins</td>
+                <td data-label="Likely reality">Average results tend to move closer to RTP</td>
               </tr>
               <tr>
-                <td>High volatility burst</td>
-                <td>96.5%</td>
-                <td>300 spins</td>
-                <td>Can still lose badly due to streak distribution</td>
+                <td data-label="Scenario">High volatility burst</td>
+                <td data-label="RTP">96.5%</td>
+                <td data-label="Session spins">300 spins</td>
+                <td data-label="Likely reality">Can still lose badly due to streak distribution</td>
               </tr>
             </tbody>
           </table>
@@ -150,21 +197,33 @@
       </div>
     </section>
 
-    <section class="section-tight">
-      <div class="container cta-box">
-        <h2 class="section-title">Next step: test RTP against session volatility</h2>
-        <p>Run equal bankroll scenarios at different RTP presets and compare bust chance directly.</p>
-        <div class="hero-actions">
-          <a class="btn" href="slot-simulator.html">Run slot simulator</a>
-          <a class="btn btn-secondary" href="bankroll-survival-slots.html">Check survival odds</a>
+    <section class="section-tight" aria-labelledby="rtp-next-step-title">
+      <div class="container section-gradient section-panel">
+        <div class="cta-grid">
+          <div>
+            <div class="eyebrow eyebrow-muted">Try the math</div>
+            <h2 id="rtp-next-step-title" class="section-title">Next step: test RTP against session volatility</h2>
+            <p class="section-subtext">Run equal bankroll scenarios at different RTP presets and compare bust chance directly.</p>
+          </div>
+          <div class="hero-actions cta-row">
+            <a class="btn btn-cta-primary" href="slot-simulator.html">Run slot simulator</a>
+            <a class="btn btn-outline" href="bankroll-survival-slots.html">Check survival odds</a>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section-tight">
-      <div class="container card">
-        <h2 class="section-title">Related slot pages</h2>
-        <p><a href="slots.html">Slots hub</a> • <a href="slot-volatility-guide.html">Volatility guide</a> • <a href="bankroll-survival-slots.html">Bankroll survival tool</a></p>
+    <section class="section-tight" aria-labelledby="related-slot-pages-title">
+      <div class="container card-glass">
+        <div class="kicker">Keep Learning</div>
+        <h2 id="related-slot-pages-title" class="section-title">Related slot pages</h2>
+        <p>Compare RTP with volatility, bankroll pressure, and real spin behavior before treating any single percentage like a safety net.</p>
+        <div class="tool-link-row" aria-label="Related slot links">
+          <a href="slots.html">Slots hub</a>
+          <a href="slot-volatility-guide.html">Volatility guide</a>
+          <a href="bankroll-survival-slots.html">Bankroll survival tool</a>
+          <a href="slot-simulator.html">Slot simulator</a>
+        </div>
       </div>
     </section>
   </main>
