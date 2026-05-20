@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0">
-  <meta name="description" content="Use this free Bubble Craps simulator to practice betting strategy, test bankroll survival, and play a lightweight Pass Line, Don't Pass, and Field game.">
+  <meta name="description" content="Use this free Bubble Craps simulator to practice Pass Line, Don't Pass, and Field bets, learn the come-out roll and point rules, test bankroll swings, and compare beginner craps strategies.">
 
-  <title>Bubble Craps Simulator – Pass Line Practice & Bankroll Testing | EdgeOverLuck.com</title>
+  <title>Bubble Craps Simulator – Rules, Bets, Strategy & Bankroll Practice | EdgeOverLuck.com</title>
   <link rel="canonical" href="https://edgeoverluck.com/bubble-craps.html">
   <link rel="stylesheet" href="css/style.css">
 
-  <meta property="og:title" content="Bubble Craps Simulator | EdgeOverLuck.com">
-  <meta property="og:description" content="Practice a simple bubble craps style game with Pass Line, Don't Pass, and Field bets.">
+  <meta property="og:title" content="Bubble Craps Simulator | Rules, Bets & Strategy | EdgeOverLuck.com">
+  <meta property="og:description" content="Practice Pass Line, Don't Pass, and Field bets while learning how bubble craps rules, point numbers, and bankroll swings work.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://edgeoverluck.com/bubble-craps.html">
 
@@ -67,11 +67,154 @@
       letter-spacing: 0.04em;
     }
 
+    .quick-rules-grid,
+    .bet-guide-grid,
+    .strategy-grid,
+    .mistake-grid,
+    .faq-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .quick-rules-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: stretch;
+    }
+
+    .bet-guide-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .strategy-grid,
+    .mistake-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .faq-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .guide-card,
+    .rule-flow-card,
+    .bet-guide-card,
+    .strategy-card,
+    .mistake-card,
+    .faq-card,
+    .risk-note-card {
+      padding: clamp(16px, 3vw, 22px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      background: rgba(8,11,16,0.56);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .guide-card h2,
+    .guide-card h3,
+    .rule-flow-card h3,
+    .bet-guide-card h3,
+    .strategy-card h3,
+    .mistake-card h3,
+    .faq-card h3,
+    .risk-note-card h3 {
+      color: #fff3cf;
+      margin-top: 0;
+    }
+
+    .guide-card p,
+    .rule-flow-card p,
+    .bet-guide-card p,
+    .strategy-card p,
+    .mistake-card p,
+    .faq-card p,
+    .risk-note-card p {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .rule-list,
+    .bet-rule-list,
+    .strategy-list,
+    .mistake-list {
+      margin: 12px 0 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .rule-list strong,
+    .bet-rule-list strong,
+    .strategy-list strong,
+    .mistake-list strong {
+      color: #fff;
+    }
+
+    .flow-steps {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .flow-step {
+      padding: 12px 14px;
+      border: 1px solid rgba(255,217,120,0.18);
+      border-radius: 14px;
+      background: rgba(0,0,0,0.26);
+      color: var(--muted);
+    }
+
+    .flow-step strong {
+      display: block;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .bet-comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      overflow: hidden;
+      border-radius: 14px;
+    }
+
+    .bet-comparison-table th,
+    .bet-comparison-table td {
+      padding: 12px 10px;
+      border: 1px solid rgba(255,255,255,0.10);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .bet-comparison-table th {
+      color: #111;
+      background: linear-gradient(180deg, #fff3cf, #ffd978);
+      font-weight: 900;
+    }
+
+    .bet-comparison-table td {
+      color: var(--muted);
+      background: rgba(0,0,0,0.22);
+    }
+
+    .bet-comparison-table td strong {
+      color: #fff;
+    }
+
     .game-panel {
       max-width: 960px;
       margin: 0 auto;
       padding: clamp(18px, 4vw, 30px);
       text-align: center;
+    }
+
+    .game-helper-note {
+      max-width: 760px;
+      margin: 0 auto 18px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .game-helper-note strong {
+      color: #fff3cf;
     }
 
     .chip-row {
@@ -454,6 +597,16 @@
       color: var(--muted);
     }
 
+    @media (max-width: 900px) {
+      .quick-rules-grid,
+      .bet-guide-grid,
+      .strategy-grid,
+      .mistake-grid,
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 768px) {
       .craps-main .container {
         padding-top: 28px;
@@ -503,6 +656,10 @@
         overflow-x: auto;
         padding-bottom: 4px;
       }
+
+      .bet-comparison-table {
+        font-size: 0.9rem;
+      }
     }
   </style>
 
@@ -511,8 +668,57 @@
     "@context":"https://schema.org",
     "@type":"WebPage",
     "name":"Bubble Craps Simulator",
-    "description":"A free bubble craps simulator for testing bets, bankroll survival, and basic strategy.",
+    "description":"A free bubble craps simulator for testing Pass Line, Don't Pass, Field bets, bankroll survival, and basic strategy.",
     "url":"https://edgeoverluck.com/bubble-craps.html"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"What is bubble craps?",
+        "acceptedAnswer":{"@type":"Answer","text":"Bubble craps is an electronic version of craps where dice bounce inside a covered machine instead of being thrown by a live shooter. The betting ideas are similar to regular craps, but the pace and machine interface can feel faster."}
+      },
+      {
+        "@type":"Question",
+        "name":"How does the come-out roll work?",
+        "acceptedAnswer":{"@type":"Answer","text":"The come-out roll starts a new round. On a Pass Line bet, 7 or 11 wins, 2, 3, or 12 loses, and 4, 5, 6, 8, 9, or 10 sets the point."}
+      },
+      {
+        "@type":"Question",
+        "name":"What does the point mean in craps?",
+        "acceptedAnswer":{"@type":"Answer","text":"The point is the number set on the come-out roll when the total is 4, 5, 6, 8, 9, or 10. After the point is set, Pass Line wants that number to roll again before a 7. Don't Pass wants a 7 before the point repeats."}
+      },
+      {
+        "@type":"Question",
+        "name":"How does the Pass Line bet work?",
+        "acceptedAnswer":{"@type":"Answer","text":"Pass Line is the basic with-the-shooter bet. It wins on 7 or 11 on the come-out roll, loses on 2, 3, or 12, and then wins if the point repeats before a 7."}
+      },
+      {
+        "@type":"Question",
+        "name":"How does the Don't Pass bet work?",
+        "acceptedAnswer":{"@type":"Answer","text":"Don't Pass is the opposite side of the basic game. It wins on 2 or 3, loses on 7 or 11, usually pushes on 12, and after a point is set it wins if a 7 rolls before the point repeats."}
+      },
+      {
+        "@type":"Question",
+        "name":"What is the Field bet?",
+        "acceptedAnswer":{"@type":"Answer","text":"The Field is a one-roll bet. It is decided on the very next roll. Common winning Field numbers are 2, 3, 4, 9, 10, 11, and 12, but exact payouts can vary by machine or casino."}
+      },
+      {
+        "@type":"Question",
+        "name":"Is the Field bet a good bet?",
+        "acceptedAnswer":{"@type":"Answer","text":"The Field is fast and simple, but it is usually more volatile than basic Pass Line or Don't Pass play. Its value depends on the pay table, especially whether 2 or 12 pays double or triple."}
+      },
+      {
+        "@type":"Question",
+        "name":"Can you beat bubble craps with strategy?",
+        "acceptedAnswer":{"@type":"Answer","text":"Craps strategy can help control risk and avoid bad bets, but it does not remove the house edge. The main things you control are bet type, bet size, session length, and when to stop."}
+      }
+    ]
   }
   </script>
 </head>
@@ -523,7 +729,7 @@
   <audio id="winSound" src="assets/sounds/ui/subtle-win.mp3" preload="auto" style="display:none;"></audio>
   <audio id="loseSound" src="assets/sounds/ui/lose.mp3" preload="auto" style="display:none;"></audio>
 
-    <header class="site-header">
+  <header class="site-header">
     <div class="container nav site-nav">
       <a href="index.html" class="brand">Edge Over Luck</a>
       <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false">
@@ -588,11 +794,11 @@
           <h1 class="page-hero-title">Bubble Craps Simulator</h1>
           <p class="page-hero-subtitle">Practice Pass Line, Don’t Pass, and Field bets before variance gets a vote.</p>
           <p class="page-hero-text">
-            Run a lightweight craps-style session, track bankroll swings, and learn what each roll means without risking real money.
+            Learn the come-out roll, point phase, basic bet types, and bankroll pressure using a fake-money bubble craps table. The dice are simulated. The lesson is not.
           </p>
           <div class="cta-row">
             <a class="btn btn-cta-primary" href="#craps-game">Start rolling</a>
-            <a class="btn btn-outline" href="blackjack-bankroll-calculator.html">Plan your bankroll</a>
+            <a class="btn btn-outline" href="#craps-rules">Learn the rules</a>
           </div>
         </div>
 
@@ -617,17 +823,59 @@
     </section>
 
     <main class="craps-main">
+      <section class="section-tight edge-divider" id="craps-rules" aria-labelledby="craps-rules-title">
+        <div class="container">
+          <div class="section-header section-header-centered">
+            <p class="eyebrow-muted">Start here</p>
+            <h2 id="craps-rules-title" class="section-title">How Bubble Craps Works</h2>
+            <p class="section-subtext">Bubble craps is easier to learn when you understand the round flow before you start throwing chips at glowing buttons like the machine owes you money.</p>
+          </div>
+
+          <div class="quick-rules-grid">
+            <article class="guide-card section-gradient">
+              <h3>The basic idea</h3>
+              <p>
+                Bubble craps is an electronic version of craps. Instead of a shooter throwing dice across a live table, dice bounce inside a covered machine. You choose bets, the dice roll, and the machine pays or collects based on the total.
+              </p>
+              <p>
+                Most basic play starts with a <strong>come-out roll</strong>. That first roll either wins, loses, or sets a <strong>point</strong>. If a point is set, the round continues until that point repeats or a 7 rolls.
+              </p>
+              <ul class="rule-list">
+                <li><strong>Come-out roll:</strong> the first roll of a new round.</li>
+                <li><strong>Point:</strong> 4, 5, 6, 8, 9, or 10 after the come-out roll.</li>
+                <li><strong>Seven-out:</strong> rolling a 7 before the point repeats.</li>
+                <li><strong>Bankroll:</strong> the money you are using for the session.</li>
+              </ul>
+            </article>
+
+            <aside class="rule-flow-card section-gradient-gold" aria-label="Basic craps round flow">
+              <h3>Round flow</h3>
+              <div class="flow-steps">
+                <div class="flow-step"><strong>1. Come-out roll</strong> A new round begins. Pass Line and Don’t Pass can resolve immediately or move into the point phase.</div>
+                <div class="flow-step"><strong>2. Point is set</strong> If the come-out roll is 4, 5, 6, 8, 9, or 10, that number becomes the point.</div>
+                <div class="flow-step"><strong>3. Point phase</strong> Pass Line wants the point to repeat before a 7. Don’t Pass wants a 7 before the point repeats.</div>
+                <div class="flow-step"><strong>4. Round resets</strong> After the point is made or a 7 appears, the next roll starts a new come-out roll.</div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="craps-game" aria-labelledby="craps-game-title">
         <div class="container">
           <div class="section-header section-header-centered">
             <p class="eyebrow-muted">Interactive table</p>
             <h2 id="craps-game-title" class="section-title">Choose a chip, place a bet, then roll.</h2>
             <p class="section-subtext">
-              The simulator keeps the rules simple: Pass Line, Don’t Pass, and Field bets with clear results after every roll.
+              This simulator keeps the rules focused: Pass Line, Don’t Pass, and Field bets with clear results after every roll.
             </p>
           </div>
 
           <div class="game-panel section-gradient-gold">
+            <p class="game-helper-note">
+              <strong>Fast guide:</strong> Pass Line follows the shooter, Don’t Pass bets against the shooter, and Field is a one-roll bet. If you are new, start with small chips and watch the “Why That Happened” box after each roll.
+            </p>
+
             <div class="chip-row" aria-label="Chip values">
               <button class="chip-btn" data-value="1">$1</button>
               <button class="chip-btn" data-value="5">$5</button>
@@ -736,6 +984,143 @@
         </div>
       </section>
 
+      <section class="section-tight edge-divider" aria-labelledby="bet-guide-title">
+        <div class="container">
+          <div class="section-header section-header-centered">
+            <p class="eyebrow-cyan">Bet meanings</p>
+            <h2 id="bet-guide-title" class="section-title">What Each Bubble Craps Bet Means</h2>
+            <p class="section-subtext">Before you chase dice totals, know what your bet is actually asking for. Revolutionary concept, apparently.</p>
+          </div>
+
+          <div class="bet-guide-grid">
+            <article class="bet-guide-card section-gradient">
+              <h3>Pass Line</h3>
+              <p>The Pass Line is the basic “with the shooter” bet. It is usually the easiest place for beginners to start.</p>
+              <ul class="bet-rule-list">
+                <li><strong>Come-out 7 or 11:</strong> wins.</li>
+                <li><strong>Come-out 2, 3, or 12:</strong> loses.</li>
+                <li><strong>Come-out 4, 5, 6, 8, 9, or 10:</strong> sets the point.</li>
+                <li><strong>After point:</strong> point before 7 wins; 7 before point loses.</li>
+              </ul>
+            </article>
+
+            <article class="bet-guide-card section-gradient">
+              <h3>Don’t Pass</h3>
+              <p>Don’t Pass is the opposite side of the basic game. On bubble craps, no table full of humans can glare at you. The machine is emotionally unavailable.</p>
+              <ul class="bet-rule-list">
+                <li><strong>Come-out 2 or 3:</strong> wins.</li>
+                <li><strong>Come-out 7 or 11:</strong> loses.</li>
+                <li><strong>Come-out 12:</strong> usually pushes.</li>
+                <li><strong>After point:</strong> 7 before point wins; point before 7 loses.</li>
+              </ul>
+            </article>
+
+            <article class="bet-guide-card section-gradient">
+              <h3>Field</h3>
+              <p>The Field is a one-roll bet. It resolves on the next roll, which makes it feel exciting and makes bankroll leaks happen at professional speed.</p>
+              <ul class="bet-rule-list">
+                <li><strong>Usually wins:</strong> 2, 3, 4, 9, 10, 11, or 12.</li>
+                <li><strong>Usually loses:</strong> 5, 6, 7, or 8.</li>
+                <li><strong>Pay table warning:</strong> 2 and 12 payouts can vary by machine.</li>
+                <li><strong>Beginner note:</strong> fun for action, easy to overuse.</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="risk-note-card section-gradient-gold" style="margin-top:16px;">
+            <h3>Bet comparison</h3>
+            <table class="bet-comparison-table">
+              <thead>
+                <tr>
+                  <th>Bet</th>
+                  <th>Type</th>
+                  <th>When it resolves</th>
+                  <th>Beginner note</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Pass Line</strong></td>
+                  <td>Main game bet</td>
+                  <td>Come-out roll or point phase</td>
+                  <td>Best starting point for learning the round flow.</td>
+                </tr>
+                <tr>
+                  <td><strong>Don’t Pass</strong></td>
+                  <td>Main game opposite side</td>
+                  <td>Come-out roll or point phase</td>
+                  <td>Useful once you understand how the point works.</td>
+                </tr>
+                <tr>
+                  <td><strong>Field</strong></td>
+                  <td>One-roll side bet</td>
+                  <td>Next roll only</td>
+                  <td>Fast and simple, but swingy. Use small if you use it.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-tight" aria-labelledby="bubble-craps-strategy-title">
+        <div class="container">
+          <div class="section-header section-header-centered">
+            <p class="eyebrow-muted">Strategy without fairy dust</p>
+            <h2 id="bubble-craps-strategy-title" class="section-title">Simple Bubble Craps Strategies People Use</h2>
+            <p class="section-subtext">These are risk-control approaches, not secret ways to bully dice into employment.</p>
+          </div>
+
+          <div class="strategy-grid">
+            <article class="strategy-card section-gradient">
+              <h3>Flat Betting</h3>
+              <p>Bet the same amount each round. This keeps results easier to understand and helps you see whether bet size is too large for the bankroll.</p>
+            </article>
+            <article class="strategy-card section-gradient">
+              <h3>Pass Line Only</h3>
+              <p>Stick with Pass Line while learning. It follows the main round structure and avoids the noise of side bets.</p>
+            </article>
+            <article class="strategy-card section-gradient">
+              <h3>Don’t Pass Only</h3>
+              <p>Use Don’t Pass if you prefer the opposite side of the point phase. It is not magic. It is just the other side of the basic bet.</p>
+            </article>
+            <article class="strategy-card section-gradient">
+              <h3>Small Field Bets</h3>
+              <p>Some players use tiny Field bets for action. Keep them small. Fast-resolving bets can drain a bankroll before your common sense finds its shoes.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-tight edge-divider" aria-labelledby="bubble-craps-mistakes-title">
+        <div class="container">
+          <div class="section-header section-header-centered">
+            <p class="eyebrow-cyan">Beginner traps</p>
+            <h2 id="bubble-craps-mistakes-title" class="section-title">Common Bubble Craps Mistakes</h2>
+            <p class="section-subtext">Most bad sessions are not mysterious. They are usually bet size, speed, and pretending the dice have unfinished business with you.</p>
+          </div>
+
+          <div class="mistake-grid">
+            <article class="mistake-card section-gradient">
+              <h3>Betting before understanding the point</h3>
+              <p>Once a point is set, the round changes. Pass Line wants the point. Don’t Pass wants the 7.</p>
+            </article>
+            <article class="mistake-card section-gradient">
+              <h3>Overusing the Field</h3>
+              <p>The Field resolves every roll, which makes it feel active. Fast action can also drain money faster.</p>
+            </article>
+            <article class="mistake-card section-gradient">
+              <h3>Betting too large</h3>
+              <p>A $100 bankroll with $25 chips is not a plan. It is a short documentary about regret.</p>
+            </article>
+            <article class="mistake-card section-gradient">
+              <h3>Chasing after losses</h3>
+              <p>The next roll does not owe you an apology. Increasing your bet after a loss mostly increases the size of the next problem.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section class="section edge-divider" aria-labelledby="bubble-craps-guide">
         <div class="container">
           <div class="seo-content section-panel">
@@ -747,16 +1132,22 @@
 
             <h2>Why Use a Craps Simulator?</h2>
             <p>
-              Craps can chew through a bankroll fast when bets get sloppy. A simulator helps you see how short-term luck, point numbers, and side bets affect the outcome before you ever sit down at a real table.
+              Craps can chew through a bankroll fast when bets get sloppy. A simulator helps you see how short-term luck, point numbers, one-roll bets, and bet sizing affect the outcome before you sit down at a real table or machine.
             </p>
 
             <h2>What You Can Practice</h2>
             <ul>
               <li>Pass Line and Don’t Pass come-out roll results</li>
               <li>How the point works after 4, 5, 6, 8, 9, or 10</li>
-              <li>Field bet volatility</li>
+              <li>Field bet volatility and one-roll risk</li>
               <li>Basic bankroll discipline and betting size control</li>
+              <li>How quickly repeated small bets add up over a session</li>
             </ul>
+
+            <h2>Important House Edge Note</h2>
+            <p>
+              Pass Line and Don’t Pass are usually among the lower-house-edge basic craps bets. Field bets depend heavily on the machine’s pay table, especially the payouts for 2 and 12. No basic strategy removes the house edge; it only helps you avoid making the game worse for yourself. Casinos already hired math. Do not volunteer as unpaid help.
+            </p>
 
             <h2>Keep Testing the Math</h2>
             <p>
@@ -771,9 +1162,46 @@
             <div class="disclaimer-block">
               <h2>Entertainment Only</h2>
               <p>
-                This simulator is for entertainment and practice only. It does not use real money and should not be treated like a guarantee of real-world gambling results.
+                This simulator is for education, entertainment, and practice only. It does not use real money and should not be treated like a guarantee of real-world gambling results.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-tight" aria-labelledby="bubble-craps-faq-title">
+        <div class="container">
+          <div class="section-header section-header-centered">
+            <p class="eyebrow-muted">FAQ</p>
+            <h2 id="bubble-craps-faq-title" class="section-title">Bubble Craps FAQ</h2>
+            <p class="section-subtext">Short answers for the questions people usually have before the dice start pretending to be entertainment.</p>
+          </div>
+
+          <div class="faq-grid">
+            <article class="faq-card section-gradient">
+              <h3>What is bubble craps?</h3>
+              <p>Bubble craps is an electronic craps game where dice bounce inside a covered machine instead of being thrown at a live table.</p>
+            </article>
+            <article class="faq-card section-gradient">
+              <h3>Is bubble craps the same as regular craps?</h3>
+              <p>The core bets are similar, but the machine interface, pace, minimum bets, and available side bets can differ from a live craps table.</p>
+            </article>
+            <article class="faq-card section-gradient">
+              <h3>What is the come-out roll?</h3>
+              <p>The come-out roll is the first roll of a new round. It can win, lose, or set a point for Pass Line and Don’t Pass bets.</p>
+            </article>
+            <article class="faq-card section-gradient">
+              <h3>What does the point mean?</h3>
+              <p>The point is 4, 5, 6, 8, 9, or 10 after the come-out roll. Pass Line wants that number again before 7. Don’t Pass wants 7 first.</p>
+            </article>
+            <article class="faq-card section-gradient">
+              <h3>What is the Field bet?</h3>
+              <p>The Field is a one-roll bet. It wins or loses on the next dice total and does not carry into the point phase.</p>
+            </article>
+            <article class="faq-card section-gradient">
+              <h3>Can you beat bubble craps?</h3>
+              <p>You can make better risk decisions, but you cannot strategy your way out of the house edge. Control bet size, avoid bad habits, and know when to stop.</p>
+            </article>
           </div>
         </div>
       </section>
