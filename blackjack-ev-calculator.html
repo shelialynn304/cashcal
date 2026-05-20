@@ -138,6 +138,10 @@
         </div>
 
         <div class="field input-spaced"><label for="trueCount">True Count (optional rough boost)</label><input id="trueCount" type="number" min="-10" max="10" step="1" value="0" /></div>
+        <div class="form-row">
+          <div class="field"><label for="monteCarloToggle"><input id="monteCarloToggle" type="checkbox" /> Monte‑Carlo verification</label></div>
+          <div class="field"><label for="mcTrials">MC Trials</label><input id="mcTrials" type="number" min="1000" step="1000" value="50000" /></div>
+        </div>
 
         <div class="hero-actions">
           <button class="btn btn-cta-primary" id="calcBtn" type="button">Calculate EV</button>
@@ -145,7 +149,7 @@
           <button class="btn btn-outline" id="resetBtn" type="button">Reset</button>
         </div>
 
-        <p class="small-note">Approximation tool for training and learning — not a full composition-dependent solver.</p>
+        <p class="small-note">Uses realistic dealer outcome probabilities and includes pushes/ties. Not a full composition-dependent solver, but more accurate than simple heuristics.</p>
       </div>
 
       <div class="card glass-card-strong glow-cyan">
@@ -162,9 +166,10 @@
         <div class="card top-gap subtle-card card-glass">
           <strong>How to read this:</strong>
           <ul>
-            <li>EV is the average return per base bet.</li>
+            <li>EV is the average return per base bet, accounting for wins, losses, and pushes (ties).</li>
             <li>Positive EV is better. Negative EV means the house still has the edge.</li>
             <li>Doubling uses twice the money, so dollar swings are bigger.</li>
+            <li>Pushes (ties) count as 0 EV and are included in the probability model.</li>
           </ul>
         </div>
       </div>
