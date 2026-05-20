@@ -431,7 +431,7 @@ h1 {
  position:absolute;
  width:24px;
  filter:drop-shadow(0 3px 4px rgba(0,0,0,.45));
- transform:translate3d(0, 8px, 0) rotate(var(--chip-rotation, 0deg));
+ transform:translate3d(var(--chip-x, 0), 8px, 0) rotate(var(--chip-rotation, 0deg));
  will-change: transform, opacity;
 }
 @keyframes chipLand{0%{opacity:0;transform:translate3d(var(--chip-x,0), -12px, 0) rotate(var(--chip-rotation,0deg)) scale(.94)}70%{opacity:1;transform:translate3d(var(--chip-x,0), 2px, 0) rotate(var(--chip-rotation,0deg)) scale(1.03)}100%{opacity:1;transform:translate3d(var(--chip-x,0), 0, 0) rotate(var(--chip-rotation,0deg)) scale(1)}}
