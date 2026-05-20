@@ -500,36 +500,49 @@ function handValue(h){
 }
 
 function renderHand(hand,el,hideHole=false){
-  el.innerHTML=""
+  const key = el.id === "dealer-hand" ? "dealer" : "player"
+
+  if(el.children.length > hand.length){
+    while(el.children.length > hand.length){
+      el.removeChild(el.lastElementChild)
+    }
+  }
 
   hand.forEach((c,i)=>{
-    let img=document.createElement("img")
-    img.className="card"
-    img.alt = hideHole && i === 1 ? "Hidden dealer card" : `${c.rank} of ${c.suit}`
+    let img=el.children[i]
+    if(!img){
+      img=document.createElement("img")
+      img.className="card"
+      img.style.setProperty("--deal-x", el.id === "dealer-hand" ? "-190px" : "190px")
+      img.style.setProperty("--deal-y", "-45px")
+      img.style.setProperty("--deal-r", `${(Math.random()*8)-4}deg`)
+      img.style.setProperty("--rest-r", `${(Math.random()*3)-1.5}deg`)
+      img.onerror=()=>{
+        if(img.dataset.fallbackApplied === "1") return
+        img.dataset.fallbackApplied = "1"
+        img.src="assets/images/cards/card_back.png"
+        img.alt="Card image unavailable"
+      }
+      if(i >= (lastRenderedHandSizes[key] || 0)){
+        img.classList.add("deal-in")
+      }
+      el.appendChild(img)
+    }
 
-    if(hideHole && i===1){
-      img.classList.add("card-back")
-      img.src="assets/images/cards/card_back.png"
-    }else{
-      img.src=`assets/images/cards/card_${c.suit}_${c.rank}.png`
-    }
-    img.onerror=()=>{
-      if(img.dataset.fallbackApplied === "1") return
-      img.dataset.fallbackApplied = "1"
-      img.src="assets/images/cards/card_back.png"
-      img.alt="Card image unavailable"
-    }
+    const shouldHideHole = hideHole && i===1
+    const nextSrc = shouldHideHole
+      ? "assets/images/cards/card_back.png"
+      : `assets/images/cards/card_${c.suit}_${c.rank}.png`
+    const nextAlt = shouldHideHole ? "Hidden dealer card" : `${c.rank} of ${c.suit}`
 
-    img.style.setProperty("--deal-x", el.id === "dealer-hand" ? "-190px" : "190px")
-    img.style.setProperty("--deal-y", "-45px")
-    img.style.setProperty("--deal-r", `${(Math.random()*8)-4}deg`)
-    img.style.setProperty("--rest-r", `${(Math.random()*3)-1.5}deg`)
-    const key = el.id === "dealer-hand" ? "dealer" : "player"
-    if(i >= (lastRenderedHandSizes[key] || 0)){
-      img.classList.add("deal-in")
+    if(img.src !== new URL(nextSrc, window.location.href).href){
+      img.src = nextSrc
+      delete img.dataset.fallbackApplied
     }
-    el.appendChild(img)
+    img.alt = nextAlt
+    img.classList.toggle("card-back", shouldHideHole)
   })
+
   if(el.id === "dealer-hand") lastRenderedHandSizes.dealer = hand.length
   if(el.id === "player-hand") lastRenderedHandSizes.player = hand.length
 }
