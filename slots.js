@@ -1,8 +1,14 @@
 (function () {
   const VOL_MULTIPLIER = {
-    low: { missStreak: 0.7, winStreak: 1.25, variance: 0.45, bustLift: 0.8 },
-    medium: { missStreak: 1, winStreak: 1, variance: 0.75, bustLift: 1 },
-    high: { missStreak: 1.35, winStreak: 0.78, variance: 1.25, bustLift: 1.25 }
+    low: { missStreak: 0.7, winStreak: 1.25, variance: 0.45, bustLift: 0.8, spread: 0.22 },
+    medium: { missStreak: 1, winStreak: 1, variance: 0.75, bustLift: 1, spread: 0.5 },
+    high: { missStreak: 1.35, winStreak: 0.78, variance: 1.25, bustLift: 1.25, spread: 1.1 }
+  };
+
+  const BONUS_SHARE_BY_VOLATILITY = {
+    low: 0.1,
+    medium: 0.18,
+    high: 0.3
   };
 
   function clamp(value, min, max) {
@@ -32,11 +38,46 @@
 
   const SLOT_SYMBOLS = ["7", "BAR", "🔔", "🍒", "🍋", "♦", "☠", "♠"];
 
-  function getPayoutMultiplier(preset) {
-    const vol = VOL_MULTIPLIER[preset.volatility] || VOL_MULTIPLIER.medium;
-    const baseMean = preset.rtp / Math.max(0.01, preset.hitFrequency);
-    const randomPart = Math.abs(normalRandom()) * vol.variance;
-    return clamp(baseMean * (0.35 + randomPart), 0.15, preset.maxWinMulti);
+  function getRtpTargets(preset) {
+    const bonusShare = clamp(BONUS_SHARE_BY_VOLATILITY[preset.volatility] ?? 0.18, 0, 0.9);
+    const bonusExpectedRtp = preset.rtp * bonusShare;
+    const baseExpectedRtp = preset.rtp - bonusExpectedRtp;
+    return { baseExpectedRtp, bonusExpectedRtp };
+  }
+
+  function getAverageMultipliers(preset) {
+    const targets = getRtpTargets(preset);
+    const baseAvg = targets.baseExpectedRtp / Math.max(0.0001, preset.hitFrequency);
+    const bonusAvg = targets.bonusExpectedRtp / Math.max(0.0001, preset.bonusRate);
+    return {
+      base: clamp(baseAvg, 0.05, preset.maxWinMulti),
+      bonus: clamp(bonusAvg, 0.2, preset.maxWinMulti)
+    };
+  }
+
+  function sampleGamma(shape) {
+    const k = Math.max(0.001, shape);
+    if (k < 1) {
+      return sampleGamma(k + 1) * Math.pow(Math.random(), 1 / k);
+    }
+
+    const d = k - 1 / 3;
+    const c = 1 / Math.sqrt(9 * d);
+
+    while (true) {
+      let x = normalRandom();
+      let v = 1 + c * x;
+      if (v <= 0) continue;
+      v = v * v * v;
+      const u = Math.random();
+      if (u < 1 - 0.0331 * Math.pow(x, 4)) return d * v;
+      if (Math.log(u) < 0.5 * x * x + d * (1 - v + Math.log(v))) return d * v;
+    }
+  }
+
+  function sampleMultiplier(avgTarget, shape, max) {
+    const sampled = sampleGamma(shape) / shape;
+    return clamp(avgTarget * sampled, 0, max);
   }
 
   function pickDifferentSymbol(excluded) {
@@ -62,8 +103,8 @@
 
   function spinOnce({ betSize, preset, activeMissStreak = 0 }) {
     const vol = VOL_MULTIPLIER[preset.volatility] || VOL_MULTIPLIER.medium;
-    const missFactor = clamp(1 - (activeMissStreak * 0.01 * vol.missStreak), 0.72, 1.08);
-    const didBaseHit = Math.random() < preset.hitFrequency * missFactor;
+    const averages = getAverageMultipliers(preset);
+    const didBaseHit = Math.random() < preset.hitFrequency;
     const didBonusHit = Math.random() < preset.bonusRate;
 
     let payout = 0;
@@ -71,12 +112,12 @@
     let bonusMultiplier = 0;
 
     if (didBaseHit) {
-      baseMultiplier = getPayoutMultiplier(preset);
+      baseMultiplier = sampleMultiplier(averages.base, Math.max(0.6, 6 / (1 + vol.spread * 4)), preset.maxWinMulti);
       payout += betSize * baseMultiplier;
     }
 
     if (didBonusHit) {
-      bonusMultiplier = clamp((2 + Math.abs(normalRandom()) * 6) * vol.winStreak, 1.5, 35);
+      bonusMultiplier = sampleMultiplier(averages.bonus, Math.max(0.45, 3.5 / (1 + vol.spread * 4.5)), preset.maxWinMulti);
       payout += betSize * bonusMultiplier;
     }
 
@@ -169,7 +210,9 @@
     const quantile = (p) => sortedBankroll[Math.floor((sortedBankroll.length - 1) * p)] || 0;
 
     const avgEnd = outcomes.reduce((sum, o) => sum + o.endedBankroll, 0) / outcomes.length;
-    const avgRtp = outcomes.reduce((sum, o) => sum + o.actualRtp, 0) / outcomes.length;
+    const totalReturned = outcomes.reduce((sum, o) => sum + o.returned, 0);
+    const totalWagered = outcomes.reduce((sum, o) => sum + o.wagered, 0);
+    const avgRtp = totalWagered > 0 ? totalReturned / totalWagered : 0;
 
     return {
       outcomes,
@@ -227,6 +270,27 @@
     spinOnce,
     spinSession,
     runMonteCarlo,
-    drawBalanceBars
+    drawBalanceBars,
+    getRtpTargets,
+    getAverageMultipliers,
+    validatePresetRtp({ spinsPerPreset = 100000, betSize = 1 } = {}) {
+      const results = {};
+      (window.SLOT_PRESETS || []).forEach((preset) => {
+        const session = spinSession({
+          bankroll: spinsPerPreset * betSize * 10,
+          betSize,
+          preset,
+          spins: spinsPerPreset
+        });
+        results[preset.id] = {
+          target: preset.rtp,
+          actual: session.actualRtp,
+          wagered: session.wagered,
+          returned: session.returned
+        };
+      });
+      console.table(results);
+      return results;
+    }
   };
 })();
