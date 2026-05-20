@@ -166,8 +166,8 @@
     return shuffled.slice(0, 5);
   }
 
-  function spinOnce({ betSize, preset, activeMissStreak = 0 }) {
-    const calibrated = getCalibratedPayoutModel(preset);
+  function spinOnce({ betSize, preset, activeMissStreak = 0, calibratedModel = null }) {
+    const calibrated = calibratedModel || getCalibratedPayoutModel(preset);
     const didBaseHit = Math.random() < preset.hitFrequency;
     const didBonusHit = Math.random() < preset.bonusRate;
 
@@ -202,7 +202,7 @@
     };
   }
 
-  function spinSession({ bankroll, betSize, preset, spins }) {
+  function spinSession({ bankroll, betSize, preset, spins, calibratedModel = null }) {
     let balance = bankroll;
     let bestRun = bankroll;
     let worstRun = bankroll;
@@ -214,6 +214,7 @@
     let activeMissStreak = 0;
 
     const samples = [];
+    const sessionModel = calibratedModel || getCalibratedPayoutModel(preset);
 
     for (let i = 1; i <= spins; i += 1) {
       if (balance < betSize) {
@@ -224,7 +225,7 @@
       balance -= betSize;
       wagered += betSize;
 
-      const spin = spinOnce({ betSize, preset, activeMissStreak });
+      const spin = spinOnce({ betSize, preset, activeMissStreak, calibratedModel: sessionModel });
       const payout = spin.payout;
       activeMissStreak = spin.nextMissStreak;
       longestMissStreak = Math.max(longestMissStreak, activeMissStreak);
@@ -262,9 +263,10 @@
 
   function runMonteCarlo({ bankroll, betSize, preset, spins, trials = 250 }) {
     const outcomes = [];
+    const model = getCalibratedPayoutModel(preset);
 
     for (let i = 0; i < trials; i += 1) {
-      outcomes.push(spinSession({ bankroll, betSize, preset, spins }));
+      outcomes.push(spinSession({ bankroll, betSize, preset, spins, calibratedModel: model }));
     }
 
     const busts = outcomes.filter((o) => o.bust).length;
