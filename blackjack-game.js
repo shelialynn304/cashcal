@@ -556,17 +556,29 @@ function render(showDealer=false){
 function renderBankrollStack(){
   if(!bankrollStackEl) return
   bankrollStackEl.innerHTML=""
-  const stackUnits = Math.max(1, Math.min(18, 1 + Math.floor(Math.max(0, bankroll - 600) / 110)))
-  const denoms = [100,25,5,1]
-  for(let i=0;i<stackUnits;i++){
-    const denom = denoms[Math.min(denoms.length - 1, Math.floor((i / stackUnits) * denoms.length))]
+
+  const visibleChipCount = Math.max(1, Math.min(16, 2 + Math.floor(Math.max(0, bankroll) / 180)))
+  const denoms = [100,25,10,5,1]
+  const laneOffsets = [-28, -20, -12, -5, 3, 11, 19, 27]
+  const rows = 3
+  const chipsPerRow = Math.ceil(visibleChipCount / rows)
+
+  for(let i=0;i<visibleChipCount;i++){
+    const ratio = i / Math.max(1, visibleChipCount - 1)
+    const denom = denoms[Math.min(denoms.length - 1, Math.floor(ratio * denoms.length))]
+    const laneIndex = i % chipsPerRow
+    const rowIndex = Math.floor(i / chipsPerRow)
+    const jitterX = (Math.random() * 5) - 2.5
+    const jitterY = Math.random() * 1.6
+
     const chip=document.createElement("img")
     chip.src=`assets/images/chips/chip-${denom}.png`
     chip.className="stack-chip"
     chip.alt=""
-    chip.style.left=`${46 + ((Math.random()*18)-9)}px`
-    chip.style.bottom=`${Math.min(56, i*3)}px`
-    chip.style.transform=`translateY(0) rotate(${(Math.random()*8)-4}deg)`
+    chip.style.left="50%"
+    chip.style.bottom=`${(rowIndex * 9) + jitterY}px`
+    chip.style.setProperty("--chip-x", `${laneOffsets[Math.min(laneOffsets.length - 1, laneIndex)] + jitterX}px`)
+    chip.style.setProperty("--chip-rotation", `${(Math.random() * 6) - 3}deg`)
     bankrollStackEl.appendChild(chip)
   }
 }
