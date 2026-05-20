@@ -102,6 +102,15 @@
     0 0 18px rgba(255, 215, 0, 0.18);
 }
 
+
+.slot-symbol-img {
+  display: block;
+  width: 100%;
+  max-width: 96px;
+  height: auto;
+  object-fit: contain;
+}
+
 .slot-spin-btn {
   display: inline-block;
   background: linear-gradient(180deg, #f3c94b, #b98307);
