@@ -96,23 +96,8 @@
     symbolNode.appendChild(img);
   }
 
-  function supportsAnyMime(audioElement, mimeTypes) {
-    if (!audioElement || typeof audioElement.canPlayType !== "function") return false;
-    return mimeTypes.some((type) => Boolean(audioElement.canPlayType(type)));
-  }
-
   function chooseVisitSpinSound() {
-    const spinCandidates = [
-      { src: "assets/sounds/slots/spins_1.mp3", mimeTypes: ["audio/mpeg"] },
-      { src: "assets/sounds/slots/spin_2", mimeTypes: ["audio/ogg", "audio/wav", "audio/x-wav"] },
-      { src: "assets/sounds/slots/spin_3", mimeTypes: ["audio/ogg", "audio/wav", "audio/x-wav"] }
-    ];
-
-    const audioProbe = document.createElement("audio");
-    const playable = spinCandidates.filter((candidate) => supportsAnyMime(audioProbe, candidate.mimeTypes));
-    const pool = playable.length ? playable : [spinCandidates[0]];
-    const index = Math.floor(Math.random() * pool.length);
-    return (pool[index] && pool[index].src) || spinCandidates[0].src;
+    return "assets/sounds/slots/spins_1.mp3";
   }
 
   function getRenderedReels() {
