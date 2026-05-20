@@ -43,6 +43,9 @@ const resetBtn=document.getElementById("resetBtn")
 
 const chipsRow=document.getElementById("chipsRow")
 const betSpot=document.getElementById("betSpot")
+const bankrollStackEl=document.getElementById("bankrollStack")
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+const DEAL_DELAY_MS = reducedMotion ? 0 : 120
 
 const correctMovesEl=document.getElementById("correctMoves")
 const wrongMovesEl=document.getElementById("wrongMoves")
@@ -54,6 +57,8 @@ const strategyMoveEl=document.getElementById("strategyMove")
 const strategyTextEl=document.getElementById("strategyText")
 const strategyCloseBtn=document.getElementById("strategyClose")
 let strategyTimer=null
+let lastRenderedHandSizes = { dealer: 0, player: 0 }
+let dealingInProgress = false
 
 if(strategyCloseBtn){
   strategyCloseBtn.addEventListener("click",()=>{
@@ -448,6 +453,7 @@ function setReason(text){
 function updateMoney(){
   bankrollEl.textContent=bankroll
   betEl.textContent=bet
+  renderBankrollStack()
 }
 
 function buildDeck(){
@@ -513,9 +519,18 @@ function renderHand(hand,el,hideHole=false){
       img.alt="Card image unavailable"
     }
 
-    img.style.animationDelay=`${i*.15}s`
+    img.style.setProperty("--deal-x", el.id === "dealer-hand" ? "-190px" : "190px")
+    img.style.setProperty("--deal-y", "-45px")
+    img.style.setProperty("--deal-r", `${(Math.random()*8)-4}deg`)
+    img.style.setProperty("--rest-r", `${(Math.random()*3)-1.5}deg`)
+    const key = el.id === "dealer-hand" ? "dealer" : "player"
+    if(i >= (lastRenderedHandSizes[key] || 0)){
+      img.classList.add("deal-in")
+    }
     el.appendChild(img)
   })
+  if(el.id === "dealer-hand") lastRenderedHandSizes.dealer = hand.length
+  if(el.id === "player-hand") lastRenderedHandSizes.player = hand.length
 }
 
 function render(showDealer=false){
@@ -524,16 +539,36 @@ function render(showDealer=false){
   playerTotalEl.textContent=handValue(player)
   dealerTotalEl.textContent=showDealer ? handValue(dealer) : (dealer[0] ? cardValue(dealer[0].rank) : 0)
 }
+function renderBankrollStack(){
+  if(!bankrollStackEl) return
+  bankrollStackEl.innerHTML=""
+  const stackUnits = Math.max(1, Math.min(18, 1 + Math.floor(Math.max(0, bankroll - 600) / 110)))
+  const denoms = [100,25,5,1]
+  for(let i=0;i<stackUnits;i++){
+    const denom = denoms[Math.min(denoms.length - 1, Math.floor((i / stackUnits) * denoms.length))]
+    const chip=document.createElement("img")
+    chip.src=`assets/images/chips/chip-${denom}.png`
+    chip.className="stack-chip"
+    chip.alt=""
+    chip.style.left=`${46 + ((Math.random()*18)-9)}px`
+    chip.style.bottom=`${Math.min(56, i*3)}px`
+    chip.style.transform=`translateY(0) rotate(${(Math.random()*8)-4}deg)`
+    bankrollStackEl.appendChild(chip)
+  }
+}
 
 function updateButtons(){
-  dealBtn.disabled=!gameOver
-  hitBtn.disabled=gameOver
-  standBtn.disabled=gameOver
-  doubleBtn.disabled=gameOver || player.length!==2 || bankroll<bet
-  splitBtn.disabled=gameOver || !isPair(player) || bankroll<bet
-  clearBetBtn.disabled=!gameOver || bet===0
+  dealBtn.disabled=!gameOver || dealingInProgress
+  hitBtn.disabled=gameOver || dealingInProgress
+  standBtn.disabled=gameOver || dealingInProgress
+  doubleBtn.disabled=gameOver || dealingInProgress || player.length!==2 || bankroll<bet
+  splitBtn.disabled=gameOver || dealingInProgress || !isPair(player) || bankroll<bet
+  clearBetBtn.disabled=!gameOver || bet===0 || dealingInProgress
   if(repeatBetBtn){
-    repeatBetBtn.disabled=!gameOver || bet>0 || lastValidBetAmount<=0
+    repeatBetBtn.disabled=!gameOver || bet>0 || lastValidBetAmount<=0 || dealingInProgress
+  }
+  if(betSpot){
+    betSpot.classList.toggle("betting-active", gameOver && bet >= 0)
   }
 }
 
@@ -893,11 +928,12 @@ function addBet(a){
 
   bankroll-=validation.amount
   bet+=validation.amount
-  playChipSound()
+  setTimeout(()=>playChipSound(), reducedMotion ? 0 : 120)
   maybeBetVoice(validation.amount)
   updateMoney()
   updateButtons()
   renderBetChip(validation.amount)
+  renderBankrollStack()
 }
 
 function repeatBet(){
@@ -919,9 +955,11 @@ function clearBet(){
   betSpot.innerHTML=""
   updateMoney()
   updateButtons()
+  renderBankrollStack()
 }
 
 function deal(){
+  if(dealingInProgress) return
   hintDismissedForHand = false
 
   if(bankroll <= 0 && bet <= 0){
@@ -943,37 +981,59 @@ function deal(){
     dealerVoice("placeBets", { category: "betting", cooldownMs: 24000, chance: 0.28 })
   }
   handHadCorrectDecision=false
+  lastRenderedHandSizes = { dealer: 0, player: 0 }
   playShuffleSound()
   buildDeck()
   shuffle()
   splitModeActive=false
-  player = [draw(), draw()]
-  dealer = [draw(), draw()]
+  player = []
+  dealer = []
   gameOver = false
-
-  render()
-  playDealSound()
+  dealingInProgress = true
   updateButtons()
-  setMessage("Your move")
+  setMessage("Dealing…")
+  render()
 
-  if(handValue(player) === 21){
-    render(false)
-    setReason("🎉 Blackjack. You hit 21 immediately, which is the dream before the casino remembers whose building this is.")
-    playBlackjackSound()
-    dealerVoice("cardsInTheAir", { category: "big-card", cooldownMs: 26000, chance: 0.38 })
-    showImage(IMAGES.blackjack)
-  }else{
-    setReason(trainerHintsEnabled
-      ? "Hints are ON. The coach is showing the recommended move."
-      : "Hints are OFF. Make your choice and I’ll explain it after.")
-  }
+  const openingCards = [draw(), draw(), draw(), draw()]
+  const sequence = [
+    ()=>player.push(openingCards[0]),
+    ()=>dealer.push(openingCards[1]),
+    ()=>player.push(openingCards[2]),
+    ()=>dealer.push(openingCards[3])
+  ]
+  const stepDelay = reducedMotion ? 0 : 170
 
-  maybeShowStrategy()
+  sequence.forEach((step, idx)=>{
+    setTimeout(()=>{
+      step()
+      render()
+      playDealSound()
+      if(idx === sequence.length - 1){
+        setTimeout(()=>{
+          dealingInProgress = false
+          updateButtons()
+          setMessage("Your move")
+          if(handValue(player) === 21){
+            render(false)
+            setReason("🎉 Blackjack. You hit 21 immediately, which is the dream before the casino remembers whose building this is.")
+            playBlackjackSound()
+            dealerVoice("cardsInTheAir", { category: "big-card", cooldownMs: 26000, chance: 0.38 })
+            showImage(IMAGES.blackjack)
+          }else{
+            setReason(trainerHintsEnabled
+              ? "Hints are ON. The coach is showing the recommended move."
+              : "Hints are OFF. Make your choice and I’ll explain it after.")
+          }
+          maybeShowStrategy()
+        }, reducedMotion ? 0 : 140)
+      }
+    }, idx * stepDelay)
+  })
 }
 
   
 function hit(){
-  if(gameOver) return
+  if(gameOver || dealingInProgress) return
 
   explainMove("Hit")
   if(isDramaticHit()){
@@ -1026,7 +1086,7 @@ if(handValue(player) > 21){
 
 
   function stand(fromAuto=false){
-  if(gameOver) return
+  if(gameOver || dealingInProgress) return
 
   if(!fromAuto){
     explainMove("Stand")
@@ -1148,7 +1208,7 @@ if(handValue(player) > 21){
   }
 }
 function doubleDown(){
-  if(gameOver) return
+  if(gameOver || dealingInProgress) return
 
   const validation = getBetValidation(bet, { action:"double" })
   if(!validation.ok){
@@ -1197,7 +1257,7 @@ function doubleDown(){
 }
 
 function splitHand(){
-  if(gameOver) return
+  if(gameOver || dealingInProgress) return
   if(!isPair(player)){
     setMessage("Split only works on pairs.")
     return
@@ -1246,6 +1306,7 @@ function resetGame(){
   updateMoney()
   updateButtons()
   render()
+  renderBankrollStack()
 }
 
 function initChipImageFallbacks(){
@@ -1291,3 +1352,4 @@ initChipImageFallbacks()
 updateMoney()
 updateButtons()
 render()
+renderBankrollStack()
