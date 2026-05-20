@@ -11,6 +11,52 @@
     high: 0.3
   };
 
+  const PAYOUT_BUCKETS_BY_VOLATILITY = {
+    low: {
+      base: [
+        { probability: 0.55, multiplier: 0.7 },
+        { probability: 0.3, multiplier: 1.1 },
+        { probability: 0.12, multiplier: 1.8 },
+        { probability: 0.03, multiplier: 2.8 }
+      ],
+      bonus: [
+        { probability: 0.7, multiplier: 2.5 },
+        { probability: 0.23, multiplier: 4.5 },
+        { probability: 0.07, multiplier: 7.5 }
+      ]
+    },
+    medium: {
+      base: [
+        { probability: 0.46, multiplier: 0.7 },
+        { probability: 0.32, multiplier: 1.5 },
+        { probability: 0.16, multiplier: 2.8 },
+        { probability: 0.06, multiplier: 5 }
+      ],
+      bonus: [
+        { probability: 0.58, multiplier: 4 },
+        { probability: 0.28, multiplier: 8 },
+        { probability: 0.11, multiplier: 14 },
+        { probability: 0.03, multiplier: 24 }
+      ]
+    },
+    high: {
+      base: [
+        { probability: 0.4, multiplier: 0.6 },
+        { probability: 0.3, multiplier: 1.7 },
+        { probability: 0.2, multiplier: 3.8 },
+        { probability: 0.08, multiplier: 8 },
+        { probability: 0.02, multiplier: 15 }
+      ],
+      bonus: [
+        { probability: 0.5, multiplier: 6 },
+        { probability: 0.26, multiplier: 13 },
+        { probability: 0.15, multiplier: 22 },
+        { probability: 0.07, multiplier: 38 },
+        { probability: 0.02, multiplier: 70 }
+      ]
+    }
+  };
+
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
   }
@@ -21,14 +67,6 @@
 
   function toPercent(decimal, digits = 1) {
     return `${(Number(decimal) * 100).toFixed(digits)}%`;
-  }
-
-  function normalRandom() {
-    let u = 0;
-    let v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
-    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
   }
 
   function getPresetById(id) {
@@ -45,39 +83,66 @@
     return { baseExpectedRtp, bonusExpectedRtp };
   }
 
-  function getAverageMultipliers(preset) {
+  function getBucketAverage(buckets) {
+    return buckets.reduce((sum, bucket) => sum + bucket.probability * bucket.multiplier, 0);
+  }
+
+  function scaleBucketsToAverage(rawBuckets, targetAverage, maxMultiplier) {
+    const cappedRaw = rawBuckets.map((bucket) => ({
+      probability: bucket.probability,
+      multiplier: clamp(bucket.multiplier, 0, maxMultiplier)
+    }));
+
+    const rawAverage = getBucketAverage(cappedRaw);
+    if (rawAverage <= 0 || targetAverage <= 0) {
+      return cappedRaw.map((bucket) => ({ ...bucket, multiplier: 0 }));
+    }
+
+    const scale = targetAverage / rawAverage;
+    const scaled = cappedRaw.map((bucket) => ({
+      probability: bucket.probability,
+      multiplier: clamp(bucket.multiplier * scale, 0, maxMultiplier)
+    }));
+
+    const scaledAverage = getBucketAverage(scaled);
+    if (scaledAverage > 0 && Math.abs(scaledAverage - targetAverage) > 0.0001) {
+      const correction = targetAverage / scaledAverage;
+      return scaled.map((bucket) => ({
+        probability: bucket.probability,
+        multiplier: clamp(bucket.multiplier * correction, 0, maxMultiplier)
+      }));
+    }
+
+    return scaled;
+  }
+
+  function getCalibratedPayoutModel(preset) {
     const targets = getRtpTargets(preset);
-    const baseAvg = targets.baseExpectedRtp / Math.max(0.0001, preset.hitFrequency);
-    const bonusAvg = targets.bonusExpectedRtp / Math.max(0.0001, preset.bonusRate);
+    const baseTargetAverage = targets.baseExpectedRtp / Math.max(0.0001, preset.hitFrequency);
+    const bonusTargetAverage = targets.bonusExpectedRtp / Math.max(0.0001, preset.bonusRate);
+
+    const templates = PAYOUT_BUCKETS_BY_VOLATILITY[preset.volatility] || PAYOUT_BUCKETS_BY_VOLATILITY.medium;
+    const baseBuckets = scaleBucketsToAverage(templates.base, baseTargetAverage, preset.maxWinMulti);
+    const bonusBuckets = scaleBucketsToAverage(templates.bonus, bonusTargetAverage, preset.maxWinMulti);
+
     return {
-      base: clamp(baseAvg, 0.05, preset.maxWinMulti),
-      bonus: clamp(bonusAvg, 0.2, preset.maxWinMulti)
+      baseBuckets,
+      bonusBuckets,
+      baseAverage: getBucketAverage(baseBuckets),
+      bonusAverage: getBucketAverage(bonusBuckets)
     };
   }
 
-  function sampleGamma(shape) {
-    const k = Math.max(0.001, shape);
-    if (k < 1) {
-      return sampleGamma(k + 1) * Math.pow(Math.random(), 1 / k);
+  function sampleFromBuckets(buckets) {
+    const roll = Math.random();
+    let running = 0;
+    for (let i = 0; i < buckets.length; i += 1) {
+      running += buckets[i].probability;
+      if (roll <= running || i === buckets.length - 1) {
+        return buckets[i].multiplier;
+      }
     }
-
-    const d = k - 1 / 3;
-    const c = 1 / Math.sqrt(9 * d);
-
-    while (true) {
-      let x = normalRandom();
-      let v = 1 + c * x;
-      if (v <= 0) continue;
-      v = v * v * v;
-      const u = Math.random();
-      if (u < 1 - 0.0331 * Math.pow(x, 4)) return d * v;
-      if (Math.log(u) < 0.5 * x * x + d * (1 - v + Math.log(v))) return d * v;
-    }
-  }
-
-  function sampleMultiplier(avgTarget, shape, max) {
-    const sampled = sampleGamma(shape) / shape;
-    return clamp(avgTarget * sampled, 0, max);
+    return 0;
   }
 
   function pickDifferentSymbol(excluded) {
@@ -102,8 +167,7 @@
   }
 
   function spinOnce({ betSize, preset, activeMissStreak = 0 }) {
-    const vol = VOL_MULTIPLIER[preset.volatility] || VOL_MULTIPLIER.medium;
-    const averages = getAverageMultipliers(preset);
+    const calibrated = getCalibratedPayoutModel(preset);
     const didBaseHit = Math.random() < preset.hitFrequency;
     const didBonusHit = Math.random() < preset.bonusRate;
 
@@ -112,12 +176,12 @@
     let bonusMultiplier = 0;
 
     if (didBaseHit) {
-      baseMultiplier = sampleMultiplier(averages.base, Math.max(0.6, 6 / (1 + vol.spread * 4)), preset.maxWinMulti);
+      baseMultiplier = sampleFromBuckets(calibrated.baseBuckets);
       payout += betSize * baseMultiplier;
     }
 
     if (didBonusHit) {
-      bonusMultiplier = sampleMultiplier(averages.bonus, Math.max(0.45, 3.5 / (1 + vol.spread * 4.5)), preset.maxWinMulti);
+      bonusMultiplier = sampleFromBuckets(calibrated.bonusBuckets);
       payout += betSize * bonusMultiplier;
     }
 
@@ -139,7 +203,6 @@
   }
 
   function spinSession({ bankroll, betSize, preset, spins }) {
-    const vol = VOL_MULTIPLIER[preset.volatility] || VOL_MULTIPLIER.medium;
     let balance = bankroll;
     let bestRun = bankroll;
     let worstRun = bankroll;
@@ -272,10 +335,11 @@
     runMonteCarlo,
     drawBalanceBars,
     getRtpTargets,
-    getAverageMultipliers,
+    getCalibratedPayoutModel,
     validatePresetRtp({ spinsPerPreset = 100000, betSize = 1 } = {}) {
       const results = {};
       (window.SLOT_PRESETS || []).forEach((preset) => {
+        const model = getCalibratedPayoutModel(preset);
         const session = spinSession({
           bankroll: spinsPerPreset * betSize * 10,
           betSize,
@@ -285,8 +349,11 @@
         results[preset.id] = {
           target: preset.rtp,
           actual: session.actualRtp,
+          diff: session.actualRtp - preset.rtp,
           wagered: session.wagered,
-          returned: session.returned
+          returned: session.returned,
+          maxBaseMultiplier: Math.max(...model.baseBuckets.map((b) => b.multiplier), 0),
+          maxBonusMultiplier: Math.max(...model.bonusBuckets.map((b) => b.multiplier), 0)
         };
       });
       console.table(results);
