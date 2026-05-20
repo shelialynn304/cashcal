@@ -59,6 +59,7 @@ const strategyCloseBtn=document.getElementById("strategyClose")
 let strategyTimer=null
 let lastRenderedHandSizes = { dealer: 0, player: 0 }
 let dealingInProgress = false
+let activeDealToken = 0
 
 if(strategyCloseBtn){
   strategyCloseBtn.addEventListener("click",()=>{
@@ -960,6 +961,7 @@ function clearBet(){
 
 function deal(){
   if(dealingInProgress) return
+  const dealToken = ++activeDealToken
   hintDismissedForHand = false
 
   if(bankroll <= 0 && bet <= 0){
@@ -1005,11 +1007,13 @@ function deal(){
 
   sequence.forEach((step, idx)=>{
     setTimeout(()=>{
+      if(dealToken !== activeDealToken || gameOver) return
       step()
       render()
       playDealSound()
       if(idx === sequence.length - 1){
         setTimeout(()=>{
+          if(dealToken !== activeDealToken || gameOver) return
           dealingInProgress = false
           updateButtons()
           setMessage("Your move")
@@ -1285,6 +1289,8 @@ function splitHand(){
 }
 
 function resetGame(){
+  activeDealToken++
+  dealingInProgress = false
   playShuffleSound()
   deck=[]
   player=[]
