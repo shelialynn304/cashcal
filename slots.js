@@ -77,7 +77,8 @@
   const SLOT_SYMBOLS = ["7", "BAR", "🔔", "🍒", "🍋", "♦", "☠", "♠"];
 
   function getRtpTargets(preset) {
-    const bonusShare = clamp(BONUS_SHARE_BY_VOLATILITY[preset.volatility] ?? 0.18, 0, 0.9);
+    const fallbackShare = BONUS_SHARE_BY_VOLATILITY[preset.volatility] ?? 0.18;
+    const bonusShare = clamp(Number(preset.bonusShare ?? fallbackShare), 0, 0.9);
     const bonusExpectedRtp = preset.rtp * bonusShare;
     const baseExpectedRtp = preset.rtp - bonusExpectedRtp;
     return { baseExpectedRtp, bonusExpectedRtp };
@@ -346,16 +347,35 @@
           bankroll: spinsPerPreset * betSize * 10,
           betSize,
           preset,
-          spins: spinsPerPreset
+          spins: spinsPerPreset,
+          calibratedModel: model
         });
+        const modelExpectedRtp = preset.hitFrequency * model.baseAverage + preset.bonusRate * model.bonusAverage;
+        const actual = session.wagered > 0 ? session.returned / session.wagered : 0;
+        const diff = actual - preset.rtp;
+        const modelDiff = modelExpectedRtp - preset.rtp;
+        const maxBaseMultiplier = Math.max(...model.baseBuckets.map((b) => b.multiplier), 0);
+        const maxBonusMultiplier = Math.max(...model.bonusBuckets.map((b) => b.multiplier), 0);
+
         results[preset.id] = {
           target: preset.rtp,
-          actual: session.actualRtp,
-          diff: session.actualRtp - preset.rtp,
+          actual,
+          diff,
+          targetPercent: toPercent(preset.rtp, 3),
+          actualPercent: toPercent(actual, 3),
+          diffPercent: toPercent(diff, 3),
+          modelExpectedRtp,
+          modelExpectedPercent: toPercent(modelExpectedRtp, 3),
+          modelDiff,
+          modelDiffPercent: toPercent(modelDiff, 3),
+          spinsPlayed: session.spinsPlayed,
           wagered: session.wagered,
           returned: session.returned,
-          maxBaseMultiplier: Math.max(...model.baseBuckets.map((b) => b.multiplier), 0),
-          maxBonusMultiplier: Math.max(...model.bonusBuckets.map((b) => b.multiplier), 0)
+          maxBaseMultiplier,
+          maxBonusMultiplier,
+          maxWinMulti: preset.maxWinMulti,
+          baseWithinMax: maxBaseMultiplier <= preset.maxWinMulti,
+          bonusWithinMax: maxBonusMultiplier <= preset.maxWinMulti
         };
       });
       console.table(results);
