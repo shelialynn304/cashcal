@@ -28,6 +28,15 @@
   const bars = document.getElementById("simBalanceBars");
 
   const reelSymbols = ["BAR", "BELL", "CHERRY", "LEMON", "DIAMOND", "ORANGE", "GRAPES", "WATERMELON", "PLUM", "CLOVER", "COIN"];
+  const symbolAliasMap = {
+    "7": "COIN",
+    "🔔": "BELL",
+    "🍒": "CHERRY",
+    "🍋": "LEMON",
+    "♦": "DIAMOND",
+    "♠": "CLOVER",
+    "☠": "PLUM"
+  };
   const symbolImageMap = {
     BAR: "assets/images/slots/bar.webp",
     BELL: "assets/images/slots/bell.webp",
@@ -55,9 +64,16 @@
     return String(symbol || "").replace(/[_-]+/g, " ").toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
   }
 
+  function normalizeSlotSymbol(symbol) {
+    const cleaned = String(symbol || "").trim();
+    const upper = cleaned.toUpperCase();
+    return symbolAliasMap[cleaned] || symbolAliasMap[upper] || upper;
+  }
+
   function setReelSymbolContent(symbolNode, symbol) {
     if (!symbolNode) return;
-    const imageSrc = symbolImageMap[symbol];
+    const normalized = normalizeSlotSymbol(symbol);
+    const imageSrc = symbolImageMap[normalized];
     symbolNode.textContent = "";
 
     if (!imageSrc) {
@@ -68,7 +84,7 @@
     const img = document.createElement("img");
     img.className = "slot-symbol-img";
     img.src = imageSrc;
-    img.alt = `${formatSymbolLabel(symbol)} slot symbol`;
+    img.alt = `${formatSymbolLabel(normalized)} slot symbol`;
     img.width = 96;
     img.height = 96;
     img.loading = "lazy";
@@ -80,14 +96,23 @@
     symbolNode.appendChild(img);
   }
 
+  function supportsAnyMime(audioElement, mimeTypes) {
+    if (!audioElement || typeof audioElement.canPlayType !== "function") return false;
+    return mimeTypes.some((type) => Boolean(audioElement.canPlayType(type)));
+  }
+
   function chooseVisitSpinSound() {
     const spinCandidates = [
-      "assets/sounds/slots/spins_1.mp3",
-      "assets/sounds/slots/spin_2",
-      "assets/sounds/slots/spin_3"
+      { src: "assets/sounds/slots/spins_1.mp3", mimeTypes: ["audio/mpeg"] },
+      { src: "assets/sounds/slots/spin_2", mimeTypes: ["audio/ogg", "audio/wav", "audio/x-wav"] },
+      { src: "assets/sounds/slots/spin_3", mimeTypes: ["audio/ogg", "audio/wav", "audio/x-wav"] }
     ];
-    const index = Math.floor(Math.random() * spinCandidates.length);
-    return spinCandidates[index] || "assets/sounds/slots/spin_2";
+
+    const audioProbe = document.createElement("audio");
+    const playable = spinCandidates.filter((candidate) => supportsAnyMime(audioProbe, candidate.mimeTypes));
+    const pool = playable.length ? playable : [spinCandidates[0]];
+    const index = Math.floor(Math.random() * pool.length);
+    return (pool[index] && pool[index].src) || spinCandidates[0].src;
   }
 
   function getRenderedReels() {
