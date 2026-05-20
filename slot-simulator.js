@@ -27,14 +27,93 @@
   const narrative = document.getElementById("simNarrative");
   const bars = document.getElementById("simBalanceBars");
 
-  const reelSymbols = ["7", "BAR", "🔔", "🍒", "🍋", "♦", "☠", "♠"];
+  const reelSymbols = ["BAR", "BELL", "CHERRY", "LEMON", "DIAMOND", "ORANGE", "GRAPES", "WATERMELON", "PLUM", "CLOVER", "COIN"];
+  const symbolAliasMap = {
+    "7": "COIN",
+    "🔔": "BELL",
+    "🍒": "CHERRY",
+    "🍋": "LEMON",
+    "♦": "DIAMOND",
+    "♠": "CLOVER",
+    "☠": "PLUM"
+  };
+  const symbolImageMap = {
+    BAR: "assets/images/slots/bar.webp",
+    BELL: "assets/images/slots/bell.webp",
+    CHERRY: "assets/images/slots/cherry.webp",
+    LEMON: "assets/images/slots/lemon.webp",
+    DIAMOND: "assets/images/slots/diamond.webp",
+    ORANGE: "assets/images/slots/orange.webp",
+    GRAPES: "assets/images/slots/grapes.webp",
+    WATERMELON: "assets/images/slots/watermelon.webp",
+    PLUM: "assets/images/slots/plum.webp",
+    CLOVER: "assets/images/slots/clover.webp",
+    COIN: "assets/images/slots/coin.webp"
+  };
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let activeMissStreak = 0;
   let isSpinning = false;
   let reelCount = 5;
   let soundEnabled = false;
   let spinAudio = null;
+  const visitSpinSound = chooseVisitSpinSound();
 
+
+
+  function formatSymbolLabel(symbol) {
+    return String(symbol || "").replace(/[_-]+/g, " ").toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+
+  function normalizeSlotSymbol(symbol) {
+    const cleaned = String(symbol || "").trim();
+    const upper = cleaned.toUpperCase();
+    return symbolAliasMap[cleaned] || symbolAliasMap[upper] || upper;
+  }
+
+  function setReelSymbolContent(symbolNode, symbol) {
+    if (!symbolNode) return;
+    const normalized = normalizeSlotSymbol(symbol);
+    const imageSrc = symbolImageMap[normalized];
+    symbolNode.textContent = "";
+
+    if (!imageSrc) {
+      symbolNode.textContent = symbol;
+      return;
+    }
+
+    const img = document.createElement("img");
+    img.className = "slot-symbol-img";
+    img.src = imageSrc;
+    img.alt = `${formatSymbolLabel(normalized)} slot symbol`;
+    img.width = 96;
+    img.height = 96;
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.addEventListener("error", () => {
+      symbolNode.textContent = symbol;
+    }, { once: true });
+
+    symbolNode.appendChild(img);
+  }
+
+  function supportsAnyMime(audioElement, mimeTypes) {
+    if (!audioElement || typeof audioElement.canPlayType !== "function") return false;
+    return mimeTypes.some((type) => Boolean(audioElement.canPlayType(type)));
+  }
+
+  function chooseVisitSpinSound() {
+    const spinCandidates = [
+      { src: "assets/sounds/slots/spins_1.mp3", mimeTypes: ["audio/mpeg"] },
+      { src: "assets/sounds/slots/spin_2", mimeTypes: ["audio/ogg", "audio/wav", "audio/x-wav"] },
+      { src: "assets/sounds/slots/spin_3", mimeTypes: ["audio/ogg", "audio/wav", "audio/x-wav"] }
+    ];
+
+    const audioProbe = document.createElement("audio");
+    const playable = spinCandidates.filter((candidate) => supportsAnyMime(audioProbe, candidate.mimeTypes));
+    const pool = playable.length ? playable : [spinCandidates[0]];
+    const index = Math.floor(Math.random() * pool.length);
+    return (pool[index] && pool[index].src) || spinCandidates[0].src;
+  }
 
   function getRenderedReels() {
     return Array.from(slotReelsContainer.querySelectorAll(".slot-reel"));
@@ -51,7 +130,7 @@
       reel.className = "slot-reel";
       const symbol = document.createElement("span");
       symbol.className = "slot-symbol";
-      symbol.textContent = reelSymbols[i % reelSymbols.length];
+      setReelSymbolContent(symbol, reelSymbols[i % reelSymbols.length]);
       reel.appendChild(symbol);
       slotReelsContainer.appendChild(reel);
     }
@@ -74,7 +153,7 @@
 
   function initAudio() {
     if (spinAudio) return spinAudio;
-    spinAudio = new Audio("assets/sounds/games/roulette_spin.mp3");
+    spinAudio = new Audio(visitSpinSound);
     spinAudio.preload = "auto";
     return spinAudio;
   }
@@ -133,7 +212,7 @@
     slotReels.forEach((reel, index) => {
       const symbol = symbols[index] || reelSymbols[index % reelSymbols.length];
       const symbolNode = reel.querySelector(".slot-symbol");
-      if (symbolNode) symbolNode.textContent = symbol;
+      setReelSymbolContent(symbolNode, symbol);
     });
   }
 
@@ -211,7 +290,7 @@
       timers.push(window.setInterval(() => {
         const symbolNode = reel.querySelector(".slot-symbol");
         if (symbolNode) {
-          symbolNode.textContent = reelSymbols[Math.floor(Math.random() * reelSymbols.length)];
+          setReelSymbolContent(symbolNode, reelSymbols[Math.floor(Math.random() * reelSymbols.length)]);
         }
       }, 70 + reelIndex * 8));
     });
@@ -220,7 +299,7 @@
       window.setTimeout(() => {
         window.clearInterval(timers[reelIndex]);
         const symbolNode = reel.querySelector(".slot-symbol");
-        if (symbolNode) symbolNode.textContent = finalSymbols[reelIndex];
+        setReelSymbolContent(symbolNode, finalSymbols[reelIndex]);
         reel.classList.remove("reel-spinning");
         if (resultType === "bonus") reel.classList.add("slot-jackpot");
         if (resultType === "base") reel.classList.add("slot-win");
