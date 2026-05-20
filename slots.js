@@ -1,8 +1,8 @@
 (function () {
   const VOL_MULTIPLIER = {
-    low: { missStreak: 0.7, winStreak: 1.25, variance: 0.45, bustLift: 0.8 },
-    medium: { missStreak: 1, winStreak: 1, variance: 0.75, bustLift: 1 },
-    high: { missStreak: 1.35, winStreak: 0.78, variance: 1.25, bustLift: 1.25 }
+    low: { baseSpread: 0.22, bonusSpread: 0.32 },
+    medium: { baseSpread: 0.45, bonusSpread: 0.68 },
+    high: { baseSpread: 0.85, bonusSpread: 1.2 }
   };
 
   function clamp(value, min, max) {
@@ -17,14 +17,6 @@
     return `${(Number(decimal) * 100).toFixed(digits)}%`;
   }
 
-  function normalRandom() {
-    let u = 0;
-    let v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
-    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-  }
-
   function getPresetById(id) {
     const list = window.SLOT_PRESETS || [];
     return list.find((preset) => preset.id === id) || list[0];
@@ -32,11 +24,29 @@
 
   const SLOT_SYMBOLS = ["7", "BAR", "🔔", "🍒", "🍋", "♦", "☠", "♠"];
 
-  function getPayoutMultiplier(preset) {
+  function getRtpTargets(preset) {
+    const bonusShare = clamp(Number(preset.bonusShare ?? 0.2), 0.01, 0.95);
+    const bonusExpectedRtp = preset.rtp * bonusShare;
+    const baseExpectedRtp = preset.rtp - bonusExpectedRtp;
+    const averageBaseMultiplier = baseExpectedRtp / Math.max(0.000001, preset.hitFrequency);
+    const averageBonusMultiplier = bonusExpectedRtp / Math.max(0.000001, preset.bonusRate);
+
+    return {
+      bonusShare,
+      baseExpectedRtp,
+      bonusExpectedRtp,
+      averageBaseMultiplier,
+      averageBonusMultiplier
+    };
+  }
+
+  function getPayoutMultiplier(preset, kind) {
     const vol = VOL_MULTIPLIER[preset.volatility] || VOL_MULTIPLIER.medium;
-    const baseMean = preset.rtp / Math.max(0.01, preset.hitFrequency);
-    const randomPart = Math.abs(normalRandom()) * vol.variance;
-    return clamp(baseMean * (0.35 + randomPart), 0.15, preset.maxWinMulti);
+    const targets = getRtpTargets(preset);
+    const mean = kind === "bonus" ? targets.averageBonusMultiplier : targets.averageBaseMultiplier;
+    const spread = kind === "bonus" ? vol.bonusSpread : vol.baseSpread;
+    const scaled = 1 + (Math.random() * 2 - 1) * spread;
+    return clamp(mean * scaled, 0.05, preset.maxWinMulti);
   }
 
   function pickDifferentSymbol(excluded) {
@@ -61,9 +71,7 @@
   }
 
   function spinOnce({ betSize, preset, activeMissStreak = 0 }) {
-    const vol = VOL_MULTIPLIER[preset.volatility] || VOL_MULTIPLIER.medium;
-    const missFactor = clamp(1 - (activeMissStreak * 0.01 * vol.missStreak), 0.72, 1.08);
-    const didBaseHit = Math.random() < preset.hitFrequency * missFactor;
+    const didBaseHit = Math.random() < preset.hitFrequency;
     const didBonusHit = Math.random() < preset.bonusRate;
 
     let payout = 0;
@@ -71,12 +79,12 @@
     let bonusMultiplier = 0;
 
     if (didBaseHit) {
-      baseMultiplier = getPayoutMultiplier(preset);
+      baseMultiplier = getPayoutMultiplier(preset, "base");
       payout += betSize * baseMultiplier;
     }
 
     if (didBonusHit) {
-      bonusMultiplier = clamp((2 + Math.abs(normalRandom()) * 6) * vol.winStreak, 1.5, 35);
+      bonusMultiplier = getPayoutMultiplier(preset, "bonus");
       payout += betSize * bonusMultiplier;
     }
 
@@ -98,7 +106,6 @@
   }
 
   function spinSession({ bankroll, betSize, preset, spins }) {
-    const vol = VOL_MULTIPLIER[preset.volatility] || VOL_MULTIPLIER.medium;
     let balance = bankroll;
     let bestRun = bankroll;
     let worstRun = bankroll;
@@ -169,7 +176,9 @@
     const quantile = (p) => sortedBankroll[Math.floor((sortedBankroll.length - 1) * p)] || 0;
 
     const avgEnd = outcomes.reduce((sum, o) => sum + o.endedBankroll, 0) / outcomes.length;
-    const avgRtp = outcomes.reduce((sum, o) => sum + o.actualRtp, 0) / outcomes.length;
+    const totalReturned = outcomes.reduce((sum, o) => sum + o.returned, 0);
+    const totalWagered = outcomes.reduce((sum, o) => sum + o.wagered, 0);
+    const avgRtp = totalWagered > 0 ? totalReturned / totalWagered : 0;
 
     return {
       outcomes,
@@ -227,6 +236,24 @@
     spinOnce,
     spinSession,
     runMonteCarlo,
+    getRtpTargets,
+    validatePresetRtp({ spins = 150000, betSize = 1, bankroll = Number.MAX_SAFE_INTEGER / 1000 } = {}) {
+      const presets = window.SLOT_PRESETS || [];
+      return presets.reduce((acc, preset) => {
+        const session = spinSession({
+          bankroll,
+          betSize,
+          preset,
+          spins
+        });
+        acc[preset.id] = {
+          target: preset.rtp,
+          actual: session.wagered > 0 ? session.returned / session.wagered : 0,
+          spins: session.spinsPlayed
+        };
+        return acc;
+      }, {});
+    },
     drawBalanceBars
   };
 })();
