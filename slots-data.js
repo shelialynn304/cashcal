@@ -7,6 +7,7 @@ window.SLOT_PRESETS = [
     hitFrequency: 0.36,
     bonusRate: 0.015,
     maxWinMulti: 40,
+    bonusShare: 0.1,
     note: "Frequent small hits, smoother sessions, slower upside."
   },
   {
@@ -17,6 +18,7 @@ window.SLOT_PRESETS = [
     hitFrequency: 0.27,
     bonusRate: 0.012,
     maxWinMulti: 80,
+    bonusShare: 0.18,
     note: "Balanced pacing with moderate streaks."
   },
   {
@@ -27,6 +29,7 @@ window.SLOT_PRESETS = [
     hitFrequency: 0.18,
     bonusRate: 0.009,
     maxWinMulti: 200,
+    bonusShare: 0.3,
     note: "Long dry stretches with occasional big spikes."
   },
   {
@@ -37,6 +40,7 @@ window.SLOT_PRESETS = [
     hitFrequency: 0.22,
     bonusRate: 0.018,
     maxWinMulti: 140,
+    bonusShare: 0.32,
     note: "High return profile used for promotional test settings."
   }
 ];

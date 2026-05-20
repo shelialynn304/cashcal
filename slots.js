@@ -1,8 +1,60 @@
 (function () {
   const VOL_MULTIPLIER = {
-    low: { missStreak: 0.7, winStreak: 1.25, variance: 0.45, bustLift: 0.8 },
-    medium: { missStreak: 1, winStreak: 1, variance: 0.75, bustLift: 1 },
-    high: { missStreak: 1.35, winStreak: 0.78, variance: 1.25, bustLift: 1.25 }
+    low: { missStreak: 0.7, winStreak: 1.25, variance: 0.45, bustLift: 0.8, spread: 0.22 },
+    medium: { missStreak: 1, winStreak: 1, variance: 0.75, bustLift: 1, spread: 0.5 },
+    high: { missStreak: 1.35, winStreak: 0.78, variance: 1.25, bustLift: 1.25, spread: 1.1 }
+  };
+
+  const BONUS_SHARE_BY_VOLATILITY = {
+    low: 0.1,
+    medium: 0.18,
+    high: 0.3
+  };
+
+  const PAYOUT_BUCKETS_BY_VOLATILITY = {
+    low: {
+      base: [
+        { probability: 0.55, multiplier: 0.7 },
+        { probability: 0.3, multiplier: 1.1 },
+        { probability: 0.12, multiplier: 1.8 },
+        { probability: 0.03, multiplier: 2.8 }
+      ],
+      bonus: [
+        { probability: 0.7, multiplier: 2.5 },
+        { probability: 0.23, multiplier: 4.5 },
+        { probability: 0.07, multiplier: 7.5 }
+      ]
+    },
+    medium: {
+      base: [
+        { probability: 0.46, multiplier: 0.7 },
+        { probability: 0.32, multiplier: 1.5 },
+        { probability: 0.16, multiplier: 2.8 },
+        { probability: 0.06, multiplier: 5 }
+      ],
+      bonus: [
+        { probability: 0.58, multiplier: 4 },
+        { probability: 0.28, multiplier: 8 },
+        { probability: 0.11, multiplier: 14 },
+        { probability: 0.03, multiplier: 24 }
+      ]
+    },
+    high: {
+      base: [
+        { probability: 0.4, multiplier: 0.6 },
+        { probability: 0.3, multiplier: 1.7 },
+        { probability: 0.2, multiplier: 3.8 },
+        { probability: 0.08, multiplier: 8 },
+        { probability: 0.02, multiplier: 15 }
+      ],
+      bonus: [
+        { probability: 0.5, multiplier: 6 },
+        { probability: 0.26, multiplier: 13 },
+        { probability: 0.15, multiplier: 22 },
+        { probability: 0.07, multiplier: 38 },
+        { probability: 0.02, multiplier: 70 }
+      ]
+    }
   };
 
   function clamp(value, min, max) {
@@ -17,14 +69,6 @@
     return `${(Number(decimal) * 100).toFixed(digits)}%`;
   }
 
-  function normalRandom() {
-    let u = 0;
-    let v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
-    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-  }
-
   function getPresetById(id) {
     const list = window.SLOT_PRESETS || [];
     return list.find((preset) => preset.id === id) || list[0];
@@ -32,11 +76,74 @@
 
   const SLOT_SYMBOLS = ["7", "BAR", "🔔", "🍒", "🍋", "♦", "☠", "♠"];
 
-  function getPayoutMultiplier(preset) {
-    const vol = VOL_MULTIPLIER[preset.volatility] || VOL_MULTIPLIER.medium;
-    const baseMean = preset.rtp / Math.max(0.01, preset.hitFrequency);
-    const randomPart = Math.abs(normalRandom()) * vol.variance;
-    return clamp(baseMean * (0.35 + randomPart), 0.15, preset.maxWinMulti);
+  function getRtpTargets(preset) {
+    const fallbackShare = BONUS_SHARE_BY_VOLATILITY[preset.volatility] ?? 0.18;
+    const bonusShare = clamp(Number(preset.bonusShare ?? fallbackShare), 0, 0.9);
+    const bonusExpectedRtp = preset.rtp * bonusShare;
+    const baseExpectedRtp = preset.rtp - bonusExpectedRtp;
+    return { baseExpectedRtp, bonusExpectedRtp };
+  }
+
+  function getBucketAverage(buckets) {
+    return buckets.reduce((sum, bucket) => sum + bucket.probability * bucket.multiplier, 0);
+  }
+
+  function scaleBucketsToAverage(rawBuckets, targetAverage, maxMultiplier) {
+    const cappedRaw = rawBuckets.map((bucket) => ({
+      probability: bucket.probability,
+      multiplier: clamp(bucket.multiplier, 0, maxMultiplier)
+    }));
+
+    const rawAverage = getBucketAverage(cappedRaw);
+    if (rawAverage <= 0 || targetAverage <= 0) {
+      return cappedRaw.map((bucket) => ({ ...bucket, multiplier: 0 }));
+    }
+
+    const scale = targetAverage / rawAverage;
+    const scaled = cappedRaw.map((bucket) => ({
+      probability: bucket.probability,
+      multiplier: clamp(bucket.multiplier * scale, 0, maxMultiplier)
+    }));
+
+    const scaledAverage = getBucketAverage(scaled);
+    if (scaledAverage > 0 && Math.abs(scaledAverage - targetAverage) > 0.0001) {
+      const correction = targetAverage / scaledAverage;
+      return scaled.map((bucket) => ({
+        probability: bucket.probability,
+        multiplier: clamp(bucket.multiplier * correction, 0, maxMultiplier)
+      }));
+    }
+
+    return scaled;
+  }
+
+  function getCalibratedPayoutModel(preset) {
+    const targets = getRtpTargets(preset);
+    const baseTargetAverage = targets.baseExpectedRtp / Math.max(0.0001, preset.hitFrequency);
+    const bonusTargetAverage = targets.bonusExpectedRtp / Math.max(0.0001, preset.bonusRate);
+
+    const templates = PAYOUT_BUCKETS_BY_VOLATILITY[preset.volatility] || PAYOUT_BUCKETS_BY_VOLATILITY.medium;
+    const baseBuckets = scaleBucketsToAverage(templates.base, baseTargetAverage, preset.maxWinMulti);
+    const bonusBuckets = scaleBucketsToAverage(templates.bonus, bonusTargetAverage, preset.maxWinMulti);
+
+    return {
+      baseBuckets,
+      bonusBuckets,
+      baseAverage: getBucketAverage(baseBuckets),
+      bonusAverage: getBucketAverage(bonusBuckets)
+    };
+  }
+
+  function sampleFromBuckets(buckets) {
+    const roll = Math.random();
+    let running = 0;
+    for (let i = 0; i < buckets.length; i += 1) {
+      running += buckets[i].probability;
+      if (roll <= running || i === buckets.length - 1) {
+        return buckets[i].multiplier;
+      }
+    }
+    return 0;
   }
 
   function pickDifferentSymbol(excluded) {
@@ -60,10 +167,9 @@
     return shuffled.slice(0, 5);
   }
 
-  function spinOnce({ betSize, preset, activeMissStreak = 0 }) {
-    const vol = VOL_MULTIPLIER[preset.volatility] || VOL_MULTIPLIER.medium;
-    const missFactor = clamp(1 - (activeMissStreak * 0.01 * vol.missStreak), 0.72, 1.08);
-    const didBaseHit = Math.random() < preset.hitFrequency * missFactor;
+  function spinOnce({ betSize, preset, activeMissStreak = 0, calibratedModel = null }) {
+    const calibrated = calibratedModel || getCalibratedPayoutModel(preset);
+    const didBaseHit = Math.random() < preset.hitFrequency;
     const didBonusHit = Math.random() < preset.bonusRate;
 
     let payout = 0;
@@ -71,12 +177,12 @@
     let bonusMultiplier = 0;
 
     if (didBaseHit) {
-      baseMultiplier = getPayoutMultiplier(preset);
+      baseMultiplier = sampleFromBuckets(calibrated.baseBuckets);
       payout += betSize * baseMultiplier;
     }
 
     if (didBonusHit) {
-      bonusMultiplier = clamp((2 + Math.abs(normalRandom()) * 6) * vol.winStreak, 1.5, 35);
+      bonusMultiplier = sampleFromBuckets(calibrated.bonusBuckets);
       payout += betSize * bonusMultiplier;
     }
 
@@ -97,8 +203,7 @@
     };
   }
 
-  function spinSession({ bankroll, betSize, preset, spins }) {
-    const vol = VOL_MULTIPLIER[preset.volatility] || VOL_MULTIPLIER.medium;
+  function spinSession({ bankroll, betSize, preset, spins, calibratedModel = null }) {
     let balance = bankroll;
     let bestRun = bankroll;
     let worstRun = bankroll;
@@ -110,6 +215,7 @@
     let activeMissStreak = 0;
 
     const samples = [];
+    const sessionModel = calibratedModel || getCalibratedPayoutModel(preset);
 
     for (let i = 1; i <= spins; i += 1) {
       if (balance < betSize) {
@@ -120,7 +226,7 @@
       balance -= betSize;
       wagered += betSize;
 
-      const spin = spinOnce({ betSize, preset, activeMissStreak });
+      const spin = spinOnce({ betSize, preset, activeMissStreak, calibratedModel: sessionModel });
       const payout = spin.payout;
       activeMissStreak = spin.nextMissStreak;
       longestMissStreak = Math.max(longestMissStreak, activeMissStreak);
@@ -158,9 +264,10 @@
 
   function runMonteCarlo({ bankroll, betSize, preset, spins, trials = 250 }) {
     const outcomes = [];
+    const model = getCalibratedPayoutModel(preset);
 
     for (let i = 0; i < trials; i += 1) {
-      outcomes.push(spinSession({ bankroll, betSize, preset, spins }));
+      outcomes.push(spinSession({ bankroll, betSize, preset, spins, calibratedModel: model }));
     }
 
     const busts = outcomes.filter((o) => o.bust).length;
@@ -169,7 +276,9 @@
     const quantile = (p) => sortedBankroll[Math.floor((sortedBankroll.length - 1) * p)] || 0;
 
     const avgEnd = outcomes.reduce((sum, o) => sum + o.endedBankroll, 0) / outcomes.length;
-    const avgRtp = outcomes.reduce((sum, o) => sum + o.actualRtp, 0) / outcomes.length;
+    const totalReturned = outcomes.reduce((sum, o) => sum + o.returned, 0);
+    const totalWagered = outcomes.reduce((sum, o) => sum + o.wagered, 0);
+    const avgRtp = totalWagered > 0 ? totalReturned / totalWagered : 0;
 
     return {
       outcomes,
@@ -227,6 +336,50 @@
     spinOnce,
     spinSession,
     runMonteCarlo,
-    drawBalanceBars
+    drawBalanceBars,
+    getRtpTargets,
+    getCalibratedPayoutModel,
+    validatePresetRtp({ spinsPerPreset = 100000, betSize = 1 } = {}) {
+      const results = {};
+      (window.SLOT_PRESETS || []).forEach((preset) => {
+        const model = getCalibratedPayoutModel(preset);
+        const session = spinSession({
+          bankroll: spinsPerPreset * betSize * 10,
+          betSize,
+          preset,
+          spins: spinsPerPreset,
+          calibratedModel: model
+        });
+        const modelExpectedRtp = preset.hitFrequency * model.baseAverage + preset.bonusRate * model.bonusAverage;
+        const actual = session.wagered > 0 ? session.returned / session.wagered : 0;
+        const diff = actual - preset.rtp;
+        const modelDiff = modelExpectedRtp - preset.rtp;
+        const maxBaseMultiplier = Math.max(...model.baseBuckets.map((b) => b.multiplier), 0);
+        const maxBonusMultiplier = Math.max(...model.bonusBuckets.map((b) => b.multiplier), 0);
+
+        results[preset.id] = {
+          target: preset.rtp,
+          actual,
+          diff,
+          targetPercent: toPercent(preset.rtp, 3),
+          actualPercent: toPercent(actual, 3),
+          diffPercent: toPercent(diff, 3),
+          modelExpectedRtp,
+          modelExpectedPercent: toPercent(modelExpectedRtp, 3),
+          modelDiff,
+          modelDiffPercent: toPercent(modelDiff, 3),
+          spinsPlayed: session.spinsPlayed,
+          wagered: session.wagered,
+          returned: session.returned,
+          maxBaseMultiplier,
+          maxBonusMultiplier,
+          maxWinMulti: preset.maxWinMulti,
+          baseWithinMax: maxBaseMultiplier <= preset.maxWinMulti,
+          bonusWithinMax: maxBonusMultiplier <= preset.maxWinMulti
+        };
+      });
+      console.table(results);
+      return results;
+    }
   };
 })();
