@@ -414,3 +414,20 @@
 .slot-sim-reels[data-reels="5"] {
   grid-template-columns: repeat(5, minmax(54px, 1fr));
 }
+
+.slot-bonus-infographic-wrap {
+  display: block;
+  margin: clamp(18px, 4vw, 30px) auto;
+  max-width: 100%;
+}
+
+.slot-bonus-infographic {
+  display: block;
+  width: 100%;
+  max-width: 1600px;
+  height: auto;
+  object-fit: contain;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-depth);
+}
