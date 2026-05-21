@@ -1682,6 +1682,91 @@ table td {
 .text-gold { color: var(--gold); }
 .text-center { text-align: center; }
 
+/* Metric help (info) icon styling and keyboard focus */
+.metric-help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  line-height: 1;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.02);
+  color: var(--muted);
+  font-size: 0.88rem;
+  border: 1px solid transparent;
+  margin-left: 8px;
+  cursor: help;
+  transition: color 140ms linear, box-shadow 140ms linear, background 140ms linear, border-color 140ms linear;
+}
+
+.metric-help:hover {
+  color: var(--gold);
+}
+
+.metric-help:focus,
+.metric-help:focus-visible {
+  outline: none;
+  color: var(--gold);
+  background: rgba(241,196,91,0.06);
+  box-shadow: 0 0 0 4px rgba(241,196,91,0.10);
+  border-color: rgba(241,196,91,0.18);
+}
+
+/* Popover (accessible tooltip) inside the metric-help element */
+.metric-help {
+  position: relative;
+}
+
+.metric-popover {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  bottom: 28px;
+  min-width: 180px;
+  max-width: 320px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(18,23,34,0.96);
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.3;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms ease, transform 140ms ease;
+  z-index: 40;
+}
+
+.metric-popover::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100%;
+  width: 10px;
+  height: 8px;
+  background: transparent;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  filter: drop-shadow(0 -1px 0 rgba(0,0,0,0.18));
+}
+
+.metric-help:hover .metric-popover,
+.metric-help:focus-within .metric-popover {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Pinned (clicked) state keeps popover visible */
+.metric-help.metric-help--pinned .metric-popover,
+.metric-help[aria-pressed="true"] .metric-popover {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
 /* MOBILE */
 @media (max-width: 1000px) {
   .hero-wrap,

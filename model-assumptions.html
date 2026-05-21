@@ -21,7 +21,7 @@
   </style>
 </head>
 <body>
-  <header class="site-header" aria-hidden="true">
+  <header class="site-header">
     <div class="container nav">
       <a href="index.html" class="brand">Edge Over Luck</a>
     </div>
@@ -30,7 +30,17 @@
   <main>
     <div class="container">
       <h1>Model Assumptions — Simplified Simulator</h1>
-      <p class="muted">Printable one-page summary of the assumptions used by our bankroll and simulator tools. Use this for transparency and citation. This page is optimized for printing to PDF.</p>
+      <p class="brand-tagline">A transparency report for our simulator and bankroll tools.</p>
+      <p class="muted">This page explains the basic math and assumptions that power our calculators. It is meant to help you understand what the results show and what they do not model.</p>
+
+      <div class="info-box glass-panel" style="margin: 20px 0;">
+        <h2>How to use this page</h2>
+        <ul>
+          <li>Read the assumptions before you use the calculator.</li>
+          <li>Use the formulas below to see how win, push, and loss probabilities are derived.</li>
+          <li>Note the limitations: this is a risk/pressure model, not a full blackjack rule simulator.</li>
+        </ul>
+      </div>
 
       <h2>Summary</h2>
       <ul>
@@ -63,7 +73,7 @@ lossProb = ((1 - p) + e) / 2</pre>
       <h2>References</h2>
       <p class="muted">See the site pages for deeper explanations: <a href="how-we-calculate-odds.html">How We Calculate Odds</a>, <a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>.</p>
 
-      <div style="margin-top:22px; display:flex; gap:12px;">
+      <div style="margin-top:22px; display:flex; gap:12px; flex-wrap: wrap;">
         <button class="btn" id="printBtn">Download / Print PDF</button>
         <a class="btn btn-secondary" href="how-we-calculate-odds.html">Back to Odds</a>
       </div>

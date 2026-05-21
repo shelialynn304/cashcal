@@ -161,6 +161,14 @@
           Enter bankroll, bet size, house edge, and planned hands.
           The simulator runs thousands of sessions so downside scenarios are easier to see.
         </p>
+        <div class="info-box glass-panel small-note" style="margin-bottom: 18px;">
+          <strong>How to use this tool:</strong>
+          <ul>
+            <li>Set your bankroll and a realistic single-hand bet.</li>
+            <li>Choose the house edge and session length you expect.</li>
+            <li>Run the simulation and use the metrics to judge risk, not to predict a win.</li>
+          </ul>
+        </div>
 
         <div class="presets">
           <button type="button" onclick="setPreset('blackjack')">Blackjack</button>
@@ -208,6 +216,7 @@
               <label for="betSize">Bet Size ($)</label>
               <input type="number" id="betSize" value="5" min="0.01" step="0.01" required />
               <p class="small-note mb-0">This is a single blackjack hand unit. Most players are safer at 1–2% of bankroll.</p>
+              <p id="riskLevel" class="small-note mb-0">Risk level will update as you change bankroll and bet size.</p>
             </div>
 
             <div class="field">
@@ -263,21 +272,33 @@
             </div>
 
             <div class="result-item glass-card">
-              <span>P10 Ending Bankroll</span>
+              <span>P10 Ending Bankroll
+                <span class="metric-help" role="button" aria-pressed="false" tabindex="0" aria-label="P10 help" aria-describedby="p10Help">ⓘ
+                  <span class="metric-popover" id="p10Help" role="tooltip">P10 is the 10th percentile ending bankroll — 90% of sessions finish above this value.</span>
+                </span>
+              </span>
               <strong id="p10Ending">$0.00</strong>
             </div>
 
             <div class="result-item glass-card">
-              <span>P90 Ending Bankroll</span>
+              <span>P90 Ending Bankroll
+                <span class="metric-help" role="button" aria-pressed="false" tabindex="0" aria-label="P90 help" aria-describedby="p90Help">ⓘ
+                  <span class="metric-popover" id="p90Help" role="tooltip">P90 is the 90th percentile ending bankroll — 90% of sessions finish below this value.</span>
+                </span>
+              </span>
               <strong id="p90Ending">$0.00</strong>
             </div>
 
             <div class="result-item glass-card">
-              <span>Recommended Max Bet</span>
+              <span>Recommended Max Bet
+                <span class="metric-help" role="button" aria-pressed="false" tabindex="0" aria-label="Recommended max bet help" aria-describedby="recHelp">ⓘ
+                  <span class="metric-popover" id="recHelp" role="tooltip">Suggested maximum single-hand bet to keep bust risk near your target; treat as a risk ceiling, not a guarantee.</span>
+                </span>
+              </span>
               <strong id="recommendedBet">$0.00</strong>
             </div>
           </div>
-
+          <p class="result-helper">Tip: Use these metrics to compare risk scenarios. Higher bust risk or wider P10/P90 ranges means your bankroll is under more pressure.</p>
           <p id="summary" class="summary">
             Enter values and calculate.
           </p>
@@ -302,6 +323,58 @@
         </div>
 
       </div>
+
+      <script>
+        // Tooltip controller: click to pin, Esc to close, keyboard toggle, click-outside-to-close
+        (function(){
+          function togglePin(el, pin){
+            if(pin){
+              el.classList.add('metric-help--pinned');
+              el.setAttribute('aria-pressed','true');
+            } else {
+              el.classList.remove('metric-help--pinned');
+              el.setAttribute('aria-pressed','false');
+            }
+          }
+
+          // Click / keyboard interaction for each help button
+          document.querySelectorAll('.metric-help').forEach(function(btn){
+            btn.addEventListener('click', function(e){
+              var isPinned = btn.getAttribute('aria-pressed') === 'true';
+              togglePin(btn, !isPinned);
+            });
+
+            btn.addEventListener('keydown', function(e){
+              if(e.key === 'Enter' || e.key === ' '){
+                e.preventDefault();
+                var isPinned = btn.getAttribute('aria-pressed') === 'true';
+                togglePin(btn, !isPinned);
+              } else if(e.key === 'Escape'){
+                togglePin(btn, false);
+                btn.blur();
+              }
+            });
+          });
+
+          // Close pinned popovers on global Escape
+          document.addEventListener('keydown', function(e){
+            if(e.key === 'Escape'){
+              document.querySelectorAll('.metric-help[aria-pressed="true"]').forEach(function(el){
+                togglePin(el, false);
+              });
+            }
+          });
+
+          // Click-outside-to-close: if the click target is not inside any .metric-help, close pinned popovers
+          document.addEventListener('click', function(e){
+            // If click is inside a metric-help element, do nothing
+            if(e.target.closest && e.target.closest('.metric-help')) return;
+            document.querySelectorAll('.metric-help[aria-pressed="true"]').forEach(function(el){
+              togglePin(el, false);
+            });
+          }, true);
+        })();
+      </script>
     </div>
   </section>
 

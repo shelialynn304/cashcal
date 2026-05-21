@@ -226,16 +226,9 @@ function findRecommendedBet(bankroll, houseEdgePercent, bets, riskTargetPercent,
   let high = bankroll;
   let best = 0.01;
 
-  let currentGame = "blackjack";
   for (let i = 0; i < 12; i++) {
     const mid = (low + high) / 2;
-    let pushProbability = 0;
-
-    if (currentGame === "blackjack") {
-      pushProbability = 0.08;
-    } else if (currentGame === "baccarat") {
-      pushProbability = 0.095;
-    }
+    const bustRisk = estimateBustRiskForBet(bankroll, mid, houseEdgePercent, bets, simCount);
 
     if (bustRisk <= target) {
       best = mid;
@@ -248,140 +241,194 @@ function findRecommendedBet(bankroll, houseEdgePercent, bets, riskTargetPercent,
   return Math.max(0.01, Math.min(bankroll, best));
 }
 
-document.getElementById("bankrollForm").addEventListener("submit", function (e) {
-    const { winProbability, pushProbability } = getOutcomeProbabilities(houseEdgePercent);
-
-  const bankroll = parseFloat(document.getElementById("bankroll").value);
-  const betSize = parseFloat(document.getElementById("betSize").value);
-  const houseEdge = parseFloat(document.getElementById("houseEdge").value);
-  const bets = parseInt(document.getElementById("bets").value, 10);
-  const simulations = parseInt(document.getElementById("simulations").value, 10);
-    const { winProbability, pushProbability } = getOutcomeProbabilities(houseEdgePercent);
-
-  if (
-    !Number.isFinite(bankroll) ||
-    !Number.isFinite(betSize) ||
-    !Number.isFinite(houseEdge) ||
-    !Number.isFinite(bets) ||
-    !Number.isFinite(simulations) ||
-    !Number.isFinite(riskTarget) ||
-    bankroll <= 0 ||
-    betSize <= 0 ||
-    betSize > bankroll ||
-    bets <= 0 ||
-    houseEdge < 0 ||
-    houseEdge > 10 ||
-    simulations < 500 ||
-    riskTarget <= 0 ||
-    riskTarget >= 100
-  ) {
-    alert("Please enter valid numbers. Bet size must be positive and no larger than bankroll, and house edge should be between 0 and 10%.\nTypical blackjack edge is near 0.5% with proper basic strategy.");
-    return;
+function getRiskLevel(bankroll, betSize) {
+  if (!Number.isFinite(bankroll) || !Number.isFinite(betSize) || bankroll <= 0 || betSize <= 0) {
+    return "Risk level will update as you change bankroll and bet size.";
   }
 
-  const results = runMonteCarlo(bankroll, betSize, houseEdge, bets, simulations);
-  const recommendedBet = findRecommendedBet(
-    bankroll,
-    houseEdge,
-    bets,
-    riskTarget,
-    Math.min(5000, Math.max(500, Math.round(simulations / 2)))
-  );
+  const ratio = betSize / bankroll;
 
-  document.getElementById("expectedLoss").textContent = formatMoney(bankroll - results.averageEnding);
-  document.getElementById("endingBankroll").textContent = formatMoney(results.averageEnding);
-  document.getElementById("bustRisk").textContent = `${results.bustRisk.toFixed(1)}%`;
-  document.getElementById("profitChance").textContent = `${results.profitChance.toFixed(1)}%`;
-  document.getElementById("p10Ending").textContent = formatMoney(results.p10Ending);
-  document.getElementById("p90Ending").textContent = formatMoney(results.p90Ending);
-  document.getElementById("recommendedBet").textContent = `${formatMoney(recommendedBet)} @ ${riskTarget.toFixed(0)}% bust risk`;
+  if (ratio <= 0.01) {
+    return "Low risk: unit size is 1% or less of bankroll.";
+  }
 
-  const lastsHandsStat = document.getElementById("lastsHandsStat");
-  const lastsHandsNote = document.getElementById("lastsHandsNote");
+  if (ratio <= 0.02) {
+    return "Moderate risk: unit size is 1–2% of bankroll.";
+  }
 
-  if (lastsHandsStat && lastsHandsNote) {
-    if (results.bustHands.length > 0) {
-      lastsHandsStat.textContent = `YOU LAST ~${Math.round(results.medianBustHand).toLocaleString()} HANDS`;
-      lastsHandsNote.textContent =
-        `Among busted sessions, the median bust point was about hand ${Math.round(results.medianBustHand).toLocaleString()}, and full-session survival was ${results.survivalRate.toFixed(1)}%.`;
-    } else {
-      lastsHandsStat.textContent = `YOU LAST THE FULL ${bets.toLocaleString()} HANDS`;
-      lastsHandsNote.textContent =
-        `In these simulations, the bankroll survived the full session every time. That still does not make the game beatable.`;
+  if (ratio <= 0.03) {
+    return "High risk: unit size is 2–3% of bankroll.";
+  }
+
+  if (ratio <= 0.05) {
+    return "Very high risk: unit size is 3–5% of bankroll.";
+  }
+
+  return "Extreme risk: this bet size places heavy pressure on a session bankroll.";
+}
+
+function updateRiskLevel(bankroll, betSize) {
+  const riskLevelElement = document.getElementById("riskLevel");
+  if (!riskLevelElement) return;
+  riskLevelElement.textContent = getRiskLevel(bankroll, betSize);
+}
+
+const bankrollInput = document.getElementById("bankroll");
+const betSizeInput = document.getElementById("betSize");
+
+if (bankrollInput) {
+  bankrollInput.addEventListener("input", function () {
+    updateRiskLevel(parseFloat(bankrollInput.value), parseFloat(betSizeInput.value));
+  });
+}
+
+if (betSizeInput) {
+  betSizeInput.addEventListener("input", function () {
+    updateRiskLevel(parseFloat(bankrollInput.value), parseFloat(betSizeInput.value));
+  });
+}
+
+const riskTargetInput = document.getElementById("riskTarget");
+
+const form = document.getElementById("bankrollForm");
+if (form) {
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const bankroll = parseFloat(bankrollInput.value);
+    const betSize = parseFloat(betSizeInput.value);
+    const houseEdge = parseFloat(document.getElementById("houseEdge").value);
+    const bets = parseInt(document.getElementById("bets").value, 10);
+    const simulations = parseInt(document.getElementById("simulations").value, 10);
+    const riskTarget = parseFloat(riskTargetInput.value);
+
+    updateRiskLevel(bankroll, betSize);
+
+    if (
+      !Number.isFinite(bankroll) ||
+      !Number.isFinite(betSize) ||
+      !Number.isFinite(houseEdge) ||
+      !Number.isFinite(bets) ||
+      !Number.isFinite(simulations) ||
+      !Number.isFinite(riskTarget) ||
+      bankroll <= 0 ||
+      betSize <= 0 ||
+      betSize > bankroll ||
+      bets <= 0 ||
+      houseEdge < 0 ||
+      houseEdge > 10 ||
+      simulations < 500 ||
+      riskTarget <= 0 ||
+      riskTarget >= 100
+    ) {
+      alert("Please enter valid numbers. Bet size must be positive and no larger than bankroll, and house edge should be between 0 and 10%.\nTypical blackjack edge is near 0.5% with proper basic strategy.");
+      return;
     }
-  }
 
-  document.getElementById("summary").textContent =
-    `Based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}. ` +
-    `Bust risk was ${results.bustRisk.toFixed(1)}%, full-session survival was ${results.survivalRate.toFixed(1)}%, and the chance of finishing ahead was ${results.profitChance.toFixed(1)}%. ` +
-    `The worst simulated result was ${formatMoney(results.minEnding)}, and the best was ${formatMoney(results.maxEnding)}.` +
-    (results.bustHands.length > 0
-      ? ` Busted sessions died around hand ${Math.round(results.avgBustHand).toLocaleString()} on average, with a median bust point of hand ${Math.round(results.medianBustHand).toLocaleString()}.`
-      : ``);
+    const results = runMonteCarlo(bankroll, betSize, houseEdge, bets, simulations);
+    const recommendedBet = findRecommendedBet(
+      bankroll,
+      houseEdge,
+      bets,
+      riskTarget,
+      Math.min(5000, Math.max(500, Math.round(simulations / 2)))
+    );
 
-  const resultsCanvas = document.getElementById("resultsChart");
-  if (resultsCanvas) {
-    const resultsCtx = resultsCanvas.getContext("2d");
+    document.getElementById("expectedLoss").textContent = formatMoney(bankroll - results.averageEnding);
+    document.getElementById("endingBankroll").textContent = formatMoney(results.averageEnding);
+    document.getElementById("bustRisk").textContent = `${results.bustRisk.toFixed(1)}%`;
+    document.getElementById("profitChance").textContent = `${results.profitChance.toFixed(1)}%`;
+    document.getElementById("p10Ending").textContent = formatMoney(results.p10Ending);
+    document.getElementById("p90Ending").textContent = formatMoney(results.p90Ending);
+    document.getElementById("recommendedBet").textContent = `${formatMoney(recommendedBet)} @ ${riskTarget.toFixed(0)}% bust risk`;
 
-    if (resultsChart) resultsChart.destroy();
+    const lastsHandsStat = document.getElementById("lastsHandsStat");
+    const lastsHandsNote = document.getElementById("lastsHandsNote");
 
-    resultsChart = new Chart(resultsCtx, {
-      type: "bar",
-      data: {
-        labels: ["Bust", "Lost Money", "Profit"],
-        datasets: [
-          {
-            label: "Simulation Outcomes",
-            data: [results.bustCount, results.lossCount, results.profitCount]
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: { display: false }
-        },
-        scales: {
-          y: { beginAtZero: true }
-        }
+    if (lastsHandsStat && lastsHandsNote) {
+      if (results.bustHands.length > 0) {
+        lastsHandsStat.textContent = `YOU LAST ~${Math.round(results.medianBustHand).toLocaleString()} HANDS`;
+        lastsHandsNote.textContent =
+          `Among busted sessions, the median bust point was about hand ${Math.round(results.medianBustHand).toLocaleString()}, and full-session survival was ${results.survivalRate.toFixed(1)}%.`;
+      } else {
+        lastsHandsStat.textContent = `YOU LAST THE FULL ${bets.toLocaleString()} HANDS`;
+        lastsHandsNote.textContent =
+          `In these simulations, the bankroll survived the full session every time. That still does not make the game beatable.`;
       }
-    });
-  }
+    }
 
-  const sessionCanvas = document.getElementById("sessionChart");
-  if (sessionCanvas) {
-    const sessionData = generateSession(bankroll, betSize, houseEdge, bets);
-    const sessionCtx = sessionCanvas.getContext("2d");
+    document.getElementById("summary").textContent =
+      `Based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}. ` +
+      `Bust risk was ${results.bustRisk.toFixed(1)}%, full-session survival was ${results.survivalRate.toFixed(1)}%, and the chance of finishing ahead was ${results.profitChance.toFixed(1)}%. ` +
+      `The worst simulated result was ${formatMoney(results.minEnding)}, and the best was ${formatMoney(results.maxEnding)}.` +
+      (results.bustHands.length > 0
+        ? ` Busted sessions died around hand ${Math.round(results.avgBustHand).toLocaleString()} on average, with a median bust point of hand ${Math.round(results.medianBustHand).toLocaleString()}.`
+        : ``);
 
-    if (sessionChart) sessionChart.destroy();
+    const resultsCanvas = document.getElementById("resultsChart");
+    if (resultsCanvas) {
+      const resultsCtx = resultsCanvas.getContext("2d");
 
-    sessionChart = new Chart(sessionCtx, {
-      type: "line",
-      data: {
-        labels: sessionData.map((_, i) => i),
-        datasets: [
-          {
-            label: "Bankroll",
-            data: sessionData,
-            borderWidth: 2,
-            tension: 0.2,
-            fill: false
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: { display: false }
+      if (resultsChart) resultsChart.destroy();
+
+      resultsChart = new Chart(resultsCtx, {
+        type: "bar",
+        data: {
+          labels: ["Bust", "Lost Money", "Profit"],
+          datasets: [
+            {
+              label: "Simulation Outcomes",
+              data: [results.bustCount, results.lossCount, results.profitCount]
+            }
+          ]
         },
-        scales: {
-          y: { beginAtZero: false }
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: { beginAtZero: true }
+          }
         }
-      }
-    });
-  }
-});
+      });
+    }
+
+    const sessionCanvas = document.getElementById("sessionChart");
+    if (sessionCanvas) {
+      const sessionData = generateSession(bankroll, betSize, houseEdge, bets);
+      const sessionCtx = sessionCanvas.getContext("2d");
+
+      if (sessionChart) sessionChart.destroy();
+
+      sessionChart = new Chart(sessionCtx, {
+        type: "line",
+        data: {
+          labels: sessionData.map((_, i) => i),
+          datasets: [
+            {
+              label: "Bankroll",
+              data: sessionData,
+              borderWidth: 2,
+              tension: 0.2,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: { beginAtZero: false }
+          }
+        }
+      });
+    }
+  });
+}
 
 document.getElementById("bankrollForm").dispatchEvent(new Event("submit"));
