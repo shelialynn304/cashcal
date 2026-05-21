@@ -272,8 +272,9 @@
 
     const busts = outcomes.filter((o) => o.bust).length;
     const sortedBankroll = outcomes.map((o) => o.endedBankroll).sort((a, b) => a - b);
+    const sortedSpins = outcomes.map((o) => o.spinsPlayed).sort((a, b) => a - b);
 
-    const quantile = (p) => sortedBankroll[Math.floor((sortedBankroll.length - 1) * p)] || 0;
+    const quantile = (arr, p) => arr[Math.floor((arr.length - 1) * p)] || 0;
 
     const avgEnd = outcomes.reduce((sum, o) => sum + o.endedBankroll, 0) / outcomes.length;
     const totalReturned = outcomes.reduce((sum, o) => sum + o.returned, 0);
@@ -286,9 +287,12 @@
       bustChance: busts / outcomes.length,
       avgEndBankroll: avgEnd,
       avgRtp,
-      p10End: quantile(0.1),
-      p50End: quantile(0.5),
-      p90End: quantile(0.9),
+      p10End: quantile(sortedBankroll, 0.1),
+      p50End: quantile(sortedBankroll, 0.5),
+      p90End: quantile(sortedBankroll, 0.9),
+      p10Spins: quantile(sortedSpins, 0.1),
+      p50Spins: quantile(sortedSpins, 0.5),
+      p90Spins: quantile(sortedSpins, 0.9),
       worstEnd: sortedBankroll[0] || 0,
       bestEnd: sortedBankroll[sortedBankroll.length - 1] || 0
     };

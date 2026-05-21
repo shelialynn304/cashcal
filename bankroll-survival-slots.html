@@ -121,8 +121,9 @@
         <div class="section-header">
           <span class="eyebrow-cyan">Calculator</span>
           <h2 class="section-title">Enter your slot session plan</h2>
-          <p class="section-subtext">Compare bankroll, spin size, RTP, and volatility before a normal losing streak becomes the whole session.</p>
+          <p class="section-subtext">Simulate many session runs so you can estimate how often your bankroll survives the target spins and how much volatility can swing your cash.</p>
         </div>
+        <p class="small-note mb-1">This calculator compares bankroll pressure and survival odds. It is a modeled risk estimate, not a prediction of a specific spin outcome.</p>
         <form id="slotSurvivalForm">
           <div class="grid grid-2">
             <div class="field">
@@ -142,7 +143,30 @@
               <input id="survivalTargetSpins" type="number" min="50" step="50" value="600" required />
             </div>
           </div>
+          <div class="section-panel section-gradient-smoke" style="margin-top:1rem; padding:1rem;">
+            <div class="section-header">
+              <span class="eyebrow-muted">Simulation settings</span>
+              <h3 class="section-title" style="font-size:1rem; margin-top:0.5rem;">Advanced: simulation sample size</h3>
+            </div>
+            <div class="field">
+              <label for="survivalTrialPreset">Simulation speed</label>
+              <select id="survivalTrialPreset">
+                <option value="250">Fast (250 trials)</option>
+                <option value="2000" selected>Balanced (2000 trials)</option>
+                <option value="5000">Accurate (5000 trials)</option>
+                <option value="custom">Custom</option>
+              </select>
+              <p class="small-note">Choose faster results or higher stability. Low trial counts can make the estimate noisy.</p>
+            </div>
+            <div class="field">
+              <label for="survivalTrialsInput">Manual trial override</label>
+              <input id="survivalTrialsInput" type="number" min="250" step="250" value="2000" />
+              <p class="small-note">Use manual sample size only if you need a custom trial count.</p>
+              <p id="survivalTrialWarning" class="small-note" style="color:#f1b0b0; display:none; margin-top:0.5rem;"></p>
+            </div>
+          </div>
           <button class="btn-cta-primary" type="submit">Estimate Survival Odds</button>
+          <p id="survivalWarning" class="small-note" style="color:#f1b0b0; display:none; margin-top:1rem;"></p>
         </form>
       </div>
     </section>
@@ -151,10 +175,22 @@
       <div class="container results section-panel section-gradient-cyan" aria-live="polite">
         <div class="result-list">
           <div class="result-item stat-card"><span>Estimated survival odds</span><strong id="survivalOdds">0%</strong></div>
-          <div class="result-item stat-card"><span>Likely spin range</span><strong id="survivalRange">-</strong></div>
+          <div class="result-item stat-card"><span>Average session RTP</span><strong id="survivalAvgRtp">0%</strong></div>
+          <div class="result-item stat-card"><span>Likely spin range (10–90% percentile)</span><strong id="survivalRange">-</strong></div>
+          <div class="result-item stat-card"><span>Simulation trials</span><strong id="survivalTrials">0</strong></div>
           <div class="result-item stat-card pressure-card is-danger"><span>Ruin risk</span><strong id="survivalRuinRisk">0%</strong></div>
           <div class="result-item stat-card pressure-card is-good"><span>Median ending bankroll</span><strong id="survivalMedianEnd">$0.00</strong></div>
+          <div class="result-item stat-card"><span>10th percentile bankroll</span><strong id="survivalP10End">$0.00</strong></div>
+          <div class="result-item stat-card"><span>90th percentile bankroll</span><strong id="survivalP90End">$0.00</strong></div>
         </div>
+        <p class="small-note mt-1">Spin range is estimated from the 10th–90th percentile of simulated session lengths, not a guaranteed outcome.</p>
+        <p class="small-note mt-1">Ruin risk is the model's true simulated bust probability from the session Monte Carlo.</p>
+        <details class="small-note mt-1" style="display:inline-block; max-width:100%;">
+          <summary style="display:inline; cursor:pointer; text-decoration:underline;">Why this matters</summary>
+          <span style="display:block; margin-top:0.4rem;">Ruin risk tells you how often the bankroll hit zero before the target spins, while average RTP measures the long-run expected loss rate. You can still survive a session with a negative average RTP, but a higher ruin risk means your bankroll is more likely to run out during one normal slot session.</span>
+        </details>
+        <p class="small-note mt-1">Session RTP is a long-run average, not a guarantee for a single session. Focus on ruin risk if you want a safer bankroll path.</p>
+        <p class="small-note mt-1">These results are based on the site’s slot model presets and calibrated payout distributions. They are illustrative of a modeled slot environment, not exact results from any specific casino machine.</p>
       </div>
     </section>
 
@@ -175,8 +211,8 @@
             <p>High volatility creates wider outcome ranges around the same average return, which means longer droughts and sharper drawdowns.</p>
           </article>
           <article class="disclaimer-block">
-            <h3>Bonus value is not a shield</h3>
-            <p>Bonus value can soften losses, but it does not remove the long-run house edge or make a slot session predictable.</p>
+            <h3>One win is not enough</h3>
+            <p>A single big hit can save one session, but it does not change the steady edge against your bankroll over many spins.</p>
           </article>
         </div>
       </div>
