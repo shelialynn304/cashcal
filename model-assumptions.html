@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model Assumptions — Edge Over Luck</title>
+  <meta name="description" content="One-page model assumptions for Edge Over Luck simulators: push rate, win/loss math, limitations, and printable PDF." />
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Print-friendly adjustments */
+    body { background: #0b0c0d; color: #fff; }
+    .container { max-width: 720px; margin: 28px auto; padding: 0 18px; }
+    h1 { margin-bottom: 8px; }
+    p, li { color: #ddd; }
+    .muted { color: #bfbfbf; }
+    @media print {
+      body { background: #fff; color: #000; }
+      .site-header, .site-footer, .hero-actions { display: none; }
+      .container { max-width: 700px; margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" aria-hidden="true">
+    <div class="container nav">
+      <a href="index.html" class="brand">Edge Over Luck</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Model Assumptions — Simplified Simulator</h1>
+      <p class="muted">Printable one-page summary of the assumptions used by our bankroll and simulator tools. Use this for transparency and citation. This page is optimized for printing to PDF.</p>
+
+      <h2>Summary</h2>
+      <ul>
+        <li>Each hand is modeled as a single outcome: win, push, or loss.</li>
+        <li>Push rate: default ~8% for blackjack (varies by rules and shoe composition).</li>
+        <li>House edge (user input) is converted into win/loss probabilities via simple formulas (below).</li>
+        <li>Win payout modeled as +1 unit, loss as -1 unit, push as 0 units.</li>
+      </ul>
+
+      <h2>Formulas</h2>
+      <p>Let <strong>p</strong> = push rate, <strong>e</strong> = house edge (decimal). Then:</p>
+      <pre style="color: #fff; background: rgba(0,0,0,0.15); padding: 10px; border-radius:6px;">winProb = ((1 - p) - e) / 2
+lossProb = ((1 - p) + e) / 2</pre>
+
+      <h2>How simulations work</h2>
+      <ol>
+        <li>Run N sessions (user-selected). Each session plays M hands at a fixed unit size.</li>
+        <li>For each hand, draw outcome using the probabilities above and update bankroll by +unit/0/-unit.</li>
+        <li>Collect ending bankrolls, bust points, and summary statistics (average ending bankroll, P10/P90, bust rate).</li>
+      </ol>
+
+      <h2>Limitations</h2>
+      <ul>
+        <li>No doubling, splitting, surrender, or blackjack 3:2 payout adjustments are modeled.</li>
+        <li>No card-counting or deck composition effects are simulated.</li>
+        <li>Bet sizing is fixed per hand for each simulated session (no progressive systems simulated).</li>
+        <li>Intended to measure bankroll pressure and variance, not exact hand-level expectation for advanced strategies.</li>
+      </ul>
+
+      <h2>References</h2>
+      <p class="muted">See the site pages for deeper explanations: <a href="how-we-calculate-odds.html">How We Calculate Odds</a>, <a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>.</p>
+
+      <div style="margin-top:22px; display:flex; gap:12px;">
+        <button class="btn" id="printBtn">Download / Print PDF</button>
+        <a class="btn btn-secondary" href="how-we-calculate-odds.html">Back to Odds</a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer" aria-hidden="true">
+    <div class="container footer-inner">
+      <p class="copyright">© 2026 Edge Over Luck</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('printBtn').addEventListener('click', function(){
+      window.print();
+    });
+
+    // If opened with ?print=1 automatically trigger print then close
+    if (location.search.indexOf('print=1') !== -1) {
+      window.onload = function(){
+        setTimeout(function(){ window.print(); }, 200);
+      }
+    }
+  </script>
+</body>
+</html>

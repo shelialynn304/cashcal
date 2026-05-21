@@ -3058,6 +3058,24 @@ table td {
   }
 }
 
+/* Small-screen tweaks for warning/info callouts */
+@media (max-width: 480px) {
+  .warning-box {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .warning-box h3 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+
+  .warning-box p {
+    font-size: 0.92rem;
+    line-height: 1.35;
+  }
+}
+
 .myth-card .myth-label::after,
 .myth-card .math-label::after,
 .myth-card .stat-label::after,

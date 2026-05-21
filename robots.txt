@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://edgeoverluck.com/sitemap.xml

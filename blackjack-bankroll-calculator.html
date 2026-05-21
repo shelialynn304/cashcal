@@ -169,38 +169,73 @@
           <button type="button" onclick="setPreset('baccarat')">Baccarat</button>
         </div>
 
+        <div class="warning-box glass-panel">
+          <h3>Model assumptions — simplified simulator</h3>
+          <p class="mb-0">This tool uses a simplified blackjack model to estimate bankroll pressure. It assumes a fixed push rate and models hands as simple win/push/loss outcomes. It does NOT simulate doubling, splitting, or blackjack 3:2 payouts. Use these results as a risk/pressure guide, not a precise hand-by-hand prediction.</p>
+          <p class="mb-0">See <a href="how-we-calculate-odds.html">how we calculate odds</a> for more details.</p>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>Model details (click to expand)</summary>
+            <p>
+              This calculator models each hand as one of three outcomes: win, push, or loss. We assume a <strong>push rate</strong> (about 8% for blackjack) and convert the user-entered house edge into win/loss probabilities:
+            </p>
+            <p>
+              Let p = push rate, e = house edge (as a decimal). Then:
+            </p>
+            <p>
+              winProb = ((1 - p) - e) / 2<br/>
+              lossProb = ((1 - p) + e) / 2
+            </p>
+            <p>
+              Each simulated hand changes the bankroll by +unit on a win, 0 on a push, and -unit on a loss. The simulator runs many sessions and reports distribution statistics (average ending bankroll, P10/P90, bust rate).
+            </p>
+            <p>
+              Limitations: this model does not include blackjack-specific rules (e.g., 3:2 blackjack payouts, doubling/splitting, variable bet sizing, or card-deck composition). It is intended to measure bankroll pressure from bet sizing and variance, not to provide precise hand-level EV for complex strategies.
+            </p>
+          </details>
+        </div>
+
         <form id="bankrollForm">
           <div class="grid">
             <div class="field">
               <label for="bankroll">Starting Bankroll ($)</label>
               <input type="number" id="bankroll" value="200" min="1" step="1" required />
+              <p class="small-note mb-0">Your full session bankroll. Keep individual bets small relative to this number.</p>
             </div>
 
             <div class="field">
               <label for="betSize">Bet Size ($)</label>
               <input type="number" id="betSize" value="5" min="0.01" step="0.01" required />
+              <p class="small-note mb-0">This is a single blackjack hand unit. Most players are safer at 1–2% of bankroll.</p>
             </div>
 
             <div class="field">
               <label for="houseEdge">House Edge (%)</label>
               <input type="number" id="houseEdge" value="0.5" min="0" step="0.01" required />
+              <p class="small-note mb-0">Typical blackjack house edge with decent basic strategy is near 0.5%. Higher values mean worse rules or mistakes.</p>
             </div>
 
             <div class="field">
               <label for="bets">Hands Played</label>
               <input type="number" id="bets" value="100" min="1" step="1" required />
+              <p class="small-note mb-0">How many hands you expect to play in the session.</p>
             </div>
 
             <div class="field">
               <label for="simulations">Simulations</label>
               <input type="number" id="simulations" value="5000" min="500" max="50000" step="100" required />
+              <p class="small-note mb-0">More runs give smoother estimates. Keep it under 20k on older devices.</p>
             </div>
 
             <div class="field">
               <label for="riskTarget">Target Bust Risk (%)</label>
               <input type="number" id="riskTarget" value="20" min="1" max="99" step="1" required />
+              <p class="small-note mb-0">The suggested max bet aims to keep bust risk near this percentage.</p>
             </div>
           </div>
+
+          <p class="small-note">This calculator uses a simplified blackjack model with a push rate assumption, so focus on bankroll pressure rather than exact session predictions.</p>
 
           <button type="submit" class="btn">Calculate Bankroll Risk</button>
         </form>

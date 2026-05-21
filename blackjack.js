@@ -1,5 +1,6 @@
 let resultsChart;
 let sessionChart;
+let currentGame = "blackjack";
 
 function setPreset(game) {
   const houseEdgeInput = document.getElementById("houseEdge");
@@ -22,6 +23,8 @@ function setPreset(game) {
     betSizeInput.value = 5;
   }
 
+  currentGame = game;
+
   form.dispatchEvent(new Event("submit"));
 }
 
@@ -34,8 +37,14 @@ function formatMoney(num) {
 }
 
 function getOutcomeProbabilities(houseEdgePercent) {
-  const pushProbability = 0.08;
+  let pushProbability = 0;
   const edge = houseEdgePercent / 100;
+
+  if (currentGame === "blackjack") {
+    pushProbability = 0.08;
+  } else if (currentGame === "baccarat") {
+    pushProbability = 0.095;
+  }
 
   let winProbability = ((1 - pushProbability) - edge) / 2;
   let lossProbability = ((1 - pushProbability) + edge) / 2;
@@ -217,9 +226,16 @@ function findRecommendedBet(bankroll, houseEdgePercent, bets, riskTargetPercent,
   let high = bankroll;
   let best = 0.01;
 
+  let currentGame = "blackjack";
   for (let i = 0; i < 12; i++) {
     const mid = (low + high) / 2;
-    const bustRisk = estimateBustRiskForBet(bankroll, mid, houseEdgePercent, bets, simCount);
+    let pushProbability = 0;
+
+    if (currentGame === "blackjack") {
+      pushProbability = 0.08;
+    } else if (currentGame === "baccarat") {
+      pushProbability = 0.095;
+    }
 
     if (bustRisk <= target) {
       best = mid;
@@ -233,14 +249,14 @@ function findRecommendedBet(bankroll, houseEdgePercent, bets, riskTargetPercent,
 }
 
 document.getElementById("bankrollForm").addEventListener("submit", function (e) {
-  e.preventDefault();
+    const { winProbability, pushProbability } = getOutcomeProbabilities(houseEdgePercent);
 
   const bankroll = parseFloat(document.getElementById("bankroll").value);
   const betSize = parseFloat(document.getElementById("betSize").value);
   const houseEdge = parseFloat(document.getElementById("houseEdge").value);
   const bets = parseInt(document.getElementById("bets").value, 10);
   const simulations = parseInt(document.getElementById("simulations").value, 10);
-  const riskTarget = parseFloat(document.getElementById("riskTarget").value);
+    const { winProbability, pushProbability } = getOutcomeProbabilities(houseEdgePercent);
 
   if (
     !Number.isFinite(bankroll) ||
@@ -251,13 +267,15 @@ document.getElementById("bankrollForm").addEventListener("submit", function (e) 
     !Number.isFinite(riskTarget) ||
     bankroll <= 0 ||
     betSize <= 0 ||
+    betSize > bankroll ||
     bets <= 0 ||
     houseEdge < 0 ||
+    houseEdge > 10 ||
     simulations < 500 ||
     riskTarget <= 0 ||
     riskTarget >= 100
   ) {
-    alert("Please enter valid numbers.");
+    alert("Please enter valid numbers. Bet size must be positive and no larger than bankroll, and house edge should be between 0 and 10%.\nTypical blackjack edge is near 0.5% with proper basic strategy.");
     return;
   }
 
