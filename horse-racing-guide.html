@@ -212,7 +212,7 @@
         <article class="warning-box disclaimer-block">
           <h2 class="section-title">Quick Takeaway</h2>
           <p><strong>Payout size is not value.</strong> Longshots create memorable wins, but most lose. Your edge only exists if market odds are better than true probability.</p>
-          <p><strong>Takeout shrinks every pool.</strong> Even decent handicapping can lose long-term if you overpay for risk.</p>
+          <p><strong>Track prices are pari-mutuel.</strong> Odds move with the pool and the house cut is already deducted before payout. Even decent handicapping can lose long-term if you overpay for risk.</p>
           <p class="mb-0"><strong>Goal:</strong> Think like a price shopper, not a winner picker.</p>
         </article>
       </div>
@@ -221,9 +221,9 @@
     <section class="section" id="horse-tools">
       <div class="container">
         <h2 class="section-title">Interactive Horse Betting Tools</h2>
-        <p class="section-subtext">Use these calculators to understand what odds imply, what tickets cost, and how quickly bankroll risk can snowball.</p>
+        <p class="section-subtext">Use these calculators to understand what odds imply, what tickets cost, how to spot value edge, and how quickly bankroll risk can snowball.</p>
 
-        <div class="grid grid-3 horse-tool-grid">
+        <div class="grid grid-4 horse-tool-grid">
           <article class="card card-glass micro-lift">
             <h3>Odds → Probability Calculator</h3>
             <div class="field">
@@ -235,33 +235,43 @@
           </article>
 
           <article class="card card-glass micro-lift">
-            <h3>Ticket Cost & Payout Estimator</h3>
-            <div class="form-row">
-              <div class="field">
-                <label for="ticketType">Ticket type</label>
-                <select id="ticketType">
-                  <option value="exacta">Exacta</option>
-                  <option value="trifecta">Trifecta</option>
-                  <option value="superfecta">Superfecta</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="ticketBase">Base unit ($)</label>
-                <input id="ticketBase" type="number" min="0.5" step="0.5" value="1" />
-              </div>
+          <h3>Ticket Cost Estimator</h3>
+          <div class="form-row">
+            <div class="field">
+              <label for="ticketType">Ticket type</label>
+              <select id="ticketType">
+                <option value="exacta">Exacta</option>
+                <option value="trifecta">Trifecta</option>
+                <option value="superfecta">Superfecta</option>
+              </select>
             </div>
-            <div class="form-row">
-              <div class="field">
-                <label for="horsesUsed">Horses used</label>
-                <input id="horsesUsed" type="number" min="2" max="12" step="1" value="4" />
-              </div>
-              <div class="field">
-                <label for="sampleOdds">Main horse odds (e.g. 3/1)</label>
-                <input id="sampleOdds" type="text" value="3/1" />
-              </div>
+            <div class="field">
+              <label for="ticketBase">Base unit per combination ($)</label>
+              <input id="ticketBase" type="number" min="0.5" step="0.5" value="1" />
             </div>
-            <button id="calcTicketBtn" type="button" class="btn btn-secondary">Estimate Ticket</button>
-            <p id="ticketResult" class="summary result-headline">Ticket combinations and rough payout estimate will appear here.</p>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="horsesUsed">Horses in box</label>
+              <input id="horsesUsed" type="number" min="2" max="12" step="1" value="4" />
+            </div>
+          </div>
+          <button id="calcTicketBtn" type="button" class="btn btn-secondary">Estimate Ticket</button>
+          <p id="ticketResult" class="summary result-headline">Ticket combinations and estimated cost are shown here. Actual payouts depend on final pool size and split with other winning tickets.</p>
+        </article>
+
+          <article class="card card-glass micro-lift">
+            <h3>Value Edge Calculator</h3>
+            <div class="field">
+              <label for="edgeMarketOdds">Market odds (5/1, 3/1, or decimal)</label>
+              <input id="edgeMarketOdds" type="text" value="5/1" inputmode="decimal" />
+            </div>
+            <div class="field">
+              <label for="edgeEstimate">Your estimated win chance (%)</label>
+              <input id="edgeEstimate" type="number" min="0" max="100" step="0.1" value="20" />
+            </div>
+            <button id="calcEdgeBtn" type="button" class="btn btn-secondary">Calculate Edge</button>
+            <p id="edgeResult" class="summary result-headline">Enter market odds and your probability estimate to see whether the price offers value.</p>
           </article>
 
           <article class="card card-glass micro-lift">
@@ -287,11 +297,11 @@
               </div>
             </div>
             <div class="field">
-              <label for="avgNetMultipleInput">Average net win multiple (x bet, simplified)</label>
+              <label for="avgNetMultipleInput">Average net profit multiple per win (profit ÷ stake)</label>
               <input id="avgNetMultipleInput" type="number" min="0.2" step="0.1" value="2.4" />
             </div>
             <button id="calcBankrollBtn" type="button" class="btn btn-secondary">Run Session Stress Test</button>
-            <p id="bankrollResult" class="summary result-headline">Estimate bust risk before your next card.</p>
+            <p id="bankrollResult" class="summary result-headline">Estimate bust risk before your next session.</p>
           </article>
         </div>
       </div>
@@ -300,7 +310,7 @@
     <section class="section" id="race-lab">
       <div class="container">
         <h2 class="section-title">Race Lab: Favorite vs Longshot Simulator</h2>
-        <p class="section-subtext">Educational simulation only. It illustrates variance and takeout pressure, not guaranteed real-world outcomes.</p>
+        <p class="section-subtext">Educational simulation only. It illustrates variance and market price behavior, not guaranteed real-world outcomes.</p>
 
         <div class="grid grid-2">
           <article class="card card-glass micro-lift">
@@ -320,10 +330,6 @@
                 <label for="simRaces">Number of races</label>
                 <input id="simRaces" type="number" min="20" max="1000" step="10" value="200" />
               </div>
-              <div class="field">
-                <label for="simTakeout">Takeout (%)</label>
-                <input id="simTakeout" type="number" min="5" max="30" step="1" value="17" />
-              </div>
             </div>
             <button id="runSimBtn" type="button" class="btn">Run Favorite vs Longshot</button>
             <p id="simResult" class="summary result-headline">Run a simulation to compare hit rate and profit swings.</p>
@@ -332,9 +338,9 @@
           <article class="info-box section-gradient-gold">
             <h3>How to read this simulator</h3>
             <ul>
-              <li>Favorites usually win more often, but can still lose money at short prices.</li>
-              <li>Longshots can show huge temporary spikes but often finish deeply negative.</li>
-              <li>Takeout means both paths face a built-in disadvantage unless you find true market mispricing.</li>
+              <li>Favorites usually win more often, but can still lose money when short prices are too low.</li>
+              <li>Longshots can show huge temporary spikes but usually have much wider swings.</li>
+              <li>Track prices are pari-mutuel, so takeout is baked into the market odds. This simulation is focused on volatility, not exact pool payouts.</li>
             </ul>
             <p class="mb-0">Use this with the <a href="blackjack-ev-calculator.html">EV calculator</a> and <a href="blackjack-bankroll-calculator.html">bankroll calculator</a> to compare gambling variance across games.</p>
           </article>

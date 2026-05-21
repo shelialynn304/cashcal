@@ -65,7 +65,7 @@
       const impliedProb = (1 / parsed.decimal) * 100;
       const fairPrice = (1 - impliedProb / 100) / (impliedProb / 100);
 
-      resultEl.textContent = `Implied probability: ${impliedProb.toFixed(2)}%. Decimal odds: ${parsed.decimal.toFixed(2)}. Fair-price check: about ${fairPrice.toFixed(2)}/1 before takeout.`;
+      resultEl.textContent = `Implied probability: ${impliedProb.toFixed(2)}%. Decimal odds: ${parsed.decimal.toFixed(2)}. Theoretical fair odds before takeout: about ${fairPrice.toFixed(2)}/1.`;
     }
 
     calcButton.addEventListener('click', render);
@@ -80,19 +80,17 @@
     const ticketType = document.getElementById('ticketType');
     const ticketBase = document.getElementById('ticketBase');
     const horsesUsed = document.getElementById('horsesUsed');
-    const sampleOdds = document.getElementById('sampleOdds');
     const calcButton = document.getElementById('calcTicketBtn');
     const resultEl = document.getElementById('ticketResult');
 
-    if (!ticketType || !ticketBase || !horsesUsed || !sampleOdds || !calcButton || !resultEl) return;
+    if (!ticketType || !ticketBase || !horsesUsed || !calcButton || !resultEl) return;
 
     function render() {
-      const parsedOdds = parseFractionalOdds(sampleOdds.value);
       const base = Number(ticketBase.value);
       const runners = Number(horsesUsed.value);
 
-      if (!parsedOdds || !Number.isFinite(base) || base <= 0 || !Number.isFinite(runners) || runners < 2) {
-        resultEl.textContent = 'Use valid odds, base unit, and horse count to estimate ticket cost.';
+      if (!Number.isFinite(base) || base <= 0 || !Number.isFinite(runners) || runners < 2) {
+        resultEl.textContent = 'Use a valid unit size and horse count to estimate ticket cost.';
         return;
       }
 
@@ -100,13 +98,43 @@
       const combos = permutationsCount(runners, legs);
       const ticketCost = combos * base;
 
-      const typeMultiplier = ticketType.value === 'exacta' ? 2.2 : ticketType.value === 'trifecta' ? 5.3 : 10.8;
-      const roughGrossReturn = base * (parsedOdds.decimal - 1) * typeMultiplier;
-
-      resultEl.textContent = `${ticketType.value.toUpperCase()} with ${runners} horses creates ${combos} combos. Estimated ticket cost: ${formatCurrency(ticketCost)}. If your key outcome hits, a rough gross return might be around ${formatCurrency(roughGrossReturn)} per winning combo (pool payout can vary a lot).`;
+      resultEl.textContent = `${ticketType.value.toUpperCase()} with ${runners} horses creates ${combos} combos. Estimated ticket cost: ${formatCurrency(ticketCost)}. Actual payout depends on the final pool, takeout, and how many other winning tickets share the pool.`;
     }
 
     calcButton.addEventListener('click', render);
+    render();
+  }
+
+  function setupValueEdgeCalculator() {
+    const marketOddsInput = document.getElementById('edgeMarketOdds');
+    const estimateInput = document.getElementById('edgeEstimate');
+    const calcButton = document.getElementById('calcEdgeBtn');
+    const resultEl = document.getElementById('edgeResult');
+
+    if (!marketOddsInput || !estimateInput || !calcButton || !resultEl) return;
+
+    function render() {
+      const parsed = parseFractionalOdds(marketOddsInput.value);
+      const estimate = Number(estimateInput.value);
+
+      if (!parsed || !Number.isFinite(estimate) || estimate < 0 || estimate > 100) {
+        resultEl.textContent = 'Enter valid market odds and your estimated win percentage (0–100).';
+        return;
+      }
+
+      const impliedProb = (1 / parsed.decimal) * 100;
+      const edgePoints = estimate - impliedProb;
+      const expectedRoi = (estimate / 100) * parsed.decimal - 1;
+      const edgeLabel = edgePoints >= 0 ? 'Value bet' : 'Overpriced';
+
+      resultEl.textContent = `Market implied probability: ${impliedProb.toFixed(2)}%. Your estimate: ${estimate.toFixed(2)}%. ${edgeLabel}: ${edgePoints >= 0 ? '+' : ''}${edgePoints.toFixed(2)} percentage points. Expected ROI if your estimate is correct: ${expectedRoi >= 0 ? '+' : ''}${(expectedRoi * 100).toFixed(1)}%.`;
+    }
+
+    calcButton.addEventListener('click', render);
+    estimateInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') render();
+    });
+
     render();
   }
 
@@ -129,7 +157,7 @@
       const avgNetMultiple = avgNetMultipleInput ? Number(avgNetMultipleInput.value) : 2.4;
 
       if (!Number.isFinite(bankrollStart) || bankrollStart <= 0 || !Number.isFinite(betUnit) || betUnit <= 0 || !Number.isFinite(races) || races <= 0 || !Number.isFinite(hitRate) || hitRate <= 0 || hitRate >= 1 || !Number.isFinite(avgNetMultiple) || avgNetMultiple <= 0) {
-        resultEl.textContent = 'Use valid bankroll, bet size, race count, hit rate (1% to 99%), and average net win multiple.';
+        resultEl.textContent = 'Use valid bankroll, bet size, race count, hit rate (1% to 99%), and average net profit multiple.';
         return;
       }
 
@@ -170,58 +198,47 @@
     const favOddsInput = document.getElementById('favOdds');
     const longOddsInput = document.getElementById('longOdds');
     const simRacesInput = document.getElementById('simRaces');
-    const simTakeoutInput = document.getElementById('simTakeout');
     const runButton = document.getElementById('runSimBtn');
     const resultEl = document.getElementById('simResult');
 
-    if (!favOddsInput || !longOddsInput || !simRacesInput || !simTakeoutInput || !runButton || !resultEl) return;
+    if (!favOddsInput || !longOddsInput || !simRacesInput || !runButton || !resultEl) return;
 
     function runSimulation() {
       const fav = parseFractionalOdds(favOddsInput.value);
       const longshot = parseFractionalOdds(longOddsInput.value);
       const races = Number(simRacesInput.value);
-      const takeout = Number(simTakeoutInput.value) / 100;
 
-      if (!fav || !longshot || !Number.isFinite(races) || races < 20 || !Number.isFinite(takeout) || takeout < 0 || takeout >= 0.5) {
-        resultEl.textContent = 'Use valid odds, race count (20+), and takeout percentage.';
+      if (!fav || !longshot || !Number.isFinite(races) || races < 20) {
+        resultEl.textContent = 'Use valid odds and race count (20+).';
         return;
       }
 
-      const rawFavProb = 1 / fav.decimal;
-      const rawLongProb = 1 / longshot.decimal;
-      const probScale = rawFavProb + rawLongProb > 1 ? 1 / (rawFavProb + rawLongProb) : 1;
-      const favProb = rawFavProb * probScale;
-      const longProb = rawLongProb * probScale;
+      const favProb = 1 / fav.decimal;
+      const longProb = 1 / longshot.decimal;
 
       let favWins = 0;
       let longWins = 0;
       let favProfit = 0;
       let longProfit = 0;
-      const payoutAdjustment = 1 - takeout;
 
       for (let i = 0; i < races; i += 1) {
         favProfit -= 1;
-        longProfit -= 1;
-
-        const roll = Math.random();
-        const favWinsRace = roll < favProb;
-        const longWinsRace = !favWinsRace && roll < favProb + longProb;
-
-        if (favWinsRace) {
+        if (Math.random() < favProb) {
           favWins += 1;
-          favProfit += fav.decimal * payoutAdjustment;
+          favProfit += fav.decimal;
         }
 
-        if (longWinsRace) {
+        longProfit -= 1;
+        if (Math.random() < longProb) {
           longWins += 1;
-          longProfit += longshot.decimal * payoutAdjustment;
+          longProfit += longshot.decimal;
         }
       }
 
       const favRoi = (favProfit / races) * 100;
       const longRoi = (longProfit / races) * 100;
 
-      resultEl.textContent = `After ${races} races: Favorite won ${favWins} (${((favWins / races) * 100).toFixed(1)}%) with ${favProfit.toFixed(1)} units total (${favRoi.toFixed(1)}% ROI). Longshot won ${longWins} (${((longWins / races) * 100).toFixed(1)}%) with ${longProfit.toFixed(1)} units total (${longRoi.toFixed(1)}% ROI). Variance can make short runs look misleading.`;
+      resultEl.textContent = `After ${races} races: Favorite won ${favWins} (${((favWins / races) * 100).toFixed(1)}%) with ${favProfit.toFixed(1)} units total (${favRoi.toFixed(1)}% ROI). Longshot won ${longWins} (${((longWins / races) * 100).toFixed(1)}%) with ${longProfit.toFixed(1)} units total (${longRoi.toFixed(1)}% ROI). If these are fair market prices, the average ROI should hover near 0% and the difference is mainly volatility.`;
     }
 
     runButton.addEventListener('click', runSimulation);
@@ -256,6 +273,7 @@
 
   setupOddsCalculator();
   setupTicketEstimator();
+  setupValueEdgeCalculator();
   setupBankrollEstimator();
   setupFavoriteLongshotSimulator();
   setupLegacyChecklist();
