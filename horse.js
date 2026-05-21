@@ -98,7 +98,7 @@
       const combos = permutationsCount(runners, legs);
       const ticketCost = combos * base;
 
-      resultEl.textContent = `${ticketType.value.toUpperCase()} with ${runners} horses creates ${combos} combos. Estimated ticket cost: ${formatCurrency(ticketCost)}. Actual payout depends on the final pool, takeout, and how many other winning tickets share the pool.`;
+      resultEl.innerHTML = `Estimated ticket cost: <strong>${formatCurrency(ticketCost)}</strong><br>${ticketType.value.toUpperCase()} with ${runners} horses creates ${combos} combinations. Actual payout depends on the final pool, takeout, and how many other winning tickets share the pool.`;
     }
 
     calcButton.addEventListener('click', render);
