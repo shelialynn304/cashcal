@@ -301,13 +301,13 @@
     const best = actions[0];
     document.getElementById("bestMove").textContent = best.label;
     document.getElementById("bestMoveDetail").textContent =
-      `${buildReason(best.label, total, dealerCard, isSoft)} Estimated return: ${formatEV(best.ev)} units (${formatMoney(best.dollars)} on a ${formatMoney(betSize)} base bet).`;
+      `${buildReason(best.label, total, dealerCard, isSoft)} Model-estimated return: ${formatEV(best.ev)} units (${formatMoney(best.dollars)} on a ${formatMoney(betSize)} base bet).`;
 
     document.getElementById("results").innerHTML = actions.map((action) => `
       <div class="result-item">
         <span>${action.label}</span>
-        <strong class="${valueClass(action.ev)}">${formatEV(action.ev)} EV</strong>
-        <p class="small-note mb-0">Approx return: ${formatMoney(action.dollars)}</p>
+        <strong class="${valueClass(action.ev)}">Estimated EV (model): ${formatEV(action.ev)} units</strong>
+        <p class="small-note mb-0">Estimated average return (per hand at this bet): ${formatMoney(action.dollars)}</p>
       </div>
     `).join("");
 
@@ -318,10 +318,10 @@
       const mc = runMonteCarloEV(total, isSoft, dealerCard, trials);
       const mcHtml = `
         <div class="card top-gap subtle-card card-glass">
-          <strong>Monte‑Carlo (verification, ${trials} trials)</strong>
-          <div class="result-item"><span>Stand</span><strong>${formatEV(mc.standEV)} EV</strong><p class="small-note mb-0">Simulated avg return per base bet</p></div>
-          <div class="result-item"><span>Hit</span><strong>${formatEV(mc.hitEV)} EV</strong><p class="small-note mb-0">Simulated avg return per base bet</p></div>
-          <div class="result-item"><span>Double</span><strong>${formatEV(mc.doubleEV)} EV</strong><p class="small-note mb-0">Simulated avg return (double bet)</p></div>
+          <strong>Monte‑Carlo (simulation check, ${trials} trials)</strong>
+          <div class="result-item"><span>Stand</span><strong>${formatEV(mc.standEV)} EV</strong><p class="small-note mb-0">Simulated average return per base bet (simulation policy)</p></div>
+          <div class="result-item"><span>Hit</span><strong>${formatEV(mc.hitEV)} EV</strong><p class="small-note mb-0">Simulated average return per base bet (simulation policy)</p></div>
+          <div class="result-item"><span>Double</span><strong>${formatEV(mc.doubleEV)} EV</strong><p class="small-note mb-0">Simulated average return with doubled stake (simulation policy)</p></div>
         </div>
       `;
       document.getElementById('results').innerHTML += mcHtml;
