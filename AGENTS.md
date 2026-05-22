@@ -1,23 +1,7 @@
 # Edge Over Luck Project Guidelines (AGENTS.md)
 
-## Repository / Brand Clarification
 
-This repository may be named `CashCal`, but the public-facing website brand is:
 
-**Edge Over Luck**
-
-Public domain:
-
-**edgeoverluck.com**
-
-Important:
-
-- Use **Edge Over Luck** in public-facing copy.
-- Use **edgeoverluck.com** for canonical/domain references.
-- Do not replace public branding with `CashCal`.
-- `CashCal` is only the internal repository/project name unless specifically requested.
-
----
 
 ## Project Purpose
 
@@ -34,477 +18,482 @@ Turn visitors into tool users first, then eventually affiliate clicks.
 
 ---
 
-## Brand Positioning
+# Edge Over Luck Agent Instructions
 
-Edge Over Luck should feel like:
+Repository-level instructions for AI agents, Codex, and assistant-driven edits in the Edge Over Luck codebase.
 
-- Smart gambling tools for real players
-- Real math, real odds, clear explanations
-- Dark casino atmosphere without looking cheap or spammy
-- Confident, useful, slightly sharp-edged
-- A site that helps players understand risk before variance eats their lunch
+## Purpose
+
+This file defines how AI agents should work inside this repository.
+
+Primary goals:
+
+- Protect working site behavior.
+- Keep edits small, specific, and reviewable.
+- Preserve the Edge Over Luck brand.
+- Prioritize calculator accuracy, honest gambling math, mobile usability, and SEO structure.
+- Avoid broad rewrites unless explicitly requested.
+
+This repository powers EdgeOverLuck.com, a static casino math and gambling tools site built with HTML, CSS, and vanilla JavaScript.
+
+--## Repository / Brand Clarification
+
+This repository may be named `CashCal`, but the public-facing website brand is:
+
+**Edge Over Luck**
+
+Public domain:
+
+**edgeoverluck.com**
+
+Important:
+
+- Use **Edge Over Luck** in public-facing copy.
+- Use **edgeoverluck.com** for canonical/domain references.-
+- Do not replace public branding with `CashCal`.
+- `CashCal` is only the internal repository/project name unless specifically requested.
+
+---
+## Core Rules
+
+Agents must:
+
+- Inspect relevant files before editing.
+- Edit only the files needed for the task.
+- Preserve existing behavior unless the task explicitly asks to change it.
+- Avoid broad redesigns unless requested.
+- Keep changes page-specific when possible.
+- Preserve existing IDs, classes, scripts, schema, analytics, canonical URLs, navigation, and footer unless the task specifically involves them.
+- Keep the site mobile-friendly and responsive.
+- Avoid introducing external frameworks, build systems, or bloated libraries.
+- Explain any formula or calculator behavior changes clearly.
+
+Agents must not:
+
+- Rewrite full pages when a targeted edit would solve the issue.
+- Remove working features without a clear reason.
+- Change unrelated pages “while already there.”
+- Add React, Vue, Angular, bundlers, package managers, or heavy dependencies.
+- Make gambling tools sound predictive or guaranteed.
+- Claim that any betting system beats house edge.
+- Hide model assumptions or risk disclaimers.
+
+---
+
+## How to Prompt the Agent
+
+When requesting changes, include:
+
+- The target page, script, or tool.
+- The specific issue or improvement.
+- Whether the task is focused on math, UX, copy, SEO, style, or code safety.
+- Files allowed, when possible.
+- What should not change.
+
+Example prompts:
+
+- Audit `blackjack-bankroll-calculator.html` and `blackjack.js` for math accuracy and confusing UX. Do not redesign the page.
+- Fix the stretched image on `slot-rtp-explained.html`. Do not change unrelated layout or copy.
+- Add clearer internal CTAs to `roulette-calculator.html` while preserving the current brand style, nav, footer, and calculator behavior.
+- Review `slot-simulator.js` for edge-case bugs. Do not change RTP formulas unless there is a documented bug.
+
+---
+
+## Standard Safe Task Format
+
+Use this structure for most Codex or agent tasks:
+
+### Safe task template
+
+Read `AGENTS.md` before editing.
+
+Task:
+[Describe the specific task.]
+
+Files allowed:
+- [file 1]
+- [file 2]
+
+Do not edit any other files.
+
+Goal:
+[Explain the desired outcome.]
+
+Hard limits:
+- Do not rewrite the page.
+- Do not change unrelated files.
+- Do not remove working features.
+- Do not change nav, footer, analytics, schema, or canonical URLs unless requested.
+- Preserve existing IDs used by JavaScript.
+
+Required changes:
+1. [Specific change]
+2. [Specific change]
+3. [Specific change]
+
+After editing, report:
+- Files changed.
+- What changed.
+- Whether formulas changed.
+- What was intentionally not changed.
+- Any tests or checks performed.
+
+---
+
+## Brand and Tone
+
+The brand is Edge Over Luck.
+
+The site should feel:
+
+- Math-first
+- Clear
+- Confident
+- Honest
+- Practical
+- Beginner-friendly
+- Slightly sharp, but not try-hard
+
+Preferred tone:
+
+- Smart Gambling Tools for Real Players
+- Play with the numbers before you play with your money.
 
 Avoid:
 
-- Generic casino hype
-- Fake guarantees
-- Spammy affiliate language
-- Vague motivational copy
-- Overdone jokes that make the site feel unserious
-- Anything that sounds like a sketchy bonus-chasing casino ad
+- Hype
+- Fake guru claims
+- Guaranteed-profit language
+- Overly technical walls of text
+- Forced jokes every other sentence
+- Cynicism that makes the tools feel pointless
+
+Use dark humor lightly. A sharp line is fine. A page full of jokes is just a clown car with meta tags.
 
 ---
 
-## Tech Stack
+## Gambling Math Standards
 
-- HTML
-- CSS using shared `style.css`
-- Vanilla JavaScript
+Accuracy and honesty matter more than polish.
 
-No frameworks.
+For every calculator, simulator, or gambling math page:
 
-Keep the site lightweight, fast, and easy to maintain.
+- Explain assumptions clearly.
+- Separate theoretical expected value from simulated results.
+- Label estimates as estimates.
+- Do not imply the tool predicts future outcomes.
+- Do not imply a betting system removes house edge.
+- Do not imply short-term wins prove a strategy works.
+- Do not hide uncertainty or model limits.
 
----
+Forbidden claims:
 
-## Core Rules: Do Not Break
+- Guaranteed profit
+- Beat the casino
+- Safe betting system
+- Risk-free gambling
+- Predict the next result
+- Due for a win
+- Recover losses safely
+- Secret winning method
 
-1. Do not redesign pages from scratch unless explicitly told.
-2. Reuse existing `style.css` classes whenever possible.
-3. Maintain consistent layout across all pages.
-4. Do not add heavy libraries or frameworks.
-5. Keep code clean, readable, and fast.
-6. Do not remove working features unless fixing a confirmed bug.
-7. Do not rewrite unrelated files.
-8. Do not make broad refactors unless explicitly requested.
-9. Do not change game rules, math logic, betting logic, or simulation logic unless the task specifically asks for it.
-10. Do not remove analytics, tracking, canonical tags, schema, nav, footer, or existing CTAs unless explicitly requested.
-11. Do not change public branding from **Edge Over Luck** to `CashCal`.
+Preferred language:
 
----
-
-## Task Scope Rules
-
-When working on a task:
-
-- Only edit files directly related to the request.
-- Keep changes minimal and targeted.
-- If more files need to be changed, explain why.
-- Do not “improve” unrelated pages while completing a specific task.
-- Do not rename files, move assets, or restructure folders unless specifically requested.
-- Preserve existing behavior unless the task is explicitly about changing behavior.
-- Avoid mixing bug fixes, design changes, SEO edits, and refactors in the same task.
-
-Bad behavior:
-
-- Fixing roulette and changing blackjack.
-- Updating copy and rewriting CSS.
-- Moving assets and refactoring JavaScript.
-- Adding new features during a bug fix.
-- Rebranding pages from Edge Over Luck to CashCal.
-
-Good behavior:
-
-- Fix the requested issue.
-- Verify the fix.
-- Report exactly what changed.
-- Keep the PR small enough to review safely.
+- Educational estimate
+- Simulation
+- Bankroll pressure
+- Expected value
+- Approximate model
+- House edge remains
+- Short-term wins can happen
+- Long-term math still matters
 
 ---
 
-## Domain and Branding Rules
+## Calculator and Simulator Rules
 
-- Public brand name: **Edge Over Luck**
-- Public domain: **edgeoverluck.com**
-- Repository/internal name may be `CashCal`
-- Canonical URLs should use `https://edgeoverluck.com/`
-- Public page titles, meta descriptions, headers, and CTAs should use **Edge Over Luck**, not `CashCal`, unless specifically requested.
-- Do not add `www` to canonical URLs unless specifically requested.
-- Keep branding consistent across homepage, tools, calculators, games, guides, nav, footer, metadata, and schema.
+### Blackjack
 
----
+For blackjack tools:
 
-## Conversion Rules: High Priority
+- Do not overclaim exact EV unless the tool is a full solver.
+- If the model is simplified, call it an estimator.
+- Disclose missing assumptions when relevant:
+  - Splits
+  - Surrender
+  - Insurance
+  - Dealer peek
+  - Deck composition
+  - S17/H17
+  - Double-after-split
+  - Blackjack payout differences
+  - True-count approximation
 
-Every page should:
+`blackjack-ev-calculator.html` and `blackjack-ev.js` should be treated as an EV estimator unless a full solver is explicitly built.
 
-- Have a clear purpose.
-- Make the next action obvious.
-- Include at least one strong call-to-action.
-- Guide users toward core tools:
-  - Bankroll calculator
-  - Blackjack trainer
-  - Slot simulator
-  - Roulette simulator, where relevant
+### Roulette
 
-### Required Conversion Elements
+For roulette tools:
 
-1. Strong headline with a clear benefit
-2. Supporting subtext explaining what the tool does
-3. CTA button above the fold
-4. Additional CTA mid-page or near the bottom
-5. Internal links to other tools
+- European roulette has 37 pockets.
+- American roulette has 38 pockets.
+- European house edge is about 2.70%.
+- American house edge is about 5.26%.
+- Standard bet EV should match the wheel house edge.
+- Betting systems change volatility and bankroll path, not long-term expected value.
 
-Avoid:
+Keep these separate:
 
-- Vague text
-- Cluttered layouts
-- Dead-end pages
-- Weak CTAs
-- Fake urgency
-- Overpromising outcomes
-- Spammy casino language
+- Per-spin win probability
+- Payout
+- House edge
+- Expected value
+- Simulated profit chance
+- Bust risk
+- Average ending bankroll
 
----
+### Slots
 
-## Layout System
+For slot tools:
 
-Use consistent structure:
+- RTP is a long-run average, not a session prediction.
+- Volatility affects bankroll swings.
+- Bonus features are part of RTP, not extra value outside the math.
+- Past spins do not affect future spins.
+- High-volatility games need enough simulation trials for stable estimates.
 
-- Header / navbar
-- Hero section
-- Main content sections
-- Cards or grids
-- CTA section
-- Footer
+Do not imply:
 
-Use existing classes when possible:
+- A machine is due.
+- Bonus chasing improves EV.
+- RTP predicts tonight’s result.
 
-- `.container`
-- `.card`
-- `.btn`
-- `.section`
-- `.grid`
-- `.hero`
+### Horse Racing
 
-Avoid:
+For horse racing tools:
 
-- Inline styles unless absolutely necessary
-- Creating new layout systems
-- Duplicating CSS patterns that already exist
-- Page-specific styling unless the page truly needs it
-- Rebuilding shared navigation differently on each page
+- Odds imply probability.
+- Payout size is not the same as value.
+- Pari-mutuel takeout matters.
+- Picking winners is not enough; price matters.
+- Longshots have higher variance.
+- Favorites win more often but are not automatically profitable.
 
----
+Clarify:
 
-## Design Style
+- Gross payout
+- Net profit
+- Returned stake
+- Implied probability
+- Estimated true probability
+- Expected ROI
 
-The site should use:
+### Bubble Craps
 
-- Dark theme
-- Gold/yellow accents
-- Clean card-based layout
-- Strong contrast
-- Modern, readable spacing
-- Subtle casino atmosphere
-- Lightweight animations only when useful
+For craps tools:
 
-Acceptable visual elements:
-
-- Glow gradients
-- Glass-style cards
-- Depth shadows
-- Subtle hover effects
-- Section separators
-- Small ambient motion
-- Floating chip/card effects if lightweight and not distracting
-
-Avoid:
-
-- Heavy animations that slow loading
-- Clutter
-- Cheap casino spam visuals
-- Unreadable text
-- Excessive effects that distract from the tool
-- Random style changes that do not match the rest of the site
+- Bet rules must be clear.
+- Pass Line and Don’t Pass behavior must be accurate.
+- Come-out and point phases must be handled separately.
+- Bankroll should not silently go negative.
+- Dice sounds should not break roll logic if audio fails.
 
 ---
 
-## Mobile Optimization: Critical
+## Code Safety Rules
 
-Every change must work under 768px width.
+When editing code:
 
-Mobile rules:
+- Keep JavaScript vanilla.
+- Preserve existing HTML IDs used by scripts.
+- Guard optional DOM elements with null checks.
+- Validate user inputs.
+- Do not silently calculate nonsense.
+- Avoid clever code in calculator logic.
+- Keep functions readable.
+- Use comments for math assumptions or fragile behavior.
 
-- No horizontal overflow
-- No oversized text
-- No crushed cards
-- No tiny tap targets
-- Important content must appear early
-- Buttons must be easy to tap
-- Tools must remain usable on phones
-- Game controls should appear in a logical order
-- Do not bury controls below giant visuals on mobile
+For simulations:
 
-Always consider mobile before desktop polish.
-
----
-
-## JavaScript Rules
-
-- Do not break existing logic unless fixing a bug.
-- If fixing a bug, identify the root cause.
-- Keep math accurate.
-- Keep scripts simple and efficient.
-- Avoid global variables unless already part of the page pattern.
-- Do not duplicate utility functions if an existing shared helper can be reused.
-- Do not introduce unnecessary dependencies.
-- Do not silently change simulation assumptions.
-
-For gambling tools:
-
-- Bankroll math must be accurate.
-- Probability logic must be accurate.
-- Betting limits must prevent impossible bets.
-- Users must not be allowed to bet more than their bankroll.
-- Simulations should be transparent and explain assumptions.
-- Randomness should be handled clearly and consistently.
-- Do not make fake claims that a tool can predict outcomes.
+- Keep random simulation results separate from theoretical EV.
+- Use enough trials for stable estimates when practical.
+- Avoid fake precision.
+- Explain model assumptions near the output.
 
 ---
 
-## Game / Simulator Rules
+## UX Rules
 
-For blackjack, roulette, slots, dice, or any future casino-style tool:
+Tools should be understandable to beginners.
 
-- Prevent impossible states.
-- Prevent betting more than current bankroll.
-- Preserve reset/replay behavior unless intentionally changing it.
-- Keep controls visible and easy to use.
-- Keep feedback clear after each action.
-- Do not let animations block basic usability.
-- Do not let sounds loop endlessly unless explicitly requested.
-- Do not make the page dependent on audio to understand what happened.
+For calculator pages:
 
-When changing a game page, test:
+- Explain each important input.
+- Explain each important output.
+- Add helper text under confusing fields.
+- Put assumptions near the calculator.
+- Keep CTAs specific.
+- Make mobile controls easy to tap.
+- Prevent result sections from overflowing on mobile.
+- Make validation messages clear.
 
-- Starting bankroll
-- Bet input
-- Repeat bet
-- Win/loss/push behavior
-- Reset behavior
-- Mobile layout
-- Broken images
-- Broken sounds
-- Console errors
+Good CTA examples:
 
----
+- Run the Bankroll Check
+- Compare Roulette Odds
+- Test the Strategy
+- Practice Blackjack Decisions
 
-## Audio Rules
+Avoid vague CTA text:
 
-Audio should improve interaction without becoming annoying.
-
-Rules:
-
-- Do not autoplay looping sounds unless explicitly requested.
-- Do not create sounds that repeat endlessly.
-- Button/click sounds should be subtle.
-- Game sounds should trigger only on relevant actions.
-- Preserve existing audio paths unless the task is about audio.
-- Check that referenced audio files actually exist.
-- Respect browser autoplay restrictions.
-- If audio fails, the game should still work.
-
-Common folders:
-
-- `/assets/sounds/cards/`
-- `/assets/sounds/chips/`
-- `/assets/sounds/games/`
-- `/assets/sounds/ui/`
-- `/assets/sounds/voices/`
-
----
-
-## Asset Rules
-
-Use organized asset paths.
-
-Common folders:
-
-- `/assets/images/`
-- `/assets/images/cards/`
-- `/assets/sounds/`
-
-When replacing assets:
-
-- Preserve existing filenames when game logic depends on them.
-- Do not change code paths if replacing files with same-name assets.
-- Verify referenced files exist.
-- Do not leave duplicate unused assets unless intentionally archived.
-- Do not rename files casually.
-- Do not move assets unless the task specifically asks for asset organization.
-
-
----
-
-## Feature Development Rules
-
-When adding features:
-
-- Extend existing pages instead of rebuilding them.
-- Maintain visual consistency.
-- Keep performance fast.
-- Avoid unnecessary complexity.
-- Add one feature at a time.
-- Do not combine feature work with cleanup/refactoring unless requested.
-- Make the feature useful before making it fancy.
-
-Feature work should be easy to review in a pull request.
+- Click Here
+- Submit
+- Learn More
+- Win Smarter
 
 ---
 
 ## SEO Rules
 
-Each page should include:
+Important pages should have:
 
-- Optimized title tag
-- Meta description
-- One clear H1
-- Logical H2/H3 structure
-- Internal links to related tools
-- Canonical URL using `https://edgeoverluck.com/`
-- Useful, non-spammy content
+- One clear H1.
+- Useful H2 sections.
+- Unique `<title>`.
+- Clear meta description.
+- Canonical URL using `https://edgeoverluck.com/`.
+- Internal links to related tools.
+- Helpful beginner-friendly copy.
+- Alt text for meaningful images.
+- FAQ/schema where useful.
+- Responsible gambling language where relevant.
 
-Optional when appropriate:
+Use apex domain canonicals:
 
-- `WebApplication` schema
-- `FAQPage` schema
-- Breadcrumb schema
+- `https://edgeoverluck.com/`
+
+Do not use `www` unless explicitly requested.
+
+---
+
+## Visual and Style Rules
+
+Use existing shared classes and patterns before adding new ones.
+
+Preferred classes/patterns:
+
+- `.container`
+- `.section`
+- `.section-tight`
+- `.card`
+- `.glass-card`
+- `.glass-panel`
+- `.btn`
+- `.btn-secondary`
+- `.grid`
+- `.grid-2`
+- `.grid-3`
+- `.section-title`
+- `.section-subtext`
+- `.small-note`
+- `.warning-box`
+- `.info-box`
+
+Do not create a totally new visual system for one page.
+
+Preferred visual feel:
+
+- Dark background
+- Gold accents
+- Optional cyan secondary accents
+- Glass cards
+- Glow gradients
+- Clean contrast
+- Strong readability
+- Subtle motion, not chaos
 
 Avoid:
 
-- Keyword stuffing
-- Fake expertise
-- Thin content
-- Repeating the same paragraph across pages
-- Spammy affiliate wording
-- Any claim that gambling tools guarantee profit
+- Overloaded sections
+- Tiny controls
+- Stretched images
+- Excessive animation
+- Autoplay sound
+- Third-party assets for core UI
+- Malware-banner energy
 
 ---
 
-## Internal Linking Strategy
+## Supporting Repo Guidance Files
 
-Every page should:
+Use these files depending on the task:
 
-- Link to at least 2–3 relevant tools or guides.
-- Help users continue exploring the site.
-- Avoid dead ends.
+- `STYLEGUIDE.md` — brand voice, visual style, copy rules, layout patterns, and UX tone.
+- `REVIEW.md` — manual QA checklist and small calculator/simulator test cases.
+- `.github/agents/agentsmath.md.agent.md` — gambling math review standards for calculators, simulators, EV, RTP, house edge, bankroll risk, and probability tools.
 
-Priority internal links:
+When a task involves calculator math, odds, RTP, EV, blackjack, roulette, slots, horse racing, craps, or bankroll simulation, read and follow:
 
-- Bankroll calculator
-- Blackjack trainer
-- Slot simulator
-- Roulette simulator
-- Blackjack strategy content
-- Gambling math/odds explainers
+- `.github/agents/agentsmath.md.agent.md`
+- `REVIEW.md`
 
----
+When a task involves copy, page wording, visual polish, layout consistency, CTAs, or brand tone, read and follow:
 
-## Analytics / Tracking Rules
+- `STYLEGUIDE.md`
+- `AGENTS.md`
 
-Do not remove or duplicate analytics/tracking code unless the task specifically asks for it.
+When a task involves testing or PR review, read and follow:
 
-Preserve:
+- `REVIEW.md`
 
-- Google Analytics tags
-- Event tracking stubs
-- Form tracking hooks
-- Phone/link click tracking hooks, if present
-
-If editing CTAs or forms, verify that tracking still works or report what needs manual testing.
+Do not duplicate the full contents of supporting files inside this file. Each file has one job. This one defines repo-level agent behavior.
 
 ---
 
-## Forms / CTA Rules
+## Review Checklist
 
-If a page includes forms or lead-capture elements:
+For any change, verify:
 
-- Preserve existing form actions.
-- Preserve hidden fields.
-- Preserve thank-you redirect behavior.
-- Preserve required inputs.
-- Do not change form providers unless explicitly requested.
+- Only necessary files were modified.
+- The brand remains Edge Over Luck.
+- Existing behavior still works unless intentionally changed.
+- The page stays mobile-friendly and responsive.
+- No new console errors are introduced.
+- Gambling math and assumptions are accurate.
+- Page tone is honest and not hype-driven.
+- Existing nav/footer still work.
+- No unrelated SEO/schema/canonical changes were made.
 
-For CTA buttons:
+If formulas changed, report:
 
-- Keep wording clear.
-- Link to relevant tools or pages.
-- Avoid fake urgency.
-- Avoid misleading casino/promotional claims.
+Formula changed: yes
 
----
+Before:
+[old formula or behavior]
 
-## Verification Checklist
+After:
+[new formula or behavior]
 
-Before finishing any task, check:
+Reason:
+[why it changed]
 
-1. Does the requested feature or fix work?
-2. Were only necessary files changed?
-3. Did any unrelated layout, nav, SEO, or analytics change?
-4. Are asset paths valid?
-5. Are there missing images, sounds, scripts, or CSS files?
-6. Does the page still work on mobile?
-7. Are there obvious console errors?
-8. Did the change preserve existing functionality?
-9. Is the PR small enough to review safely?
+If formulas did not change, report:
 
-For asset changes, also check:
-
-- Old references are updated or preserved correctly.
-- New files are in the expected folders.
-- No broken image/audio paths remain.
-- Duplicate files are reported.
-- New filenames match existing logic.
-
-For game changes, also check:
-
-- Users cannot bet more than bankroll.
-- Repeat bet still works.
-- Reset still works.
-- Win/loss/push states display correctly.
-- Controls are usable on mobile.
+No formulas changed.
 
 ---
 
-## Pull Request Expectations
+## Final Rule
 
-When making changes:
+Protect these in order:
 
-- Keep diffs small.
-- Do not rewrite full files unless explicitly requested.
-- Do not reformat entire files just because formatting differs.
-- Explain what changed.
-- List files modified.
-- List anything that should be manually tested.
-- Mention any uncertainty or files that could not be verified.
-- Separate unrelated changes into separate PRs.
+1. Mathematical correctness
+2. User trust
+3. Existing working behavior
+4. Mobile usability
+5. SEO structure
+6. Brand consistency
+7. Visual polish
 
-Do not hide risky changes inside unrelated updates.
-
----
-
-## Output Expectations
-
-When reporting work completed, include:
-
-- Summary of changes
-- Files changed
-- Tests/checks performed
-- Anything not tested
-- Any manual review needed
-
-Do not claim something was tested unless it actually was.
-
----
-
-## Priority Order
-
-1. Functionality: the site must work correctly.
-2. Accuracy: math, odds, and simulations must be honest.
-3. Conversion: pages must guide user action.
-4. Consistency: pages should look like the same product.
-5. Mobile usability: tools must work on phones.
-6. Performance: keep it fast and lightweight.
-7. SEO: improve discoverability without spam.
-8. Clean code: make future changes easier.
+A flashy wrong calculator is worse than a boring correct one. Boring at least has the decency not to lie.
+-
