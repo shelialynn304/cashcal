@@ -428,6 +428,7 @@ Avoid:
 
 Use these files depending on the task:
 
+- `.agent.md` — short entry point that points agents to the correct repo guidance files. Do not duplicate full instructions there.
 - `STYLEGUIDE.md` — brand voice, visual style, copy rules, layout patterns, and UX tone.
 - `REVIEW.md` — manual QA checklist and small calculator/simulator test cases.
 - `.github/agents/agentsmath.md.agent.md` — gambling math review standards for calculators, simulators, EV, RTP, house edge, bankroll risk, and probability tools.
