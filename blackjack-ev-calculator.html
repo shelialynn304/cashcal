@@ -6,7 +6,7 @@
   <meta name="robots" content="index, follow" />
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
 
-  <title>Blackjack EV Calculator & Decision Tool | Edge Over Luck</title>
+  <title>Blackjack EV Estimate Calculator (Hit/Stand/Double) | Edge Over Luck</title>
   <meta name="description" content="Free blackjack EV calculator. Compare the expected value of hit, stand, and double based on your hand, dealer upcard, decks, payout rules, and table conditions." />
   <link rel="canonical" href="https://edgeoverluck.com/blackjack-ev-calculator.html" />
 
@@ -90,7 +90,7 @@
     <div class="container page-hero-split">
       <div class="page-hero-copy">
         <div class="eyebrow-cyan">Blackjack Decision Tool</div>
-        <h1 class="page-hero-title">Blackjack EV Calculator &amp; Decision Tool</h1>
+        <h1 class="page-hero-title">Blackjack EV Estimate Tool (Approximate Model)</h1>
         <p class="page-hero-subtitle">Compare hit, stand, and double by expected value before the table pressure gets loud.</p>
         <p class="page-hero-text">Enter your total, the dealer upcard, deck count, payout rules, and a rough true count to see which move has the strongest math for the spot.</p>
         <div class="cta-row">
@@ -149,14 +149,14 @@
           <button class="btn btn-outline" id="resetBtn" type="button">Reset</button>
         </div>
 
-        <p class="small-note">Uses realistic dealer outcome probabilities and includes pushes/ties. Not a full composition-dependent solver, but more accurate than simple heuristics.</p>
+        <p class="small-note">Model assumptions (important): This calculator provides approximate EV estimates for Hit, Stand, and Double in a single blackjack spot. It uses an infinite-shoe card model (fixed card probabilities), S17 dealer behavior (dealer stands on all 17s), and simplified rule/count adjustments. Dealer outcome distributions are estimated with simulation and may vary slightly between runs. The optional Monte Carlo check uses a simple hit policy and is a sanity check, not an exact validator. Use results to compare decisions directionally, not as guaranteed exact EV for every table.</p>
       </div>
 
       <div class="card glass-card-strong glow-cyan">
         <h2 class="section-title">Results</h2>
 
         <div class="info-box" id="bestMoveBox">
-          <p class="small-note mb-0">Best move right now</p>
+          <p class="small-note mb-0">Highest estimated EV in this model</p>
           <h3 id="bestMove" class="result-headline">Stand</h3>
           <p id="bestMoveDetail" class="small-note mb-0">Run the calculator to compare all actions.</p>
         </div>
