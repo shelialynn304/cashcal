@@ -1,219 +1,23 @@
-name: Weekly Site Audit
+name: Site Audit
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: "17 14 * * 1"
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
-  audit:
+  site-audit:
     runs-on: ubuntu-latest
-    continue-on-error: true
 
     steps:
-      - name: Check out repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run internal link and asset audit
-        shell: bash
-        continue-on-error: true
-        run: |
-          set +e
-          python3 <<'PY'
-          from html.parser import HTMLParser
-          from pathlib import Path
-          from urllib.parse import unquote, urlparse
-          import re
-
-          ROOT = Path.cwd()
-          EXCLUDED_DIRS = {".git", ".github", "node_modules", "dist", "build"}
-          IMAGE_EXTENSIONS = {".apng", ".avif", ".gif", ".ico", ".jpg", ".jpeg", ".png", ".svg", ".webp"}
-          ASSET_EXTENSIONS = IMAGE_EXTENSIONS | {".css", ".js"}
-          LINK_ASSET_RELS = {"apple-touch-icon", "icon", "mask-icon", "modulepreload", "preload", "stylesheet"}
-          warnings = []
-
-          def warn(message, file=None, line=None):
-              location = f" file={file}" if file else ""
-              if file and line:
-                  location = f" file={file},line={line}"
-              print(f"::warning{location}::{message}")
-              warnings.append(message)
-
-          def repo_html_files():
-              for path in ROOT.rglob("*.html"):
-                  if any(part in EXCLUDED_DIRS for part in path.parts):
-                      continue
-                  yield path
-
-          class AuditParser(HTMLParser):
-              def __init__(self):
-                  super().__init__(convert_charrefs=True)
-                  self.links = []
-                  self.assets = []
-                  self.ids = set()
-
-              def handle_starttag(self, tag, attrs):
-                  attrs = dict(attrs)
-                  line = self.getpos()[0]
-
-                  element_id = attrs.get("id") or attrs.get("name")
-                  if element_id:
-                      self.ids.add(element_id)
-
-                  if tag in {"a", "area"} and attrs.get("href"):
-                      self.links.append((attrs["href"], line))
-
-                  if tag in {"img", "source"} and attrs.get("src"):
-                      self.assets.append((attrs["src"], line))
-
-                  if tag in {"img", "source"} and attrs.get("srcset"):
-                      for candidate in attrs["srcset"].split(","):
-                          src = candidate.strip().split()[0] if candidate.strip() else ""
-                          if src:
-                              self.assets.append((src, line))
-
-                  if tag == "link" and attrs.get("href"):
-                      rel_tokens = set(attrs.get("rel", "").lower().split())
-                      href = attrs["href"]
-                      suffix = Path(urlparse(href).path).suffix.lower()
-                      if rel_tokens & LINK_ASSET_RELS or suffix in ASSET_EXTENSIONS:
-                          self.assets.append((href, line))
-
-                  if tag == "script" and attrs.get("src"):
-                      self.assets.append((attrs["src"], line))
-
-                  if tag == "meta" and attrs.get("content"):
-                      prop = (attrs.get("property") or attrs.get("name") or "").lower()
-                      if prop in {"og:image", "twitter:image", "twitter:image:src"}:
-                          self.assets.append((attrs["content"], line))
-
-              def handle_startendtag(self, tag, attrs):
-                  self.handle_starttag(tag, attrs)
-
-          def is_external_or_ignored(value):
-              parsed = urlparse(value.strip())
-              return (
-                  not value.strip()
-                  or parsed.scheme in {"http", "https", "mailto", "tel", "sms", "javascript", "data"}
-                  or value.strip().startswith("//")
-              )
-
-          def resolve_path(current_file, reference):
-              parsed = urlparse(reference.strip())
-              raw_path = unquote(parsed.path)
-              fragment = unquote(parsed.fragment)
-              if not raw_path:
-                  target = current_file
-              elif raw_path.startswith("/"):
-                  target = ROOT / raw_path.lstrip("/")
-              else:
-                  target = current_file.parent / raw_path
-
-              target = target.resolve()
-              try:
-                  target.relative_to(ROOT)
-              except ValueError:
-                  return None, fragment
-
-              if target.is_dir():
-                  target = target / "index.html"
-              elif not target.exists() and not target.suffix:
-                  target = target.with_suffix(".html")
-              return target, fragment
-
-          parsed_pages = {}
-          html_files = sorted(repo_html_files())
-          print("Checking HTML files...")
-          for file in html_files:
-              print(file.relative_to(ROOT))
-              parser = AuditParser()
-              try:
-                  parser.feed(file.read_text(encoding="utf-8"))
-              except UnicodeDecodeError:
-                  parser.feed(file.read_text(encoding="latin-1"))
-              parsed_pages[file.resolve()] = parser
-
-          print("Checking for missing canonical tags...")
-          for file, parser in parsed_pages.items():
-              content = file.read_text(encoding="utf-8", errors="ignore")
-              if 'rel="canonical"' not in content.lower() and "rel='canonical'" not in content.lower():
-                  warn(f"Missing canonical tag: {file.relative_to(ROOT)}", file=file.relative_to(ROOT))
-
-          print("Checking broken internal links...")
-          for file, parser in parsed_pages.items():
-              for href, line in parser.links:
-                  if is_external_or_ignored(href):
-                      continue
-                  target, fragment = resolve_path(file, href)
-                  rel_file = file.relative_to(ROOT)
-                  if target is None or not target.exists():
-                      warn(f"Broken internal link '{href}' in {rel_file}", file=rel_file, line=line)
-                      continue
-                  if fragment and target.suffix.lower() == ".html":
-                      target_parser = parsed_pages.get(target.resolve())
-                      if target_parser and fragment not in target_parser.ids:
-                          warn(f"Broken internal anchor '{href}' in {rel_file}", file=rel_file, line=line)
-
-          print("Checking missing referenced assets...")
-          for file, parser in parsed_pages.items():
-              for src, line in parser.assets:
-                  if is_external_or_ignored(src):
-                      continue
-                  target, _fragment = resolve_path(file, src)
-                  rel_file = file.relative_to(ROOT)
-                  if target is None or not target.exists():
-                      warn(f"Missing referenced asset '{src}' in {rel_file}", file=rel_file, line=line)
-
-          print("Checking referenced sound files...")
-          sound_pattern = re.compile(r"sounds/[^\"'\s)]+\.mp3", re.IGNORECASE)
-          for path in ROOT.rglob("*"):
-              if not path.is_file() or any(part in EXCLUDED_DIRS for part in path.parts):
-                  continue
-              if path.suffix.lower() not in {".html", ".css", ".js"}:
-                  continue
-              content = path.read_text(encoding="utf-8", errors="ignore")
-              for match in sound_pattern.findall(content):
-                  sound_path = (ROOT / match).resolve()
-                  try:
-                      sound_path.relative_to(ROOT)
-                  except ValueError:
-                      warn(f"Sound reference escapes repository: {match}", file=path.relative_to(ROOT))
-                      continue
-                  if not sound_path.exists():
-                      warn(f"Missing sound file: {match}", file=path.relative_to(ROOT))
-
-          print(f"Audit finished with {len(warnings)} warning(s). Warnings are reported only and do not fail this workflow.")
-          PY
-          status=$?
-
-          if [ "$status" -ne 0 ]; then
-            echo "::warning::Internal link and asset audit could not complete. Review the output above. This warning does not fail the workflow."
-          fi
-
-          exit 0
-
-      - name: Set up Node for HTML validation
+      - name: Setup Node.js (LTS)
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: lts/*
 
-      - name: Validate HTML
-        shell: bash
-        continue-on-error: true
-        run: |
-          set +e
-          mapfile -t html_files < <(find . -path ./.git -prune -o -path ./.github -prune -o -path ./node_modules -prune -o -path ./dist -prune -o -path ./build -prune -o -name "*.html" -print)
-
-          if [ "${#html_files[@]}" -eq 0 ]; then
-            echo "::warning::No HTML files found to validate."
-            exit 0
-          fi
-
-          npx --yes html-validate "${html_files[@]}"
-          status=$?
-
-          if [ "$status" -ne 0 ]; then
-            echo "::warning::HTML validation found issues. Review the validation output above. This warning does not fail the workflow."
-          fi
-
-          exit 0
+      - name: Run static site audit
+        run: node scripts/site-audit.js
