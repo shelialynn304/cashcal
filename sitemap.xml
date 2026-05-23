@@ -105,6 +105,13 @@
   </url>
 
   <url>
+    <loc>https://edgeoverluck.com/roulette-simulator.html</loc>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://edgeoverluck.com/about.html</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>monthly</changefreq>
@@ -162,6 +169,13 @@
   <url>
     <loc>https://edgeoverluck.com/editorial-policy.html</loc>
     <lastmod>2026-05-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://edgeoverluck.com/credits.html</loc>
+    <lastmod>2026-05-23</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
