@@ -431,10 +431,12 @@ Use these files depending on the task:
 - `.agent.md` — short entry point that points agents to the correct repo guidance files. Do not duplicate full instructions there.
 - `STYLEGUIDE.md` — brand voice, visual style, copy rules, layout patterns, and UX tone.
 - `REVIEW.md` — manual QA checklist and small calculator/simulator test cases.
+- `MATH_SOURCES.md` — exact/basic calculator equations, sample outputs, formulas, assumptions, and math source notes for roulette, slots, dice/craps, horse racing, bankroll, RTP, EV, and other stable public math tools.
 - `.github/agents/agentsmath.md.agent.md` — gambling math review standards for calculators, simulators, EV, RTP, house edge, bankroll risk, and probability tools.
 
 When a task involves calculator math, odds, RTP, EV, blackjack, roulette, slots, horse racing, craps, or bankroll simulation, read and follow:
 
+- `MATH_SOURCES.md`
 - `.github/agents/agentsmath.md.agent.md`
 - `REVIEW.md`
 
