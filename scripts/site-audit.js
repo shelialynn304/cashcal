@@ -47,13 +47,10 @@ function normalizeLocalRef(raw) {
 }
 
 function resolveLocalPath(htmlFile, localRef) {
-  let ref = localRef;
-  if (ref.startsWith('/')) {
-    ref = ref.slice(1);
-  } else {
-    ref = path.join(path.dirname(htmlFile), ref);
-  }
-  return path.normalize(ref);
+  const pageUrl = new URL(`https://edgeoverluck.com/${htmlFile}`);
+  const resolvedUrl = new URL(localRef, pageUrl);
+  const pathname = decodeURIComponent(resolvedUrl.pathname);
+  return path.normalize(pathname.replace(/^\//, ''));
 }
 
 function parseSitemapUrls(xml) {
