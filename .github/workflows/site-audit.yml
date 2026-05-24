@@ -5,19 +5,16 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+  schedule:
+    - cron: '17 14 * * 1'
 
 jobs:
   site-audit:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js (LTS)
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: lts/*
-
-      - name: Run static site audit
-        run: node scripts/site-audit.js
+          node-version: 22
+      - run: node scripts/site-audit.js
