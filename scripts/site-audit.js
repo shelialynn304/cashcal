@@ -4,20 +4,48 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = process.cwd();
+const SITE_ORIGIN = 'https://edgeoverluck.com';
 const SITEMAP_PATH = path.join(ROOT, 'sitemap.xml');
-const REQUIRED_PAGE_IGNORE_PATTERNS = [
-  /^google[a-z0-9]+\.html$/i,
+
+const IGNORE_HTML_PATTERNS = [
+  /^google[a-z0-9_-]+\.html$/i,
 ];
 
-function isRequiredPage(fileName) {
-  return !REQUIRED_PAGE_IGNORE_PATTERNS.some((pattern) => pattern.test(fileName));
+const OPTIONAL_SITEMAP_HTML = new Set([
+  // Keep this empty unless you intentionally want to allow a real public page
+  // to exist outside sitemap.xml.
+]);
+
+const IGNORE_LOCAL_REF_PATTERNS = [
+  /^#/,
+];
+
+function readText(filePath) {
+  return fs.readFileSync(filePath, 'utf8');
 }
+
+function fileExists(relativePath) {
+  return fs.existsSync(path.join(ROOT, relativePath));
+}
+
+function isRootHtmlFile(fileName) {
+  return fileName.toLowerCase().endsWith('.html');
+}
+
+function isIgnoredHtmlFile(fileName) {
+  return IGNORE_HTML_PATTERNS.some((pattern) => pattern.test(fileName));
+}
+
 function listRootHtmlFiles() {
   return fs
     .readdirSync(ROOT, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith('.html'))
+    .filter((entry) => entry.isFile() && isRootHtmlFile(entry.name))
     .map((entry) => entry.name)
     .sort();
+}
+
+function listRequiredHtmlFiles() {
+  return listRootHtmlFiles().filter((file) => !isIgnoredHtmlFile(file));
 }
 
 function extractAttr(tag, attr) {
@@ -26,61 +54,163 @@ function extractAttr(tag, attr) {
   return match ? match[2].trim() : '';
 }
 
-function isIgnoredRef(ref) {
+function hasMetaName(html, name) {
+  const regex = new RegExp(`<meta\\b[^>]*\\bname\\s*=\\s*(["'])${name}\\1[^>]*>`, 'i');
+  return regex.test(html);
+}
+
+function getCanonicalHref(html) {
+  const match = html.match(/<link\b[^>]*\brel\s*=\s*(["'])canonical\1[^>]*>/i);
+  return match ? extractAttr(match[0], 'href') : '';
+}
+
+function canonicalInvalidReason(url, file) {
+  if (!url) return 'missing canonical URL';
+  if (url.startsWith('http://')) return 'must not use http://';
+  if (url.includes('www.edgeoverluck.com')) return 'must not contain www.edgeoverluck.com';
+  if (url.includes('github.io')) return 'must not contain github.io';
+  if (!url.startsWith(`${SITE_ORIGIN}/`)) return `must start with ${SITE_ORIGIN}/`;
+
+  let expectedPath = file === 'index.html' ? '/' : `/${file}`;
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return 'is not a valid URL';
+  }
+
+  if (parsed.origin !== SITE_ORIGIN) return `must use ${SITE_ORIGIN}`;
+  if (parsed.pathname !== expectedPath) {
+    return `path should be ${expectedPath}, found ${parsed.pathname}`;
+  }
+  if (parsed.search || parsed.hash) return 'must not include query string or hash';
+
+  return '';
+}
+
+function isExternalOrSpecialRef(ref) {
   if (!ref) return true;
   const value = ref.trim();
+
   return (
+    value === '' ||
     value.startsWith('#') ||
     value.startsWith('mailto:') ||
     value.startsWith('tel:') ||
     value.startsWith('javascript:') ||
+    value.startsWith('data:') ||
+    value.startsWith('blob:') ||
     /^https?:\/\//i.test(value) ||
     value.startsWith('//')
   );
 }
 
 function normalizeLocalRef(raw) {
-  const withoutHash = raw.split('#')[0];
-  const withoutQuery = withoutHash.split('?')[0].trim();
-  if (!withoutQuery) return '';
-  return withoutQuery;
+  return raw.split('#')[0].split('?')[0].trim();
 }
 
 function resolveLocalPath(htmlFile, localRef) {
-  const pageUrl = new URL(`https://edgeoverluck.com/${htmlFile}`);
-  const resolvedUrl = new URL(localRef, pageUrl);
-  const pathname = decodeURIComponent(resolvedUrl.pathname);
-  return path.normalize(pathname.replace(/^\//, ''));
+  const normalized = normalizeLocalRef(localRef);
+  if (!normalized) return '';
+
+  let pathname;
+  try {
+    const baseUrl = new URL(`${SITE_ORIGIN}/${htmlFile}`);
+    const resolved = new URL(normalized, baseUrl);
+    if (resolved.origin !== SITE_ORIGIN) return '';
+    pathname = resolved.pathname;
+  } catch {
+    return '';
+  }
+
+  let decoded;
+  try {
+    decoded = decodeURIComponent(pathname);
+  } catch {
+    decoded = pathname;
+  }
+
+  const relative = decoded.replace(/^\/+/, '');
+  const clean = path.normalize(relative);
+
+  if (clean.startsWith('..') || path.isAbsolute(clean)) return '';
+  return clean;
+}
+
+function htmlFileFromSiteUrl(url) {
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return null;
+  }
+
+  if (parsed.origin !== SITE_ORIGIN) return null;
+  if (parsed.search || parsed.hash) return null;
+
+  if (parsed.pathname === '/' || parsed.pathname === '') return 'index.html';
+
+  const pathname = parsed.pathname.replace(/^\/+/, '');
+  if (!pathname.endsWith('.html')) return null;
+  if (pathname.includes('/')) return null;
+
+  return pathname;
 }
 
 function parseSitemapUrls(xml) {
   const urls = [];
   const re = /<loc>([\s\S]*?)<\/loc>/gi;
   let match;
+
   while ((match = re.exec(xml))) {
     urls.push(match[1].trim());
   }
+
   return urls;
 }
 
-function canonicalInvalidReason(url) {
-  if (!url) return 'missing canonical URL';
-  if (!url.startsWith('https://edgeoverluck.com/')) return 'must start with https://edgeoverluck.com/';
-  if (url.includes('www.edgeoverluck.com')) return 'must not contain www.edgeoverluck.com';
-  if (url.includes('github.io')) return 'must not contain github.io';
-  if (url.startsWith('http://')) return 'must not use http://';
-  return '';
+function findLocalRefs(html) {
+  const refs = [];
+  const refRegex = /<(a|link|script|img|source|audio|video)\b[^>]*\b(href|src)\s*=\s*(["'])(.*?)\3[^>]*>/gi;
+  let match;
+
+  while ((match = refRegex.exec(html))) {
+    const tag = match[1].toLowerCase();
+    const attr = match[2].toLowerCase();
+    const ref = match[4].trim();
+
+    if (tag === 'link') {
+      const tagText = match[0];
+      const rel = extractAttr(tagText, 'rel').toLowerCase();
+      if (rel === 'canonical') continue;
+    }
+
+    if (isExternalOrSpecialRef(ref)) continue;
+
+    refs.push({ tag, attr, ref });
+  }
+
+  return refs;
 }
 
-function toRootHtmlFromUrl(url) {
-  if (!url.startsWith('https://edgeoverluck.com/')) return null;
-  const u = new URL(url);
-  let p = u.pathname;
-  if (p === '/' || p === '') return 'index.html';
-  p = p.replace(/^\//, '');
-  if (!p.endsWith('.html')) return null;
-  if (p.includes('/')) return null;
-  return p;
+function auditJsonLd(file, html, issues) {
+  const ldRegex = /<script\b[^>]*type\s*=\s*(["'])application\/ld\+json\1[^>]*>([\s\S]*?)<\/script>/gi;
+  let match;
+
+  while ((match = ldRegex.exec(html))) {
+    const block = match[2].trim();
+
+    if (!block) {
+      issues.push(`${file}: empty JSON-LD block`);
+      continue;
+    }
+
+    try {
+      JSON.parse(block);
+    } catch (err) {
+      issues.push(`${file}: invalid JSON-LD (${err.message})`);
+    }
+  }
 }
 
 function audit() {
@@ -90,122 +220,120 @@ function audit() {
   const missingRefs = [];
   const jsonLdIssues = [];
 
-  const htmlFiles = listRootHtmlFiles();
-  const requiredHtmlFiles = htmlFiles.filter(isRequiredPage);
-  const requiredHtmlSet = new Set(requiredHtmlFiles);
+  const htmlFiles = listRequiredHtmlFiles();
+  const htmlSet = new Set(htmlFiles);
 
-  for (const file of requiredHtmlFiles) {
-    const fullPath = path.join(ROOT, file);
-    const html = fs.readFileSync(fullPath, 'utf8');
+  for (const file of htmlFiles) {
+    const html = readText(path.join(ROOT, file));
 
-    const titleMatch = html.match(/<title\b[^>]*>[\s\S]*?<\/title>/i);
-    if (!titleMatch) metadataIssues.push(`${file}: missing <title>`);
-
-    const descMatch = html.match(/<meta\b[^>]*name\s*=\s*(["'])description\1[^>]*>/i);
-    if (!descMatch) metadataIssues.push(`${file}: missing meta name="description"`);
-
-    const robotsMatch = html.match(/<meta\b[^>]*name\s*=\s*(["'])robots\1[^>]*>/i);
-    if (!robotsMatch) metadataIssues.push(`${file}: missing meta name="robots"`);
-
-    const canonicalTag = html.match(/<link\b[^>]*rel\s*=\s*(["'])canonical\1[^>]*>/i);
-    if (!canonicalTag) {
-      metadataIssues.push(`${file}: missing link rel="canonical"`);
-    } else {
-      const href = extractAttr(canonicalTag[0], 'href');
-      const reason = canonicalInvalidReason(href);
-      if (reason) canonicalIssues.push(`${file}: ${reason} (${href || 'empty'})`);
+    if (!/<title\b[^>]*>[\s\S]*?<\/title>/i.test(html)) {
+      metadataIssues.push(`${file}: missing <title>`);
     }
 
-    const h1Match = html.match(/<h1\b[^>]*>/i);
-    if (!h1Match) metadataIssues.push(`${file}: missing <h1>`);
+    if (!hasMetaName(html, 'description')) {
+      metadataIssues.push(`${file}: missing meta name="description"`);
+    }
 
-    const refRegex = /<(a|link|script|img|source)\b[^>]*\b(href|src)\s*=\s*(["'])(.*?)\3[^>]*>/gi;
-    let refMatch;
-    while ((refMatch = refRegex.exec(html))) {
-      const rawRef = refMatch[4].trim();
-      if (isIgnoredRef(rawRef)) continue;
-      const localRef = normalizeLocalRef(rawRef);
-      if (!localRef) continue;
-      const resolved = resolveLocalPath(file, localRef);
-      const absPath = path.join(ROOT, resolved);
-      if (!fs.existsSync(absPath)) {
-        missingRefs.push(`${file}: missing local ${refMatch[2]}="${rawRef}"`);
+    if (!hasMetaName(html, 'robots')) {
+      metadataIssues.push(`${file}: missing meta name="robots"`);
+    }
+
+    if (!/<h1\b[^>]*>/i.test(html)) {
+      metadataIssues.push(`${file}: missing <h1>`);
+    }
+
+    const canonicalHref = getCanonicalHref(html);
+    const canonicalReason = canonicalInvalidReason(canonicalHref, file);
+    if (canonicalReason) {
+      canonicalIssues.push(`${file}: ${canonicalReason}${canonicalHref ? ` (${canonicalHref})` : ''}`);
+    }
+
+    for (const item of findLocalRefs(html)) {
+      const localPath = resolveLocalPath(file, item.ref);
+      if (!localPath) continue;
+
+      if (!fileExists(localPath)) {
+        missingRefs.push(`${file}: missing ${item.tag}[${item.attr}] target "${item.ref}" -> ${localPath}`);
       }
     }
 
-    const ldRegex = /<script\b[^>]*type\s*=\s*(["'])application\/ld\+json\1[^>]*>([\s\S]*?)<\/script>/gi;
-    let ldMatch;
-    while ((ldMatch = ldRegex.exec(html))) {
-      const block = ldMatch[2].trim();
-      if (!block) {
-        jsonLdIssues.push(`${file}: empty JSON-LD block`);
-        continue;
-      }
-      try {
-        JSON.parse(block);
-      } catch (err) {
-        jsonLdIssues.push(`${file}: invalid JSON-LD (${err.message})`);
-      }
-    }
+    auditJsonLd(file, html, jsonLdIssues);
   }
 
-  let sitemapUrls = [];
   if (!fs.existsSync(SITEMAP_PATH)) {
     sitemapIssues.push('sitemap.xml is missing');
   } else {
-    const sitemap = fs.readFileSync(SITEMAP_PATH, 'utf8');
-    sitemapUrls = parseSitemapUrls(sitemap);
+    const sitemap = readText(SITEMAP_PATH);
+    const sitemapUrls = parseSitemapUrls(sitemap);
     const mapped = new Set();
 
     for (const url of sitemapUrls) {
-      const rootHtml = toRootHtmlFromUrl(url);
-      if (!rootHtml || !requiredHtmlSet.has(rootHtml)) {
-        if (rootHtml && !isRequiredPage(rootHtml)) {
-          continue;
-        }
-        sitemapIssues.push(`sitemap URL does not map to a real required root HTML file: ${url}`);
-      } else {
-        mapped.add(rootHtml);
+      const htmlFile = htmlFileFromSiteUrl(url);
+
+      if (!htmlFile) {
+        sitemapIssues.push(`sitemap URL is not a valid root EdgeOverLuck HTML URL: ${url}`);
+        continue;
       }
+
+      if (isIgnoredHtmlFile(htmlFile)) continue;
+
+      if (!htmlSet.has(htmlFile)) {
+        sitemapIssues.push(`sitemap URL does not map to a real root HTML file: ${url}`);
+        continue;
+      }
+
+      mapped.add(htmlFile);
     }
 
-    for (const file of requiredHtmlFiles) {
+    for (const file of htmlFiles) {
+      if (OPTIONAL_SITEMAP_HTML.has(file)) continue;
+
       if (!mapped.has(file)) {
         sitemapIssues.push(`root HTML page missing from sitemap.xml: ${file}`);
       }
     }
   }
 
-  return { metadataIssues, canonicalIssues, sitemapIssues, missingRefs, jsonLdIssues };
+  return {
+    metadataIssues,
+    canonicalIssues,
+    sitemapIssues,
+    missingRefs,
+    jsonLdIssues,
+  };
 }
 
 function printGroup(title, issues) {
   console.log(`\n${title}`);
+
   if (issues.length === 0) {
     console.log('  - none');
     return;
   }
-  for (const issue of issues) console.log(`  - ${issue}`);
+
+  for (const issue of issues) {
+    console.log(`  - ${issue}`);
+  }
 }
 
 const result = audit();
+
 printGroup('Metadata issues', result.metadataIssues);
 printGroup('Canonical issues', result.canonicalIssues);
 printGroup('Sitemap issues', result.sitemapIssues);
 printGroup('Missing local references', result.missingRefs);
 printGroup('JSON-LD issues', result.jsonLdIssues);
 
-const criticalCount =
+const failureCount =
   result.metadataIssues.length +
   result.canonicalIssues.length +
   result.sitemapIssues.length +
   result.missingRefs.length +
   result.jsonLdIssues.length;
 
-if (criticalCount > 0) {
-  console.error(`\nSite audit failed with ${criticalCount} issue(s).`);
+if (failureCount > 0) {
+  console.error(`\nSite audit failed with ${failureCount} issue(s).`);
   process.exit(1);
 }
 
-console.log('\nSite audit passed with no issues.');
-process.exit(0);
+console.log('\nSite audit passed.');
