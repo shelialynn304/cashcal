@@ -5,6 +5,13 @@ const path = require('path');
 
 const ROOT = process.cwd();
 const SITEMAP_PATH = path.join(ROOT, 'sitemap.xml');
+const REQUIRED_PAGE_IGNORE_PATTERNS = [
+  /^google[a-z0-9]+\.html$/i,
+];
+
+function isRequiredPage(fileName) {
+  return !REQUIRED_PAGE_IGNORE_PATTERNS.some((pattern) => pattern.test(fileName));
+}
 function listRootHtmlFiles() {
   return fs
     .readdirSync(ROOT, { withFileTypes: true })
@@ -87,9 +94,10 @@ function audit() {
   const jsonLdIssues = [];
 
   const htmlFiles = listRootHtmlFiles();
-  const htmlSet = new Set(htmlFiles);
+  const requiredHtmlFiles = htmlFiles.filter(isRequiredPage);
+  const requiredHtmlSet = new Set(requiredHtmlFiles);
 
-  for (const file of htmlFiles) {
+  for (const file of requiredHtmlFiles) {
     const fullPath = path.join(ROOT, file);
     const html = fs.readFileSync(fullPath, 'utf8');
 
@@ -154,14 +162,17 @@ function audit() {
 
     for (const url of sitemapUrls) {
       const rootHtml = toRootHtmlFromUrl(url);
-      if (!rootHtml || !htmlSet.has(rootHtml)) {
-        sitemapIssues.push(`sitemap URL does not map to a real root HTML file: ${url}`);
+      if (!rootHtml || !requiredHtmlSet.has(rootHtml)) {
+        if (rootHtml && !isRequiredPage(rootHtml)) {
+          continue;
+        }
+        sitemapIssues.push(`sitemap URL does not map to a real required root HTML file: ${url}`);
       } else {
         mapped.add(rootHtml);
       }
     }
 
-    for (const file of htmlFiles) {
+    for (const file of requiredHtmlFiles) {
       if (!mapped.has(file)) {
         sitemapIssues.push(`root HTML page missing from sitemap.xml: ${file}`);
       }
