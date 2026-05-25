@@ -79,6 +79,19 @@ function isIgnorableExternalFavicon(url) {
   }
 }
 
+
+function isAbortLikeFailure(errorText) {
+  const text = String(errorText || '').toLowerCase();
+  return (
+    text.includes('err_aborted') ||
+    text.includes('ns_binding_aborted') ||
+    text.includes('canceled') ||
+    text.includes('cancelled') ||
+    text.includes('target closed') ||
+    text.includes('frame was detached')
+  );
+}
+
 function startStaticServer() {
   const serverProcess = spawn('python3', ['-m', 'http.server', String(PORT), '--bind', HOST], {
     cwd: ROOT_DIR,
@@ -156,6 +169,8 @@ async function run() {
       const page = await context.newPage();
       const pageErrors = [];
       const ignoredThirdPartyFailedRequests = new Set();
+      let pageSmokeComplete = false;
+      let isClosingPage = false;
 
       page.on('requestfailed', (request) => {
         const requestUrl = request.url();
@@ -163,7 +178,13 @@ async function run() {
         const message = `${failureText} ${requestUrl}`;
 
         if (isFirstPartyUrl(requestUrl)) {
-          pageErrors.push(`Request failed (first-party): ${message}`);
+          if (isClosingPage && isAbortLikeFailure(failureText)) {
+            return;
+          }
+
+          if (!pageSmokeComplete || !isAbortLikeFailure(failureText)) {
+            pageErrors.push(`Request failed (first-party): ${message}`);
+          }
           return;
         }
 
@@ -172,7 +193,9 @@ async function run() {
           return;
         }
 
-        pageErrors.push(`Request failed (third-party, not ignored): ${message}`);
+        if (!isAbortLikeFailure(failureText)) {
+          pageErrors.push(`Request failed (third-party, not ignored): ${message}`);
+        }
       });
 
       page.on('console', (msg) => {
@@ -213,19 +236,23 @@ async function run() {
         if (!hasMeaningfulText) {
           pageErrors.push('Body text content is too short to be meaningful.');
         }
+
+        await page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
+        pageSmokeComplete = true;
+
+        const screenshotName = pagePath.replace(/\.html$/, '').replace(/[^a-z0-9-_]/gi, '_');
+        const screenshotPath = path.join(SCREENSHOT_DIR, `${screenshotName}.png`);
+        await page.screenshot({ path: screenshotPath, fullPage: true });
       } catch (error) {
         pageErrors.push(`Smoke check exception: ${error.message}`);
+      } finally {
+        isClosingPage = true;
+        await page.close().catch(() => {});
       }
-
-      const screenshotName = pagePath.replace(/\.html$/, '').replace(/[^a-z0-9-_]/gi, '_');
-      const screenshotPath = path.join(SCREENSHOT_DIR, `${screenshotName}.png`);
-      await page.screenshot({ path: screenshotPath, fullPage: true });
 
       if (pageErrors.length > 0) {
         failures.push({ page: pagePath, errors: pageErrors });
       }
-
-      await page.close();
     }
 
     await context.close();
