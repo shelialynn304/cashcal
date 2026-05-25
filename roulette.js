@@ -14,6 +14,8 @@
 
   const STRATEGIES = ['flat', 'martingale', 'fibonacci', 'dalembert'];
 
+  const RM = (typeof window !== 'undefined' && window.RouletteMath) ? window.RouletteMath : null;
+
   function getEl(id) {
     return document.getElementById(id);
   }
@@ -27,6 +29,10 @@
   }
 
   function wheelMeta(type) {
+    if (RM && typeof RM.getWheelMetadata === 'function') {
+      const meta = RM.getWheelMetadata(type);
+      return { pockets: meta.pockets, edge: meta.houseEdge, labels: meta.zeroLabels.slice() };
+    }
     if (type === 'american') {
       return { pockets: 38, edge: 5.26, labels: ['0', '00'] };
     }
@@ -40,8 +46,22 @@
     return String(n);
   }
 
+  function getBetMeta(betTypeKey) {
+    if (RM && typeof RM.getPayoutMetadata === 'function') {
+      const meta = RM.getPayoutMetadata(betTypeKey);
+      if (meta && Number.isFinite(meta.covered) && Number.isFinite(meta.payout)) {
+        return meta;
+      }
+    }
+    return BET_TYPES[betTypeKey] || BET_TYPES.redblack;
+  }
+
   function getWinProb(wheelType, betTypeKey) {
-    const bet = BET_TYPES[betTypeKey];
+    if (RM && typeof RM.calculateSpinMath === 'function') {
+      const spinMath = RM.calculateSpinMath(wheelType, betTypeKey, 1);
+      if (spinMath && Number.isFinite(spinMath.winProb)) return spinMath.winProb;
+    }
+    const bet = getBetMeta(betTypeKey);
     const { pockets } = wheelMeta(wheelType);
     return bet.covered / pockets;
   }
@@ -101,7 +121,7 @@
 
     let roll = bankroll;
     const winProb = getWinProb(wheelType, betType);
-    const payout = BET_TYPES[betType].payout;
+    const payout = getBetMeta(betType).payout;
     const state = { unit: 1, index: 0 };
     let currentBet = baseBet;
     let wonLastRound = true;
@@ -176,7 +196,7 @@
     if (!inputs) return;
 
     const winProb = getWinProb(inputs.wheelType, inputs.betType);
-    const payout = BET_TYPES[inputs.betType].payout;
+    const payout = getBetMeta(inputs.betType).payout;
     const { edge } = wheelMeta(inputs.wheelType);
     const lossRate = edge / 100;
     const expectedLoss = inputs.baseBet * inputs.spins * lossRate;
@@ -221,7 +241,7 @@
 
     let roll = inputs.bankroll;
     const winProb = getWinProb(inputs.wheelType, inputs.betType);
-    const payout = BET_TYPES[inputs.betType].payout;
+    const payout = getBetMeta(inputs.betType).payout;
     const maxSpins = Math.min(30, inputs.spins);
     const rows = [];
 
@@ -247,7 +267,7 @@
     let color = 'Green';
     if (num !== '0' && num !== '00') {
       const n = Number(num);
-      color = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36].includes(n) ? 'Red' : 'Black';
+      color = (RM && typeof RM.isRedNumber === 'function' ? RM.isRedNumber(n) : [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36].includes(n)) ? 'Red' : 'Black';
     }
     box.innerHTML = `<span>Latest spin</span><strong>${num} (${color})</strong>`;
   }
