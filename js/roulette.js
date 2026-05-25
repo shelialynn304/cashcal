@@ -1,8 +1,22 @@
 (function () {
   const BANKROLL_REJECT_MESSAGE = 'Bankroll says no. Math remains undefeated.';
-  const RED_NUMBERS = new Set([1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]);
   const EUROPEAN_SEQUENCE = ['0', '32', '15', '19', '4', '21', '2', '25', '17', '34', '6', '27', '13', '36', '11', '30', '8', '23', '10', '5', '24', '16', '33', '1', '20', '14', '31', '9', '22', '18', '29', '7', '28', '12', '35', '3', '26'];
   const AMERICAN_SEQUENCE = ['0', '28', '9', '26', '30', '11', '7', '20', '32', '17', '5', '22', '34', '15', '3', '24', '36', '13', '1', '00', '27', '10', '25', '29', '12', '8', '19', '31', '18', '6', '21', '33', '16', '4', '23', '35', '14', '2'];
+  const rouletteMath = window.RouletteMath || null;
+
+  function sharedPayoutFor(key, fallback) {
+    if (!rouletteMath || typeof rouletteMath.getPayoutMetadata !== 'function') {
+      return fallback;
+    }
+
+    const metadata = rouletteMath.getPayoutMetadata(key);
+    const payout = metadata && Number(metadata.payout);
+
+    return Number.isFinite(payout) ? payout : fallback;
+  }
+
+  const STRAIGHT_PAYOUT = sharedPayoutFor('straight', 35);
+  const EVEN_MONEY_PAYOUT = sharedPayoutFor('evenMoney', 1);
   const ALLOWED_SOUND_SOURCES = {
     spin: 'assets/sounds/games/roulette_spin.mp3',
     chip: 'assets/sounds/chips/chip-click.mp3',
@@ -75,7 +89,10 @@
 
   function numberColor(value) {
     if (value === '0' || value === '00') return 'green';
-    return RED_NUMBERS.has(Number(value)) ? 'red' : 'black';
+    if (rouletteMath && typeof rouletteMath.isRedNumber === 'function') {
+      return rouletteMath.isRedNumber(value) ? 'red' : 'black';
+    }
+    return [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36].indexOf(Number(value)) !== -1 ? 'red' : 'black';
   }
 
   function wheelNumbers(type) {
@@ -95,13 +112,13 @@
   }
 
   function normalizeSingleNumber(value, wheelType) {
-    if (wheelType === 'american' && value === '00') return value;
+    if (isZeroPocket(value, wheelType)) return value;
     if (!/^\d+$/.test(value)) return value;
     return String(Number(value));
   }
 
   function isValidSingleNumber(value, wheelType) {
-    if (wheelType === 'american' && value === '00') return true;
+    if (isZeroPocket(value, wheelType)) return true;
     if (!/^\d+$/.test(value)) return false;
     const number = Number(value);
     return number >= 0 && number <= 36;
@@ -386,6 +403,17 @@
     });
   }
 
+  function isZeroPocket(value, wheelType) {
+    if (rouletteMath && typeof rouletteMath.getWheelMetadata === 'function') {
+      const metadata = rouletteMath.getWheelMetadata(wheelType);
+      if (metadata && Array.isArray(metadata.zeroLabels)) {
+        return metadata.zeroLabels.indexOf(value) !== -1;
+      }
+    }
+
+    return value === '0' || (wheelType === 'american' && value === '00');
+  }
+
   function validateBet(betDetails) {
     const details = betDetails || currentBetDetails();
     if (state.spinning) return { ok: false, message: 'Wait for the current spin to finish.' };
@@ -459,7 +487,7 @@
     let net = 0;
     const resolvedBets = spinBets.map(function (bet) {
       const won = didBetWin(value, bet);
-      const payout = bet.betType === 'single' ? 35 : 1;
+      const payout = bet.betType === 'single' ? STRAIGHT_PAYOUT : EVEN_MONEY_PAYOUT;
       const result = won ? bet.betAmount * payout : -bet.betAmount;
       net += result;
       return Object.assign({}, bet, { won, result });
