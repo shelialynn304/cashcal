@@ -6,9 +6,19 @@
     30, 32, 34, 36
   ]);
 
+  // These aliases normalize the bet family/category only.
+  // They do not encode the selected side of an even-money bet such as red vs black,
+  // odd vs even, or low vs high.
   const ROULETTE_BET_KEY_ALIASES = Object.freeze({
     redblack: 'evenMoney',
     evenmoney: 'evenMoney',
+    even_money: 'evenMoney',
+    even: 'evenMoney',
+    odd: 'evenMoney',
+    red: 'evenMoney',
+    black: 'evenMoney',
+    low: 'evenMoney',
+    high: 'evenMoney',
     dozen: 'dozen',
     dozens: 'dozen',
     column: 'column',
@@ -31,25 +41,26 @@
     american: { key: 'american', label: 'American (double-zero)', pockets: 38, houseEdge: 5.26 }
   };
 
-  const WHEEL_METADATA = {
+  const WHEEL_METADATA = Object.freeze({
     european: Object.freeze({
-      key: 'european',
-      pockets: 37,
-      houseEdge: 2.7,
+      ...WHEEL_CONFIG.european,
       zeroLabels: Object.freeze(['0'])
     }),
     american: Object.freeze({
-      key: 'american',
-      pockets: 38,
-      houseEdge: 5.26,
+      ...WHEEL_CONFIG.american,
       zeroLabels: Object.freeze(['0', '00'])
     })
-  };
+  });
 
   function clampNumber(value, fallback, min) {
     const parsed = Number(value);
     if (!Number.isFinite(parsed)) return fallback;
     return Math.max(min, parsed);
+  }
+
+  function toPositiveNumber(value, fallback = 0) {
+    const number = Number(value);
+    return Number.isFinite(number) && number > 0 ? number : fallback;
   }
 
   function formatMoney(value) {
@@ -60,14 +71,25 @@
     return `${(value * 100).toFixed(digits)}%`;
   }
 
-  function normalizeBetKey(key) {
-    if (typeof key !== 'string') return 'evenMoney';
+  function normalizeBetKey(key, fallback = 'evenMoney') {
+    if (typeof key !== 'string') return fallback;
+
     const trimmed = key.trim();
     if (ROULETTE_BET_TYPES[trimmed]) return trimmed;
 
     const lowered = trimmed.toLowerCase();
     const alias = ROULETTE_BET_KEY_ALIASES[lowered];
-    return alias || 'evenMoney';
+
+    return alias || fallback;
+  }
+
+  function hasBetType(key) {
+    if (typeof key !== 'string') return false;
+
+    const trimmed = key.trim();
+    if (ROULETTE_BET_TYPES[trimmed]) return true;
+
+    return Boolean(ROULETTE_BET_KEY_ALIASES[trimmed.toLowerCase()]);
   }
 
   function getBetType(key) {
@@ -105,23 +127,34 @@
   }
 
   function flatStep(baseStake) {
-    return Number(baseStake);
+    return toPositiveNumber(baseStake, 0);
   }
 
   function martingaleStep(baseStake, currentStake, wonLastSpin) {
-    const base = Number(baseStake);
-    const current = Number(currentStake);
+    const base = toPositiveNumber(baseStake, 0);
+    const current = toPositiveNumber(currentStake, base);
+
+    if (base <= 0) return 0;
     if (wonLastSpin) return base;
-    const prior = Number.isFinite(current) && current > 0 ? current : base;
-    return prior * 2;
+
+    return current * 2;
   }
 
   function fibonacciStep(baseStake, wonLastSpin, state) {
-    const base = Number(baseStake);
+    const base = toPositiveNumber(baseStake, 0);
     const sequence = Array.isArray(state && state.sequence) && state.sequence.length
       ? state.sequence.slice()
       : [1, 1];
+
     let index = Number.isInteger(state && state.index) ? state.index : 0;
+
+    if (base <= 0) {
+      return {
+        stake: 0,
+        sequence,
+        index: 0
+      };
+    }
 
     if (wonLastSpin) {
       index = Math.max(0, index - 2);
@@ -141,11 +174,13 @@
   }
 
   function dalembertStep(baseStake, currentStake, wonLastSpin) {
-    const base = Number(baseStake);
-    const current = Number(currentStake);
-    const prior = Number.isFinite(current) && current > 0 ? current : base;
-    if (wonLastSpin) return Math.max(base, prior - base);
-    return prior + base;
+    const base = toPositiveNumber(baseStake, 0);
+    const current = toPositiveNumber(currentStake, base);
+
+    if (base <= 0) return 0;
+    if (wonLastSpin) return Math.max(base, current - base);
+
+    return current + base;
   }
 
   function calculateSpinMath(wheelKey, betKey, stake) {
@@ -176,9 +211,11 @@
     WHEEL_METADATA,
     ROULETTE_BET_KEY_ALIASES,
     clampNumber,
+    toPositiveNumber,
     formatMoney,
     toPercent,
     normalizeBetKey,
+    hasBetType,
     getBetType,
     getPayoutMetadata,
     getWheelType,
