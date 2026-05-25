@@ -140,13 +140,24 @@
     return current * 2;
   }
 
+  function normalizeFibonacciSequence(sequence) {
+    if (!Array.isArray(sequence)) return [1, 1];
+
+    const normalized = sequence
+      .map((value) => Number(value))
+      .filter((value) => Number.isFinite(value) && value > 0);
+
+    if (normalized.length === 0) return [1, 1];
+    if (normalized.length === 1) return [normalized[0], normalized[0]];
+
+    return normalized;
+  }
+
   function fibonacciStep(baseStake, wonLastSpin, state) {
     const base = toPositiveNumber(baseStake, 0);
-    const sequence = Array.isArray(state && state.sequence) && state.sequence.length
-      ? state.sequence.slice()
-      : [1, 1];
-
+    const sequence = normalizeFibonacciSequence(state && state.sequence);
     let index = Number.isInteger(state && state.index) ? state.index : 0;
+    index = Math.max(0, index);
 
     if (base <= 0) {
       return {
