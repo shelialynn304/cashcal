@@ -8,6 +8,7 @@ Use this checklist for manual QA on calculator and simulator pages before publis
 - Test on both desktop and mobile viewport sizes.
 - Record pass/fail notes and screenshots for any failed checks.
 - If a check fails, log the exact field values and output shown.
+- For math/tool accuracy reviews (formulas, simulations, EV, RTP, probability, bankroll, variance, payout logic), follow both `AGENTS.md` and `.github/agents/agentsmath.md.agent.md`.
 
 ## 1) Calculator/math checks
 
@@ -36,6 +37,16 @@ Use this checklist for manual QA on calculator and simulator pages before publis
 - [ ] Empty, zero, negative, and non-numeric input handling is tested.
 - [ ] Impossible states are blocked (for example, wager > bankroll when not allowed by tool rules).
 - [ ] Tool fails safely with clear feedback instead of silent or misleading output.
+
+
+### E. Formula-change review rules
+
+- [ ] Any formula change identifies the old behavior and the new behavior.
+- [ ] Any formula change explains why the update is mathematically correct.
+- [ ] Any expected-value/probability/RTP/house-edge change includes at least one hand-calculated sample case.
+- [ ] Any simulation change states what is random, what is deterministic, and what assumptions are used.
+- [ ] Any copy change near outputs is checked for misleading claims or implied guaranteed outcomes.
+- [ ] Formulas are not changed during layout-only or copy-only tasks.
 
 ## 2) UX checks
 
@@ -85,12 +96,17 @@ Use this per page so reviews stay repeatable:
 Page:
 Date:
 Reviewer:
+Math guidance reviewed:
 
 Calculator/math checks:
 - Formula/assumptions:
 - Sample case #1:
 - Sample case #2:
 - Edge cases tested:
+- Formula changed? Yes / No
+- If yes, old behavior:
+- If yes, new behavior:
+- If yes, hand-check/sample math:
 
 UX checks:
 - Result visibility near controls:
