@@ -9,6 +9,7 @@ const ROOT_DIR = process.cwd();
 const HOST = '127.0.0.1';
 const PORT = 4173;
 const BASE_URL = `http://${HOST}:${PORT}`;
+const BASE_ORIGIN = new URL(BASE_URL).origin;
 const SCREENSHOT_DIR = path.join(ROOT_DIR, 'test-results', 'screenshots');
 
 const PAGES = [
@@ -22,22 +23,60 @@ const PAGES = [
   'horse-racing-guide.html',
 ];
 
-const IGNORED_ERROR_PATTERNS = [
+const NOISY_THIRD_PARTY_HOST_PATTERNS = [
   'litlyx',
-  'googletagmanager',
-  'google-analytics',
-  'google analytics',
-  'jsdelivr',
-  'chart.js',
-  'favicon',
-  'analytics',
-  'failed to load resource',
-  'net::err_',
+  'googletagmanager.com',
+  'google-analytics.com',
+  'google.com',
+  'gstatic.com',
+  'jsdelivr.net',
+  'cdn.jsdelivr.net',
+  'chartjs.org',
 ];
 
-function shouldIgnoreError(text) {
-  const lower = text.toLowerCase();
-  return IGNORED_ERROR_PATTERNS.some((pattern) => lower.includes(pattern));
+function getHostname(url) {
+  try {
+    return new URL(url).hostname.toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+function isFirstPartyUrl(url) {
+  try {
+    const parsed = new URL(url);
+    if (parsed.origin === BASE_ORIGIN) return true;
+
+    const host = parsed.hostname.toLowerCase();
+    return host === '127.0.0.1' || host === 'localhost';
+  } catch {
+    return false;
+  }
+}
+
+function isIgnoredThirdPartyUrl(url) {
+  const hostname = getHostname(url);
+  if (!hostname) return false;
+
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return false;
+  }
+
+  return NOISY_THIRD_PARTY_HOST_PATTERNS.some(
+    (pattern) => hostname === pattern || hostname.endsWith(`.${pattern}`),
+  );
+}
+
+function isIgnorableExternalFavicon(url) {
+  if (!isIgnoredThirdPartyUrl(url)) return false;
+
+  try {
+    const parsed = new URL(url);
+    const pathname = parsed.pathname.toLowerCase();
+    return pathname.endsWith('/favicon.ico') || pathname.endsWith('favicon.ico');
+  } catch {
+    return false;
+  }
 }
 
 function startStaticServer() {
@@ -62,6 +101,7 @@ function startStaticServer() {
 
     serverProcess.on('exit', (code) => {
       if (!settled) {
+        settled = true;
         reject(new Error(`Static server exited before startup (code ${code}).`));
       }
     });
@@ -76,17 +116,26 @@ function startStaticServer() {
 }
 
 async function stopServer(serverProcess) {
-  if (!serverProcess || serverProcess.killed) return;
+  if (!serverProcess) return;
+
+  let exited = serverProcess.exitCode !== null;
+  if (exited) return;
 
   await new Promise((resolve) => {
-    serverProcess.once('exit', () => resolve());
-    serverProcess.kill('SIGTERM');
+    const handleExit = () => {
+      exited = true;
+      clearTimeout(killTimeout);
+      resolve();
+    };
 
-    setTimeout(() => {
-      if (!serverProcess.killed) {
+    const killTimeout = setTimeout(() => {
+      if (!exited) {
         serverProcess.kill('SIGKILL');
       }
-    }, 3000);
+    }, 2000);
+
+    serverProcess.once('exit', handleExit);
+    serverProcess.kill('SIGTERM');
   });
 }
 
@@ -106,29 +155,45 @@ async function run() {
       const pageUrl = `${BASE_URL}/${pagePath}`;
       const page = await context.newPage();
       const pageErrors = [];
+      const ignoredThirdPartyFailedRequests = new Set();
+
+      page.on('requestfailed', (request) => {
+        const requestUrl = request.url();
+        const failureText = request.failure()?.errorText || 'Request failed';
+        const message = `${failureText} ${requestUrl}`;
+
+        if (isFirstPartyUrl(requestUrl)) {
+          pageErrors.push(`Request failed (first-party): ${message}`);
+          return;
+        }
+
+        if (isIgnoredThirdPartyUrl(requestUrl) || isIgnorableExternalFavicon(requestUrl)) {
+          ignoredThirdPartyFailedRequests.add(requestUrl);
+          return;
+        }
+
+        pageErrors.push(`Request failed (third-party, not ignored): ${message}`);
+      });
 
       page.on('console', (msg) => {
         if (msg.type() !== 'error') return;
 
         const text = msg.text() || '';
-        if (!shouldIgnoreError(text)) {
-          pageErrors.push(`Console error: ${text}`);
+        const lowerText = text.toLowerCase();
+
+        if (lowerText.includes('failed to load resource')) {
+          const relatedRequestWasIgnored = [...ignoredThirdPartyFailedRequests].some((url) => text.includes(url));
+          if (relatedRequestWasIgnored) {
+            return;
+          }
         }
+
+        pageErrors.push(`Console error: ${text}`);
       });
 
       page.on('pageerror', (error) => {
         const text = error?.message || String(error);
-        if (!shouldIgnoreError(text)) {
-          pageErrors.push(`Page error: ${text}`);
-        }
-      });
-
-      page.on('requestfailed', (request) => {
-        const failureText = request.failure()?.errorText || 'Request failed';
-        const message = `${failureText} ${request.url()}`;
-        if (!shouldIgnoreError(message)) {
-          pageErrors.push(`Request failed: ${message}`);
-        }
+        pageErrors.push(`Page error: ${text}`);
       });
 
       try {
