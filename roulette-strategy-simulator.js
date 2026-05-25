@@ -1,7 +1,17 @@
 (function initRouletteStrategySimulator() {
   if (!window.RouletteMath || !document.getElementById('compareBtn')) return;
 
-  const { clampNumber, calculateSpinMath, formatMoney, toPercent, randomSpinWin } = window.RouletteMath;
+  const {
+    clampNumber,
+    calculateSpinMath,
+    formatMoney,
+    toPercent,
+    randomSpinWin,
+    flatStep,
+    martingaleStep,
+    fibonacciStep,
+    dalembertStep
+  } = window.RouletteMath;
 
   const strategyDefs = [
     { key: 'flat', name: 'Flat Betting' },
@@ -10,23 +20,36 @@
     { key: 'dalembert', name: 'D’Alembert' }
   ];
 
+  const fibonacciLegacySequence = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55];
+
   function nextBetState(strategy, state, won, baseBet) {
-    if (strategy === 'flat') return { step: 1, bet: baseBet };
+    if (strategy === 'flat') {
+      return { step: 1, bet: flatStep(baseBet) };
+    }
 
     if (strategy === 'martingale') {
-      return won
-        ? { step: 1, bet: baseBet }
-        : { step: state.step + 1, bet: baseBet * (2 ** state.step) };
+      const nextBet = martingaleStep(baseBet, state.bet, won);
+      return {
+        step: won ? 1 : state.step + 1,
+        bet: nextBet
+      };
     }
 
     if (strategy === 'fibonacci') {
-      const sequence = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55];
-      const nextStep = won ? Math.max(1, state.step - 2) : Math.min(sequence.length, state.step + 1);
-      return { step: nextStep, bet: baseBet * sequence[nextStep - 1] };
+      const fibResult = fibonacciStep(baseBet, won, {
+        sequence: fibonacciLegacySequence,
+        index: state.step - 1
+      });
+      const nextStep = Math.min(fibonacciLegacySequence.length, fibResult.index + 1);
+      return {
+        step: nextStep,
+        bet: baseBet * fibonacciLegacySequence[nextStep - 1]
+      };
     }
 
+    const nextBet = dalembertStep(baseBet, state.bet, won);
     const nextStep = won ? Math.max(1, state.step - 1) : state.step + 1;
-    return { step: nextStep, bet: baseBet * nextStep };
+    return { step: nextStep, bet: nextBet };
   }
 
   function simulateSession(options, strategyKey) {
