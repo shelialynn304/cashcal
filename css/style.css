@@ -3171,16 +3171,15 @@ table td {
 
 /* Breadcrumb navigation */
 .breadcrumbs {
-  margin: 14px auto 0;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--muted, #b8b8b8);
 }
 
 .breadcrumbs ol {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
   align-items: center;
+  gap: 6px;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -3210,5 +3209,20 @@ table td {
 
 .breadcrumbs [aria-current="page"] {
   color: var(--gold, #f5c451);
+}
+
+.breadcrumbs-hero {
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+@media (max-width: 640px) {
+  .breadcrumbs {
+    font-size: 0.76rem;
+  }
+
+  .breadcrumbs-hero {
+    margin-bottom: 10px;
+  }
 }
 
