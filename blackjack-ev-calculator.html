@@ -37,7 +37,7 @@
   }
   </script>
 </head>
-<body>
+<body data-tool-name="blackjack_ev_calculator">
   <header class="site-header">
     <div class="container nav site-nav">
       <a href="index.html" class="brand">Edge Over Luck</a>
@@ -154,7 +154,7 @@
         </div>
 
         <div class="hero-actions">
-          <button class="btn btn-cta-primary" id="calcBtn" type="button">Calculate EV</button>
+          <button class="btn btn-cta-primary" id="calcBtn" type="button" data-track-event="tool_calculate" data-track-label="Calculate EV">Calculate EV</button>
           <button class="btn btn-outline" id="demoBtn" type="button">Load Demo Spot</button>
           <button class="btn btn-outline" id="resetBtn" type="button">Reset</button>
         </div>
@@ -171,7 +171,7 @@
           <p id="bestMoveDetail" class="small-note mb-0">Run the calculator to compare all actions.</p>
         </div>
 
-        <div id="results" class="grid top-gap"></div>
+        <div id="results" class="grid top-gap" data-track-result="blackjack-ev-results"></div>
 
         <div class="card top-gap subtle-card card-glass">
           <strong>How to read this:</strong>
@@ -214,7 +214,7 @@
         <div class="myth-panel"><strong class="myth">Myth: “I lost after doubling, so it was a bad play.”</strong><p class="mb-0">Math: EV judges decisions over repeated spots, not one painful result.</p></div>
         <div class="math-panel"><strong class="math">Myth: “A correct chart move guarantees safety.”</strong><p class="mb-0">Math: Strategy lowers mistakes; bankroll planning handles the swings.</p></div>
       </div>
-      <div class="tool-link-row"><a href="blackjack-game.html">Practice trainer</a><a href="blackjack-bankroll-calculator.html">Bankroll calculator</a><a href="gambler-personality-quiz.html">Take the quiz</a></div>
+      <div class="tool-link-row"><a href="blackjack-game.html">Practice trainer</a><a href="blackjack-bankroll-calculator.html">Bankroll calculator</a><a href="gambler-personality-quiz.html" data-track-event="quiz_complete" data-track-label="Take the Quiz">Take the quiz</a></div>
     </div>
   </section>
 </main>
@@ -261,6 +261,7 @@
   </footer>
 
 <script src="blackjack-ev.js"></script>
+  <script src="js/tracking.js" defer></script>
   <script src="nav.js" defer></script>
 </body>
 </html>

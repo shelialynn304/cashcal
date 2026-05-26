@@ -36,7 +36,7 @@
   }
   </script>
 </head>
-<body>
+<body data-tool-name="slot_simulator">
   <header class="site-header">
     <div class="container nav site-nav">
       <a href="index.html" class="brand">Edge Over Luck</a>
@@ -155,9 +155,9 @@
               </div>
               <button id="soundToggleBtn" class="slot-toggle-btn" type="button" aria-pressed="false">Sound: Off</button>
             </div>
-            <button id="singleSpinBtn" class="slot-spin-btn" type="button">Spin Once</button>
+            <button id="singleSpinBtn" class="slot-spin-btn" type="button" data-track-event="tool_calculate" data-track-label="Spin Once">Spin Once</button>
             <p id="slotSpinWarning" class="slot-spin-warning" role="status" aria-live="polite"></p>
-            <div id="slotSpinMessage" class="slot-result-box" aria-live="polite">Set your bankroll, bet size, and preset — then spin one realistic result.</div>
+            <div id="slotSpinMessage" class="slot-result-box" aria-live="polite" data-track-result="slot-spin-message">Set your bankroll, bet size, and preset — then spin one realistic result.</div>
             <div class="last-spin-readout" aria-label="Last spin details">
               <div><span>Bet</span><strong id="lastSpinBet">$0.00</strong></div>
               <div><span>Symbols</span><strong id="lastSpinSymbols">—</strong></div>
@@ -187,7 +187,7 @@
               </div>
             </div>
             <div class="hero-actions">
-              <button id="runAutoplay" class="btn btn-primary" type="submit">Run Slot Simulation</button>
+              <button id="runAutoplay" class="btn btn-primary" type="submit" data-track-event="tool_calculate" data-track-label="Run Slot Simulation">Run Slot Simulation</button>
               <a class="btn btn-secondary" href="bankroll-survival-slots.html">Check Survival Odds</a>
             </div>
           </form>
@@ -374,7 +374,7 @@
         <span class="chip">Heater Hunter check</span>
         <h2 id="slot-quiz-title" class="section-title">Do you chase volatility or manage it?</h2>
         <p>Some bankroll leaks come from behavior, not math. Find out how your habits respond to wins, losses, and volatility.</p>
-        <div class="hero-actions"><a class="btn" href="gambler-personality-quiz.html">Find Your Gambling Type</a><a class="btn btn-secondary" href="bankroll-survival-slots.html">Check Slot Survival</a></div>
+        <div class="hero-actions"><a class="btn" href="gambler-personality-quiz.html" data-track-event="quiz_complete" data-track-label="Find Your Gambling Type">Find Your Gambling Type</a><a class="btn btn-secondary" href="bankroll-survival-slots.html">Check Slot Survival</a></div>
       </div>
     </section>
 
@@ -463,6 +463,7 @@
   <script src="slots-data.js"></script>
   <script src="slots.js"></script>
   <script src="slot-simulator.js"></script>
+  <script src="js/tracking.js" defer></script>
   <script src="nav.js" defer></script>
 </body>
 </html>

@@ -85,7 +85,7 @@
   }
   </script>
 </head>
-<body>
+<body data-tool-name="home">
   <header class="site-header">
     <div class="container nav site-nav">
       <a href="index.html" class="brand">Edge Over Luck</a>
@@ -164,8 +164,8 @@
           </p>
 
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#main-tools">Use the Tools</a>
-            <a class="btn btn-secondary" href="gambler-personality-quiz.html">Take the Gambler Personality Quiz</a>
+            <a class="btn btn-primary" href="#main-tools" data-track-event="cta_click" data-track-label="Use the Tools">Use the Tools</a>
+            <a class="btn btn-secondary" href="gambler-personality-quiz.html" data-track-event="quiz_complete" data-track-label="Take the Gambler Personality Quiz">Take the Gambler Personality Quiz</a>
           </div>
 
           <div class="quick-tool-tabs" aria-label="Quick tool jump links">
@@ -247,7 +247,7 @@
             <h2 class="section-title">Which gambling habit is costing you most?</h2>
             <p>Get a quick player profile, then see which tools fit your biggest risks around bankroll, variance, and decision quality.</p>
           </div>
-          <a class="btn btn-primary" href="gambler-personality-quiz.html">Take the Gambler Personality Quiz</a>
+          <a class="btn btn-primary" href="gambler-personality-quiz.html" data-track-event="quiz_complete" data-track-label="Take the Gambler Personality Quiz">Take the Gambler Personality Quiz</a>
         </div>
       </div>
     </section>
@@ -643,6 +643,7 @@
 
   <script src="script.js"></script>
   <script src="home-engagement.js"></script>
+  <script src="js/tracking.js" defer></script>
   <script src="nav.js" defer></script>
 </body>
 </html>
