@@ -3167,3 +3167,48 @@ table td {
 .myth-card .streak-label::after {
   content: none;
 }
+
+
+/* Breadcrumb navigation */
+.breadcrumbs {
+  margin: 14px auto 0;
+  font-size: 0.85rem;
+  color: var(--muted, #b8b8b8);
+}
+
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumbs li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breadcrumbs li + li::before {
+  content: ">";
+  opacity: 0.55;
+}
+
+.breadcrumbs a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:focus {
+  color: var(--gold, #f5c451);
+  text-decoration: underline;
+}
+
+.breadcrumbs [aria-current="page"] {
+  color: var(--gold, #f5c451);
+}
+
