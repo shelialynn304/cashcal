@@ -1,0 +1,43 @@
+name: Page Runtime Smoke Test
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 9 * * 1'
+  push:
+    branches:
+      - main
+
+jobs:
+  page-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test https://edgeoverluck.com/
+        uses: remarkablemark/page-test-action@v1
+        with:
+          url: https://edgeoverluck.com/
+
+      - name: Test blackjack-bankroll-calculator
+        uses: remarkablemark/page-test-action@v1
+        with:
+          url: https://edgeoverluck.com/blackjack-bankroll-calculator.html
+
+      - name: Test blackjack-ev-calculator
+        uses: remarkablemark/page-test-action@v1
+        with:
+          url: https://edgeoverluck.com/blackjack-ev-calculator.html
+
+      - name: Test roulette-calculator
+        uses: remarkablemark/page-test-action@v1
+        with:
+          url: https://edgeoverluck.com/roulette-calculator.html
+
+      - name: Test slot-simulator
+        uses: remarkablemark/page-test-action@v1
+        with:
+          url: https://edgeoverluck.com/slot-simulator.html
+
+      - name: Test roulette-strategy-simulator
+        uses: remarkablemark/page-test-action@v1
+        with:
+          url: https://edgeoverluck.com/roulette-strategy-simulator.html
