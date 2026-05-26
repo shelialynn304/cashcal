@@ -312,6 +312,7 @@
       : "Bankroll survival is stronger, but expected value remains negative over time.";
 
     narrative.textContent = `${preset.note} ${bustMsg}`;
+    spinMessage.dataset.resultReady = "false";
     updateSpinAvailability();
   }
 
@@ -343,6 +344,7 @@
     spinMessage.classList.toggle("result-small-win", spin.payout > betSize && spin.resultType !== "bonus");
     spinMessage.classList.toggle("result-loss", spin.payout < betSize);
     spinMessage.textContent = describeSpin(spin, bankrollChange, newBankroll, visibleSymbols);
+    spinMessage.dataset.resultReady = "true";
 
     isSpinning = false;
     updateSimulator();

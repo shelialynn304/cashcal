@@ -279,7 +279,7 @@
     return "Doubling wins here because one-card aggression has the strongest expected return.";
   }
 
-  function calculateEV() {
+  function calculateEV(markResultReady) {
     const total = clamp(Number(document.getElementById("playerTotal").value) || 16, 4, 21);
     const dealerCard = Number(document.getElementById("dealerCard").value);
     const isSoft = document.getElementById("isSoft").value === "true";
@@ -303,7 +303,8 @@
     document.getElementById("bestMoveDetail").textContent =
       `${buildReason(best.label, total, dealerCard, isSoft)} Model-estimated return: ${formatEV(best.ev)} units (${formatMoney(best.dollars)} on a ${formatMoney(betSize)} base bet).`;
 
-    document.getElementById("results").innerHTML = actions.map((action) => `
+    const resultsElement = document.getElementById("results");
+    resultsElement.innerHTML = actions.map((action) => `
       <div class="result-item">
         <span>${action.label}</span>
         <strong class="${valueClass(action.ev)}">Estimated EV (model): ${formatEV(action.ev)} units</strong>
@@ -324,11 +325,12 @@
           <div class="result-item"><span>Double</span><strong>${formatEV(mc.doubleEV)} EV</strong><p class="small-note mb-0">Simulated average return with doubled stake (simulation policy)</p></div>
         </div>
       `;
-      document.getElementById('results').innerHTML += mcHtml;
+      resultsElement.innerHTML += mcHtml;
     }
+    resultsElement.dataset.resultReady = markResultReady ? "true" : "false";
   }
 
-  document.getElementById("calcBtn")?.addEventListener("click", calculateEV);
+  document.getElementById("calcBtn")?.addEventListener("click", () => calculateEV(true));
   document.getElementById("demoBtn")?.addEventListener("click", () => {
     document.getElementById("playerTotal").value = 16;
     document.getElementById("dealerCard").value = 10;
@@ -337,7 +339,7 @@
     document.getElementById("blackjackPayout").value = 1.5;
     document.getElementById("betSize").value = 25;
     document.getElementById("trueCount").value = 0;
-    calculateEV();
+    calculateEV(true);
   });
   document.getElementById("resetBtn")?.addEventListener("click", () => {
     document.getElementById("playerTotal").value = 16;
@@ -347,8 +349,8 @@
     document.getElementById("blackjackPayout").value = 1.5;
     document.getElementById("betSize").value = 25;
     document.getElementById("trueCount").value = 0;
-    calculateEV();
+    calculateEV(true);
   });
 
-  calculateEV();
+  calculateEV(false);
 })();
