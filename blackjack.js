@@ -357,13 +357,15 @@ if (form) {
       }
     }
 
-    document.getElementById("summary").textContent =
+    const summaryElement = document.getElementById("summary");
+    summaryElement.textContent =
       `Based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}. ` +
       `Bust risk was ${results.bustRisk.toFixed(1)}%, full-session survival was ${results.survivalRate.toFixed(1)}%, and the chance of finishing ahead was ${results.profitChance.toFixed(1)}%. ` +
       `The worst simulated result was ${formatMoney(results.minEnding)}, and the best was ${formatMoney(results.maxEnding)}.` +
       (results.bustHands.length > 0
         ? ` Busted sessions died around hand ${Math.round(results.avgBustHand).toLocaleString()} on average, with a median bust point of hand ${Math.round(results.medianBustHand).toLocaleString()}.`
         : ``);
+    summaryElement.setAttribute("data-result-ready", "true");
 
     const resultsCanvas = document.getElementById("resultsChart");
     if (resultsCanvas) {

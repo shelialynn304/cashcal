@@ -83,21 +83,29 @@
     if (!resultNodes.length) return;
 
     resultNodes.forEach(function (node) {
-      var seen = false;
+      var lastTrackedSignature = '';
       var emitView = function () {
-        if (seen) return;
+        var isReady = node.getAttribute('data-result-ready') === 'true';
+        if (!isReady) return;
         var text = (node.textContent || '').replace(/\s+/g, ' ').trim();
         if (!text) return;
-        seen = true;
+        var signature = text;
+        if (signature === lastTrackedSignature) return;
+        lastTrackedSignature = signature;
         track('tool_result_view', {
           tool_name: getToolName(node),
           result_target: node.getAttribute('id') || node.getAttribute('data-track-result') || 'result'
         });
       };
 
-      emitView();
       var observer = new MutationObserver(emitView);
-      observer.observe(node, { childList: true, subtree: true, characterData: true });
+      observer.observe(node, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+        attributes: true,
+        attributeFilter: ['data-result-ready']
+      });
     });
   }
 
