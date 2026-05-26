@@ -46,7 +46,7 @@
   </script>
 </head>
 
-<body>
+<body data-tool-name="blackjack_bankroll_calculator">
   <header class="site-header">
     <div class="container nav site-nav">
       <a href="index.html" class="brand">Edge Over Luck</a>
@@ -256,7 +256,7 @@
 
           <p class="small-note">This calculator uses a simplified blackjack model with a push rate assumption, so focus on bankroll pressure rather than exact session predictions.</p>
 
-          <button type="submit" class="btn">Calculate Bankroll Risk</button>
+          <button type="submit" class="btn" data-track-event="tool_calculate" data-track-label="Calculate Bankroll Risk">Calculate Bankroll Risk</button>
         </form>
 
         <div class="results results-spacing">
@@ -309,7 +309,7 @@
             </div>
           </div>
           <p class="result-helper">Tip: Use these metrics to compare risk scenarios. Higher bust risk or wider P10/P90 ranges means your bankroll is under more pressure.</p>
-          <p id="summary" class="summary">
+          <p id="summary" class="summary" data-track-result="bankroll-summary" data-result-ready="false">
             Enter values and calculate.
           </p>
         </div>
@@ -472,7 +472,7 @@
       <span class="chip">Personality leak check</span>
       <h2 id="bankroll-quiz-title" class="section-title">Some players lose from bad odds. Others lose from reactive decisions.</h2>
       <p>Find out whether your biggest bankroll leak comes from chasing, overplaying, overconfidence, or poor session planning.</p>
-      <div class="hero-actions"><a class="btn" href="gambler-personality-quiz.html">Take the Gambler Personality Quiz</a><a class="btn btn-secondary" href="responsible-gambling.html">Set safer limits</a></div>
+      <div class="hero-actions"><a class="btn" href="gambler-personality-quiz.html" data-track-event="quiz_start" data-track-label="Take the Gambler Personality Quiz">Take the Gambler Personality Quiz</a><a class="btn btn-secondary" href="responsible-gambling.html">Set safer limits</a></div>
     </div>
   </section>
 </main>
@@ -519,6 +519,7 @@
   </footer>
 
 <script src="blackjack.js"></script>
+  <script src="js/tracking.js" defer></script>
   <script src="nav.js" defer></script>
 </body>
 </html>

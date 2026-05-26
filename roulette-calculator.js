@@ -39,7 +39,7 @@
     };
   }
 
-  function calculateOdds() {
+  function calculateOdds(markResultReady) {
     const wheelType = document.getElementById('wheelType').value;
     const betType = document.getElementById('betType').value;
     const bankroll = clampNumber(document.getElementById('bankroll').value, 300, 10);
@@ -68,7 +68,9 @@
     document.getElementById('profitChance').textContent = toPercent(sim.profitChance, 1);
     document.getElementById('bustRisk').textContent = toPercent(sim.bustRisk, 1);
 
-    document.getElementById('summary').textContent = `On ${math.wheel.label} roulette, a ${formatMoney(betSize)} ${math.bet.label.toLowerCase()} has ${toPercent(math.winProb, 2)} win chance per spin and ${formatMoney(math.evDollars)} EV per spin. Over ${spins} spins, expected loss is ${formatMoney(expectedLoss)}.`;
+    const summary = document.getElementById('summary');
+    summary.textContent = `On ${math.wheel.label} roulette, a ${formatMoney(betSize)} ${math.bet.label.toLowerCase()} has ${toPercent(math.winProb, 2)} win chance per spin and ${formatMoney(math.evDollars)} EV per spin. Over ${spins} spins, expected loss is ${formatMoney(expectedLoss)}.`;
+    summary.dataset.resultReady = markResultReady ? 'true' : 'false';
 
     const resultExplanation = document.getElementById('roulette-result-explanation');
     if (resultExplanation) {
@@ -102,9 +104,9 @@
     document.getElementById('spinLog').innerHTML = rows.join('');
   }
 
-  document.getElementById('calcBtn').addEventListener('click', calculateOdds);
+  document.getElementById('calcBtn').addEventListener('click', function () { calculateOdds(true); });
   document.getElementById('spinDemoBtn').addEventListener('click', runDemoSession);
-  calculateOdds();
+  calculateOdds(false);
 }());
 
 

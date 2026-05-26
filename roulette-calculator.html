@@ -90,7 +90,7 @@
   }
   </script>
 </head>
-<body>
+<body data-tool-name="roulette_calculator">
   <header class="site-header">
     <div class="container nav site-nav">
       <a href="index.html" class="brand">Edge Over Luck</a>
@@ -235,8 +235,8 @@
             </div>
           </div>
           <div class="hero-actions">
-            <button type="button" id="calcBtn" class="btn btn-primary">Calculate Roulette Risk</button>
-            <button type="button" id="spinDemoBtn" class="btn btn-secondary">Run Demo Session</button>
+            <button type="button" id="calcBtn" class="btn btn-primary" data-track-event="tool_calculate" data-track-label="Calculate Roulette Risk">Calculate Roulette Risk</button>
+            <button type="button" id="spinDemoBtn" class="btn btn-secondary" data-track-event="tool_calculate" data-track-label="Run Demo Session">Run Demo Session</button>
           </div>
           <p class="small-note mb-0">This is educational modeling. Winning runs happen; roulette still keeps the long-run edge.</p>
         </article>
@@ -254,7 +254,7 @@
             <div class="result-item"><span>Chance of Any Profit</span><strong id="profitChance">--</strong></div>
             <div class="result-item"><span>Estimated Bust Risk</span><strong id="bustRisk">--</strong></div>
           </div>
-          <p id="summary" class="summary"></p>
+          <p id="summary" class="summary" data-track-result="roulette-summary" data-result-ready="false"></p>
           <div class="roulette-learn-result-box" aria-live="polite">
             <h3>What This Means</h3>
             <p id="roulette-result-explanation" class="mb-0">Winning sessions happen, especially in short runs. This result shows how wheel type, bet size, and session length pressure your bankroll over time.</p>
@@ -470,7 +470,7 @@
           <div><strong class="myth">Myth: “Black hit five times, so red is due.”</strong><p class="mb-0">Math: Each spin is independent; streaks are part of normal roulette variance.</p></div>
           <div><strong class="math">Myth: “A system can beat the zero.”</strong><p class="mb-0">Math: Systems shift volatility and bet size, not the built-in house edge.</p></div>
         </div>
-        <div class="tool-link-row"><a href="roulette-strategy-simulator.html">Test a system</a><a href="gambler-personality-quiz.html">Take the quiz</a><a href="responsible-gambling.html">Responsible play</a></div>
+        <div class="tool-link-row"><a href="roulette-strategy-simulator.html">Test a system</a><a href="gambler-personality-quiz.html" data-track-event="quiz_complete" data-track-label="Take the Quiz">Take the quiz</a><a href="responsible-gambling.html">Responsible play</a></div>
       </div>
     </section>
 </main>
@@ -518,6 +518,7 @@
 
   <script src="roulette-shared.js" defer></script>
   <script src="roulette-calculator.js" defer></script>
+  <script src="js/tracking.js" defer></script>
   <script src="nav.js" defer></script>
 </body>
 </html>

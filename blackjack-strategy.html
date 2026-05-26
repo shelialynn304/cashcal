@@ -43,7 +43,7 @@
   }
   </script>
 </head>
-<body>
+<body data-tool-name="blackjack_strategy">
   <header class="site-header">
     <div class="container nav site-nav">
       <a href="index.html" class="brand">Edge Over Luck</a>
@@ -336,7 +336,7 @@
       <span class="chip">Decision style</span>
       <h2 id="blackjack-quiz-title" class="section-title">Strategist or Chaser? Your decisions matter more than you think.</h2>
       <p>Blackjack rewards cleaner choices, but overconfidence after a few good hands can still leak money.</p>
-      <div class="cta-row"><a class="btn btn-primary btn-cta-primary" href="gambler-personality-quiz.html">Take the Quiz</a><a class="btn btn-secondary btn-outline" href="blackjack-game.html">Practice the Trainer</a><a class="btn btn-secondary btn-outline" href="blackjack-bankroll-calculator.html">Check Bankroll Risk</a></div>
+      <div class="cta-row"><a class="btn btn-primary btn-cta-primary" href="gambler-personality-quiz.html" data-track-event="quiz_complete" data-track-label="Take the Quiz">Take the Quiz</a><a class="btn btn-secondary btn-outline" href="blackjack-game.html">Practice the Trainer</a><a class="btn btn-secondary btn-outline" href="blackjack-bankroll-calculator.html">Check Bankroll Risk</a></div>
     </div>
   </section>
 </main>
@@ -383,6 +383,7 @@
   </footer>
 
 <script src="blackjack-strategy.js"></script>
+  <script src="js/tracking.js" defer></script>
   <script src="nav.js" defer></script>
 </body>
 </html>

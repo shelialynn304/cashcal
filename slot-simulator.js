@@ -315,6 +315,12 @@
     updateSpinAvailability();
   }
 
+  function setSlotSpinMessage(message, isRealResult) {
+    if (!spinMessage) return;
+    spinMessage.textContent = message;
+    spinMessage.dataset.resultReady = isRealResult ? "true" : "false";
+  }
+
   async function handleSingleSpin() {
     const { preset, bankroll, betSize } = getInputs();
 
@@ -342,7 +348,7 @@
     spinMessage.classList.toggle("result-jackpot", spin.resultType === "bonus");
     spinMessage.classList.toggle("result-small-win", spin.payout > betSize && spin.resultType !== "bonus");
     spinMessage.classList.toggle("result-loss", spin.payout < betSize);
-    spinMessage.textContent = describeSpin(spin, bankrollChange, newBankroll, visibleSymbols);
+    setSlotSpinMessage(describeSpin(spin, bankrollChange, newBankroll, visibleSymbols), true);
 
     isSpinning = false;
     updateSimulator();
