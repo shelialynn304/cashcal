@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+
+  <title>Roulette Bankroll Calculator | Bust Risk &amp; Session Survival | EdgeOverLuck.com</title>
+  <meta name="description" content="Estimate roulette bankroll pressure, expected loss, and session survival risk by wheel type, bet size, bankroll, and number of spins." />
+  <meta property="og:title" content="Roulette Bankroll Calculator | Bust Risk &amp; Session Survival | Edge Over Luck" />
+  <meta property="og:description" content="Estimate roulette bankroll pressure, expected loss, and session survival risk by wheel type, bet size, bankroll, and number of spins." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://edgeoverluck.com/roulette-bankroll-calculator.html" />
+  <meta property="og:image" content="https://edgeoverluck.com/assets/images/roulette-odds-section.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Roulette Bankroll Calculator | Edge Over Luck" />
+  <meta name="twitter:description" content="Estimate roulette bankroll pressure, expected loss, and session survival risk by wheel type, bet size, bankroll, and number of spins." />
+  <meta name="twitter:image" content="https://edgeoverluck.com/assets/images/roulette-odds-section.webp" />
+
+  <link rel="canonical" href="https://edgeoverluck.com/roulette-bankroll-calculator.html" />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/roulette.css" />
+  <style>
+    .roulette-bankroll-note { margin-top: 10px; color: var(--muted); font-size: 0.92rem; }
+    .roulette-bankroll-error { margin-top: 16px; color: #ffb4b4; font-weight: 800; }
+    .roulette-bankroll-results[hidden] { display: none; }
+    .roulette-pressure-badge { display: inline-flex; align-items: center; justify-content: center; padding: 8px 12px; border-radius: 999px; background: rgba(241,196,91,0.12); color: var(--gold); font-weight: 900; letter-spacing: 0.02em; text-transform: uppercase; }
+    .roulette-bankroll-form-actions { margin-top: 18px; }
+    .roulette-bankroll-list { margin-top: 18px; }
+    .roulette-bankroll-explainer { margin-top: 18px; padding: 16px; border-radius: var(--radius-sm); border: 1px solid rgba(241,196,91,0.22); background: rgba(241,196,91,0.08); }
+    .roulette-bankroll-table { width: 100%; border-collapse: collapse; }
+    .roulette-bankroll-table th, .roulette-bankroll-table td { padding: 12px; border-bottom: 1px solid var(--border); text-align: left; }
+    .roulette-bankroll-table th { color: var(--gold); background: rgba(255,255,255,0.04); }
+    @media (max-width: 768px) {
+      .roulette-bankroll-table th, .roulette-bankroll-table td { padding: 10px 8px; }
+    }
+  </style>
+  <script defer data-workspace="69b01028d6e4c738cf4abf0f" src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Roulette Bankroll Calculator",
+    "url": "https://edgeoverluck.com/roulette-bankroll-calculator.html",
+    "description": "Estimate roulette bankroll pressure, expected loss, and session survival risk by wheel type, bet size, bankroll, and number of spins."
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://edgeoverluck.com/"},
+      {"@type": "ListItem", "position": 2, "name": "Roulette", "item": "https://edgeoverluck.com/roulette.html"},
+      {"@type": "ListItem", "position": 3, "name": "Roulette Bankroll Calculator", "item": "https://edgeoverluck.com/roulette-bankroll-calculator.html"}
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "@id": "https://edgeoverluck.com/roulette-bankroll-calculator.html#howto",
+    "name": "How to use the roulette bankroll calculator",
+    "description": "Use the roulette bankroll calculator to estimate expected loss, bankroll units, and session pressure before playing roulette.",
+    "step": [
+      {"@type": "HowToStep", "name": "Enter your starting bankroll.", "text": "Enter your starting bankroll."},
+      {"@type": "HowToStep", "name": "Enter your bet size per spin.", "text": "Enter your bet size per spin."},
+      {"@type": "HowToStep", "name": "Choose the number of spins.", "text": "Choose the number of spins."},
+      {"@type": "HowToStep", "name": "Select European or American roulette.", "text": "Select European or American roulette."},
+      {"@type": "HowToStep", "name": "Choose the bet type you plan to use.", "text": "Choose the bet type you plan to use."},
+      {"@type": "HowToStep", "name": "Run the calculator.", "text": "Run the calculator."},
+      {"@type": "HowToStep", "name": "Review expected loss, bankroll units, and session pressure before betting.", "text": "Review expected loss, bankroll units, and session pressure before betting."}
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": "https://edgeoverluck.com/roulette-bankroll-calculator.html#faq",
+    "mainEntity": [
+      {"@type": "Question", "name": "How much bankroll do I need for roulette?", "acceptedAnswer": {"@type": "Answer", "text": "There is no magic bankroll that makes roulette safe. A practical bankroll depends on your bet size, wheel type, bet type, and number of spins. Smaller bets create more bankroll units and usually improve session survival."}},
+      {"@type": "Question", "name": "Is European roulette better for bankroll survival?", "acceptedAnswer": {"@type": "Answer", "text": "European roulette is better than American roulette for long-run expected loss because it has one zero and a lower house edge. It still has losing streaks and negative expected value."}},
+      {"@type": "Question", "name": "Can a roulette betting system reduce bankroll risk?", "acceptedAnswer": {"@type": "Answer", "text": "A betting system can change bet size, volatility, and the shape of a session, but it does not change the underlying house edge of the wheel. Aggressive progressions can increase bankroll pressure quickly."}},
+      {"@type": "Question", "name": "What bet type is safest for a roulette bankroll?", "acceptedAnswer": {"@type": "Answer", "text": "Even-money bets usually feel smoother because they hit more often than inside bets. They are not profitable in the long run, but their lower volatility can be easier on a small session bankroll than rare-hit bets."}},
+      {"@type": "Question", "name": "Why can even-money roulette bets still lose quickly?", "acceptedAnswer": {"@type": "Answer", "text": "Even-money bets can still run into normal losing streaks, and zero or double-zero pockets give the casino its edge. A lower-volatility bet does not mean a loss-free session."}},
+      {"@type": "Question", "name": "Does this calculator predict exact results?", "acceptedAnswer": {"@type": "Answer", "text": "No. This calculator shows theoretical expected loss and a simple session pressure estimate. It does not predict exact spins, exact bust probability, or future outcomes."}}
+    ]
+  }
+  </script>
+</head>
+<body data-tool-name="roulette_bankroll_calculator">
+  <header class="site-header">
+    <div class="container nav site-nav">
+      <a href="index.html" class="brand">Edge Over Luck</a>
+      <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+        <span class="nav-toggle-label">Menu</span>
+      </button>
+      <nav id="primary-nav" class="nav-menu" aria-label="Primary navigation">
+        <a class="nav-link nav-priority-link" href="roulette-simulator.html">Roulette Simulator</a>
+        <a class="nav-link nav-priority-link" href="horse-racing-guide.html">Horse Racing</a>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-blackjack">Blackjack</button>
+          <div id="nav-blackjack" class="nav-panel nav-panel-wide">
+            <a href="blackjack-game.html">Blackjack Trainer</a>
+            <a href="blackjack-strategy.html">Blackjack Strategy Guide</a>
+            <a href="blackjack-trainer-guide.html">Blackjack Trainer Guide</a>
+            <a href="blackjack-ev-calculator.html">Blackjack EV Calculator</a>
+            <a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-roulette">Roulette</button>
+          <div id="nav-roulette" class="nav-panel nav-panel-wide">
+            <a href="roulette.html">Roulette Guide</a>
+            <a href="roulette-simulator.html">Roulette Simulator</a>
+            <a href="roulette-calculator.html">Roulette Odds Calculator</a>
+            <a href="roulette-bankroll-calculator.html">Roulette Bankroll Calculator</a>
+            <a href="roulette-strategy-simulator.html">Roulette Strategy Simulator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-slots">Slots</button>
+          <div id="nav-slots" class="nav-panel nav-panel-wide">
+            <a href="slots.html">Slots Guide</a>
+            <a href="slot-simulator.html">Slot Simulator</a>
+            <a href="slot-rtp-explained.html">Slot RTP Guide</a>
+            <a href="slot-volatility-guide.html">Slot Volatility Guide</a>
+            <a href="bankroll-survival-slots.html">Slot Bankroll Survival Calculator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-more">More</button>
+          <div id="nav-more" class="nav-panel nav-panel-wide">
+            <a href="horse-racing-guide.html">Horse Racing Guide</a>
+            <a href="bubble-craps.html">Bubble Craps Simulator</a>
+            <a href="gambler-personality-quiz.html">Gambler Personality Quiz</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-about">About</button>
+          <div id="nav-about" class="nav-panel nav-panel-wide">
+            <a href="responsible-gambling.html">Responsible Gambling</a>
+            <a href="how-we-calculate-odds.html">How We Find Odds</a>
+            <a href="about.html">About Edge Over Luck</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="page-hero glow-hero">
+      <div class="container page-hero-split">
+        <div class="page-hero-copy">
+          <div class="eyebrow eyebrow-muted">Roulette Bankroll Tool</div>
+          <h1 class="page-hero-title">Roulette Bankroll Calculator</h1>
+          <p class="page-hero-subtitle">Estimate bankroll pressure before variance starts freelancing.</p>
+          <p class="page-hero-text">This tool estimates roulette bankroll pressure and session survival by bankroll, bet size, wheel type, bet type, and number of spins. Roulette has a built-in house edge, and bigger bets or longer sessions give that edge more time to pressure your bankroll. This is an educational estimate, not a gambling guarantee.</p>
+          <div class="hero-actions cta-row">
+            <a class="btn btn-primary btn-gold" href="#roulette-bankroll-tool">Run the Bankroll Check</a>
+            <a class="btn btn-secondary btn-outline" href="roulette-calculator.html">Open Roulette Odds Calculator</a>
+            <a class="btn btn-secondary btn-outline" href="roulette-strategy-simulator.html">Test a Strategy</a>
+          </div>
+        </div>
+        <aside class="card glass-card-strong glow-gold hover-glow" aria-label="Roulette bankroll calculator highlights">
+          <span class="eyebrow eyebrow-cyan">Session survival estimate</span>
+          <h2 class="section-title">Bankroll management controls exposure, not the house edge.</h2>
+          <div class="result-list">
+            <div class="result-item glass-card"><span>Wheel math</span><strong>37 or 38 pockets</strong></div>
+            <div class="result-item glass-card"><span>Outputs</span><strong>EV, units, pressure</strong></div>
+            <div class="result-item glass-card"><span>Promise level</span><strong>No fake certainty</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="experience-strip" aria-label="Roulette bankroll reality checks">
+      <div class="container">
+        <div class="grid grid-3">
+          <article class="card reality-card glass-card hover-glow"><span class="kicker">House Edge</span><strong>European is better. Neither is free.</strong><p class="mb-0">European roulette has about a 2.70% house edge. American roulette is about 5.26%.</p></article>
+          <article class="card reality-card glass-card hover-glow"><span class="kicker">Bankroll Units</span><strong>Large bets shorten the runway.</strong><p class="mb-0">A $25 bet with $100 behind it is four units. That is not a plan; that is a sneeze near a cliff.</p></article>
+          <article class="card reality-card glass-card hover-glow"><span class="kicker">Bet Type</span><strong>Rare-hit bets feel rougher.</strong><p class="mb-0">Straight-up bets pay big because most spins lose. The edge is similar, but the ride is not.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="roulette-bankroll-tool">
+      <div class="container grid grid-2">
+        <article class="card glass-card-strong glow-gold">
+          <span class="eyebrow eyebrow-muted">Inputs</span>
+          <h2 class="section-title">Roulette bankroll inputs</h2>
+          <form id="roulette-bankroll-form" novalidate>
+            <div class="form-row">
+              <div class="field">
+                <label for="startingBankroll">Starting bankroll ($)</label>
+                <input id="startingBankroll" name="startingBankroll" type="number" min="1" step="0.01" value="300" inputmode="decimal" />
+                <p class="roulette-bankroll-note">Money set aside for this roulette session.</p>
+              </div>
+              <div class="field">
+                <label for="betSize">Bet size per spin ($)</label>
+                <input id="betSize" name="betSize" type="number" min="0.01" step="0.01" value="10" inputmode="decimal" />
+                <p class="roulette-bankroll-note">Flat bet size used for each spin in this estimate.</p>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="spinCount">Number of spins</label>
+                <input id="spinCount" name="spinCount" type="number" min="1" step="1" value="100" inputmode="numeric" />
+                <p class="roulette-bankroll-note">Longer sessions give the house edge more chances to show up.</p>
+              </div>
+              <div class="field">
+                <label for="wheelType">Wheel type</label>
+                <select id="wheelType" name="wheelType">
+                  <option value="european" selected>European roulette / single zero</option>
+                  <option value="american">American roulette / double zero</option>
+                </select>
+                <p class="roulette-bankroll-note">European has 37 pockets. American has 38 pockets.</p>
+              </div>
+            </div>
+            <div class="field">
+              <label for="betType">Bet type</label>
+              <select id="betType" name="betType">
+                <option value="straight">Straight up</option>
+                <option value="split">Split</option>
+                <option value="street">Street</option>
+                <option value="corner">Corner</option>
+                <option value="sixline">Six line</option>
+                <option value="dozen">Dozen</option>
+                <option value="column">Column</option>
+                <option value="even" selected>Even money / red-black / odd-even / high-low</option>
+              </select>
+              <p class="roulette-bankroll-note">Bet type changes hit frequency and payout. Standard roulette payouts still keep the wheel edge negative.</p>
+            </div>
+            <div class="roulette-bankroll-form-actions">
+              <button class="btn btn-primary btn-gold" type="submit">Run the Bankroll Check</button>
+            </div>
+            <p id="roulette-bankroll-error" class="roulette-bankroll-error" role="alert"></p>
+          </form>
+        </article>
+
+        <article class="card glass-card-strong glow-cyan roulette-bankroll-results" id="roulette-bankroll-results" aria-live="polite" hidden>
+          <span class="eyebrow eyebrow-muted">Results</span>
+          <h2 class="section-title">Estimated session survival pressure</h2>
+          <span id="pressureRating" class="roulette-pressure-badge">Low</span>
+          <div class="result-list roulette-bankroll-list">
+            <div class="result-item glass-card"><span>Wheel type</span><strong id="resultWheel">European roulette</strong></div>
+            <div class="result-item glass-card"><span>Bet type</span><strong id="resultBet">Even money</strong></div>
+            <div class="result-item glass-card"><span>Win probability</span><strong id="resultWinProb">48.65%</strong></div>
+            <div class="result-item glass-card"><span>House edge / expected loss rate</span><strong id="resultHouseEdge">2.70%</strong></div>
+            <div class="result-item glass-card"><span>Expected loss per spin</span><strong id="resultLossPerSpin">$0.27</strong></div>
+            <div class="result-item glass-card"><span>Expected session loss</span><strong id="resultSessionLoss">$27.03</strong></div>
+            <div class="result-item glass-card"><span>Bankroll units</span><strong id="resultUnits">30.0 bets</strong></div>
+            <div class="result-item glass-card"><span>Spins until expected loss equals bankroll</span><strong id="resultSpinsToBankroll">1,110 spins</strong></div>
+          </div>
+          <div class="roulette-bankroll-explainer">
+            <h3>Plain-English read</h3>
+            <p id="resultExplanation" class="mb-0">This setup has manageable expected loss, but normal losing streaks can still pressure the bankroll.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="roulette-bankroll-math-title">
+      <div class="container section-panel section-gradient-gold">
+        <span class="eyebrow eyebrow-muted">Math notes</span>
+        <h2 id="roulette-bankroll-math-title" class="section-title">How roulette bankroll math works</h2>
+        <p>Roulette bankroll risk is affected by house edge, bet size, spin count, and variance. A lower house edge reduces long-run expected loss, but it does not remove losing streaks.</p>
+        <div class="grid grid-2">
+          <article class="card glass-card">
+            <h3>Wheel edge</h3>
+            <p>European roulette has 37 pockets and a standard house edge of about 2.70%. American roulette has 38 pockets and a standard house edge of about 5.26%.</p>
+          </article>
+          <article class="card glass-card">
+            <h3>Session pressure</h3>
+            <p>Betting systems do not change the underlying house edge. Larger bets reduce bankroll survival time because each normal losing streak consumes more units.</p>
+          </article>
+        </div>
+        <div class="table-wrap">
+          <table class="roulette-bankroll-table">
+            <thead><tr><th>Bet type</th><th>Winning numbers</th><th>Pays</th><th>Bankroll feel</th></tr></thead>
+            <tbody>
+              <tr><td>Straight up</td><td>1</td><td>35:1</td><td>Rare hits, high swing</td></tr>
+              <tr><td>Split</td><td>2</td><td>17:1</td><td>Very swingy</td></tr>
+              <tr><td>Street</td><td>3</td><td>11:1</td><td>Swingy</td></tr>
+              <tr><td>Corner</td><td>4</td><td>8:1</td><td>Moderate-high swing</td></tr>
+              <tr><td>Six line</td><td>6</td><td>5:1</td><td>Moderate swing</td></tr>
+              <tr><td>Dozen / Column</td><td>12</td><td>2:1</td><td>Smoother than inside bets</td></tr>
+              <tr><td>Even money</td><td>18</td><td>1:1</td><td>Smoothest standard ride, still negative EV</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="howto" aria-labelledby="roulette-bankroll-howto-title">
+      <div class="container">
+        <div class="section-header section-header-centered">
+          <span class="eyebrow eyebrow-muted">Quick setup</span>
+          <h2 id="roulette-bankroll-howto-title" class="section-title">How to use the roulette bankroll calculator</h2>
+        </div>
+        <ol class="check-list">
+          <li>Enter your starting bankroll.</li>
+          <li>Enter your bet size per spin.</li>
+          <li>Choose the number of spins.</li>
+          <li>Select European or American roulette.</li>
+          <li>Choose the bet type you plan to use.</li>
+          <li>Run the calculator.</li>
+          <li>Review expected loss, bankroll units, and session pressure before betting.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="roulette-bankroll-links-title">
+      <div class="container cta-box glass-panel glow-cyan">
+        <h2 id="roulette-bankroll-links-title" class="section-title">Keep checking the roulette math</h2>
+        <p>Use this bankroll page with the rest of the roulette toolkit. Bankroll management can limit session exposure; it cannot delete the zero.</p>
+        <div class="tool-link-row">
+          <a href="roulette.html">Roulette Guide</a>
+          <a href="roulette-calculator.html">Roulette Odds Calculator</a>
+          <a href="roulette-simulator.html">Roulette Simulator</a>
+          <a href="roulette-strategy-simulator.html">Roulette Strategy Simulator</a>
+          <a href="responsible-gambling.html">Responsible gambling resources</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq" aria-labelledby="roulette-bankroll-faq-title">
+      <div class="container">
+        <div class="section-header section-header-centered">
+          <span class="eyebrow eyebrow-muted">Questions players ask</span>
+          <h2 id="roulette-bankroll-faq-title" class="section-title">Roulette bankroll calculator FAQ</h2>
+        </div>
+        <div class="faq-list">
+          <details class="card glass-card hover-glow">
+            <summary>How much bankroll do I need for roulette?</summary>
+            <p>There is no magic bankroll that makes roulette safe. A practical bankroll depends on your bet size, wheel type, bet type, and number of spins. Smaller bets create more bankroll units and usually improve session survival.</p>
+          </details>
+          <details class="card glass-card hover-glow">
+            <summary>Is European roulette better for bankroll survival?</summary>
+            <p>European roulette is better than American roulette for long-run expected loss because it has one zero and a lower house edge. It still has losing streaks and negative expected value.</p>
+          </details>
+          <details class="card glass-card hover-glow">
+            <summary>Can a roulette betting system reduce bankroll risk?</summary>
+            <p>A betting system can change bet size, volatility, and the shape of a session, but it does not change the underlying house edge of the wheel. Aggressive progressions can increase bankroll pressure quickly.</p>
+          </details>
+          <details class="card glass-card hover-glow">
+            <summary>What bet type is safest for a roulette bankroll?</summary>
+            <p>Even-money bets usually feel smoother because they hit more often than inside bets. They are not profitable in the long run, but their lower volatility can be easier on a small session bankroll than rare-hit bets.</p>
+          </details>
+          <details class="card glass-card hover-glow">
+            <summary>Why can even-money roulette bets still lose quickly?</summary>
+            <p>Even-money bets can still run into normal losing streaks, and zero or double-zero pockets give the casino its edge. A lower-volatility bet does not mean a loss-free session.</p>
+          </details>
+          <details class="card glass-card hover-glow">
+            <summary>Does this calculator predict exact results?</summary>
+            <p>No. This calculator shows theoretical expected loss and a simple session pressure estimate. It does not predict exact spins, exact bust probability, or future outcomes.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container disclaimer-block">
+        <h2 class="section-title">Responsible gambling and 21+ notice</h2>
+        <p>21+ only where legal. This tool is for education and entertainment only. Gambling involves financial risk, and no calculator, simulator, betting system, or strategy can guarantee profit. Set limits before you play, and never risk money you cannot afford to lose. If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use your local problem gambling support service.</p>
+        <p class="mb-0">More help and support options are available on our <a href="responsible-gambling.html">responsible gambling resources</a> page.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-brand">Edge Over Luck</p>
+      <p>Edge Over Luck gives players gambling math tools, bankroll calculators, and casino simulators for understanding risk. These tools do not guarantee profit. Variance remains undefeated.</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="blackjack-game.html">Blackjack Trainer</a>
+        <a href="roulette-bankroll-calculator.html">Roulette Bankroll Calculator</a>
+        <a href="roulette-simulator.html">Roulette Simulator</a>
+        <a href="slot-simulator.html">Slot Simulator</a>
+        <a href="how-we-calculate-odds.html">How We Calculate Odds</a>
+        <a href="responsible-gambling.html">Responsible Gambling</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
+        <a href="editorial-policy.html">Editorial Policy</a>
+        <a href="credits.html">Credits &amp; Sources</a>
+      </div>
+      <p class="affiliate-note"><strong>Affiliate Disclosure:</strong> This site may contain affiliate links and may earn commissions at no extra cost to you. Affiliate relationships do not change the math, odds, house edge, or editorial standards used on Edge Over Luck.</p>
+      <p class="gambling-warning"><strong>21+ / Legal Gambling Notice:</strong> 21+ only where legal. Gambling involves financial risk and can be addictive. These tools are for education and entertainment only and do not guarantee profit.</p>
+      <p class="responsible">Play legally, set limits, and never risk money you cannot afford to lose. If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use your local problem gambling support service. See our <a href="responsible-gambling.html">responsible gambling resources</a>.</p>
+      <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const betTypes = {
+        straight: { label: "Straight up", winners: 1, payout: 35 },
+        split: { label: "Split", winners: 2, payout: 17 },
+        street: { label: "Street", winners: 3, payout: 11 },
+        corner: { label: "Corner", winners: 4, payout: 8 },
+        sixline: { label: "Six line", winners: 6, payout: 5 },
+        dozen: { label: "Dozen", winners: 12, payout: 2 },
+        column: { label: "Column", winners: 12, payout: 2 },
+        even: { label: "Even money / red-black / odd-even / high-low", winners: 18, payout: 1 }
+      };
+
+      const wheelTypes = {
+        european: { label: "European roulette / single zero", pockets: 37 },
+        american: { label: "American roulette / double zero", pockets: 38 }
+      };
+
+      const form = document.getElementById("roulette-bankroll-form");
+      const errorEl = document.getElementById("roulette-bankroll-error");
+      const resultsEl = document.getElementById("roulette-bankroll-results");
+
+      function money(value) {
+        return value.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function percent(value) {
+        return `${(value * 100).toFixed(2)}%`;
+      }
+
+      function formatNumber(value, digits) {
+        return value.toLocaleString("en-US", { maximumFractionDigits: digits });
+      }
+
+      function pressureRating(bankrollUnits, spins, expectedSessionLoss, bankroll, betSize, winProbability) {
+        const sessionLossRatio = expectedSessionLoss / bankroll;
+        const betRatio = betSize / bankroll;
+        let score = 0;
+
+        if (bankrollUnits < 5 || sessionLossRatio >= 0.75 || betRatio >= 0.25 || spins >= bankrollUnits * 6) score = 3;
+        else if (bankrollUnits < 10 || sessionLossRatio >= 0.35 || betRatio >= 0.10 || spins >= bankrollUnits * 3) score = 2;
+        else if (bankrollUnits < 25 || sessionLossRatio >= 0.12 || betRatio >= 0.04 || spins >= bankrollUnits * 1.5) score = 1;
+
+        if (winProbability < 0.1 && spins > bankrollUnits && score < 3) score += 1;
+
+        return ["Low", "Medium", "High", "Extreme"][score];
+      }
+
+      function explanationFor(rating, wheel, bet, bankrollUnits, expectedSessionLoss, bankroll) {
+        const lossShare = expectedSessionLoss / bankroll;
+        const wheelText = wheel.pockets === 37 ? "European roulette keeps the long-run edge lower than American roulette" : "American roulette adds double-zero, so the expected loss rate is higher";
+        const varianceText = bet.winners <= 4 ? "This bet type hits rarely, so normal dry spells can feel brutal even when the average loss per dollar matches the wheel edge." : "This bet type hits more often than inside bets, but streaks and the zero pockets still matter.";
+
+        if (rating === "Extreme") {
+          return `Extreme pressure: ${formatNumber(bankrollUnits, 1)} bankroll units is thin for this session, and the expected loss is ${percent(lossShare)} of the bankroll. ${wheelText}. ${varianceText}`;
+        }
+        if (rating === "High") {
+          return `High pressure: the bankroll can be pressured quickly by normal roulette swings. Expected session loss is ${money(expectedSessionLoss)}, before random streaks get involved. ${wheelText}. ${varianceText}`;
+        }
+        if (rating === "Medium") {
+          return `Medium pressure: the setup is not instantly reckless, but the expected loss and spin count are noticeable. ${wheelText}, but bankroll management still only controls exposure.`;
+        }
+        return `Low pressure estimate: this setup has more bankroll units and expected loss is modest relative to the bankroll. ${wheelText}, but this still does not predict a winning session.`;
+      }
+
+      function showError(message) {
+        errorEl.textContent = message;
+        resultsEl.hidden = true;
+      }
+
+      function calculate(event) {
+        if (event) event.preventDefault();
+
+        const bankroll = Number.parseFloat(document.getElementById("startingBankroll").value);
+        const betSize = Number.parseFloat(document.getElementById("betSize").value);
+        const spinsRaw = Number.parseFloat(document.getElementById("spinCount").value);
+        const spins = spinsRaw;
+        const wheel = wheelTypes[document.getElementById("wheelType").value];
+        const bet = betTypes[document.getElementById("betType").value];
+
+        if (!Number.isFinite(bankroll) || bankroll <= 0) {
+          showError("Enter a starting bankroll greater than $0.");
+          return;
+        }
+        if (!Number.isFinite(betSize) || betSize <= 0) {
+          showError("Enter a bet size greater than $0.");
+          return;
+        }
+        if (!Number.isFinite(spinsRaw) || !Number.isInteger(spinsRaw) || spins <= 0) {
+          showError("Enter a positive whole number of spins.");
+          return;
+        }
+        if (betSize > bankroll) {
+          showError("Bet size cannot exceed your starting bankroll. One spin should not cost more than the whole session.");
+          return;
+        }
+        if (!wheel || !bet) {
+          showError("Choose a valid roulette wheel and bet type.");
+          return;
+        }
+
+        const winProbability = bet.winners / wheel.pockets;
+        const lossProbability = 1 - winProbability;
+        const payoutProfit = betSize * bet.payout;
+        const expectedProfit = (winProbability * payoutProfit) - (lossProbability * betSize);
+        const expectedLossPerSpin = Math.max(0, -expectedProfit);
+        const expectedSessionLoss = expectedLossPerSpin * spins;
+        const bankrollUnits = bankroll / betSize;
+        const spinsUntilBankroll = expectedLossPerSpin > 0 ? bankroll / expectedLossPerSpin : Number.POSITIVE_INFINITY;
+        const houseEdge = expectedLossPerSpin / betSize;
+        const rating = pressureRating(bankrollUnits, spins, expectedSessionLoss, bankroll, betSize, winProbability);
+
+        const finiteOutputs = [winProbability, lossProbability, payoutProfit, expectedProfit, expectedLossPerSpin, expectedSessionLoss, bankrollUnits, houseEdge];
+        const nonNegativeOutputs = [winProbability, lossProbability, payoutProfit, expectedLossPerSpin, expectedSessionLoss, bankrollUnits, houseEdge];
+        if (finiteOutputs.some((value) => !Number.isFinite(value)) || nonNegativeOutputs.some((value) => value < 0) || !Number.isFinite(spinsUntilBankroll)) {
+          showError("The inputs produced an impossible result. Check the numbers and try again.");
+          return;
+        }
+
+        errorEl.textContent = "";
+        resultsEl.hidden = false;
+        document.getElementById("pressureRating").textContent = rating;
+        document.getElementById("resultWheel").textContent = wheel.label;
+        document.getElementById("resultBet").textContent = bet.label;
+        document.getElementById("resultWinProb").textContent = percent(winProbability);
+        document.getElementById("resultHouseEdge").textContent = percent(houseEdge);
+        document.getElementById("resultLossPerSpin").textContent = money(expectedLossPerSpin);
+        document.getElementById("resultSessionLoss").textContent = money(expectedSessionLoss);
+        document.getElementById("resultUnits").textContent = `${formatNumber(bankrollUnits, 1)} bets`;
+        document.getElementById("resultSpinsToBankroll").textContent = Number.isFinite(spinsUntilBankroll) ? `${formatNumber(spinsUntilBankroll, 0)} spins` : "Not applicable";
+        document.getElementById("resultExplanation").textContent = explanationFor(rating, wheel, bet, bankrollUnits, expectedSessionLoss, bankroll);
+      }
+
+      form.addEventListener("submit", calculate);
+      calculate();
+    }());
+  </script>
+  <script src="js/tracking.js" defer></script>
+  <script src="nav.js" defer></script>
+</body>
+</html>
