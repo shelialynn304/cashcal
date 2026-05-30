@@ -11,33 +11,93 @@ on:
 jobs:
   page-test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Test https://edgeoverluck.com/
-        uses: remarkablemark/page-test-action@v1
-        with:
-          url: https://edgeoverluck.com/
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Test blackjack-bankroll-calculator
-        uses: remarkablemark/page-test-action@v1
-        with:
-          url: https://edgeoverluck.com/blackjack-bankroll-calculator.html
+      - name: Check required HTML files exist
+        shell: bash
+        run: |
+          set -euo pipefail
 
-      - name: Test blackjack-ev-calculator
-        uses: remarkablemark/page-test-action@v1
-        with:
-          url: https://edgeoverluck.com/blackjack-ev-calculator.html
+          files=(
+            "index.html"
+            "blackjack-bankroll-calculator.html"
+            "blackjack-ev-calculator.html"
+            "roulette-calculator.html"
+            "slot-simulator.html"
+            "roulette-strategy-simulator.html"
+          )
 
-      - name: Test roulette-calculator
-        uses: remarkablemark/page-test-action@v1
-        with:
-          url: https://edgeoverluck.com/roulette-calculator.html
+          for file in "${files[@]}"; do
+            echo "Checking local file: $file"
 
-      - name: Test slot-simulator
-        uses: remarkablemark/page-test-action@v1
-        with:
-          url: https://edgeoverluck.com/slot-simulator.html
+            if [ ! -f "$file" ]; then
+              echo "::error::Missing required file: $file"
+              exit 1
+            fi
 
-      - name: Test roulette-strategy-simulator
-        uses: remarkablemark/page-test-action@v1
-        with:
-          url: https://edgeoverluck.com/roulette-strategy-simulator.html
+            if ! grep -qi "<html" "$file"; then
+              echo "::error::Missing html tag in: $file"
+              exit 1
+            fi
+
+            if ! grep -qi "</html>" "$file"; then
+              echo "::error::Missing closing html tag in: $file"
+              exit 1
+            fi
+          done
+
+      - name: Wait for deployment/cache
+        run: sleep 90
+
+      - name: Test live pages with retries
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          urls=(
+            "https://edgeoverluck.com/"
+            "https://edgeoverluck.com/blackjack-bankroll-calculator.html"
+            "https://edgeoverluck.com/blackjack-ev-calculator.html"
+            "https://edgeoverluck.com/roulette-calculator.html"
+            "https://edgeoverluck.com/slot-simulator.html"
+            "https://edgeoverluck.com/roulette-strategy-simulator.html"
+          )
+
+          failed=0
+
+          check_url() {
+            local url="$1"
+            local status=""
+
+            for attempt in 1 2 3; do
+              echo "Attempt $attempt: $url"
+
+              status=$(curl -L -sS --max-time 30 -o page.html -w "%{http_code}" "$url" || true)
+
+              if [ "$status" = "200" ] &&
+                 grep -qi "<html" page.html &&
+                 grep -qi "</html>" page.html &&
+                 ! grep -qi "There isn't a GitHub Pages site here" page.html &&
+                 ! grep -qi "<title>404" page.html; then
+                echo "OK: $url"
+                return 0
+              fi
+
+              echo "Failed attempt $attempt for $url with status: $status"
+              sleep 20
+            done
+
+            echo "::error::$url failed smoke test after retries. Last HTTP status: $status"
+            return 1
+          }
+
+          for url in "${urls[@]}"; do
+            if ! check_url "$url"; then
+              failed=1
+            fi
+          done
+
+          exit "$failed"
