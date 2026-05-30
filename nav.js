@@ -9,6 +9,24 @@
     inLanguage: 'en-US',
   };
 
+  const websiteSchemaUrl = 'https://edgeoverluck.com/';
+
+  const normalizeSchemaUrl = (url) => {
+    if (typeof url !== 'string') {
+      return '';
+    }
+
+    return url.replace(/#.*$/, '').replace(/\/$/, '') + '/';
+  };
+
+  const hasType = (value, type) => {
+    if (Array.isArray(value)) {
+      return value.includes(type);
+    }
+
+    return value === type;
+  };
+
   const hasWebsiteSchema = (value) => {
     if (!value || typeof value !== 'object') {
       return false;
@@ -18,8 +36,14 @@
       return value.some(hasWebsiteSchema);
     }
 
-    if (value['@type'] === 'WebSite' && value['@id'] === websiteSchema['@id']) {
-      return true;
+    if (hasType(value['@type'], 'WebSite')) {
+      if (value['@id'] === websiteSchema['@id']) {
+        return true;
+      }
+
+      if (normalizeSchemaUrl(value.url) === websiteSchemaUrl) {
+        return true;
+      }
     }
 
     return Object.values(value).some(hasWebsiteSchema);
