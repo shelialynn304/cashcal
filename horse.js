@@ -85,23 +85,45 @@
 
     if (!ticketType || !ticketBase || !horsesUsed || !calcButton || !resultEl) return;
 
+    const ticketRules = {
+      exacta: { legs: 2, label: 'Exacta', formula: 'n × (n - 1)' },
+      trifecta: { legs: 3, label: 'Trifecta', formula: 'n × (n - 1) × (n - 2)' },
+      superfecta: { legs: 4, label: 'Superfecta', formula: 'n × (n - 1) × (n - 2) × (n - 3)' }
+    };
+
     function render() {
       const base = Number(ticketBase.value);
       const runners = Number(horsesUsed.value);
+      const rule = ticketRules[ticketType.value] || ticketRules.exacta;
 
-      if (!Number.isFinite(base) || base <= 0 || !Number.isFinite(runners) || runners < 2) {
-        resultEl.textContent = 'Use a valid unit size and horse count to estimate ticket cost.';
+      if (!Number.isFinite(base) || base <= 0) {
+        resultEl.textContent = 'Enter a base bet amount greater than $0 before calculating ticket cost.';
         return;
       }
 
-      const legs = ticketType.value === 'exacta' ? 2 : ticketType.value === 'trifecta' ? 3 : 4;
-      const combos = permutationsCount(runners, legs);
+      if (!Number.isFinite(runners) || runners <= 0 || !Number.isInteger(runners)) {
+        resultEl.textContent = 'Enter a positive whole number of horses in the box.';
+        return;
+      }
+
+      if (runners < rule.legs) {
+        resultEl.textContent = `${rule.label} boxes require at least ${rule.legs} horses. Add more horses or choose a smaller exotic bet type.`;
+        return;
+      }
+
+      const combos = permutationsCount(runners, rule.legs);
       const ticketCost = combos * base;
 
-      resultEl.innerHTML = `Estimated ticket cost: <strong>${formatCurrency(ticketCost)}</strong><br>${ticketType.value.toUpperCase()} with ${runners} horses creates ${combos} combinations. Actual payout depends on the final pool, takeout, and how many other winning tickets share the pool.`;
+      if (!Number.isFinite(combos) || !Number.isFinite(ticketCost) || combos <= 0 || ticketCost < 0) {
+        resultEl.textContent = 'This ticket cannot be calculated safely. Check the base bet and horse count.';
+        return;
+      }
+
+      resultEl.innerHTML = `Estimated ticket cost: <strong>${formatCurrency(ticketCost)}</strong><br>${rule.label} box with ${runners} horses creates ${combos.toLocaleString('en-US')} combinations using ${rule.formula}. Actual payout depends on the final pool, takeout, and how many other winning tickets share the pool.`;
     }
 
     calcButton.addEventListener('click', render);
+    ticketType.addEventListener('change', render);
     render();
   }
 
