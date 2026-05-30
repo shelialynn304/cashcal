@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <title>Exotic Bet Cost Calculator | Exacta, Trifecta &amp; Superfecta Box Cost | EdgeOverLuck.com</title>
+  <meta name="description" content="Calculate exacta, trifecta, and superfecta box ticket costs by base bet and number of horses. See combination math before exotic horse racing tickets get expensive." />
+  <link rel="canonical" href="https://edgeoverluck.com/exotic-bet-calculator.html" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://edgeoverluck.com/exotic-bet-calculator.html#webpage",
+        "name": "Exotic Bet Cost Calculator",
+        "url": "https://edgeoverluck.com/exotic-bet-calculator.html",
+        "description": "Calculate exacta, trifecta, and superfecta box ticket costs by multiplying finishing-order combinations by the base bet amount."
+      },
+      {
+        "@type": "HowTo",
+        "@id": "https://edgeoverluck.com/exotic-bet-calculator.html#howto",
+        "name": "How to calculate exotic bet cost",
+        "description": "Calculate the cost of an exacta, trifecta, or superfecta box by finding the number of finishing-order combinations and multiplying by the base bet amount.",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Choose the exotic bet type",
+            "text": "Choose exacta, trifecta, or superfecta."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Enter the base bet amount",
+            "text": "Enter the base bet amount."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Enter the horses in the box",
+            "text": "Enter how many horses are in your box."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Calculate combinations",
+            "text": "Calculate the number of possible finishing-order combinations."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Multiply by the base bet",
+            "text": "Multiply combinations by the base bet amount."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Review the total ticket cost",
+            "text": "Review the total ticket cost before betting."
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://edgeoverluck.com/exotic-bet-calculator.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How much does an exacta box cost?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "An exacta box costs n × (n - 1) combinations multiplied by the base bet. For example, a $1 exacta box with 4 horses costs 12 combinations × $1 = $12."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much does a trifecta box cost?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A trifecta box costs n × (n - 1) × (n - 2) combinations multiplied by the base bet. A $1 trifecta box with 4 horses costs 24 combinations × $1 = $24."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much does a superfecta box cost?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A superfecta box costs n × (n - 1) × (n - 2) × (n - 3) combinations multiplied by the base bet. A $0.10 superfecta box with 5 horses costs 120 combinations × $0.10 = $12."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why do exotic bet tickets get expensive so fast?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Exotic boxes cover many possible finishing orders. Each added horse can multiply the number of combinations, so cost can rise much faster than the base bet looks."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does boxing more horses make the bet better?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Boxing more horses increases coverage and cost, but it does not automatically create value or improve your edge. The ticket still has to be worth its price after takeout and pool competition."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the difference between a box and a straight exotic bet?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A straight exotic bet uses one exact finishing order. A box covers every finishing order among the horses you selected, which creates more combinations and a higher ticket cost."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="horse-page">
+  <header class="site-header">
+    <div class="container nav site-nav">
+      <a href="index.html" class="brand">Edge Over Luck</a>
+      <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+        <span class="nav-toggle-label">Menu</span>
+      </button>
+      <nav id="primary-nav" class="nav-menu" aria-label="Primary navigation">
+        <a class="nav-link nav-priority-link" href="roulette-simulator.html">Roulette Simulator</a>
+        <a class="nav-link nav-priority-link" href="horse-racing-guide.html">Horse Racing</a>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-blackjack">Blackjack</button>
+          <div id="nav-blackjack" class="nav-panel nav-panel-wide">
+            <a href="blackjack-game.html">Blackjack Trainer</a>
+            <a href="blackjack-strategy.html">Blackjack Strategy Guide</a>
+            <a href="blackjack-trainer-guide.html">Blackjack Trainer Guide</a>
+            <a href="blackjack-ev-calculator.html">Blackjack EV Calculator</a>
+            <a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-roulette">Roulette</button>
+          <div id="nav-roulette" class="nav-panel nav-panel-wide">
+            <a href="roulette.html">Roulette Guide</a>
+            <a href="roulette-simulator.html">Roulette Simulator</a>
+            <a href="roulette-calculator.html">Roulette Calculator</a>
+            <a href="roulette-strategy-simulator.html">Roulette Strategy Simulator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-slots">Slots</button>
+          <div id="nav-slots" class="nav-panel nav-panel-wide">
+            <a href="slots.html">Slots Guide</a>
+            <a href="slot-simulator.html">Slot Simulator</a>
+            <a href="slot-rtp-explained.html">Slot RTP Guide</a>
+            <a href="slot-volatility-guide.html">Slot Volatility Guide</a>
+            <a href="bankroll-survival-slots.html">Slot Bankroll Survival Calculator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-more">More</button>
+          <div id="nav-more" class="nav-panel nav-panel-wide">
+            <a href="horse-racing-guide.html">Horse Racing Guide</a>
+            <a href="bubble-craps.html">Bubble Craps Simulator</a>
+            <a href="gambler-personality-quiz.html">Gambler Personality Quiz</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-about">About</button>
+          <div id="nav-about" class="nav-panel nav-panel-wide">
+            <a href="responsible-gambling.html">Responsible Gambling</a>
+            <a href="how-we-calculate-odds.html">How We Find Odds</a>
+            <a href="about.html">About Edge Over Luck</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-section section-gradient-gold">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Horse Racing Tool</p>
+          <h1>Exotic Bet Cost Calculator</h1>
+          <p class="hero-subtitle">
+            Calculate exacta, trifecta, and superfecta box ticket costs by base bet and number of horses.
+            Exotic bets can become expensive quickly because combinations multiply. This calculator estimates
+            ticket cost only; actual payouts depend on final pools, takeout, and how many winning tickets split the pool.
+          </p>
+          <div class="hero-actions">
+            <a class="btn" href="#calculator">Calculate Ticket Cost</a>
+            <a class="btn btn-secondary" href="horse-racing-guide.html">Horse Racing Guide</a>
+          </div>
+        </div>
+        <aside class="info-box glass-panel glow-gold hover-glow">
+          <h2 class="mt-0">Before the ticket window</h2>
+          <p>
+            A bigger box buys more finishing-order coverage, not a better edge. More combinations increase cost,
+            not the quality of your opinion.
+          </p>
+          <p class="mb-0">
+            Exotic bets also carry higher variance. The hit can be big, but dead tickets pile up fast.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="calculator">
+      <div class="container grid grid-2">
+        <article class="card glass-card-strong">
+          <h2 class="section-title">Exacta, trifecta, and superfecta box calculator</h2>
+          <p class="section-subtext">
+            Enter the bet type, base unit, and number of horses in your box. The calculator multiplies the number of
+            possible finishing-order combinations by your base bet amount.
+          </p>
+          <div class="form-row">
+            <div class="field">
+              <label for="ticketType">Ticket type</label>
+              <select id="ticketType">
+                <option value="exacta">Exacta box</option>
+                <option value="trifecta" selected>Trifecta box</option>
+                <option value="superfecta">Superfecta box</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="ticketBase">Base unit per combination ($)</label>
+              <input id="ticketBase" type="number" min="0.01" step="0.10" value="1" inputmode="decimal" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="horsesUsed">Horses in box</label>
+              <input id="horsesUsed" type="number" min="1" max="20" step="1" value="4" inputmode="numeric" />
+            </div>
+          </div>
+          <button id="calcTicketBtn" type="button" class="btn">Calculate Ticket Cost</button>
+          <p id="ticketResult" class="summary result-headline" aria-live="polite">
+            Ticket combinations and estimated cost are shown here. Actual payouts depend on final pool size, takeout, and split with other winning tickets.
+          </p>
+        </article>
+
+        <aside class="warning-box glass-panel">
+          <h2 class="section-title">What this calculator does not do</h2>
+          <p>
+            This is a ticket cost calculator, not a payout predictor. Horse racing exotic payouts are pari-mutuel:
+            the final pool, track takeout, and number of winning tickets decide what a hit pays.
+          </p>
+          <p class="mb-0">
+            Use it to stop a “small” base bet from turning into a surprise receipt long enough to need its own saddle.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">How exotic bet ticket cost is calculated</h2>
+        <p class="section-subtext">
+          Ticket cost = number of combinations × base bet amount. In a box, every selected horse can finish in each
+          required position, so the count uses ordered combinations.
+        </p>
+        <div class="grid grid-3">
+          <article class="card math-panel">
+            <h3>Exacta box formula</h3>
+            <p>Exacta box: <strong>n × (n - 1)</strong></p>
+            <p class="mb-0">You need the first two finishers in either order.</p>
+          </article>
+          <article class="card math-panel">
+            <h3>Trifecta box formula</h3>
+            <p>Trifecta box: <strong>n × (n - 1) × (n - 2)</strong></p>
+            <p class="mb-0">You need the first three finishers in any covered order.</p>
+          </article>
+          <article class="card math-panel">
+            <h3>Superfecta box formula</h3>
+            <p>Superfecta box: <strong>n × (n - 1) × (n - 2) × (n - 3)</strong></p>
+            <p class="mb-0">You need the first four finishers in any covered order.</p>
+          </article>
+        </div>
+        <div class="info-box glass-panel">
+          <h3>Worked example</h3>
+          <p class="mb-0">
+            A $1 trifecta box with 4 horses costs 24 combinations × $1 = $24.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="howto">
+      <div class="container">
+        <h2 class="section-title">How to calculate exotic bet cost</h2>
+        <ol class="card glass-card-strong">
+          <li>Choose exacta, trifecta, or superfecta.</li>
+          <li>Enter the base bet amount.</li>
+          <li>Enter how many horses are in your box.</li>
+          <li>Calculate the number of possible finishing-order combinations.</li>
+          <li>Multiply combinations by the base bet amount.</li>
+          <li>Review the total ticket cost before betting.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid grid-2">
+        <article class="card section-gradient-gold">
+          <h2 class="section-title">Box coverage is not the same as value</h2>
+          <p>
+            Boxing more horses can improve coverage, but the price rises with every added combination. That does not
+            mean the ticket is better. It means the ticket is more expensive.
+          </p>
+          <p class="mb-0">
+            Exotics are high-variance bets. If your handicapping opinion is weak, adding horses may just turn uncertainty
+            into a bigger invoice.
+          </p>
+        </article>
+        <article class="card glass-card-strong">
+          <h2 class="section-title">Related Edge Over Luck tools</h2>
+          <ul>
+            <li><a href="horse-racing-guide.html">Horse Racing Guide</a> for odds, takeout, and beginner bet types.</li>
+            <li><a href="blackjack-bankroll-calculator.html">bankroll calculator</a> for session pressure and bet sizing.</li>
+            <li><a href="how-we-calculate-odds.html">odds and math methodology</a> behind Edge Over Luck tools.</li>
+            <li><a href="responsible-gambling.html">responsible gambling resources</a> for limits and support.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <h2 class="section-title">Exotic Bet Cost FAQ</h2>
+        <div class="faq-list">
+          <details class="card glass-card-strong" open>
+            <summary>How much does an exacta box cost?</summary>
+            <p>An exacta box costs n × (n - 1) combinations multiplied by the base bet. For example, a $1 exacta box with 4 horses costs 12 combinations × $1 = $12.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>How much does a trifecta box cost?</summary>
+            <p>A trifecta box costs n × (n - 1) × (n - 2) combinations multiplied by the base bet. A $1 trifecta box with 4 horses costs 24 combinations × $1 = $24.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>How much does a superfecta box cost?</summary>
+            <p>A superfecta box costs n × (n - 1) × (n - 2) × (n - 3) combinations multiplied by the base bet. A $0.10 superfecta box with 5 horses costs 120 combinations × $0.10 = $12.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>Why do exotic bet tickets get expensive so fast?</summary>
+            <p>Exotic boxes cover many possible finishing orders. Each added horse can multiply the number of combinations, so cost can rise much faster than the base bet looks.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>Does boxing more horses make the bet better?</summary>
+            <p>No. Boxing more horses increases coverage and cost, but it does not automatically create value or improve your edge. The ticket still has to be worth its price after takeout and pool competition.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>What is the difference between a box and a straight exotic bet?</summary>
+            <p>A straight exotic bet uses one exact finishing order. A box covers every finishing order among the horses you selected, which creates more combinations and a higher ticket cost.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container cta-box section-gradient-cyan">
+        <h2 class="section-title">Price the ticket before the ticket prices you</h2>
+        <p>
+          Run the cost, compare it with your bankroll, and remember: more combinations increase cost, not edge.
+        </p>
+        <div class="cta-row">
+          <a class="btn" href="#calculator">Calculate Another Ticket</a>
+          <a class="btn btn-secondary" href="horse-racing-guide.html">Horse Racing Guide</a>
+          <a class="btn btn-secondary" href="responsible-gambling.html">Responsible Gambling</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-brand">Edge Over Luck</p>
+      <p>Edge Over Luck gives players gambling math tools, bankroll calculators, and casino simulators for understanding risk. These tools do not guarantee profit. Variance remains undefeated.</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="blackjack-game.html">Blackjack Trainer</a>
+        <a href="blackjack-bankroll-calculator.html">Bankroll Tools</a>
+        <a href="roulette-simulator.html">Roulette Simulator</a>
+        <a href="slot-simulator.html">Slot Simulator</a>
+        <a href="how-we-calculate-odds.html">How We Calculate Odds</a>
+        <a href="responsible-gambling.html">Responsible Gambling</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
+        <a href="editorial-policy.html">Editorial Policy</a>
+        <a href="credits.html">Credits &amp; Sources</a>
+      </div>
+      <p class="affiliate-note">
+        <strong>Affiliate Disclosure:</strong>
+        This site may contain affiliate links and may earn commissions at no extra cost to you.
+        Affiliate relationships do not change the math, odds, house edge, or editorial standards used on Edge Over Luck.
+      </p>
+      <p class="gambling-warning">
+        <strong>21+ / Legal Gambling Notice:</strong>
+        21+ only where legal. Gambling involves financial risk and can be addictive. These tools are for education and entertainment only and do not guarantee profit.
+      </p>
+      <p class="responsible">
+        Play legally, set limits, and never risk money you cannot afford to lose.
+        If gambling is causing harm, call or text
+        <a href="tel:18004262537">1-800-GAMBLER</a>
+        where available, or use your local problem gambling support service.
+        See our <a href="responsible-gambling.html">responsible gambling resources</a>.
+      </p>
+      <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>
+    </div>
+  </footer>
+
+  <script src="horse.js" defer></script>
+  <script src="nav.js" defer></script>
+</body>
+</html>
