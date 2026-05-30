@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+  <title id="title">Edge Over Luck logo</title>
+  <desc id="desc">Black and gold logo for Edge Over Luck with a casino chip, card suit marks, and the phrase Smart Gambling Tools.</desc>
+  <defs>
+    <linearGradient id="gold" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f0d27a"/>
+      <stop offset="48%" stop-color="#d6a941"/>
+      <stop offset="100%" stop-color="#8d6720"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0d27a" stop-opacity="0.55"/>
+      <stop offset="70%" stop-color="#d6a941" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="320" rx="36" fill="#07070a"/>
+  <circle cx="168" cy="160" r="118" fill="url(#glow)"/>
+  <circle cx="168" cy="160" r="98" fill="#101015" stroke="url(#gold)" stroke-width="10" filter="url(#shadow)"/>
+  <circle cx="168" cy="160" r="66" fill="#07070a" stroke="#5e4719" stroke-width="3"/>
+  <g fill="url(#gold)">
+    <rect x="160" y="48" width="16" height="34" rx="4"/>
+    <rect x="160" y="238" width="16" height="34" rx="4"/>
+    <rect x="56" y="152" width="34" height="16" rx="4"/>
+    <rect x="246" y="152" width="34" height="16" rx="4"/>
+    <rect x="86" y="78" width="16" height="32" rx="4" transform="rotate(-45 94 94)"/>
+    <rect x="234" y="210" width="16" height="32" rx="4" transform="rotate(-45 242 226)"/>
+    <rect x="234" y="78" width="16" height="32" rx="4" transform="rotate(45 242 94)"/>
+    <rect x="86" y="210" width="16" height="32" rx="4" transform="rotate(45 94 226)"/>
+  </g>
+  <path d="M168 91 L188 132 L233 138 L200 170 L208 215 L168 194 L128 215 L136 170 L103 138 L148 132 Z" fill="url(#gold)" stroke="#fff1b8" stroke-width="2"/>
+  <path d="M168 121 C155 141 134 143 134 164 C134 184 151 193 168 178 C185 193 202 184 202 164 C202 143 181 141 168 121 Z" fill="#07070a" opacity="0.85"/>
+  <rect x="332" y="78" width="4" height="164" rx="2" fill="#5f4719"/>
+  <text x="370" y="143" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="76" letter-spacing="1" fill="#f6f0dd">EDGE OVER</text>
+  <text x="370" y="222" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="84" letter-spacing="2" fill="url(#gold)">LUCK</text>
+  <text x="690" y="222" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="30" letter-spacing="4" fill="#b9a46b">SMART GAMBLING TOOLS</text>
+</svg>
