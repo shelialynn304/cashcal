@@ -1,4 +1,45 @@
 (function () {
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': 'https://edgeoverluck.com/#website',
+    name: 'Edge Over Luck',
+    url: 'https://edgeoverluck.com/',
+    description: 'Smart gambling tools for real players: calculators, simulators, trainers, and gambling math guides.',
+    inLanguage: 'en-US',
+  };
+
+  const hasWebsiteSchema = (value) => {
+    if (!value || typeof value !== 'object') {
+      return false;
+    }
+
+    if (Array.isArray(value)) {
+      return value.some(hasWebsiteSchema);
+    }
+
+    if (value['@type'] === 'WebSite' && value['@id'] === websiteSchema['@id']) {
+      return true;
+    }
+
+    return Object.values(value).some(hasWebsiteSchema);
+  };
+
+  const hasGlobalWebsiteSchema = Array.from(document.querySelectorAll('script[type="application/ld+json"]')).some((script) => {
+    try {
+      return hasWebsiteSchema(JSON.parse(script.textContent));
+    } catch (error) {
+      return script.textContent.includes(websiteSchema['@id']);
+    }
+  });
+
+  if (!hasGlobalWebsiteSchema) {
+    const schemaScript = document.createElement('script');
+    schemaScript.type = 'application/ld+json';
+    schemaScript.textContent = JSON.stringify(websiteSchema, null, 2);
+    (document.head || document.documentElement).appendChild(schemaScript);
+  }
+
   const header = document.querySelector('.site-header');
   const toggle = document.querySelector('.nav-toggle');
   const menu = document.querySelector('#primary-nav');
