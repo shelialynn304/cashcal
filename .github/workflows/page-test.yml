@@ -52,6 +52,9 @@ jobs:
       - name: Wait for deployment/cache
         run: sleep 90
 
+      # Browser-based JavaScript runtime checks are intentionally deferred to a
+      # separate workflow/PR because previous Playwright/page-test attempts were
+      # unstable and blocked this baseline uptime/static smoke test.
       - name: Test live pages with retries
         shell: bash
         run: |
@@ -81,7 +84,8 @@ jobs:
                  grep -qi "<html" page.html &&
                  grep -qi "</html>" page.html &&
                  ! grep -qi "There isn't a GitHub Pages site here" page.html &&
-                 ! grep -qi "<title>404" page.html; then
+                 ! grep -qiE "<title>[[:space:]]*(404|Page not found|Not Found)" page.html &&
+                 ! grep -qiE "(404: File not found|404 Not Found|Page not found)" page.html; then
                 echo "OK: $url"
                 return 0
               fi
