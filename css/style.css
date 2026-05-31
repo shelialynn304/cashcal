@@ -243,6 +243,18 @@ ol {
   color: var(--gold);
 }
 
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.brand-logo img {
+  display: block;
+  width: min(240px, 48vw);
+  height: auto;
+}
+
 .nav-menu {
   display: flex;
   flex-wrap: wrap;
@@ -1017,6 +1029,12 @@ ol {
   .page-hero-inner,
   .page-hero-split {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .brand-logo img {
+    width: min(190px, 58vw);
   }
 }
 
