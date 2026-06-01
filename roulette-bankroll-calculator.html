@@ -481,7 +481,7 @@
         const bankroll = Number.parseFloat(document.getElementById("startingBankroll").value);
         const betSize = Number.parseFloat(document.getElementById("betSize").value);
         const spinsRaw = Number.parseFloat(document.getElementById("spinCount").value);
-        const spins = spinsRaw;
+        const spins = Number.parseInt(document.getElementById("spinCount").value, 10);
         const wheel = wheelTypes[document.getElementById("wheelType").value];
         const bet = betTypes[document.getElementById("betType").value];
 
