@@ -3186,3 +3186,126 @@ table td {
 .myth-card .streak-label::after {
   content: none;
 }
+
+/* ===== CASINO REVIEW DETAIL PAGE ===== */
+.review-page {
+  width: min(92%, 980px);
+  margin: 0 auto;
+  padding: 38px 0 72px;
+}
+
+.review-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.review-breadcrumb a {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.review-hero,
+.review-section {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(145deg, rgba(18, 23, 34, 0.92), rgba(15, 17, 21, 0.96)),
+    radial-gradient(circle at top right, rgba(241, 196, 91, 0.11), transparent 24rem);
+  box-shadow: var(--shadow-soft);
+}
+
+.review-hero {
+  padding: clamp(28px, 5vw, 52px);
+  margin-bottom: 24px;
+}
+
+.review-hero h1 {
+  max-width: 860px;
+  margin-right: auto;
+  margin-left: auto;
+  color: var(--text);
+}
+
+.review-hero p {
+  max-width: 820px;
+  margin-right: auto;
+  margin-left: auto;
+  color: rgba(238, 242, 247, 0.92);
+  font-size: 1.05rem;
+}
+
+.review-hero .eyebrow {
+  color: var(--gold);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.review-hero .disclosure {
+  margin-top: 20px;
+  padding: 16px 18px;
+  border: 1px solid rgba(241, 196, 91, 0.22);
+  border-radius: var(--radius-sm);
+  background: rgba(241, 196, 91, 0.08);
+  color: rgba(238, 242, 247, 0.88);
+  font-size: 0.96rem;
+}
+
+.review-section {
+  padding: clamp(22px, 4vw, 34px);
+  margin-bottom: 20px;
+}
+
+.review-section h2 {
+  color: var(--gold);
+}
+
+.review-section p,
+.review-section li {
+  color: rgba(238, 242, 247, 0.91);
+}
+
+.review-section ul {
+  margin-bottom: 0;
+}
+
+.review-faq details {
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+}
+
+.review-faq details:first-of-type {
+  border-top: 0;
+}
+
+.review-faq summary {
+  cursor: pointer;
+  color: var(--text);
+  font-weight: 800;
+}
+
+.review-faq summary:hover {
+  color: var(--gold);
+}
+
+.review-faq details p {
+  margin: 10px 0 0;
+}
+
+@media (max-width: 640px) {
+  .review-page {
+    width: min(94%, 980px);
+    padding-top: 24px;
+  }
+
+  .review-hero,
+  .review-section {
+    border-radius: 16px;
+  }
+}
