@@ -12,6 +12,84 @@
   <link rel="icon" type="image/png" sizes="192x192" href="assets/images/logo/favicon-192.png" />
   <link rel="apple-touch-icon" href="assets/images/logo/apple-touch-icon.png" />
   <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    .casino-review-card {
+      display: grid;
+      gap: 14px;
+    }
+
+    .casino-review-card h3 {
+      margin-bottom: 0;
+    }
+
+    .trust-card .review-section h3 {
+      color: var(--gold);
+    }
+
+    .review-badge {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      border: 1px solid rgba(241, 196, 91, 0.65);
+      border-radius: 999px;
+      padding: 6px 12px;
+      background: rgba(241, 196, 91, 0.12);
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .quick-facts,
+    .pros-cons-grid,
+    .rating-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .quick-facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin: 18px 0;
+    }
+
+    .quick-fact {
+      border: 1px solid rgba(241, 196, 91, 0.18);
+      border-radius: 16px;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(241,196,91,0.07));
+    }
+
+    .quick-fact strong {
+      display: block;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .pros-cons-grid,
+    .rating-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .math-reality-check {
+      border: 1px solid rgba(241, 196, 91, 0.9);
+      border-left: 5px solid var(--gold);
+      box-shadow: 0 0 28px rgba(241, 196, 91, 0.16);
+    }
+
+    @media (max-width: 720px) {
+      .casino-review-card {
+        gap: 10px;
+      }
+
+      .quick-facts,
+      .pros-cons-grid,
+      .rating-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
   <script defer data-workspace="69b01028d6e4c738cf4abf0f" src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js"></script>
   <script type="application/ld+json">
   {
@@ -182,38 +260,50 @@
 
       <article class="trust-card">
         <h2>Casino Review Scores</h2>
-        <p>Full reviews are coming soon. No fake rankings, no invented ratings, and no affiliate links until the review framework is ready.</p>
+        <p>Review cards highlight brand fit, risk notes, and math-first warnings. No fake rankings, no invented affiliate offers, and no bonus claims without current terms.</p>
         <div class="grid grid-2">
           <div class="card">
-         <article class="casino-review-card">
-  <h3>BetMGM Casino Review</h3>
+            <article class="casino-review-card">
+              <h3>BetMGM Casino Review</h3>
 
-  <p>
-    BetMGM is one of the bigger names in U.S. online gambling, operated through a
-    50/50 joint venture between MGM Resorts and Entain. Its casino product includes
-    common online casino categories such as slots, blackjack, roulette, craps, and
-    live dealer games where available.
-  </p>
+              <p>
+                BetMGM is one of the bigger names in U.S. online gambling, operated through a
+                50/50 joint venture between MGM Resorts and Entain. Its casino product includes
+                common online casino categories such as slots, blackjack, roulette, craps, and
+                live dealer games where available.
+              </p>
 
-  <p>
-    The main thing to know before signing up: BetMGM availability depends on your
-    state, your location, and the current BetMGM terms. Do not assume every bonus,
-    casino game, sportsbook feature, or poker option is available where you live.
-  </p>
+              <p>
+                The main thing to know before signing up: BetMGM availability depends on your
+                state, your location, and the current BetMGM terms. Do not assume every bonus,
+                casino game, sportsbook feature, or poker option is available where you live.
+              </p>
 
-  <p>
-    EdgeOverLuck take: BetMGM is worth reviewing because it is a major regulated
-    brand, but the math does not magically improve because the logo is famous.
-    Check the terms, understand bonus restrictions, and treat every casino game as
-    paid entertainment — not an income plan.
-  </p>
+              <p>
+                EdgeOverLuck take: BetMGM is worth reviewing because it is a major regulated
+                brand, but the math does not magically improve because the logo is famous.
+                Check the terms, understand bonus restrictions, and treat every casino game as
+                paid entertainment — not an income plan.
+              </p>
 
-  <a href="/betmgm-casino-review.html" class="btn">Read BetMGM Review</a>
-</article>
+              <a href="/betmgm-casino-review.html" class="btn">Read BetMGM Review</a>
+            </article>
           </div>
           <div class="card">
-            <h3>Caesars Casino Review — coming soon</h3>
-            <p>Review coming soon. Edge Over Luck will evaluate this casino using math, rules, transparency, and responsible gambling standards.</p>
+            <article class="casino-review-card">
+              <span class="review-badge">Best for Rewards Players</span>
+              <h3>Caesars Palace Online Casino Review</h3>
+              <p>Caesars Palace Online Casino is a strong pick for players who care about brand recognition, live dealer games, mobile play, and Caesars Rewards. The downside is the usual casino math: bonuses can come with wagering rules, and every game still carries house edge.</p>
+              <ul>
+                <li><strong>Legal availability:</strong> MI, NJ, PA, WV, and Ontario where permitted</li>
+                <li><strong>Games:</strong> Slots, blackjack, roulette, baccarat, live dealer</li>
+                <li><strong>Rewards:</strong> Caesars Rewards integration</li>
+                <li><strong>Best for:</strong> Players who already like Caesars Rewards</li>
+                <li><strong>Watch out for:</strong> Bonus terms, wagering requirements, game restrictions, state availability</li>
+              </ul>
+              <p><strong>Verdict:</strong> Good brand-backed option, especially if Caesars Rewards matter to you. Not magic. Not a loophole. Still a casino.</p>
+              <a href="#caesars-palace-online-casino-review" class="btn">Read Caesars Review</a>
+            </article>
           </div>
           <div class="card">
             <h3>DraftKings Casino Review — coming soon</h3>
@@ -224,6 +314,83 @@
             <p>Review coming soon. Edge Over Luck will evaluate this casino using math, rules, transparency, and responsible gambling standards.</p>
           </div>
         </div>
+      </article>
+
+      <article class="trust-card" id="caesars-palace-online-casino-review">
+        <span class="review-badge">Best for Rewards Players</span>
+        <h2>Caesars Palace Online Casino Review: Brand Name, Rewards, and the Fine Print</h2>
+        <p>Caesars Palace Online Casino brings the Caesars casino brand online with slots, table games, live dealer options, mobile play, and Caesars Rewards. That makes it one of the more recognizable names in legal online casino states. But this is Edge Over Luck, so here is the boring-but-profitable truth: the brand can be polished, the app can be slick, and the bonus can still be mathematically worse than it looks if you ignore the terms.</p>
+
+        <div class="quick-facts" aria-label="Caesars Palace Online Casino quick facts">
+          <div class="quick-fact"><strong>Legal availability</strong> MI, NJ, PA, WV, and Ontario where permitted</div>
+          <div class="quick-fact"><strong>Games</strong> Slots, blackjack, roulette, baccarat, live dealer games</div>
+          <div class="quick-fact"><strong>Rewards</strong> Caesars Rewards / Rewards Credits are promoted by Caesars</div>
+          <div class="quick-fact"><strong>Mobile</strong> Caesars promotes iOS and Android app play</div>
+        </div>
+
+        <div class="pros-cons-grid">
+          <div class="card glass-card">
+            <h3>Pros</h3>
+            <ul>
+              <li>Recognizable casino brand</li>
+              <li>Slots, tables, and live dealer games</li>
+              <li>Caesars Rewards integration</li>
+              <li>Responsible gaming tools listed by Caesars</li>
+              <li>Mobile app available</li>
+            </ul>
+          </div>
+          <div class="card glass-card">
+            <h3>Cons</h3>
+            <ul>
+              <li>Not available in every state</li>
+              <li>Bonus terms can be restrictive</li>
+              <li>Wagering requirements can make promos less valuable than they look</li>
+              <li>App/user reviews may vary by state and device</li>
+            </ul>
+          </div>
+        </div>
+
+        <section class="review-section">
+          <h3>Quick Verdict</h3>
+          <p>Caesars is best for players who want a familiar casino brand, live dealer games, and rewards integration. It is not best for players looking for “easy money” from bonuses. Bonus credits usually come with wagering rules, eligible-game limits, time limits, and withdrawal restrictions. Read the offer terms before depositing.</p>
+        </section>
+
+        <section class="review-section">
+          <h3>Game Selection</h3>
+          <p>Caesars promotes online slots, blackjack, roulette, baccarat, and live dealer games. That gives beginners a broad mix, but game choice matters. Slots usually have higher volatility. Blackjack can have a lower house edge only when played with proper strategy. Roulette is simple, but the math is brutal compared with better table-game options.</p>
+        </section>
+
+        <section class="review-section math-reality-check warning-box glass-panel">
+          <h3>Math Reality Check</h3>
+          <p>Caesars promo terms may include a $10 no-deposit casino bonus, a 100% deposit match up to $1,000, and 2,500 Reward Credits, but offers vary by state and date and must be checked before claiming. Do not treat the headline bonus number like cash. A $1,000 match with wagering requirements is not the same thing as $1,000 in your pocket. That misunderstanding is how casinos turn “free money” into a very expensive math lesson.</p>
+        </section>
+
+        <section class="review-section">
+          <h3>Mobile Experience</h3>
+          <p>Caesars promotes app-based play through its online casino platform. The mobile experience is likely one of its stronger selling points because the product is built around app and desktop play. Still, users should test small first before making larger deposits. Apps can feel convenient right up until you realize convenience is also how casinos remove friction from losing.</p>
+        </section>
+
+        <section class="review-section">
+          <h3>Payments and Withdrawals</h3>
+          <p>Withdrawal timing depends on payment method, account verification, state rules, and Caesars’ current processing policies. Check the cashier and terms before depositing.</p>
+        </section>
+
+        <section class="review-section">
+          <h3>Responsible Gambling</h3>
+          <p>Caesars lists responsible gaming tools including deposit limits, cool-off options, gaming limits, and self-exclusion. Edge Over Luck recommends setting limits before play, not after losses. Limits set after chasing are basically a smoke alarm installed after the house is already ash.</p>
+        </section>
+
+        <section class="review-section">
+          <h3>Final Rating</h3>
+          <div class="rating-grid">
+            <div class="quick-fact"><strong>Overall</strong> 4.1 / 5</div>
+            <div class="quick-fact"><strong>Best for</strong> Rewards-focused casino players</div>
+            <div class="quick-fact"><strong>Risk level</strong> Medium to high, depending on game choice and bonus use</div>
+            <div class="quick-fact"><strong>Math warning</strong> Bonus terms and game selection matter more than the logo</div>
+          </div>
+          <p><strong>Verdict:</strong> Good brand-backed option, especially if Caesars Rewards matter to you. Not magic. Not a loophole. Still a casino.</p>
+          <p><strong>Important disclosure:</strong> This review is educational only. EdgeOverLuck does not operate a casino, accept wagers, or guarantee bonus availability. Gambling laws vary by location. Use only licensed operators where legal. Must be 21+ where required. Always read current terms before claiming any offer.</p>
+        </section>
       </article>
 
       <article class="trust-card">
