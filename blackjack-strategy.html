@@ -37,9 +37,42 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "Blackjack Strategy Guide",
-    "description": "Blackjack basic strategy guide from Edge Over Luck with decision drills, chart references, and bankroll-risk next steps."
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Blackjack Strategy Guide",
+        "description": "Blackjack basic strategy guide from Edge Over Luck with decision drills, chart references, and bankroll-risk next steps."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is blackjack basic strategy?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Blackjack basic strategy is a decision guide for hit, stand, double, and split choices based on the player hand and dealer upcard."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why do blackjack rules matter?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Rules such as payout, number of decks, dealer soft 17 behavior, double rules, and surrender options can change the math of a blackjack game."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does basic strategy remove risk?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Basic strategy reduces avoidable decision errors, but short-term results can still vary."
+            }
+          }
+        ]
+      }
+    ]
   }
   </script>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo/favicon-32.png" />
