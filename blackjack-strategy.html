@@ -37,9 +37,50 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "Blackjack Strategy Guide",
-    "description": "Blackjack basic strategy guide from Edge Over Luck with decision drills, chart references, and bankroll-risk next steps."
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Blackjack Strategy Guide",
+        "description": "Blackjack basic strategy guide from Edge Over Luck with decision drills, chart references, and bankroll-risk next steps."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is blackjack basic strategy?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Blackjack basic strategy is a decision guide for hit, stand, double, and split choices based on the player hand and dealer upcard."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does basic strategy guarantee profit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Basic strategy reduces avoidable mistakes and lowers the house edge, but it does not remove variance or guarantee a winning session."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Should I hit 16 against a dealer 10?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "In many standard blackjack situations, hitting hard 16 against a dealer 10 is the basic strategy play. Rule variations and surrender options can change edge cases."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why do blackjack rules matter?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Rules such as blackjack payout, number of decks, dealer hit or stand on soft 17, double rules, and surrender options can change the house edge and some strategy details."
+            }
+          }
+        ]
+      }
+    ]
   }
   </script>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo/favicon-32.png" />
@@ -365,6 +406,35 @@
       <div class="cta-row"><a class="btn btn-primary btn-cta-primary" href="gambler-personality-quiz.html" data-track-event="quiz_complete" data-track-label="Take the Quiz">Take the Quiz</a><a class="btn btn-secondary btn-outline" href="blackjack-game.html">Practice the Trainer</a><a class="btn btn-secondary btn-outline" href="blackjack-bankroll-calculator.html">Check Bankroll Risk</a></div>
     </div>
   </section>
+  <section class="section-tight" id="blackjack-strategy-faq">
+    <div class="container">
+      <h2 class="section-title">Blackjack Strategy FAQ</h2>
+      <p class="section-subtext">Short answers to common blackjack strategy questions about basic strategy, rules, and bankroll risk.</p>
+
+      <div class="faq-grid">
+        <details class="card glass-card" open>
+          <summary>What is blackjack basic strategy?</summary>
+          <p>Blackjack basic strategy is a decision guide for hit, stand, double, and split choices based on the player hand and dealer upcard.</p>
+        </details>
+
+        <details class="card glass-card">
+          <summary>Does basic strategy guarantee profit?</summary>
+          <p>No. Basic strategy reduces avoidable mistakes and lowers the house edge, but it does not remove variance or guarantee a winning session.</p>
+        </details>
+
+        <details class="card glass-card">
+          <summary>Should I hit 16 against a dealer 10?</summary>
+          <p>In many standard blackjack situations, hitting hard 16 against a dealer 10 is the basic strategy play. Rule variations and surrender options can change edge cases.</p>
+        </details>
+
+        <details class="card glass-card">
+          <summary>Why do blackjack rules matter?</summary>
+          <p>Rules such as blackjack payout, number of decks, dealer hit or stand on soft 17, double rules, and surrender options can change the house edge and some strategy details.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
 </main>
   <footer class="site-footer">
     <div class="container footer-inner">
