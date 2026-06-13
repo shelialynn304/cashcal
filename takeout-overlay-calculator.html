@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <title>Horse Racing Takeout &amp; Overlay Calculator | Fair Odds &amp; EV Tool | EdgeOverLuck.com</title>
+  <meta name="description" content="Convert horse racing odds to implied probability, compare your win estimate to fair odds, and check whether a bet is an overlay or underlay. Free takeout and EV calculator." />
+  <link rel="canonical" href="https://edgeoverluck.com/takeout-overlay-calculator.html" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/logo/favicon-192.png" />
+  <link rel="apple-touch-icon" href="assets/images/logo/apple-touch-icon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    .overlay-tool-page {
+      --overlay-gold: #f1c45b;
+      --overlay-green: #49d49d;
+      --overlay-red: #ff746d;
+      --overlay-blue: #8bd3ff;
+      --overlay-panel: rgba(255, 255, 255, 0.06);
+      --overlay-line: rgba(241, 196, 91, 0.22);
+    }
+
+    .overlay-tool-page .overlay-hero-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .overlay-tool-page .overlay-hero-card::before,
+    .overlay-tool-page .overlay-calculator::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(241, 196, 91, 0.22), transparent 32%),
+        radial-gradient(circle at 85% 15%, rgba(73, 212, 157, 0.16), transparent 34%);
+      opacity: 0.85;
+    }
+
+    .overlay-tool-page .overlay-hero-card > *,
+    .overlay-tool-page .overlay-calculator > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .overlay-tool-page .overlay-calculator {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .overlay-tool-page .overlay-input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .overlay-tool-page .overlay-input-grid .field-wide {
+      grid-column: 1 / -1;
+    }
+
+    .overlay-tool-page .overlay-result-box {
+      border: 1px solid var(--overlay-line);
+      border-radius: 22px;
+      padding: 22px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03)),
+        rgba(0, 0, 0, 0.22);
+    }
+
+    .overlay-tool-page .overlay-verdict {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      margin-bottom: 10px;
+      font-size: clamp(1.25rem, 3vw, 1.8rem);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .overlay-tool-page .overlay-verdict.is-over { color: var(--overlay-green); }
+    .overlay-tool-page .overlay-verdict.is-under { color: var(--overlay-red); }
+    .overlay-tool-page .overlay-verdict.is-fair { color: var(--overlay-gold); }
+
+    .overlay-tool-page .overlay-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .overlay-tool-page .overlay-stat {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 14px;
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .overlay-tool-page .overlay-stat span {
+      display: block;
+      color: var(--muted, #b8c4c0);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .overlay-tool-page .overlay-stat strong {
+      display: block;
+      margin-top: 4px;
+      color: #fff;
+      font-size: clamp(1.1rem, 3vw, 1.55rem);
+      line-height: 1.1;
+    }
+
+    .overlay-tool-page .overlay-pressure-meter {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .overlay-tool-page .overlay-meter-row {
+      display: grid;
+      grid-template-columns: 160px minmax(0, 1fr) 58px;
+      gap: 12px;
+      align-items: center;
+      color: var(--muted, #b8c4c0);
+      font-size: 0.92rem;
+    }
+
+    .overlay-tool-page .overlay-meter {
+      height: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.28);
+    }
+
+    .overlay-tool-page .overlay-meter span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--overlay-gold), #b88931);
+    }
+
+    .overlay-tool-page .overlay-formula-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .overlay-tool-page .overlay-formula {
+      border: 1px solid rgba(241, 196, 91, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.24);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #fff;
+    }
+
+    .overlay-tool-page .overlay-warning-note {
+      border-left: 4px solid var(--overlay-gold);
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(241, 196, 91, 0.09);
+      color: var(--muted, #d8dfdc);
+    }
+
+    @media (max-width: 760px) {
+      .overlay-tool-page .overlay-input-grid,
+      .overlay-tool-page .overlay-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .overlay-tool-page .overlay-meter-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://edgeoverluck.com/takeout-overlay-calculator.html#webpage",
+        "name": "Horse Racing Takeout & Overlay Calculator",
+        "url": "https://edgeoverluck.com/takeout-overlay-calculator.html",
+        "description": "A horse racing calculator for converting odds to implied probability, comparing fair odds, and estimating expected value from a user's win probability estimate."
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://edgeoverluck.com/takeout-overlay-calculator.html#app",
+        "name": "Takeout and Overlay Calculator",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "All",
+        "url": "https://edgeoverluck.com/takeout-overlay-calculator.html",
+        "description": "Educational horse racing overlay and expected value calculator."
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://edgeoverluck.com/takeout-overlay-calculator.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is an overlay in horse racing?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "An overlay is a bet where the payout odds are higher than the fair odds implied by your estimate of the horse's true chance."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do tote odds already include takeout?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Current tote odds are produced from the betting pool after track takeout and pool dynamics. This calculator uses posted odds for expected value and explains takeout separately so it is not double-counted."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I convert horse racing odds to probability?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Divide 1 by the odds plus 1. A 7-1 horse has an implied probability of 1 divided by 8, or 12.5 percent."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can an overlay calculator guarantee profit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. The calculation depends on your probability estimate, final odds, and variance. Bad estimates create bad expected value, even when the math format is correct."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="horse-page overlay-tool-page" data-tool-name="takeout-overlay-calculator">
+  <header class="site-header">
+    <div class="container nav site-nav">
+      <a href="index.html" class="brand brand-logo" aria-label="Edge Over Luck home">
+        <img src="assets/images/logo/edgeoverluck-logo-horizontal.svg" alt="Edge Over Luck" width="240" height="64">
+      </a>
+      <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+        <span class="nav-toggle-label">Menu</span>
+      </button>
+      <nav id="primary-nav" class="nav-menu" aria-label="Primary navigation">
+        <a class="nav-link nav-priority-link" href="roulette-simulator.html">Roulette Simulator</a>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-horse-racing">Horse Racing</button>
+          <div id="nav-horse-racing" class="nav-panel nav-panel-wide">
+            <a href="takeout-overlay-calculator.html">Takeout &amp; Overlay Calculator</a>
+            <a href="exotic-bet-calculator.html">Exotic Bet Cost Calculator</a>
+            <a href="horse-racing-guide.html">Horse Racing Guide</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-blackjack">Blackjack</button>
+          <div id="nav-blackjack" class="nav-panel nav-panel-wide">
+            <a href="blackjack-game.html">Blackjack Trainer</a>
+            <a href="blackjack-strategy.html">Blackjack Strategy Guide</a>
+            <a href="blackjack-trainer-guide.html">Blackjack Trainer Guide</a>
+            <a href="blackjack-ev-calculator.html">Blackjack EV Calculator</a>
+            <a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-roulette">Roulette</button>
+          <div id="nav-roulette" class="nav-panel nav-panel-wide">
+            <a href="roulette.html">Roulette Guide</a>
+            <a href="roulette-simulator.html">Roulette Simulator</a>
+            <a href="roulette-calculator.html">Roulette Calculator</a>
+            <a href="roulette-bankroll-calculator.html">Roulette Bankroll Calculator</a>
+            <a href="roulette-strategy-simulator.html">Roulette Strategy Simulator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-slots">Slots</button>
+          <div id="nav-slots" class="nav-panel nav-panel-wide">
+            <a href="slots.html">Slots Guide</a>
+            <a href="slot-simulator.html">Slot Simulator</a>
+            <a href="slot-rtp-explained.html">Slot RTP Guide</a>
+            <a href="slot-volatility-guide.html">Slot Volatility Guide</a>
+            <a href="bankroll-survival-slots.html">Slot Bankroll Survival Calculator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-more">More</button>
+          <div id="nav-more" class="nav-panel nav-panel-wide">
+            <a href="bankroll-tools.html">Bankroll Tools</a>
+            <a href="bubble-craps.html">Bubble Craps Simulator</a>
+            <a href="gambler-personality-quiz.html">Gambler Personality Quiz</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-about">About</button>
+          <div id="nav-about" class="nav-panel nav-panel-wide">
+            <a href="responsible-gambling.html">Responsible Gambling</a>
+            <a href="casino-reviews.html">Casino Reviews</a>
+            <a href="how-we-calculate-odds.html">How We Find Odds</a>
+            <a href="editorial-policy.html">Editorial Policy</a>
+            <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
+            <a href="about.html">About Edge Over Luck</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-section section-gradient-gold">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Horse Racing Tool</p>
+          <h1>Takeout &amp; Overlay Calculator</h1>
+          <p class="hero-subtitle">
+            Convert horse racing odds to implied probability, compare your own win estimate to fair odds,
+            and see whether the current price is an overlay, underlay, or roughly fair.
+          </p>
+          <div class="hero-actions">
+            <a class="btn" href="#calculator">Check a Bet</a>
+            <a class="btn btn-secondary" href="#takeout">See Takeout Drag</a>
+            <a class="btn btn-secondary" href="horse-racing-guide.html">Horse Racing Guide</a>
+          </div>
+        </div>
+        <aside class="card glass-card-strong overlay-hero-card">
+          <h2 class="section-title mt-0">The blunt truth</h2>
+          <p>
+            Picking winners is not enough. A horse can win often and still be a bad bet if the price is too low.
+            Value comes from the gap between <strong>your estimated chance</strong> and <strong>the market price</strong>.
+          </p>
+          <p class="mb-0">
+            That gap is where long-run edge lives. Everything else is just vibes wearing a tiny jockey helmet.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="calculator">
+      <div class="container grid grid-2">
+        <article class="card glass-card-strong overlay-calculator">
+          <h2 class="section-title">Is this horse an overlay?</h2>
+          <p class="section-subtext">
+            Enter the current odds and your honest win estimate. The calculator shows the market's implied probability,
+            your fair odds, and expected value before you donate to the pari-mutuel gods.
+          </p>
+
+          <div class="overlay-input-grid">
+            <div class="field">
+              <label for="oddsToOne">Current odds to 1</label>
+              <input id="oddsToOne" type="number" min="0.05" step="0.05" value="7" inputmode="decimal" />
+              <small>Example: enter 7 for 7-1 odds.</small>
+            </div>
+            <div class="field">
+              <label for="myWinPct">Your win estimate (%)</label>
+              <input id="myWinPct" type="number" min="0.1" max="99.9" step="0.1" value="15" inputmode="decimal" />
+              <small>Use your real estimate, not your emotional support number.</small>
+            </div>
+            <div class="field">
+              <label for="stakeAmount">Stake amount ($)</label>
+              <input id="stakeAmount" type="number" min="1" step="1" value="10" inputmode="decimal" />
+            </div>
+            <div class="field">
+              <label for="poolTakeout">Typical pool takeout (%)</label>
+              <select id="poolTakeout">
+                <option value="16.5" selected>Win / Place / Show: about 15-18%</option>
+                <option value="20.5">Exacta / Daily Double: about 19-22%</option>
+                <option value="24">Trifecta / Superfecta / Pick pools: about 22-26%</option>
+                <option value="12">Lower-takeout promo pool: about 12%</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+            <div class="field field-wide" id="customTakeoutWrap" hidden>
+              <label for="customTakeout">Custom takeout (%)</label>
+              <input id="customTakeout" type="number" min="0" max="40" step="0.1" value="16.5" inputmode="decimal" />
+            </div>
+          </div>
+
+          <button id="overlayCalcBtn" type="button" class="btn">Check the Value</button>
+          <p class="small-note mb-0">
+            Posted tote odds already reflect pool pricing and takeout. This tool does <strong>not</strong> subtract takeout again from the EV calculation.
+          </p>
+        </article>
+
+        <aside class="overlay-result-box" aria-live="polite">
+          <div id="overlayVerdict" class="overlay-verdict is-fair">Waiting on inputs</div>
+          <p id="overlayVerdictText" class="section-subtext mb-0">
+            The result will show whether your estimated probability makes the current price attractive or overpriced.
+          </p>
+
+          <div class="overlay-stats">
+            <div class="overlay-stat">
+              <span>Market implied probability</span>
+              <strong id="impliedProbOut">—</strong>
+            </div>
+            <div class="overlay-stat">
+              <span>Your fair odds</span>
+              <strong id="fairOddsOut">—</strong>
+            </div>
+            <div class="overlay-stat">
+              <span>EV per $1 bet</span>
+              <strong id="evDollarOut">—</strong>
+            </div>
+            <div class="overlay-stat">
+              <span>EV for stake</span>
+              <strong id="evStakeOut">—</strong>
+            </div>
+            <div class="overlay-stat">
+              <span>Edge vs market</span>
+              <strong id="edgeOut">—</strong>
+            </div>
+            <div class="overlay-stat">
+              <span>Break-even win rate</span>
+              <strong id="breakEvenOut">—</strong>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="takeout">
+      <div class="container grid grid-2">
+        <article class="card glass-card-strong">
+          <h2 class="section-title">What takeout does to the pool</h2>
+          <p>
+            Takeout is the cut removed from the betting pool before payouts are calculated. It is why horse racing is not
+            just “pick the winner.” You have to beat both other bettors and the amount skimmed from the pool.
+          </p>
+          <div class="overlay-pressure-meter" id="takeoutBars" aria-label="Typical horse racing takeout comparison"></div>
+          <p id="takeoutImpactText" class="overlay-warning-note mb-0">
+            At the selected takeout, roughly $16.50 of every $100 wagered is removed before winning tickets split the rest.
+          </p>
+        </article>
+
+        <article class="card section-gradient-cyan">
+          <h2 class="section-title">Use this correctly</h2>
+          <ul class="check-list">
+            <li><strong>Current tote odds:</strong> use the odds-to-probability and EV result.</li>
+            <li><strong>Choosing between pools:</strong> lower takeout gives you less drag to overcome.</li>
+            <li><strong>Final odds matter:</strong> late money can crush a good-looking overlay into a sad little underlay.</li>
+            <li><strong>Your estimate matters most:</strong> garbage probability in, garbage EV out. Math will not sanitize bad handicapping.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid grid-2">
+        <article class="card glass-card-strong">
+          <h2 class="section-title">The formulas</h2>
+          <p class="section-subtext">Three formulas do the heavy lifting.</p>
+          <div class="overlay-formula-list">
+            <div class="overlay-formula">Implied probability = 1 ÷ (odds + 1)</div>
+            <div class="overlay-formula">Fair odds = (1 ÷ your probability) − 1</div>
+            <div class="overlay-formula">EV per $1 = (your probability × odds) − (1 − your probability)</div>
+          </div>
+        </article>
+
+        <article class="card glass-card-strong">
+          <h2 class="section-title">Worked example</h2>
+          <p>
+            A horse at <strong>7-1</strong> implies <strong>12.5%</strong> because 1 ÷ 8 = 0.125.
+            If you estimate that horse at <strong>15%</strong>, your fair odds are about <strong>5.7-1</strong>.
+          </p>
+          <p class="mb-0">
+            Since 7-1 pays more than 5.7-1, the bet is an overlay. EV is about <strong>+$0.20 per $1</strong>.
+            That does not mean it wins today. It means the price is favorable if your estimate is right.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid grid-2">
+        <article class="card warning-box glass-panel">
+          <h2 class="section-title">What this calculator does not do</h2>
+          <ul class="check-list">
+            <li>It does not handicap the horse for you.</li>
+            <li>It does not know the final tote price after late money hits.</li>
+            <li>It does not turn a bad opinion into value.</li>
+            <li>It does not protect you from variance. Variance remains undefeated and mildly smug about it.</li>
+          </ul>
+        </article>
+
+        <article class="card glass-card-strong">
+          <h2 class="section-title">Related Edge Over Luck tools</h2>
+          <ul>
+            <li><a href="horse-racing-guide.html">Horse Racing Guide</a> for beginner bet types, odds, and bankroll basics.</li>
+            <li><a href="exotic-bet-calculator.html">Exotic Bet Cost Calculator</a> for exacta, trifecta, and superfecta box costs.</li>
+            <li><a href="bankroll-tools.html">Bankroll Tools</a> for session risk and bet sizing.</li>
+            <li><a href="how-we-calculate-odds.html">How We Calculate Odds</a> for site methodology.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <h2 class="section-title">Takeout &amp; Overlay FAQ</h2>
+        <div class="faq-list">
+          <details class="card glass-card-strong" open>
+            <summary>What is an overlay in horse racing?</summary>
+            <p>An overlay is a bet where the payout odds are better than the fair odds implied by your estimated win probability. If your fair price is 4-1 and the tote board offers 6-1, that is an overlay if your estimate is accurate.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>What is an underlay?</summary>
+            <p>An underlay is the opposite: the horse may still win, but the payout is too low compared with the estimated chance. Winning a bad price can still be a bad long-run bet.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>Do tote odds already include takeout?</summary>
+            <p>Yes. Tote odds come from the pari-mutuel pool after takeout and betting activity. That is why this calculator uses posted odds for EV and explains takeout separately instead of subtracting it twice.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>How do I convert 4-1 odds to probability?</summary>
+            <p>Use 1 ÷ (odds + 1). For 4-1, that is 1 ÷ 5 = 20%.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>Why do exotics need a bigger edge?</summary>
+            <p>Exotic pools usually have higher takeout and more variance. That means your handicapping edge has to be stronger, and your bankroll has to survive more losing tickets.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container cta-box section-gradient-gold">
+        <h2 class="section-title">Bet the price, not the story</h2>
+        <p>
+          A strong opinion at a weak price is still a weak bet. Run the numbers before the horse walks into the gate.
+        </p>
+        <div class="cta-row">
+          <a class="btn" href="#calculator">Calculate Another Bet</a>
+          <a class="btn btn-secondary" href="exotic-bet-calculator.html">Price an Exotic Ticket</a>
+          <a class="btn btn-secondary" href="responsible-gambling.html">Responsible Gambling</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-brand">Edge Over Luck</p>
+      <p>Edge Over Luck gives players gambling math tools, bankroll calculators, and casino simulators for understanding risk. These tools do not guarantee profit. Variance remains undefeated.</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="blackjack-game.html">Blackjack Trainer</a>
+        <a href="bankroll-tools.html">Bankroll Tools</a>
+        <a href="roulette-simulator.html">Roulette Simulator</a>
+        <a href="slot-simulator.html">Slot Simulator</a>
+        <a href="how-we-calculate-odds.html">How We Calculate Odds</a>
+        <a href="responsible-gambling.html">Responsible Gambling</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
+        <a href="editorial-policy.html">Editorial Policy</a>
+        <a href="credits.html">Credits &amp; Sources</a>
+      </div>
+      <p class="affiliate-note">
+        <strong>Affiliate Disclosure:</strong>
+        This site may contain affiliate links and may earn commissions at no extra cost to you.
+        Affiliate relationships do not change the math, odds, house edge, or editorial standards used on Edge Over Luck.
+      </p>
+      <p class="gambling-warning">
+        <strong>21+ / Legal Gambling Notice:</strong>
+        21+ only where legal. Gambling involves financial risk and can be addictive. These tools are for education and entertainment only and do not guarantee profit.
+      </p>
+      <p class="responsible">
+        Play legally, set limits, and never risk money you cannot afford to lose.
+        If gambling is causing harm, call or text
+        <a href="tel:18004262537">1-800-GAMBLER</a>
+        where available, or use your local problem gambling support service.
+        See our <a href="responsible-gambling.html">responsible gambling resources</a>.
+      </p>
+      <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const $ = (id) => document.getElementById(id);
+      const oddsInput = $("oddsToOne");
+      const probInput = $("myWinPct");
+      const stakeInput = $("stakeAmount");
+      const takeoutSelect = $("poolTakeout");
+      const customTakeoutWrap = $("customTakeoutWrap");
+      const customTakeoutInput = $("customTakeout");
+      const verdict = $("overlayVerdict");
+      const verdictText = $("overlayVerdictText");
+      const takeoutImpactText = $("takeoutImpactText");
+
+      const pools = [
+        ["Promo / low takeout", 12],
+        ["Win / place / show", 16.5],
+        ["Exacta / double", 20.5],
+        ["Trifecta / Pick pools", 24],
+        ["High-takeout exotic", 26]
+      ];
+
+      function money(value) {
+        const sign = value >= 0 ? "+" : "-";
+        return sign + "$" + Math.abs(value).toFixed(2);
+      }
+
+      function pct(value, decimals = 1) {
+        return (value * 100).toFixed(decimals) + "%";
+      }
+
+      function fmtOdds(value) {
+        if (!Number.isFinite(value) || value <= 0) return "—";
+        if (value >= 10) return value.toFixed(0) + "-1";
+        return value.toFixed(1) + "-1";
+      }
+
+      function selectedTakeout() {
+        if (takeoutSelect.value === "custom") {
+          return Number.parseFloat(customTakeoutInput.value) || 0;
+        }
+        return Number.parseFloat(takeoutSelect.value) || 0;
+      }
+
+      function renderTakeoutBars() {
+        const wrap = $("takeoutBars");
+        if (!wrap) return;
+        wrap.innerHTML = "";
+        pools.forEach(([label, value]) => {
+          const row = document.createElement("div");
+          row.className = "overlay-meter-row";
+          row.innerHTML = `<span>${label}</span><div class="overlay-meter"><span style="width:${Math.min(100, (value / 30) * 100)}%"></span></div><strong>${value}%</strong>`;
+          wrap.appendChild(row);
+        });
+      }
+
+      function calculate() {
+        const odds = Number.parseFloat(oddsInput.value);
+        const userPct = Number.parseFloat(probInput.value);
+        const stake = Math.max(0, Number.parseFloat(stakeInput.value) || 0);
+        const takeout = selectedTakeout();
+
+        customTakeoutWrap.hidden = takeoutSelect.value !== "custom";
+        takeoutImpactText.textContent = `At the selected takeout, roughly $${takeout.toFixed(2)} of every $100 wagered is removed before winning tickets split the rest.`;
+
+        if (!(odds > 0) || !(userPct > 0 && userPct < 100)) {
+          verdict.textContent = "Check inputs";
+          verdict.className = "overlay-verdict is-fair";
+          verdictText.textContent = "Enter odds greater than 0 and a win estimate between 0% and 100%.";
+          ["impliedProbOut", "fairOddsOut", "evDollarOut", "evStakeOut", "edgeOut", "breakEvenOut"].forEach((id) => $(id).textContent = "—");
+          return;
+        }
+
+        const userProb = userPct / 100;
+        const impliedProb = 1 / (odds + 1);
+        const fairOdds = (1 / userProb) - 1;
+        const evPerDollar = (userProb * odds) - (1 - userProb);
+        const evForStake = evPerDollar * stake;
+        const edgePoints = userProb - impliedProb;
+
+        $("impliedProbOut").textContent = pct(impliedProb);
+        $("fairOddsOut").textContent = fmtOdds(fairOdds);
+        $("evDollarOut").textContent = money(evPerDollar);
+        $("evStakeOut").textContent = money(evForStake);
+        $("edgeOut").textContent = (edgePoints >= 0 ? "+" : "") + (edgePoints * 100).toFixed(1) + " pts";
+        $("breakEvenOut").textContent = pct(impliedProb);
+
+        if (evPerDollar > 0.02) {
+          verdict.textContent = "Overlay";
+          verdict.className = "overlay-verdict is-over";
+          verdictText.textContent = `If your ${userPct.toFixed(1)}% estimate is right, ${fmtOdds(odds)} pays better than your fair price of ${fmtOdds(fairOdds)}. Expected value is about ${money(evPerDollar)} per $1, or ${money(evForStake)} on a $${stake.toFixed(2)} stake.`;
+        } else if (evPerDollar < -0.02) {
+          verdict.textContent = "Underlay";
+          verdict.className = "overlay-verdict is-under";
+          verdictText.textContent = `The price is too low for your ${userPct.toFixed(1)}% estimate. You would need about ${fmtOdds(fairOdds)} or better to call this fair. Expected value is about ${money(evPerDollar)} per $1.`;
+        } else {
+          verdict.textContent = "Roughly fair";
+          verdict.className = "overlay-verdict is-fair";
+          verdictText.textContent = `This is close to fair value before odds drift and real-world noise. In a takeout pool, “fair” is not exciting. It is basically a treadmill with a saddle.`;
+        }
+      }
+
+      renderTakeoutBars();
+      [oddsInput, probInput, stakeInput, takeoutSelect, customTakeoutInput].forEach((el) => {
+        el.addEventListener("input", calculate);
+        el.addEventListener("change", calculate);
+      });
+      $("overlayCalcBtn").addEventListener("click", calculate);
+      calculate();
+    })();
+  </script>
+  <script src="nav.js" defer></script>
+</body>
+</html>
