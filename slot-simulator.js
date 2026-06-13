@@ -121,19 +121,60 @@
     }
   }
 
-  function getVisibleSymbols(symbols, resultType) {
-    if (reelCount === 5) return symbols.slice(0, 5);
+  function getMixedThreeReelSymbols(sourceSymbols = []) {
+    const mixed = [];
+    const addUnique = (symbol) => {
+      const normalized = normalizeSlotSymbol(symbol);
+      if (normalized && !mixed.includes(normalized)) {
+        mixed.push(normalized);
+      }
+    };
 
-    if (resultType !== "loss") {
-      const counts = symbols.reduce((acc, symbol) => {
-        acc[symbol] = (acc[symbol] || 0) + 1;
-        return acc;
-      }, {});
-      const winningSymbol = Object.keys(counts).find((symbol) => counts[symbol] >= 3);
-      if (winningSymbol) return [winningSymbol, winningSymbol, winningSymbol];
+    sourceSymbols.forEach(addUnique);
+
+    while (mixed.length < 3) {
+      addUnique(reelSymbols[Math.floor(Math.random() * reelSymbols.length)]);
     }
 
-    return symbols.slice(0, 3);
+    return mixed.slice(0, 3);
+  }
+
+  function getTwoOfAKindSymbols(symbols = []) {
+    const anchor = normalizeSlotSymbol(symbols[0] || "CHERRY");
+    const third = reelSymbols.find((symbol) => symbol !== anchor) || "BAR";
+    return [anchor, anchor, third];
+  }
+
+  function getVisibleSymbols(symbols, resultType, payout = 0, betSize = 0) {
+    if (reelCount === 5) return symbols.slice(0, 5);
+
+    if (resultType === "bonus") {
+      const counts = symbols.reduce((acc, symbol) => {
+        const normalized = normalizeSlotSymbol(symbol);
+        acc[normalized] = (acc[normalized] || 0) + 1;
+        return acc;
+      }, {});
+      const bonusSymbol = Object.keys(counts).find((symbol) => counts[symbol] >= 3) || normalizeSlotSymbol(symbols[0] || "COIN");
+      return [bonusSymbol, bonusSymbol, bonusSymbol];
+    }
+
+    if (resultType === "base") {
+      if (payout >= betSize * 3) {
+        const counts = symbols.reduce((acc, symbol) => {
+          const normalized = normalizeSlotSymbol(symbol);
+          acc[normalized] = (acc[normalized] || 0) + 1;
+          return acc;
+        }, {});
+        const winningSymbol = Object.keys(counts).find((symbol) => counts[symbol] >= 3) || normalizeSlotSymbol(symbols[0] || "BAR");
+        return [winningSymbol, winningSymbol, winningSymbol];
+      }
+
+      if (payout > betSize) {
+        return getTwoOfAKindSymbols(symbols);
+      }
+    }
+
+    return getMixedThreeReelSymbols(symbols);
   }
 
   function initAudio() {
@@ -339,7 +380,7 @@
     const newBankroll = Math.max(0, Math.round((bankroll - betSize + spin.payout) * 100) / 100);
     const bankrollChange = Math.round((spin.payout - betSize) * 100) / 100;
 
-    const visibleSymbols = getVisibleSymbols(spin.symbols, spin.resultType);
+    const visibleSymbols = getVisibleSymbols(spin.symbols, spin.resultType, spin.payout, betSize);
     await animateReels(visibleSymbols, spin.resultType);
 
     bankrollInput.value = newBankroll.toFixed(2);
