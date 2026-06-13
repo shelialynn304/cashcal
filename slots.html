@@ -13,36 +13,82 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/slots.css" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        "name": "Slots Strategy Hub",
-        "url": "https://edgeoverluck.com/slots.html",
-        "description": "Educational slots hub with RTP and volatility guides plus interactive slot bankroll tools."
-      },
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://edgeoverluck.com/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Slots Hub",
-            "item": "https://edgeoverluck.com/slots.html"
-          }
-        ]
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://edgeoverluck.com/slots.html#webpage",
+      "name": "Slots Strategy Hub",
+      "url": "https://edgeoverluck.com/slots.html",
+      "description": "Educational slots hub with RTP and volatility guides plus interactive slot bankroll tools.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://edgeoverluck.com/#website",
+        "name": "Edge Over Luck",
+        "url": "https://edgeoverluck.com/"
       }
-    ]
-  }
-  </script>
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://edgeoverluck.com/slots.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://edgeoverluck.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Slots Hub",
+          "item": "https://edgeoverluck.com/slots.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://edgeoverluck.com/slots.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does slot RTP mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "RTP means return to player. It is a long-run average showing how much a slot is expected to return over a very large number of spins. It does not predict a short session."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is slot volatility?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Slot volatility describes how results are distributed. Lower volatility usually means more frequent smaller hits, while higher volatility can mean longer droughts and larger but rarer outcomes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are slot machines ever due to hit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Regulated slot results are based on random number generation. Past spins do not make the next spin more likely to pay."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can a high RTP slot still lose quickly?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. RTP is a long-run average, while volatility controls how bumpy results can be in a short session. A high RTP game can still produce a fast drawdown."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
   <header class="site-header">
