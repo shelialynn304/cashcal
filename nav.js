@@ -74,6 +74,16 @@
     return;
   }
 
+  const horsePanel = document.querySelector('#nav-horse-racing');
+  if (horsePanel && !horsePanel.querySelector('a[href="takeout-overlay-calculator.html"]')) {
+    const overlayLink = document.createElement('a');
+    overlayLink.href = 'takeout-overlay-calculator.html';
+    overlayLink.textContent = 'Takeout & Overlay Calculator';
+
+    const firstHorseTool = horsePanel.querySelector('a[href="exotic-bet-calculator.html"], a[href="horse-racing-guide.html"]');
+    horsePanel.insertBefore(overlayLink, firstHorseTool || horsePanel.firstChild);
+  }
+
   const isDesktop = () => desktopQuery.matches;
 
   const setMenuOpen = (open) => {
