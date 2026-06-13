@@ -64,147 +64,188 @@
     (document.head || document.documentElement).appendChild(schemaScript);
   }
 
-  const header = document.querySelector('.site-header');
-  const toggle = document.querySelector('.nav-toggle');
-  const menu = document.querySelector('#primary-nav');
-  const dropdowns = Array.from(document.querySelectorAll('.nav-item-dropdown'));
-  const desktopQuery = window.matchMedia('(min-width: 769px)');
+  function ensureHorseOverlayLink() {
+    const horsePanel = document.querySelector('#nav-horse-racing');
 
-  if (!header || !toggle || !menu) {
-    return;
-  }
+    if (!horsePanel || horsePanel.querySelector('a[href="takeout-overlay-calculator.html"]')) {
+      return false;
+    }
 
-  const horsePanel = document.querySelector('#nav-horse-racing');
-  if (horsePanel && !horsePanel.querySelector('a[href="takeout-overlay-calculator.html"]')) {
     const overlayLink = document.createElement('a');
     overlayLink.href = 'takeout-overlay-calculator.html';
     overlayLink.textContent = 'Takeout & Overlay Calculator';
 
     const firstHorseTool = horsePanel.querySelector('a[href="exotic-bet-calculator.html"], a[href="horse-racing-guide.html"]');
     horsePanel.insertBefore(overlayLink, firstHorseTool || horsePanel.firstChild);
+    return true;
   }
 
-  const isDesktop = () => desktopQuery.matches;
-
-  const setMenuOpen = (open) => {
-    header.classList.toggle('nav-open', open);
-    toggle.setAttribute('aria-expanded', String(open));
-  };
-
-  const setDropdownOpen = (item, open) => {
-    const button = item.querySelector('.nav-dropdown-toggle');
-    item.classList.toggle('open', open);
-    if (button) {
-      button.setAttribute('aria-expanded', String(open));
-    }
-  };
-
-  const closeDropdowns = (except) => {
-    dropdowns.forEach((item) => {
-      if (item !== except) {
-        setDropdownOpen(item, false);
-      }
-    });
-  };
-
-  toggle.addEventListener('click', () => {
-    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
-    setMenuOpen(!isOpen);
-    if (isOpen) {
-      closeDropdowns();
-    }
-  });
-
-  dropdowns.forEach((item) => {
-    const button = item.querySelector('.nav-dropdown-toggle');
-    if (!button) {
+  function markCurrentNavLink(menu) {
+    if (!menu) {
       return;
     }
 
-    item.addEventListener('mouseenter', () => {
-      if (!isDesktop()) {
-        return;
-      }
-      closeDropdowns(item);
-      setDropdownOpen(item, true);
-    });
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    menu.querySelectorAll('a[href]').forEach((link) => {
+      link.classList.remove('active');
+      link.removeAttribute('aria-current');
 
-    item.addEventListener('mouseleave', () => {
-      if (!isDesktop()) {
-        return;
-      }
-      setDropdownOpen(item, false);
-    });
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+        link.setAttribute('aria-current', 'page');
 
-    item.addEventListener('focusin', () => {
-      if (!isDesktop()) {
-        return;
-      }
-      closeDropdowns(item);
-      setDropdownOpen(item, true);
-    });
-
-    item.addEventListener('focusout', (event) => {
-      if (!isDesktop()) {
-        return;
-      }
-      if (!item.contains(event.relatedTarget)) {
-        setDropdownOpen(item, false);
+        const parentDropdown = link.closest('.nav-item-dropdown');
+        const parentToggle = parentDropdown ? parentDropdown.querySelector('.nav-dropdown-toggle') : null;
+        if (parentToggle) {
+          parentToggle.classList.add('active');
+        }
       }
     });
+  }
 
-    button.addEventListener('click', () => {
-      if (isDesktop()) {
+  function initNav() {
+    const header = document.querySelector('.site-header');
+    const toggle = document.querySelector('.nav-toggle');
+    const menu = document.querySelector('#primary-nav');
+
+    ensureHorseOverlayLink();
+    markCurrentNavLink(menu);
+
+    if (!header || !toggle || !menu || header.dataset.navEnhanced === 'true') {
+      return Boolean(header && toggle && menu);
+    }
+
+    header.dataset.navEnhanced = 'true';
+
+    const dropdowns = Array.from(document.querySelectorAll('.nav-item-dropdown'));
+    const desktopQuery = window.matchMedia('(min-width: 769px)');
+    const isDesktop = () => desktopQuery.matches;
+
+    const setMenuOpen = (open) => {
+      header.classList.toggle('nav-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+
+    const setDropdownOpen = (item, open) => {
+      const button = item.querySelector('.nav-dropdown-toggle');
+      item.classList.toggle('open', open);
+      if (button) {
+        button.setAttribute('aria-expanded', String(open));
+      }
+    };
+
+    const closeDropdowns = (except) => {
+      dropdowns.forEach((item) => {
+        if (item !== except) {
+          setDropdownOpen(item, false);
+        }
+      });
+    };
+
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      setMenuOpen(!isOpen);
+      if (isOpen) {
+        closeDropdowns();
+      }
+    });
+
+    dropdowns.forEach((item) => {
+      const button = item.querySelector('.nav-dropdown-toggle');
+      if (!button) {
+        return;
+      }
+
+      item.addEventListener('mouseenter', () => {
+        if (!isDesktop()) {
+          return;
+        }
         closeDropdowns(item);
         setDropdownOpen(item, true);
-        return;
-      }
+      });
 
-      const isOpen = button.getAttribute('aria-expanded') === 'true';
-      closeDropdowns(item);
-      setDropdownOpen(item, !isOpen);
+      item.addEventListener('mouseleave', () => {
+        if (!isDesktop()) {
+          return;
+        }
+        setDropdownOpen(item, false);
+      });
+
+      item.addEventListener('focusin', () => {
+        if (!isDesktop()) {
+          return;
+        }
+        closeDropdowns(item);
+        setDropdownOpen(item, true);
+      });
+
+      item.addEventListener('focusout', (event) => {
+        if (!isDesktop()) {
+          return;
+        }
+        if (!item.contains(event.relatedTarget)) {
+          setDropdownOpen(item, false);
+        }
+      });
+
+      button.addEventListener('click', () => {
+        if (isDesktop()) {
+          closeDropdowns(item);
+          setDropdownOpen(item, true);
+          return;
+        }
+
+        const isOpen = button.getAttribute('aria-expanded') === 'true';
+        closeDropdowns(item);
+        setDropdownOpen(item, !isOpen);
+      });
     });
-  });
 
-  document.addEventListener('click', (event) => {
-    if (!header.contains(event.target)) {
-      setMenuOpen(false);
-      closeDropdowns();
-    }
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      setMenuOpen(false);
-      closeDropdowns();
-      toggle.focus();
-    }
-  });
-
-  menu.addEventListener('click', (event) => {
-    const link = event.target.closest('a');
-    if (link) {
-      setMenuOpen(false);
-      closeDropdowns();
-    }
-  });
-
-  desktopQuery.addEventListener('change', () => {
-    setMenuOpen(false);
-    closeDropdowns();
-  });
-
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-  menu.querySelectorAll('a[href]').forEach((link) => {
-    if (link.getAttribute('href') === currentPage) {
-      link.classList.add('active');
-      link.setAttribute('aria-current', 'page');
-
-      const parentDropdown = link.closest('.nav-item-dropdown');
-      const parentToggle = parentDropdown ? parentDropdown.querySelector('.nav-dropdown-toggle') : null;
-      if (parentToggle) {
-        parentToggle.classList.add('active');
+    document.addEventListener('click', (event) => {
+      if (!header.contains(event.target)) {
+        setMenuOpen(false);
+        closeDropdowns();
       }
-    }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+        closeDropdowns();
+        toggle.focus();
+      }
+    });
+
+    menu.addEventListener('click', (event) => {
+      const link = event.target.closest('a');
+      if (link) {
+        setMenuOpen(false);
+        closeDropdowns();
+      }
+    });
+
+    desktopQuery.addEventListener('change', () => {
+      setMenuOpen(false);
+      closeDropdowns();
+    });
+
+    return true;
+  }
+
+  initNav();
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav, { once: true });
+  } else {
+    window.setTimeout(initNav, 0);
+  }
+
+  window.addEventListener('load', initNav, { once: true });
+
+  const observer = new MutationObserver(() => {
+    ensureHorseOverlayLink();
+    markCurrentNavLink(document.querySelector('#primary-nav'));
   });
+
+  observer.observe(document.documentElement, { childList: true, subtree: true });
 })();
