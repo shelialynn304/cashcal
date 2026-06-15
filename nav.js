@@ -100,6 +100,43 @@
     return true;
   }
 
+
+  function ensureBonusEvLink() {
+    const morePanel = document.querySelector('#nav-more');
+
+    if (!morePanel) {
+      return false;
+    }
+
+    const hasBonusLink = Array.from(morePanel.querySelectorAll('a[href]')).some((link) => {
+      const href = link.getAttribute('href') || '';
+      return href === 'casino-bonus-ev-calculator.html' || href === '/casino-bonus-ev-calculator.html' || href.endsWith('/casino-bonus-ev-calculator.html');
+    });
+
+    if (hasBonusLink) {
+      return false;
+    }
+
+    const bankrollLink = Array.from(morePanel.querySelectorAll('a[href]')).find((link) => {
+      const href = link.getAttribute('href') || '';
+      return href === 'bankroll-tools.html' || href === '/bankroll-tools.html' || href.endsWith('/bankroll-tools.html');
+    });
+    const firstMoreHref = bankrollLink ? bankrollLink.getAttribute('href') || '' : '';
+    const linkPrefix = firstMoreHref.replace(/bankroll-tools\.html$/, '');
+
+    const bonusLink = document.createElement('a');
+    bonusLink.href = `${linkPrefix}casino-bonus-ev-calculator.html`;
+    bonusLink.textContent = 'Casino Bonus EV Calculator';
+
+    if (bankrollLink && bankrollLink.nextSibling) {
+      morePanel.insertBefore(bonusLink, bankrollLink.nextSibling);
+    } else {
+      morePanel.appendChild(bonusLink);
+    }
+
+    return true;
+  }
+
   function markCurrentNavLink(menu) {
     if (!menu) {
       return;
@@ -129,6 +166,7 @@
     const menu = document.querySelector('#primary-nav');
 
     ensureHorseOverlayLink();
+    ensureBonusEvLink();
     markCurrentNavLink(menu);
 
     if (!header || !toggle || !menu || header.dataset.navEnhanced === 'true') {

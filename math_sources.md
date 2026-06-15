@@ -93,6 +93,53 @@ expectedEndingBankroll = startingBankroll + expectedProfit
 
 ---
 
+
+# Casino Bonus EV Calculator
+
+## Casino Bonus EV Estimate
+
+This calculator estimates the paper value of a casino bonus after wagering requirements, game contribution, RTP, and extra costs. It is an educational estimate, not a profit guarantee or a withdrawal prediction.
+
+Inputs:
+
+- bonusAmount
+- depositAmount
+- wageringMultiplier
+- wageringBase = bonus only OR deposit plus bonus
+- contributionPercent
+- rtpPercent
+- extraCosts
+
+Formula:
+
+bonusBase = bonusAmount if wagering applies to bonus only
+
+bonusBase = depositAmount + bonusAmount if wagering applies to deposit plus bonus
+
+gameContributionDecimal = contributionPercent / 100
+
+rtpDecimal = rtpPercent / 100
+
+houseEdge = 1 - rtpDecimal
+
+totalWagering = bonusBase × wageringMultiplier
+
+adjustedWagering = totalWagering / gameContributionDecimal
+
+expected loss = adjusted wagering × house edge
+
+gross EV = bonus amount - expected loss
+
+net EV = bonus amount - expected loss - extra costs
+
+Equivalent code formula:
+
+netEV = bonusAmount - expectedLoss - extraCosts
+
+## Casino Bonus EV Limits
+
+This estimate does not model variance, withdrawal friction, game exclusions, max bet limits, expiration windows, account restrictions, or operator-specific terms. Max cashout limits are displayed as a warning because they can cap upside, but this basic estimate does not simulate the probability distribution of reaching or exceeding the cashout cap.
+
 # Roulette Calculator
 
 ## Source Notes
