@@ -3,12 +3,111 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Practice blackjack decisions with the Edge Over Luck trainer. Test hit, stand, double, and split choices while learning basic strategy, bankroll pressure, and casino math." />
+<meta name="description" content="Practice blackjack decisions with an interactive trainer. Test hit, stand, double, and split moves, track accuracy, and learn basic strategy before playing real money." />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://edgeoverluck.com/blackjack-game.html" />
-<title>Blackjack Trainer</title>
+<title>Blackjack Trainer | Practice Basic Strategy Decisions</title>
+
+<meta property="og:title" content="Blackjack Trainer | Practice Basic Strategy Decisions" />
+<meta property="og:description" content="Practice blackjack hit, stand, double, and split decisions with an interactive trainer that tracks accuracy and explains basic strategy choices." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://edgeoverluck.com/blackjack-game.html" />
+<meta property="og:image" content="https://edgeoverluck.com/assets/images/logo/edgeoverluck-logo-square.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Blackjack Trainer | Practice Basic Strategy Decisions" />
+<meta name="twitter:description" content="Train blackjack decisions, track accuracy, and learn basic strategy before playing real money." />
+<meta name="twitter:image" content="https://edgeoverluck.com/assets/images/logo/edgeoverluck-logo-square.png" />
+
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/blackjack.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://edgeoverluck.com/blackjack-game.html#webpage",
+      "url": "https://edgeoverluck.com/blackjack-game.html",
+      "name": "Blackjack Trainer | Practice Basic Strategy Decisions",
+      "description": "Practice blackjack decisions with an interactive trainer. Test hit, stand, double, and split moves, track accuracy, and learn basic strategy before playing real money.",
+      "isPartOf": {
+        "@id": "https://edgeoverluck.com/#website"
+      },
+      "inLanguage": "en-US",
+      "about": [
+        "Blackjack trainer",
+        "Basic strategy",
+        "Blackjack decisions",
+        "Casino math"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://edgeoverluck.com/blackjack-game.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://edgeoverluck.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blackjack Trainer",
+          "item": "https://edgeoverluck.com/blackjack-game.html"
+        }
+      ]
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://edgeoverluck.com/blackjack-game.html#app",
+      "name": "Blackjack Trainer",
+      "url": "https://edgeoverluck.com/blackjack-game.html",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "All",
+      "isAccessibleForFree": true,
+      "description": "Interactive blackjack trainer for practicing hit, stand, double, and split decisions with basic strategy feedback.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://edgeoverluck.com/blackjack-game.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does this blackjack trainer teach?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The trainer helps you practice common blackjack decisions such as hit, stand, double, and split while showing feedback based on basic strategy."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can a blackjack trainer guarantee profit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. A trainer can help reduce decision mistakes, but it cannot remove variance, casino rules, or the house edge."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does blackjack strategy matter?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Blackjack is one of the casino games where player decisions affect the long-run cost. Basic strategy helps avoid extra edge from avoidable mistakes."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 
 <style>
 * {
@@ -659,6 +758,82 @@ h1 {
   100% { opacity: 0; transform: translateY(-10px) scale(.98); }
 }
 
+
+.blackjack-info-sections {
+  width: min(100%, 860px);
+  margin: 0 auto 28px;
+  padding: 0 16px 24px;
+  display: grid;
+  gap: 14px;
+  text-align: left;
+}
+
+.blackjack-info-panel {
+  padding: 18px;
+  border: 1px solid rgba(245, 194, 82, .28);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .055), rgba(255, 255, 255, .018)),
+    rgba(8, 9, 12, .86);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, .38);
+}
+
+.blackjack-info-panel h2,
+.blackjack-info-panel h3 {
+  margin-top: 0;
+  color: var(--casino-gold-bright);
+}
+
+.blackjack-info-panel p {
+  color: #e8dec5;
+  line-height: 1.55;
+}
+
+.blackjack-link-grid,
+.blackjack-faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.blackjack-link-card,
+.blackjack-faq-item {
+  display: block;
+  padding: 14px;
+  border: 1px solid rgba(245, 194, 82, .22);
+  border-radius: 16px;
+  background: rgba(0, 0, 0, .24);
+  color: #fff8e7;
+  text-decoration: none;
+}
+
+.blackjack-link-card:hover,
+.blackjack-link-card:focus-visible {
+  border-color: rgba(245, 194, 82, .58);
+  box-shadow: 0 0 20px rgba(245, 194, 82, .14);
+  outline: none;
+}
+
+.blackjack-link-card strong,
+.blackjack-faq-item strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--casino-gold-bright);
+}
+
+.blackjack-link-card span,
+.blackjack-faq-item span {
+  color: var(--muted-text);
+  line-height: 1.45;
+}
+
+@media (max-width: 700px) {
+  .blackjack-link-grid,
+  .blackjack-faq-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 900px) {
   .wrap.blackjack-shell {
     padding-top: 18px;
@@ -880,7 +1055,7 @@ h1 {
   <link rel="apple-touch-icon" href="assets/images/logo/apple-touch-icon.png" />
 </head>
 
-<body class="blackjack-page">
+<body class="blackjack-page" data-tool-name="blackjack_trainer">
 
 <header class="site-header">
     <div class="container nav site-nav">
@@ -970,20 +1145,20 @@ h1 {
     <div class="trainer-status-pill" aria-label="Trainer status">
       <div class="trainer-pill">
         <label for="trainerToggle"><span class="pill-label">Hints</span></label>
-        <input type="checkbox" id="trainerToggle" checked>
+        <input type="checkbox" id="trainerToggle" checked data-track-event="blackjack_trainer_toggle" data-track-label="Hints">
         <span id="trainerToggleText" class="mode-value">ON</span>
       </div>
-      <button id="soundToggle" class="trainer-pill sound-toggle" type="button" aria-pressed="true">
+      <button id="soundToggle" class="trainer-pill sound-toggle" type="button" aria-pressed="true" data-track-event="blackjack_trainer_toggle" data-track-label="Sound">
         <span class="pill-label">Sound</span>
         <span id="soundToggleText" class="mode-value">ON</span>
       </button>
-      <button id="voiceToggle" class="trainer-pill sound-toggle" type="button" aria-pressed="true">
+      <button id="voiceToggle" class="trainer-pill sound-toggle" type="button" aria-pressed="true" data-track-event="blackjack_trainer_toggle" data-track-label="Dealer Voice">
         <span class="pill-label">Dealer Voice</span>
         <span id="voiceToggleText" class="mode-value">ON</span>
       </button>
       <div class="trainer-pill">
         <label for="explainToggle"><span class="pill-label">Detailed</span></label>
-        <input type="checkbox" id="explainToggle" checked>
+        <input type="checkbox" id="explainToggle" checked data-track-event="blackjack_trainer_toggle" data-track-label="Detailed Explanations">
         <span id="explainToggleText" class="mode-value">ON</span>
       </div>
       <div class="stat-pill trainer-stats">
@@ -1032,35 +1207,90 @@ h1 {
 
     <div class="bet-controls">
       <div class="chips" id="chipsRow">
-        <img src="assets/images/chips/chip-1.png" class="chip" data-amount="1" alt="$1 chip" loading="lazy">
-        <img src="assets/images/chips/chip-5.png" class="chip" data-amount="5" alt="$5 chip" loading="lazy">
-        <img src="assets/images/chips/chip-10.png" class="chip" data-amount="10" alt="$10 chip" loading="lazy">
-        <img src="assets/images/chips/chip-25.png" class="chip" data-amount="25" alt="$25 chip" loading="lazy">
-        <img src="assets/images/chips/chip-100.png" class="chip" data-amount="100" alt="$100 chip" loading="lazy">
+        <img src="assets/images/chips/chip-1.png" class="chip" data-amount="1" alt="$1 chip" loading="lazy" data-track-event="blackjack_chip_click" data-track-label="$1 chip">
+        <img src="assets/images/chips/chip-5.png" class="chip" data-amount="5" alt="$5 chip" loading="lazy" data-track-event="blackjack_chip_click" data-track-label="$5 chip">
+        <img src="assets/images/chips/chip-10.png" class="chip" data-amount="10" alt="$10 chip" loading="lazy" data-track-event="blackjack_chip_click" data-track-label="$10 chip">
+        <img src="assets/images/chips/chip-25.png" class="chip" data-amount="25" alt="$25 chip" loading="lazy" data-track-event="blackjack_chip_click" data-track-label="$25 chip">
+        <img src="assets/images/chips/chip-100.png" class="chip" data-amount="100" alt="$100 chip" loading="lazy" data-track-event="blackjack_chip_click" data-track-label="$100 chip">
       </div>
     </div>
 
     <div class="controls action-controls">
-      <button id="dealBtn">Deal</button>
-      <button id="hitBtn" disabled>Hit</button>
-      <button id="standBtn" disabled>Stand</button>
-      <button id="doubleBtn" disabled>Double</button>
-      <button id="splitBtn" disabled>Split</button>
-      <button id="clearBetBtn">Clear Bet</button>
-      <button id="repeatBetBtn" disabled>Repeat Bet</button>
-      <button id="resetBtn">New Game</button>
+      <button id="dealBtn" data-track-event="blackjack_action_click" data-track-label="Deal">Deal</button>
+      <button id="hitBtn" disabled data-track-event="blackjack_action_click" data-track-label="Hit">Hit</button>
+      <button id="standBtn" disabled data-track-event="blackjack_action_click" data-track-label="Stand">Stand</button>
+      <button id="doubleBtn" disabled data-track-event="blackjack_action_click" data-track-label="Double">Double</button>
+      <button id="splitBtn" disabled data-track-event="blackjack_action_click" data-track-label="Split">Split</button>
+      <button id="clearBetBtn" data-track-event="blackjack_action_click" data-track-label="Clear Bet">Clear Bet</button>
+      <button id="repeatBetBtn" disabled data-track-event="blackjack_action_click" data-track-label="Repeat Bet">Repeat Bet</button>
+      <button id="resetBtn" data-track-event="blackjack_action_click" data-track-label="New Game">New Game</button>
     </div>
 
   </div>
 </main>
 </div>
 
+
+<section class="blackjack-info-sections" aria-labelledby="blackjack-next-title">
+  <article class="blackjack-info-panel">
+    <h2 id="blackjack-next-title">Practice the blackjack decisions that cost real money</h2>
+    <p>
+      This trainer focuses on one job: helping you practice hit, stand, double, and split choices until basic strategy feels less like a chart and more like a habit.
+      It cannot guarantee a win, but it can help reduce avoidable decision mistakes.
+    </p>
+  </article>
+
+  <article class="blackjack-info-panel" aria-labelledby="blackjack-related-title">
+    <h2 id="blackjack-related-title">Next blackjack tools to try</h2>
+    <div class="blackjack-link-grid">
+      <a class="blackjack-link-card" href="blackjack-strategy.html" data-track-event="related_tool_click" data-track-label="Blackjack Strategy Guide">
+        <strong>Blackjack Strategy Guide</strong>
+        <span>Review the basic strategy ideas behind the trainer feedback.</span>
+      </a>
+      <a class="blackjack-link-card" href="blackjack-bankroll-calculator.html" data-track-event="related_tool_click" data-track-label="Blackjack Bankroll Calculator">
+        <strong>Blackjack Bankroll Calculator</strong>
+        <span>Check whether your bet size fits your bankroll and planned session.</span>
+      </a>
+      <a class="blackjack-link-card" href="blackjack-ev-calculator.html" data-track-event="related_tool_click" data-track-label="Blackjack EV Calculator">
+        <strong>Blackjack EV Calculator</strong>
+        <span>Compare expected value for specific blackjack situations.</span>
+      </a>
+      <a class="blackjack-link-card" href="bankroll-tools.html" data-track-event="related_tool_click" data-track-label="Bankroll Tools">
+        <strong>Bankroll Tools</strong>
+        <span>Compare risk across blackjack, roulette, slots, and other games.</span>
+      </a>
+    </div>
+  </article>
+
+  <article class="blackjack-info-panel" aria-labelledby="blackjack-faq-title">
+    <h2 id="blackjack-faq-title">Blackjack trainer FAQ</h2>
+    <div class="blackjack-faq-grid">
+      <div class="blackjack-faq-item">
+        <strong>What does this blackjack trainer teach?</strong>
+        <span>It helps you practice hit, stand, double, and split decisions with basic strategy feedback.</span>
+      </div>
+      <div class="blackjack-faq-item">
+        <strong>Can a blackjack trainer guarantee profit?</strong>
+        <span>No. It can reduce decision mistakes, but it cannot remove variance, casino rules, or the house edge.</span>
+      </div>
+      <div class="blackjack-faq-item">
+        <strong>Why does blackjack strategy matter?</strong>
+        <span>Blackjack decisions affect long-run cost. Better choices help avoid adding extra edge against yourself.</span>
+      </div>
+      <div class="blackjack-faq-item">
+        <strong>Should I practice before playing for real?</strong>
+        <span>Yes. Practicing first is cheaper than learning under pressure with real money on the table.</span>
+      </div>
+    </div>
+  </article>
+</section>
+
 <div id="resultBubble" class="result-bubble hidden">WRONG!</div>
 
 <div id="strategyPopup" class="strategy-popup hidden">
   <div class="strategy-header">
     <div>Strategy Coach</div>
-    <button id="strategyClose">✖</button>
+    <button id="strategyClose" data-track-event="blackjack_strategy_close" data-track-label="Close Strategy Coach">✖</button>
   </div>
   <div class="strategy-body">
     <div id="strategyMove" class="strategy-move">HIT</div>
@@ -1109,6 +1339,7 @@ h1 {
   </footer>
 
 <script src="blackjack-game.js" defer></script>
+<script src="js/tracking.js" defer></script>
 <script src="nav.js" defer></script>
 
 </body>
