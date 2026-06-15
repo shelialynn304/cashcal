@@ -67,15 +67,35 @@
   function ensureHorseOverlayLink() {
     const horsePanel = document.querySelector('#nav-horse-racing');
 
-    if (!horsePanel || horsePanel.querySelector('a[href="takeout-overlay-calculator.html"]')) {
+    if (!horsePanel) {
       return false;
     }
 
+    const hasOverlayLink = Array.from(horsePanel.querySelectorAll('a[href]')).some((link) => {
+      const href = link.getAttribute('href') || '';
+      return href === 'takeout-overlay-calculator.html' || href.endsWith('/takeout-overlay-calculator.html');
+    });
+
+    if (hasOverlayLink) {
+      return false;
+    }
+
+    const firstHorseTool = Array.from(horsePanel.querySelectorAll('a[href]')).find((link) => {
+      const href = link.getAttribute('href') || '';
+      return (
+        href === 'exotic-bet-calculator.html' ||
+        href.endsWith('/exotic-bet-calculator.html') ||
+        href === 'horse-racing-guide.html' ||
+        href.endsWith('/horse-racing-guide.html')
+      );
+    });
+    const firstHorseHref = firstHorseTool ? firstHorseTool.getAttribute('href') || '' : '';
+    const linkPrefix = firstHorseHref.replace(/(?:exotic-bet-calculator|horse-racing-guide)\.html$/, '');
+
     const overlayLink = document.createElement('a');
-    overlayLink.href = 'takeout-overlay-calculator.html';
+    overlayLink.href = `${linkPrefix}takeout-overlay-calculator.html`;
     overlayLink.textContent = 'Takeout & Overlay Calculator';
 
-    const firstHorseTool = horsePanel.querySelector('a[href="exotic-bet-calculator.html"], a[href="horse-racing-guide.html"]');
     horsePanel.insertBefore(overlayLink, firstHorseTool || horsePanel.firstChild);
     return true;
   }
