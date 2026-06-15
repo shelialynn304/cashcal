@@ -67,12 +67,20 @@
   function ensureHorseOverlayLink() {
     const horsePanel = document.querySelector('#nav-horse-racing');
 
-    if (!horsePanel || horsePanel.querySelector('a[href="takeout-overlay-calculator.html"]')) {
+    if (!horsePanel) {
+      return false;
+    }
+
+    const hasOverlayLink = Array.from(horsePanel.querySelectorAll('a[href]')).some((link) =>
+      link.getAttribute('href')?.endsWith('takeout-overlay-calculator.html')
+    );
+
+    if (hasOverlayLink) {
       return false;
     }
 
     const overlayLink = document.createElement('a');
-    overlayLink.href = 'takeout-overlay-calculator.html';
+    overlayLink.href = '/takeout-overlay-calculator.html';
     overlayLink.textContent = 'Takeout & Overlay Calculator';
 
     const firstHorseTool = horsePanel.querySelector('a[href="exotic-bet-calculator.html"], a[href="horse-racing-guide.html"]');
