@@ -7,6 +7,14 @@
     <priority>1.0</priority>
   </url>
 
+
+  <url>
+    <loc>https://edgeoverluck.com/tools/</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
   <url>
     <loc>https://edgeoverluck.com/bankroll-tools.html</loc>
     <lastmod>2026-06-01</lastmod>

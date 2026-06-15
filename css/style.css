@@ -3309,3 +3309,39 @@ table td {
     border-radius: 16px;
   }
 }
+
+/* Tools hub */
+.tools-hub-hero .container {
+  max-width: 980px;
+}
+
+.tools-category .section-header {
+  margin-bottom: 18px;
+}
+
+.tools-card-grid {
+  align-items: stretch;
+}
+
+.tool-hub-card {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+}
+
+.tool-hub-card h3 {
+  color: #fff;
+  font-size: 1.25rem;
+}
+
+.tool-hub-card p {
+  flex: 1;
+}
+
+.tool-hub-card .btn {
+  align-self: flex-start;
+}
+
+.tools-next-steps .hero-actions {
+  margin-top: 12px;
+}
