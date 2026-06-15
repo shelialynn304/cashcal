@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,17 +6,17 @@
   <meta name="robots" content="index, follow" />
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
 
-  <title>Blackjack Bankroll Calculator | EdgeOverLuck.com</title>
-  <meta name="description" content="Blackjack bankroll calculator with simulation. See bust risk, profit chance, expected loss, and how long your bankroll lasts." />
+  <title>Blackjack Bankroll Calculator | Estimate Bust Risk</title>
+  <meta name="description" content="Use this blackjack bankroll calculator to test bankroll, bet size, house edge, and hands played. Estimate bust risk, expected loss, and profit chance before you play." />
 
-  <meta property="og:title" content="Blackjack Bankroll Calculator | EdgeOverLuck.com" />
-  <meta property="og:description" content="Blackjack bankroll calculator with simulation. See bust risk, profit chance, expected loss, and how long your bankroll lasts." />
+  <meta property="og:title" content="Blackjack Bankroll Calculator | Estimate Bust Risk" />
+  <meta property="og:description" content="Test bankroll, bet size, house edge, and hands played. Estimate blackjack bust risk, expected loss, and profit chance before you play." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://edgeoverluck.com/blackjack-bankroll-calculator.html" />
   <meta property="og:image" content="https://edgeoverluck.com/assets/images/bankroll-risk-section.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Blackjack Bankroll Calculator | EdgeOverLuck.com" />
-  <meta name="twitter:description" content="Blackjack bankroll calculator with simulation. See bust risk, profit chance, expected loss, and how long your bankroll lasts." />
+  <meta name="twitter:title" content="Blackjack Bankroll Calculator | Estimate Bust Risk" />
+  <meta name="twitter:description" content="Test bankroll, bet size, house edge, and hands played. Estimate blackjack bust risk, expected loss, and profit chance before you play." />
   <meta name="twitter:image" content="https://edgeoverluck.com/assets/images/bankroll-risk-section.webp" />
 
   <link rel="canonical" href="https://edgeoverluck.com/blackjack-bankroll-calculator.html" />
@@ -32,20 +31,162 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Blackjack Bankroll Calculator",
-    "url": "https://edgeoverluck.com/blackjack-bankroll-calculator.html",
-    "applicationCategory": "FinanceApplication",
-    "operatingSystem": "All",
-    "description": "Blackjack bankroll calculator and simulator to estimate expected loss, bust risk, profit chance, and bankroll survival.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://edgeoverluck.com/#organization",
+      "name": "Edge Over Luck",
+      "alternateName": "EdgeOverLuck.com",
+      "url": "https://edgeoverluck.com/",
+      "logo": "https://edgeoverluck.com/assets/images/logo/edgeoverluck-logo-square.png"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://edgeoverluck.com/#website",
+      "name": "Edge Over Luck",
+      "url": "https://edgeoverluck.com/",
+      "description": "Casino math tools, bankroll calculators, simulators, and gambling risk guides for educational use.",
+      "publisher": {
+        "@id": "https://edgeoverluck.com/#organization"
+      },
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://edgeoverluck.com/blackjack-bankroll-calculator.html#webpage",
+      "url": "https://edgeoverluck.com/blackjack-bankroll-calculator.html",
+      "name": "Blackjack Bankroll Calculator",
+      "description": "Use this blackjack bankroll calculator to test bankroll, bet size, house edge, and hands played. Estimate bust risk, expected loss, and profit chance before you play.",
+      "isPartOf": {
+        "@id": "https://edgeoverluck.com/#website"
+      },
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "Blackjack bankroll management"
+        },
+        {
+          "@type": "Thing",
+          "name": "Bust risk"
+        },
+        {
+          "@type": "Thing",
+          "name": "Expected loss"
+        }
+      ],
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://edgeoverluck.com/blackjack-bankroll-calculator.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://edgeoverluck.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blackjack",
+          "item": "https://edgeoverluck.com/blackjack-strategy.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Blackjack Bankroll Calculator",
+          "item": "https://edgeoverluck.com/blackjack-bankroll-calculator.html"
+        }
+      ]
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://edgeoverluck.com/blackjack-bankroll-calculator.html#app",
+      "name": "Blackjack Bankroll Calculator",
+      "url": "https://edgeoverluck.com/blackjack-bankroll-calculator.html",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "description": "A free blackjack bankroll calculator that estimates expected loss, bust risk, profit chance, recommended max bet, and bankroll survival ranges.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://edgeoverluck.com/blackjack-bankroll-calculator.html#related-tools",
+      "name": "Related blackjack tools",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blackjack Trainer",
+          "url": "https://edgeoverluck.com/blackjack-game.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blackjack Strategy Guide",
+          "url": "https://edgeoverluck.com/blackjack-strategy.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Blackjack EV Calculator",
+          "url": "https://edgeoverluck.com/blackjack-ev-calculator.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Bankroll Tools",
+          "url": "https://edgeoverluck.com/bankroll-tools.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://edgeoverluck.com/blackjack-bankroll-calculator.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does the blackjack bankroll calculator estimate?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It estimates expected loss, average ending bankroll, bust risk, profit chance, likely bankroll ranges, and a suggested maximum bet based on your bankroll, bet size, house edge, hands played, and simulation count."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does a low blackjack house edge guarantee a safe session?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. A lower house edge can reduce long-run cost, but short-term variance and oversized bets can still create high bust risk."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this calculator a precise blackjack prediction?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. It uses a simplified model to show bankroll pressure and variance. It does not simulate every blackjack rule, card composition, split, double, or 3:2 blackjack payout."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How should I use the recommended max bet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Treat it as a risk ceiling, not a challenge. It is meant to help compare bet sizing against your selected bust-risk target."
+          }
+        }
+      ]
     }
-  }
+  ]
+}
   </script>
 </head>
 
@@ -134,9 +275,9 @@
         </p>
 
         <div class="hero-actions">
-          <a class="btn" href="#calculator">Run the Bankroll Check</a>
-          <a class="btn btn-secondary" href="blackjack-strategy.html">Study the Rules</a>
-          <a class="btn btn-secondary" href="blackjack-game.html">Train Free</a>
+          <a class="btn" href="#calculator" data-track-event="cta_click" data-track-label="Run Blackjack Bankroll Check">Run the Bankroll Check</a>
+          <a class="btn btn-secondary" href="blackjack-strategy.html" data-track-event="related_tool_click" data-track-label="Blackjack Strategy from Hero">Study the Rules</a>
+          <a class="btn btn-secondary" href="blackjack-game.html" data-track-event="related_tool_click" data-track-label="Blackjack Trainer from Hero">Train Free</a>
         </div>
       </div>
 
@@ -176,9 +317,9 @@
             Run the calculator to see when your plan starts sweating.
           </p>
           <div class="hero-actions lasts-hands-actions">
-            <a class="btn" href="#bankrollForm">Stress-Test My Bet Size</a>
-            <a class="btn btn-secondary" href="blackjack-game.html">Train the Decisions</a>
-            <a class="btn btn-secondary" href="blackjack-ev-calculator.html">Compare EV Spots</a>
+            <a class="btn" href="#bankrollForm" data-track-event="cta_click" data-track-label="Stress Test Blackjack Bet Size">Stress-Test My Bet Size</a>
+            <a class="btn btn-secondary" href="blackjack-game.html" data-track-event="related_tool_click" data-track-label="Train Blackjack Decisions">Train the Decisions</a>
+            <a class="btn btn-secondary" href="blackjack-ev-calculator.html" data-track-event="related_tool_click" data-track-label="Compare Blackjack EV Spots">Compare EV Spots</a>
           </div>
         </div>
 
@@ -197,16 +338,16 @@
         </div>
 
         <div class="presets">
-          <button type="button" onclick="setPreset('blackjack')">Blackjack</button>
-          <button type="button" onclick="setPreset('roulette')">Roulette</button>
-          <button type="button" onclick="setPreset('slots')">Slots</button>
-          <button type="button" onclick="setPreset('baccarat')">Baccarat</button>
+          <button type="button" onclick="setPreset('blackjack')" data-track-event="preset_click" data-track-label="Blackjack Bankroll Preset">Blackjack</button>
+          <button type="button" onclick="setPreset('roulette')" data-track-event="preset_click" data-track-label="Roulette Preset from Blackjack Bankroll">Roulette</button>
+          <button type="button" onclick="setPreset('slots')" data-track-event="preset_click" data-track-label="Slots Preset from Blackjack Bankroll">Slots</button>
+          <button type="button" onclick="setPreset('baccarat')" data-track-event="preset_click" data-track-label="Baccarat Preset from Blackjack Bankroll">Baccarat</button>
         </div>
 
         <div class="warning-box glass-panel">
           <h3>Model assumptions — simplified simulator</h3>
           <p class="mb-0">This tool uses a simplified blackjack model to estimate bankroll pressure. It assumes a fixed push rate and models hands as simple win/push/loss outcomes. It does NOT simulate doubling, splitting, or blackjack 3:2 payouts. Use these results as a risk/pressure guide, not a precise hand-by-hand prediction.</p>
-          <p class="mb-0">See <a href="how-we-calculate-odds.html">how we calculate odds</a> for more details.</p>
+          <p class="mb-0">See <a href="how-we-calculate-odds.html" data-track-event="methodology_click" data-track-label="How We Calculate Odds from Blackjack Bankroll">how we calculate odds</a> for more details.</p>
         </div>
         <div class="faq-list">
           <details>
@@ -283,7 +424,7 @@
             <li><strong>Assumes:</strong> Your entered bankroll, bet size, session length, table edge/rules, and a simplified variance model.</li>
             <li><strong>Does not guarantee:</strong> Bankroll survival, profit, or safe gambling conditions.</li>
           </ul>
-          <p class="small-note">For limits, warning signs, and help resources, read our <a href="responsible-gambling.html">responsible gambling guide</a>.</p>
+          <p class="small-note">For limits, warning signs, and help resources, read our <a href="responsible-gambling.html" data-track-event="responsible_gambling_click" data-track-label="Responsible Gambling Guide from Methodology">responsible gambling guide</a>.</p>
         </section>
 
         <div class="results results-spacing">
@@ -494,12 +635,65 @@
     </div>
   </section>
 
+  <section class="section-tight" aria-labelledby="blackjack-bankroll-next-tools-title">
+    <div class="container">
+      <h2 id="blackjack-bankroll-next-tools-title" class="section-title">Next blackjack tools to try</h2>
+      <p class="section-subtext">Use this calculator to size the session, then check whether your decisions and expected value match the plan.</p>
+      <div class="grid grid-4">
+        <article class="card premium-card interactive-card">
+          <h3>Blackjack Trainer</h3>
+          <p>Practice hit, stand, double, and split decisions before a real table adds pressure.</p>
+          <a class="btn btn-secondary" href="blackjack-game.html" data-track-event="related_tool_click" data-track-label="Blackjack Trainer from Bankroll Related Tools">Train Blackjack Decisions</a>
+        </article>
+        <article class="card premium-card interactive-card">
+          <h3>Blackjack Strategy Guide</h3>
+          <p>Review basic strategy charts and rule notes so mistakes do not quietly raise the house edge.</p>
+          <a class="btn btn-secondary" href="blackjack-strategy.html" data-track-event="related_tool_click" data-track-label="Blackjack Strategy from Bankroll Related Tools">Study Basic Strategy</a>
+        </article>
+        <article class="card premium-card interactive-card">
+          <h3>Blackjack EV Calculator</h3>
+          <p>Compare individual decision spots and see how expected value changes with the situation.</p>
+          <a class="btn btn-secondary" href="blackjack-ev-calculator.html" data-track-event="related_tool_click" data-track-label="Blackjack EV Calculator from Bankroll Related Tools">Compare EV Spots</a>
+        </article>
+        <article class="card premium-card interactive-card">
+          <h3>Bankroll Tools</h3>
+          <p>Compare blackjack bankroll pressure against roulette, slots, and other casino sessions.</p>
+          <a class="btn btn-secondary" href="bankroll-tools.html" data-track-event="related_tool_click" data-track-label="Bankroll Tools from Blackjack Bankroll Related Tools">Compare Bankroll Tools</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="blackjack-bankroll-faq-title">
+    <div class="container">
+      <h2 id="blackjack-bankroll-faq-title" class="section-title">Blackjack bankroll calculator FAQ</h2>
+      <div class="grid grid-2 faq-grid">
+        <article class="card">
+          <h3>What does this blackjack bankroll calculator estimate?</h3>
+          <p>It estimates expected loss, average ending bankroll, bust risk, profit chance, likely bankroll ranges, and a suggested maximum bet based on your bankroll, bet size, house edge, hands played, and simulation count.</p>
+        </article>
+        <article class="card">
+          <h3>Does a low blackjack house edge guarantee a safe session?</h3>
+          <p>No. A lower house edge can reduce long-run cost, but short-term variance and oversized bets can still create high bust risk.</p>
+        </article>
+        <article class="card">
+          <h3>Is this a precise blackjack prediction?</h3>
+          <p>No. This calculator uses a simplified model to show bankroll pressure and variance. It does not simulate every blackjack rule, card composition, split, double, or 3:2 payout.</p>
+        </article>
+        <article class="card">
+          <h3>How should I use the recommended max bet?</h3>
+          <p>Treat it as a risk ceiling, not a challenge. It is meant to help compare bet sizing against your selected bust-risk target.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <section class="section-tight" aria-labelledby="bankroll-quiz-title">
     <div class="container quiz-cta-card card glass-panel glow-cyan hover-glow">
       <span class="chip">Personality leak check</span>
       <h2 id="bankroll-quiz-title" class="section-title">Some players lose from bad odds. Others lose from reactive decisions.</h2>
       <p>Find out whether your biggest bankroll leak comes from chasing, overplaying, overconfidence, or poor session planning.</p>
-      <div class="hero-actions"><a class="btn" href="gambler-personality-quiz.html" data-track-event="quiz_start" data-track-label="Take the Gambler Personality Quiz">Take the Gambler Personality Quiz</a><a class="btn btn-secondary" href="responsible-gambling.html">Set safer limits</a></div>
+      <div class="hero-actions"><a class="btn" href="gambler-personality-quiz.html" data-track-event="quiz_start" data-track-label="Take the Gambler Personality Quiz from Blackjack Bankroll">Take the Gambler Personality Quiz</a><a class="btn btn-secondary" href="responsible-gambling.html" data-track-event="responsible_gambling_click" data-track-label="Set Safer Limits from Blackjack Bankroll">Set safer limits</a></div>
     </div>
   </section>
 </main>
