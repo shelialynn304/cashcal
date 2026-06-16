@@ -86,7 +86,10 @@
     const totalWagering = bonusBase * wageringMultiplier;
     const adjustedWagering = totalWagering / gameContributionDecimal;
     const expectedLoss = adjustedWagering * houseEdge;
-    const grossEV = bonusAmount - expectedLoss;
+    // A max cashout cap limits the bonus upside before the EV verdict is classified.
+    const cappedBonusValue =
+      maxCashout > 0 ? Math.min(bonusAmount, maxCashout) : bonusAmount;
+    const grossEV = cappedBonusValue - expectedLoss;
     const netEV = grossEV - extraCosts;
 
     setText("result-bonus-base", money.format(bonusBase));
@@ -102,13 +105,13 @@
     if (cashoutWarning) {
       cashoutWarning.textContent =
         maxCashout > 0
-          ? `Max cashout is set to ${money.format(maxCashout)}. This can cap upside even when the bonus looks good on paper.`
+          ? `Max cashout is set to ${money.format(maxCashout)}. The EV estimate and verdict cap the bonus upside at ${money.format(cappedBonusValue)} before subtracting expected loss and fees.`
           : "No max cashout entered. Still check withdrawal limits, max bet rules, and excluded games.";
     }
 
     if (netEV > 0.01) {
       showNote(
-        "This bonus may be positive EV on paper, but variance, bet caps, game exclusions, withdrawal rules, and max cashout limits can still wreck it.",
+        "This bonus may be positive EV on paper after the entered cashout cap, but variance, bet caps, game exclusions, and withdrawal rules can still wreck it.",
         "positive"
       );
     } else if (Math.abs(netEV) <= 0.01) {

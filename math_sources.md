@@ -109,6 +109,7 @@ Inputs:
 - contributionPercent
 - rtpPercent
 - extraCosts
+- maxCashout
 
 Formula:
 
@@ -128,17 +129,23 @@ adjustedWagering = totalWagering / gameContributionDecimal
 
 expected loss = adjusted wagering × house edge
 
-gross EV = bonus amount - expected loss
+capped bonus value = min(bonus amount, max cashout) when max cashout is entered
 
-net EV = bonus amount - expected loss - extra costs
+capped bonus value = bonus amount when no max cashout is entered
+
+gross EV = capped bonus value - expected loss
+
+net EV = capped bonus value - expected loss - extra costs
 
 Equivalent code formula:
 
-netEV = bonusAmount - expectedLoss - extraCosts
+cappedBonusValue = maxCashout > 0 ? Math.min(bonusAmount, maxCashout) : bonusAmount
+
+netEV = cappedBonusValue - expectedLoss - extraCosts
 
 ## Casino Bonus EV Limits
 
-This estimate does not model variance, withdrawal friction, game exclusions, max bet limits, expiration windows, account restrictions, or operator-specific terms. Max cashout limits are displayed as a warning because they can cap upside, but this basic estimate does not simulate the probability distribution of reaching or exceeding the cashout cap.
+This estimate does not model variance, withdrawal friction, game exclusions, max bet limits, expiration windows, account restrictions, or operator-specific terms. When max cashout is entered, the estimate caps the bonus upside before classifying the EV verdict, but it still does not simulate the probability distribution of reaching or exceeding the cashout cap.
 
 # Roulette Calculator
 
