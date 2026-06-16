@@ -59,6 +59,11 @@
       return;
     }
 
+    if (depositAmount < 0) {
+      showError("Deposit amount cannot be negative.");
+      return;
+    }
+
     if (wageringMultiplier <= 0) {
       showError("Enter a wagering requirement greater than 0x.");
       return;
@@ -71,6 +76,16 @@
 
     if (rtpPercent <= 0 || rtpPercent >= 100) {
       showError("RTP should be greater than 0% and less than 100%.");
+      return;
+    }
+
+    if (maxCashout < 0) {
+      showError("Max cashout cannot be negative.");
+      return;
+    }
+
+    if (extraCosts < 0) {
+      showError("Extra costs / fees cannot be negative.");
       return;
     }
 
