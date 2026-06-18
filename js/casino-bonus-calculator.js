@@ -6,10 +6,6 @@
     maximumFractionDigits: 2
   });
 
-  const NUMBER_FORMAT = new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: 2
-  });
-
   const WHOLE_NUMBER_FORMAT = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 0
   });
@@ -315,12 +311,7 @@
     }
 
     form.addEventListener("submit", handleCalculate);
-    form.addEventListener("input", () => {
-      if (results.hidden) {
-        return;
-      }
-      handleCalculate();
-    });
+    form.addEventListener("input", handleCalculate);
 
     runSanityChecks();
     handleCalculate();
