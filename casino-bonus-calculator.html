@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SLW7YE234T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-SLW7YE234T');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+
+  <title>Casino Bonus Reality Check Calculator | Wagering Math Tool | Edge Over Luck</title>
+  <meta name="description" content="Calculate bonus wagering requirements, adjusted wagering after game contribution, expected loss, and theoretical bonus value with this educational casino bonus reality check calculator." />
+  <meta property="og:title" content="Casino Bonus Reality Check Calculator | Edge Over Luck" />
+  <meta property="og:description" content="Estimate real wagering pressure, expected loss, and bonus value before accepting a casino bonus offer." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://edgeoverluck.com/casino-bonus-calculator.html" />
+  <meta property="og:image" content="https://edgeoverluck.com/assets/images/roulette-odds-section.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Casino Bonus Reality Check Calculator | Edge Over Luck" />
+  <meta name="twitter:description" content="Estimate bonus wagering pressure, expected loss, and theoretical value before you claim a casino bonus." />
+  <meta name="twitter:image" content="https://edgeoverluck.com/assets/images/roulette-odds-section.webp" />
+
+  <link rel="canonical" href="https://edgeoverluck.com/casino-bonus-calculator.html" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/logo/favicon-192.png" />
+  <link rel="apple-touch-icon" href="assets/images/logo/apple-touch-icon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    .bonus-calc-note { margin-top: 8px; color: var(--muted); font-size: 0.92rem; }
+    .bonus-calc-error { margin-top: 14px; color: #ffb4b4; font-weight: 800; }
+    .bonus-calc-results[hidden] { display: none; }
+    .bonus-risk-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(241, 196, 91, 0.15);
+      color: var(--gold);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 14px;
+    }
+    .bonus-warning-list { margin-top: 14px; color: #ffdca8; }
+    .bonus-warning-list[hidden] { display: none; }
+    .bonus-warning-list ul { margin: 0; padding-left: 18px; }
+    .bonus-warning-list li + li { margin-top: 8px; }
+  </style>
+
+  <script defer data-workspace="69b01028d6e4c738cf4abf0f" src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://edgeoverluck.com/casino-bonus-calculator.html#webpage",
+        "name": "Casino Bonus Reality Check Calculator",
+        "url": "https://edgeoverluck.com/casino-bonus-calculator.html",
+        "description": "Educational calculator for bonus wagering requirements, expected loss, and theoretical bonus value.",
+        "isPartOf": { "@id": "https://edgeoverluck.com/#website" },
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://edgeoverluck.com/casino-bonus-calculator.html#app",
+        "name": "Casino Bonus Reality Check Calculator",
+        "url": "https://edgeoverluck.com/casino-bonus-calculator.html",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "All",
+        "description": "Tool for estimating adjusted wagering, theoretical expected loss, and bonus value under casino bonus terms."
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://edgeoverluck.com/casino-bonus-calculator.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What does 30x wagering mean?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "30x wagering means the qualifying balance must be wagered 30 times before the bonus terms are cleared. If the base is $100, the raw wagering target is $3,000."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is a casino bonus free money?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Bonus terms usually require wagering, game contribution limits, and cashout rules that can turn the offer into negative theoretical value."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why does game contribution matter?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Game contribution controls how much each wager counts toward clearing the requirement. A lower contribution means you must wager far more total money."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is expected loss?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Expected loss is the long-run average amount lost from total required wagering based on house edge. It is theoretical and not a prediction for one session."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can this calculator predict whether I will win?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. The calculator is educational and models long-run averages only. It cannot predict short-term outcomes or guarantee results."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What makes a bonus risky?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "High wagering multipliers, low game contribution, low RTP games, and restrictive max cashout limits can all turn a bonus into poor-value risk."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body data-tool-name="casino_bonus_calculator">
+  <header class="site-header">
+    <div class="container nav site-nav">
+      <a href="index.html" class="brand brand-logo" aria-label="Edge Over Luck home">
+        <img src="assets/images/logo/edgeoverluck-logo-horizontal.svg" alt="Edge Over Luck" width="240" height="64">
+      </a>
+      <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+        <span class="nav-toggle-label">Menu</span>
+      </button>
+      <nav id="primary-nav" class="nav-menu" aria-label="Primary navigation">
+        <a class="nav-link nav-priority-link" href="tools/">Tools</a>
+        <a class="nav-link nav-priority-link" href="roulette-simulator.html">Roulette Simulator</a>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-horse-racing">Horse Racing</button>
+          <div id="nav-horse-racing" class="nav-panel nav-panel-wide">
+            <a href="takeout-overlay-calculator.html">Takeout &amp; Overlay Calculator</a>
+            <a href="exotic-bet-calculator.html">Exotic Bet Cost Calculator</a>
+            <a href="horse-racing-guide.html">Horse Racing Guide</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-blackjack">Blackjack</button>
+          <div id="nav-blackjack" class="nav-panel nav-panel-wide">
+            <a href="blackjack-game.html">Blackjack Trainer</a>
+            <a href="blackjack-strategy.html">Blackjack Strategy Guide</a>
+            <a href="blackjack-trainer-guide.html">Blackjack Trainer Guide</a>
+            <a href="blackjack-ev-calculator.html">Blackjack EV Calculator</a>
+            <a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-roulette">Roulette</button>
+          <div id="nav-roulette" class="nav-panel nav-panel-wide">
+            <a href="roulette.html">Roulette Guide</a>
+            <a href="roulette-simulator.html">Roulette Simulator</a>
+            <a href="roulette-calculator.html">Roulette Calculator</a>
+            <a href="roulette-bankroll-calculator.html">Roulette Bankroll Calculator</a>
+            <a href="roulette-strategy-simulator.html">Roulette Strategy Simulator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-slots">Slots</button>
+          <div id="nav-slots" class="nav-panel nav-panel-wide">
+            <a href="slots.html">Slots Guide</a>
+            <a href="slot-simulator.html">Slot Simulator</a>
+            <a href="slot-rtp-explained.html">Slot RTP Guide</a>
+            <a href="slot-volatility-guide.html">Slot Volatility Guide</a>
+            <a href="bankroll-survival-slots.html">Slot Bankroll Survival Calculator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-more">More</button>
+          <div id="nav-more" class="nav-panel nav-panel-wide">
+            <a href="bankroll-tools.html">Bankroll Tools</a>
+            <a href="bubble-craps.html">Bubble Craps Simulator</a>
+            <a href="gambler-personality-quiz.html">Gambler Personality Quiz</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-about">About</button>
+          <div id="nav-about" class="nav-panel nav-panel-wide">
+            <a href="responsible-gambling.html">Responsible Gambling</a>
+            <a href="casino-reviews.html">Casino Reviews</a>
+            <a href="how-we-calculate-odds.html">How We Find Odds</a>
+            <a href="editorial-policy.html">Editorial Policy</a>
+            <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
+            <a href="about.html">About Edge Over Luck</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="page-hero glow-hero">
+      <div class="container page-hero-split">
+        <div class="page-hero-copy">
+          <span class="eyebrow eyebrow-muted">Educational bonus math tool</span>
+          <h1 class="page-hero-title">Casino Bonus Reality Check Calculator</h1>
+          <p class="page-hero-subtitle">See the real wagering pressure before a bonus turns into a bankroll drain.</p>
+          <p class="page-hero-text">This calculator estimates raw wagering, adjusted wagering after contribution limits, theoretical expected loss, and theoretical bonus value. It is educational and math-first. It does not predict wins and it cannot make gambling profitable.</p>
+          <div class="hero-actions cta-row">
+            <a class="btn btn-primary btn-gold" href="#bonus-calculator">Run the Bonus Check</a>
+            <a class="btn btn-secondary btn-outline" href="how-we-calculate-odds.html">How We Calculate Odds</a>
+            <a class="btn btn-secondary btn-outline" href="responsible-gambling.html">Responsible Gambling</a>
+          </div>
+        </div>
+        <aside class="card glass-card-strong glow-gold" aria-label="Casino bonus calculator highlights">
+          <span class="eyebrow eyebrow-cyan">Bonus reality checks</span>
+          <h2 class="section-title">A bigger bonus can still mean bigger expected loss.</h2>
+          <div class="result-list">
+            <div class="result-item glass-card"><span>Core outputs</span><strong>Wagering + expected loss</strong></div>
+            <div class="result-item glass-card"><span>Math framing</span><strong>Theoretical, not predictive</strong></div>
+            <div class="result-item glass-card"><span>Risk level</span><strong>Fair to Dumpster Fire</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="experience-strip" aria-label="Casino bonus reality strip">
+      <div class="container">
+        <div class="grid grid-3">
+          <article class="card reality-card glass-card hover-glow">
+            <span class="kicker">Wagering math</span>
+            <strong>30x means volume, not value.</strong>
+            <p class="mb-0">The multiplier decides how much money must cycle through the game before terms clear.</p>
+          </article>
+          <article class="card reality-card glass-card hover-glow">
+            <span class="kicker">Contribution rules</span>
+            <strong>Low contribution inflates required wagering.</strong>
+            <p class="mb-0">If only part of each wager counts, total required wagering climbs fast.</p>
+          </article>
+          <article class="card reality-card glass-card hover-glow">
+            <span class="kicker">RTP reality</span>
+            <strong>RTP is a long-run average, not a session promise.</strong>
+            <p class="mb-0">Expected loss is theoretical. Short sessions can still run hot or cold.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="bonus-calculator">
+      <div class="container grid grid-2">
+        <article class="card glass-card-strong glow-gold">
+          <span class="eyebrow eyebrow-muted">Inputs</span>
+          <h2 class="section-title">Bonus terms and assumptions</h2>
+          <form id="bonusCalcForm" novalidate>
+            <div class="form-row">
+              <div class="field">
+                <label for="depositAmount">Deposit amount ($)</label>
+                <input id="depositAmount" name="depositAmount" type="number" min="0" step="0.01" inputmode="decimal" value="100" />
+                <p class="bonus-calc-note">Amount you fund before any bonus is added.</p>
+              </div>
+              <div class="field">
+                <label for="bonusMatchPercent">Bonus match percentage (%)</label>
+                <input id="bonusMatchPercent" name="bonusMatchPercent" type="number" min="0" step="0.01" inputmode="decimal" value="100" />
+                <p class="bonus-calc-note">A 100% match means bonus equals deposit up to the cap.</p>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="maxBonusAmount">Maximum bonus amount ($)</label>
+                <input id="maxBonusAmount" name="maxBonusAmount" type="number" min="0" step="0.01" inputmode="decimal" value="100" />
+              </div>
+              <div class="field">
+                <label for="wageringMultiplier">Wagering requirement multiplier (x)</label>
+                <input id="wageringMultiplier" name="wageringMultiplier" type="number" min="0" step="0.01" inputmode="decimal" value="30" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="wageringAppliesTo">Wagering applies to</label>
+                <select id="wageringAppliesTo" name="wageringAppliesTo">
+                  <option value="bonus-only" selected>Bonus only</option>
+                  <option value="deposit-plus-bonus">Deposit + bonus</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="gameContributionPercent">Game contribution percentage (%)</label>
+                <input id="gameContributionPercent" name="gameContributionPercent" type="number" min="0.01" max="100" step="0.01" inputmode="decimal" value="100" />
+                <p class="bonus-calc-note">100% means every wager counts fully. Lower values increase required wagering.</p>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="rtpPercent">RTP percentage (%)</label>
+                <input id="rtpPercent" name="rtpPercent" type="number" min="0" max="100" step="0.01" inputmode="decimal" value="96" />
+              </div>
+              <div class="field">
+                <label for="averageBetSize">Average bet size ($)</label>
+                <input id="averageBetSize" name="averageBetSize" type="number" min="0" step="0.01" inputmode="decimal" value="1" />
+                <p class="bonus-calc-note">Used to estimate how many bets/spins are needed to clear wagering.</p>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="maxCashout">Optional max cashout ($)</label>
+                <input id="maxCashout" name="maxCashout" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Optional" />
+              </div>
+              <div class="field">
+                <label for="timeLimitDays">Optional time limit (days)</label>
+                <input id="timeLimitDays" name="timeLimitDays" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Optional" />
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <button class="btn btn-primary btn-gold" type="submit">Run the Bonus Check</button>
+            </div>
+            <p id="bonusCalcError" class="bonus-calc-error" role="alert"></p>
+          </form>
+        </article>
+
+        <article class="card glass-card-strong glow-cyan bonus-calc-results" id="bonusCalcResults" aria-live="polite" hidden>
+          <span class="eyebrow eyebrow-muted">Results</span>
+          <h2 class="section-title">Bonus math output</h2>
+          <span id="resultRiskRating" class="bonus-risk-badge">Risky</span>
+          <div class="result-list">
+            <div class="result-item glass-card"><span>Bonus amount</span><strong id="resultBonusAmount">$0.00</strong></div>
+            <div class="result-item glass-card"><span>Starting balance</span><strong id="resultStartingBalance">$0.00</strong></div>
+            <div class="result-item glass-card"><span>Raw wagering required</span><strong id="resultRawWagering">$0.00</strong></div>
+            <div class="result-item glass-card"><span>Adjusted wagering required</span><strong id="resultAdjustedWagering">$0.00</strong></div>
+            <div class="result-item glass-card"><span>Estimated expected loss (theoretical)</span><strong id="resultExpectedLoss">$0.00</strong></div>
+            <div class="result-item glass-card"><span>Estimated number of bets/spins</span><strong id="resultNumberOfBets">0</strong></div>
+            <div class="result-item glass-card"><span>Theoretical bonus value</span><strong id="resultTheoreticalValue">$0.00</strong></div>
+          </div>
+          <div class="info-box top-gap">
+            <p id="resultRiskSummary" class="mb-0">Risk summary updates after you run the calculator.</p>
+          </div>
+          <div id="bonusCalcWarnings" class="warning-box bonus-warning-list" hidden></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="bonus-explain-title">
+      <div class="container section-panel section-gradient-gold">
+        <span class="eyebrow eyebrow-muted">How to read this</span>
+        <h2 id="bonus-explain-title" class="section-title">Bonus terms that change the math</h2>
+        <div class="grid grid-2">
+          <article class="card glass-card">
+            <h3>What is a wagering requirement?</h3>
+            <p>Wagering requirement is how much money must be bet before bonus terms clear. If terms say 30x and the wagering base is $100, the raw target is $3,000.</p>
+          </article>
+          <article class="card glass-card">
+            <h3>Bonus-only vs deposit-plus-bonus wagering</h3>
+            <p>Bonus-only terms apply the multiplier to bonus funds. Deposit-plus-bonus applies the multiplier to both. The second version usually doubles the wagering load.</p>
+          </article>
+          <article class="card glass-card">
+            <h3>Why game contribution matters</h3>
+            <p>Contribution decides how much each wager counts. A 20% contribution means only $0.20 of each $1 wager advances progress, so adjusted required wagering becomes much larger.</p>
+          </article>
+          <article class="card glass-card">
+            <h3>Why RTP does not guarantee your result</h3>
+            <p>RTP is a long-run average over many plays. Your actual session can be better or worse. Expected loss here is theoretical, not a prediction of your next outcome.</p>
+          </article>
+          <article class="card glass-card">
+            <h3>Why max cashout can ruin a bonus</h3>
+            <p>A low max cashout can cap winnings so hard that even after heavy wagering, the payout potential stays limited. That can erase apparent bonus value.</p>
+          </article>
+          <article class="card glass-card">
+            <h3>Safer gambling note</h3>
+            <p>This tool does not predict wins and cannot make gambling profitable. Use it to estimate pressure and risk before putting real money on the line.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq" aria-labelledby="bonus-faq-title">
+      <div class="container">
+        <div class="section-header section-header-centered">
+          <span class="eyebrow eyebrow-muted">Bonus calculator FAQ</span>
+          <h2 id="bonus-faq-title" class="section-title">Common questions</h2>
+        </div>
+        <div class="faq-list">
+          <details class="card glass-card hover-glow">
+            <summary>What does 30x wagering mean?</summary>
+            <p>It means the qualifying balance must be wagered 30 times. If the base is $100, raw wagering required is $3,000.</p>
+          </details>
+          <details class="card glass-card hover-glow">
+            <summary>Is a casino bonus free money?</summary>
+            <p>No. Bonus terms can create large wagering volume, expected loss pressure, and payout caps.</p>
+          </details>
+          <details class="card glass-card hover-glow">
+            <summary>Why does game contribution matter?</summary>
+            <p>It changes how much each wager counts. Lower contribution means you must wager much more money to finish.</p>
+          </details>
+          <details class="card glass-card hover-glow">
+            <summary>What is expected loss?</summary>
+            <p>Expected loss is the long-run average loss from required wagering based on house edge. It is theoretical, not predictive.</p>
+          </details>
+          <details class="card glass-card hover-glow">
+            <summary>Can this calculator predict whether I will win?</summary>
+            <p>No. It estimates long-run math only and cannot predict short-term outcomes.</p>
+          </details>
+          <details class="card glass-card hover-glow">
+            <summary>What makes a bonus risky?</summary>
+            <p>High multipliers, low contribution percentages, lower RTP games, and restrictive max cashout rules can make bonus value worse fast.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight next-steps" aria-labelledby="bonus-links-title">
+      <div class="container cta-box glass-panel glow-cyan">
+        <h2 id="bonus-links-title" class="section-title">Keep digging into the math</h2>
+        <p>Use related tools to compare risk, bankroll pressure, and expected loss before you play.</p>
+        <div class="tool-link-row">
+          <a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>
+          <a href="slot-simulator.html">Slot Simulator</a>
+          <a href="responsible-gambling.html">Set Safer Gambling Limits</a>
+          <a href="casino-reviews.html">Casino Reviews</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container disclaimer-block">
+        <h2 class="section-title">Responsible gambling and 21+ notice</h2>
+        <p>21+ only where legal. Gambling involves financial risk, and no calculator can guarantee profit. This page is educational and does not predict outcomes.</p>
+        <p class="mb-0">If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use local support services. Read our <a href="responsible-gambling.html">responsible gambling page</a> for more help.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-brand">Edge Over Luck</p>
+      <p>Edge Over Luck gives players gambling math tools, bankroll calculators, and casino simulators for understanding risk. These tools do not guarantee profit. Variance remains undefeated.</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="tools/">Tools</a>
+        <a href="blackjack-game.html">Blackjack Trainer</a>
+        <a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>
+        <a href="roulette-bankroll-calculator.html">Roulette Bankroll Calculator</a>
+        <a href="roulette-simulator.html">Roulette Simulator</a>
+        <a href="slot-simulator.html">Slot Simulator</a>
+        <a href="how-we-calculate-odds.html">How We Calculate Odds</a>
+        <a href="responsible-gambling.html">Responsible Gambling</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
+        <a href="editorial-policy.html">Editorial Policy</a>
+        <a href="credits.html">Credits &amp; Sources</a>
+      </div>
+      <p class="affiliate-note"><strong>Affiliate Disclosure:</strong> This site may contain affiliate links and may earn commissions at no extra cost to you. Affiliate relationships do not change the math, odds, house edge, or editorial standards used on Edge Over Luck.</p>
+      <p class="gambling-warning"><strong>21+ / Legal Gambling Notice:</strong> 21+ only where legal. Gambling involves financial risk and can be addictive. These tools are for education and entertainment only and do not guarantee profit.</p>
+      <p class="responsible">Play legally, set limits, and never risk money you cannot afford to lose. If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use your local problem gambling support service. See our <a href="responsible-gambling.html">responsible gambling resources</a>.</p>
+      <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>
+    </div>
+  </footer>
+
+  <script src="js/casino-bonus-calculator.js" defer></script>
+  <script src="js/tracking.js" defer></script>
+  <script src="nav.js" defer></script>
+</body>
+</html>
