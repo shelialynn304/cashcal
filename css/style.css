@@ -3357,14 +3357,48 @@ table td {
   margin-top: 12px;
 }
 
+.page-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 420px);
+  gap: 2rem;
+  align-items: center;
+  margin: 2rem auto;
+}
+
+.page-feature-content {
+  display: grid;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+.page-feature-media {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+}
+
+.page-feature img,
+.page-feature-image,
 .tool-hero-image {
   display: block;
   width: 100%;
-  max-width: 1200px;
+  max-width: 420px;
   height: auto;
   object-fit: contain;
-  margin: 1.5rem auto;
+  margin: 0 auto;
   border-radius: 18px;
   border: 1px solid rgba(212, 175, 55, 0.25);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 800px) {
+  .page-feature {
+    grid-template-columns: 1fr;
+  }
+
+  .page-feature img,
+  .page-feature-image,
+  .tool-hero-image {
+    max-width: 100%;
+  }
 }
