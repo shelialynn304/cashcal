@@ -183,9 +183,6 @@
       return WHOLE_NUMBER_FORMAT.format(value);
     }
 
-    function formatNumber(value) {
-      return NUMBER_FORMAT.format(value);
-    }
 
     function showError(message) {
       errorBox.textContent = message;
@@ -222,7 +219,13 @@
         return;
       }
 
-      warningBox.innerHTML = `<ul>${warnings.map((warning) => `<li>${warning}</li>`).join("")}</ul>`;
+      const warningList = document.createElement("ul");
+      warnings.forEach((warning) => {
+        const item = document.createElement("li");
+        item.textContent = warning;
+        warningList.appendChild(item);
+      });
+      warningBox.replaceChildren(warningList);
       warningBox.hidden = false;
     }
 
@@ -322,21 +325,5 @@
     runSanityChecks();
     handleCalculate();
 
-    const debugRtp = formatNumber((1 - calculateBonusMath({
-      depositAmount: 100,
-      bonusMatchPercent: 100,
-      maxBonusAmount: 100,
-      wageringMultiplier: 30,
-      wageringAppliesTo: "bonus-only",
-      gameContributionPercent: 100,
-      rtpPercent: 96,
-      averageBetSize: 1,
-      maxCashout: null,
-      timeLimitDays: null
-    }).houseEdge) * 100);
-
-    if (!debugRtp) {
-      console.warn("RTP formatting failed.");
-    }
   });
 })();
