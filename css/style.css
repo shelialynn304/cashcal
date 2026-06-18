@@ -3356,3 +3356,15 @@ table td {
 .tools-next-steps .hero-actions {
   margin-top: 12px;
 }
+
+.tool-hero-image {
+  display: block;
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  object-fit: contain;
+  margin: 1.5rem auto;
+  border-radius: 18px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
