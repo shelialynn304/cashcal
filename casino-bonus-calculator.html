@@ -54,6 +54,8 @@
     .bonus-warning-list[hidden] { display: none; }
     .bonus-warning-list ul { margin: 0; padding-left: 18px; }
     .bonus-warning-list li + li { margin-top: 8px; }
+    .bonus-plain-english { margin-top: 18px; }
+    .bonus-plain-english p { margin-bottom: 0; }
   </style>
 
   <script defer data-workspace="69b01028d6e4c738cf4abf0f" src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js"></script>
@@ -329,8 +331,9 @@
             </div>
 
             <div class="hero-actions">
-              <button class="btn btn-primary btn-gold" type="submit">Run the Bonus Check</button>
+              <button class="btn btn-primary btn-gold" type="submit">Recalculate Bonus Math</button>
             </div>
+            <p class="bonus-calc-note">Results update automatically as you change the numbers.</p>
             <p id="bonusCalcError" class="bonus-calc-error" role="alert"></p>
           </form>
         </article>
@@ -351,6 +354,10 @@
           <div class="info-box top-gap">
             <p id="resultRiskSummary" class="mb-0">Risk summary updates after you run the calculator.</p>
           </div>
+          <section id="resultPlainEnglish" class="info-box top-gap bonus-plain-english" aria-live="polite">
+            <h3>What this means in plain English</h3>
+            <p>Plain-English bonus math will appear here as you change the numbers.</p>
+          </section>
           <div id="bonusCalcWarnings" class="warning-box bonus-warning-list" hidden></div>
         </article>
       </div>
