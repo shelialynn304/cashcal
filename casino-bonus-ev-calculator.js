@@ -18,6 +18,10 @@
 
   function getNumber(id) {
     const el = document.getElementById(id);
+    if (!el) {
+      console.warn(`Missing calculator input: ${id}`);
+      return 0;
+    }
     const value = Number(el.value);
     return Number.isFinite(value) ? value : 0;
   }
@@ -30,14 +34,14 @@
   function showError(text) {
     if (message) {
       message.textContent = text;
-      message.className = "calculator-message error";
+      message.className = "warning-box";
     }
   }
 
   function showNote(text, type = "neutral") {
     if (message) {
       message.textContent = text;
-      message.className = `calculator-message ${type}`;
+      message.className = type === "negative" ? "warning-box" : "info-box";
     }
   }
 
@@ -148,4 +152,6 @@
   });
 
   form.addEventListener("input", calculateBonusEV);
+
+  calculateBonusEV();
 })();

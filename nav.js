@@ -302,6 +302,7 @@
 
   const observer = new MutationObserver(() => {
     ensureHorseOverlayLink();
+    ensureBonusEvLink();
     markCurrentNavLink(document.querySelector('#primary-nav'));
   });
 
