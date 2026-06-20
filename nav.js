@@ -110,7 +110,7 @@
 
     const hasBonusLink = Array.from(morePanel.querySelectorAll('a[href]')).some((link) => {
       const href = link.getAttribute('href') || '';
-      return href === 'casino-bonus-ev-calculator.html' || href === '/casino-bonus-ev-calculator.html' || href.endsWith('/casino-bonus-ev-calculator.html');
+      return href === 'casino-bonus-calculator.html' || href === '/casino-bonus-calculator.html' || href.endsWith('/casino-bonus-calculator.html');
     });
 
     if (hasBonusLink) {
@@ -125,8 +125,8 @@
     const linkPrefix = firstMoreHref.replace(/bankroll-tools\.html$/, '');
 
     const bonusLink = document.createElement('a');
-    bonusLink.href = `${linkPrefix}casino-bonus-ev-calculator.html`;
-    bonusLink.textContent = 'Casino Bonus EV Calculator';
+    bonusLink.href = `${linkPrefix}casino-bonus-calculator.html`;
+    bonusLink.textContent = 'Casino Bonus Reality Check Calculator';
 
     if (bankrollLink && bankrollLink.nextSibling) {
       morePanel.insertBefore(bonusLink, bankrollLink.nextSibling);

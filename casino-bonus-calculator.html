@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
 
-  <title>Casino Bonus EV Calculator | Wagering Requirement Math</title>
-  <meta name="description" content="Estimate the real value of a casino bonus after wagering requirements, RTP, game contribution, expected loss, and max cashout limits.">
-  <meta property="og:title" content="Casino Bonus EV Calculator | Wagering Requirement Math" />
-  <meta property="og:description" content="Estimate the real value of a casino bonus after wagering requirements, RTP, game contribution, expected loss, and max cashout limits." />
+  <title>Casino Bonus Reality Check Calculator | Wagering Requirement Math</title>
+  <meta name="description" content="Reality-check casino bonuses using wagering requirements, RTP, game contribution, max cashout caps, and optional withdrawal fees.">
+  <meta property="og:title" content="Casino Bonus Reality Check Calculator | Wagering Requirement Math" />
+  <meta property="og:description" content="Reality-check casino bonuses using wagering requirements, RTP, game contribution, max cashout caps, and optional withdrawal fees." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://edgeoverluck.com/casino-bonus-ev-calculator.html" />
+  <meta property="og:url" content="https://edgeoverluck.com/casino-bonus-calculator.html" />
   <meta property="og:image" content="https://edgeoverluck.com/assets/images/edgeoverluck-casino-calculator-hero.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Casino Bonus EV Calculator | Wagering Requirement Math" />
-  <meta name="twitter:description" content="Estimate the real value of a casino bonus after wagering requirements, RTP, game contribution, expected loss, and max cashout limits." />
+  <meta name="twitter:title" content="Casino Bonus Reality Check Calculator | Wagering Requirement Math" />
+  <meta name="twitter:description" content="Reality-check casino bonuses using wagering requirements, RTP, game contribution, max cashout caps, and optional withdrawal fees." />
   <meta name="twitter:image" content="https://edgeoverluck.com/assets/images/edgeoverluck-casino-calculator-hero.webp" />
 
-  <link rel="canonical" href="https://edgeoverluck.com/casino-bonus-ev-calculator.html" />
+  <link rel="canonical" href="https://edgeoverluck.com/casino-bonus-calculator.html" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="assets/images/logo/favicon-192.png" />
   <link rel="apple-touch-icon" href="assets/images/logo/apple-touch-icon.png" />
@@ -28,15 +28,47 @@
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "Casino Bonus EV Calculator",
-    "url": "https://edgeoverluck.com/casino-bonus-ev-calculator.html",
+    "name": "Casino Bonus Reality Check Calculator",
+    "url": "https://edgeoverluck.com/casino-bonus-calculator.html",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "All",
-    "description": "Estimate casino bonus expected value after wagering requirements, RTP, game contribution, expected loss, fees, and max cashout limits."
+    "description": "Reality-check casino bonus terms using wagering requirements, RTP, game contribution, expected loss, max cashout caps, and optional fees."
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does this casino bonus calculator estimate?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It estimates bonus value after wagering, game contribution, house edge from RTP, optional max cashout limits, and optional fees. It is a theoretical estimate, not a prediction."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is max cashout handled?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "This tool treats max cashout as the maximum total withdrawal from bonus play. Profit above your original deposit is capped at max cashout minus deposit."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does a positive result guarantee profit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. RTP and expected value are long-run math estimates. Session results vary, and bonus terms like exclusions or max-bet rules can still reduce real outcomes."
+        }
+      }
+    ]
   }
   </script>
 </head>
-<body data-tool-name="casino_bonus_ev_calculator">
+<body data-tool-name="casino_bonus_reality_check_calculator">
   <header class="site-header">
     <div class="container nav site-nav">
       <a href="index.html" class="brand brand-logo" aria-label="Edge Over Luck home">
@@ -91,7 +123,7 @@
           <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-more">More</button>
           <div id="nav-more" class="nav-panel nav-panel-wide">
             <a href="bankroll-tools.html">Bankroll Tools</a>
-            <a href="casino-bonus-ev-calculator.html">Casino Bonus EV Calculator</a>
+            <a href="casino-bonus-calculator.html">Casino Bonus Reality Check Calculator</a>
             <a href="bubble-craps.html">Bubble Craps Simulator</a>
             <a href="gambler-personality-quiz.html">Gambler Personality Quiz</a>
           </div>
@@ -115,11 +147,11 @@
     <section class="hero section hero-modern">
       <div class="container hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">Wagering requirement math</p>
-          <h1>Casino Bonus EV Calculator</h1>
-          <p class="hero-subtitle">Casino bonuses are not free money. This calculator estimates how much wagering is required, how much the house edge is expected to cost, and whether the bonus has positive or negative expected value.</p>
+          <p class="eyebrow">Wagering requirement reality check</p>
+          <h1>Casino Bonus Reality Check Calculator</h1>
+          <p class="hero-subtitle">Break down bonus terms into real wagering pressure. This calculator estimates theoretical value after contribution rates, RTP, max cashout assumptions, and optional fees.</p>
           <div class="hero-actions">
-            <a class="btn" href="#bonus-ev-form">Calculate Bonus EV</a>
+            <a class="btn" href="#bonus-form">Run Bonus Reality Check</a>
             <a class="btn btn-secondary" href="how-we-calculate-odds.html">How We Calculate Odds</a>
           </div>
         </div>
@@ -135,20 +167,25 @@
       <div class="container">
         <div class="section-header">
           <span class="eyebrow eyebrow-muted">Calculator</span>
-          <h2 id="calculator-title" class="section-title">Estimate the real bonus value</h2>
-          <p class="section-subtext">Enter the bonus terms and game assumptions. Results are educational estimates, not cashout predictions.</p>
+          <h2 id="calculator-title" class="section-title">Estimate the practical value of a bonus offer</h2>
+          <p class="section-subtext">Results are educational estimates. They do not predict wins and do not guarantee profit.</p>
         </div>
 
-        <form id="bonus-ev-form" class="calculator-card card glass-card">
+        <form id="bonus-form" class="calculator-card card glass-card">
           <div class="grid grid-2">
             <label>
-              Bonus amount
-              <input id="bonus-amount" type="number" min="0" step="0.01" value="100">
+              Deposit amount ($)
+              <input id="deposit-amount" type="number" min="0" step="0.01" value="100">
             </label>
 
             <label>
-              Deposit amount
-              <input id="deposit-amount" type="number" min="0" step="0.01" value="100">
+              Bonus match (%)
+              <input id="bonus-match-percent" type="number" min="0" step="1" value="100">
+            </label>
+
+            <label>
+              Max bonus amount ($)
+              <input id="max-bonus-amount" type="number" min="0" step="0.01" value="100">
             </label>
 
             <label>
@@ -169,35 +206,54 @@
 
             <label>
               Game RTP %
-              <input id="game-rtp" type="number" min="1" max="99.99" step="0.01" value="96">
+              <input id="game-rtp" type="number" min="0" max="100" step="0.01" value="96">
             </label>
 
             <label>
-              Max cashout
+              Average bet size ($)
+              <input id="average-bet-size" type="number" min="0" step="0.01" value="1">
+            </label>
+
+            <label>
+              Max cashout (total withdrawal cap, $)
               <input id="max-cashout" type="number" min="0" step="0.01" value="0">
             </label>
 
             <label>
-              Extra costs / fees
-              <input id="extra-costs" type="number" min="0" step="0.01" value="0">
+              Optional fees / withdrawal cost ($)
+              <input id="fees" type="number" min="0" step="0.01" value="0">
+            </label>
+
+            <label>
+              Time limit (hours, optional)
+              <input id="time-limit-hours" type="number" min="0" step="1" value="0">
             </label>
           </div>
 
-          <button class="btn" type="submit">Calculate Bonus EV</button>
+          <button class="btn" type="submit">Run Bonus Reality Check</button>
         </form>
 
-        <div id="bonus-ev-message" class="info-box"></div>
+        <div id="bonus-message" class="info-box" aria-live="polite"></div>
 
-        <section id="bonus-ev-results" class="grid grid-3">
-          <div class="card"><h3>Bonus Base Used</h3><p id="result-bonus-base">$0.00</p></div>
-          <div class="card"><h3>Total Wagering</h3><p id="result-total-wagering">$0.00</p></div>
-          <div class="card"><h3>Adjusted Wagering</h3><p id="result-adjusted-wagering">$0.00</p></div>
+        <section id="bonus-results" class="grid grid-3">
+          <div class="card"><h3>Bonus Amount</h3><p id="result-bonus-amount">$0.00</p></div>
+          <div class="card"><h3>Starting Balance</h3><p id="result-starting-balance">$0.00</p></div>
+          <div class="card"><h3>Wagering Base</h3><p id="result-wagering-base">$0.00</p></div>
+          <div class="card"><h3>Raw Wagering Required</h3><p id="result-raw-wagering">$0.00</p></div>
+          <div class="card"><h3>Adjusted Wagering Required</h3><p id="result-adjusted-wagering">$0.00</p></div>
+          <div class="card"><h3>Estimated Bets / Spins Needed</h3><p id="result-bets-count">0</p></div>
           <div class="card"><h3>House Edge</h3><p id="result-house-edge">0%</p></div>
-          <div class="card"><h3>Expected Loss</h3><p id="result-expected-loss">$0.00</p></div>
-          <div class="card"><h3>Gross Bonus EV</h3><p id="result-gross-ev">$0.00</p></div>
-          <div class="card"><h3>Net EV</h3><p id="result-net-ev">$0.00</p></div>
-          <div class="card"><h3>Cashout Warning</h3><p id="result-cashout-warning">No max cashout entered.</p></div>
+          <div class="card"><h3>Theoretical Expected Loss</h3><p id="result-expected-loss">$0.00</p></div>
+          <div class="card"><h3>Uncapped Theoretical Bonus Value</h3><p id="result-uncapped-value">$0.00</p></div>
+          <div class="card"><h3>Displayed Theoretical Value</h3><p id="result-theoretical-value">$0.00</p></div>
+          <div class="card"><h3>Net Theoretical Value (after fees)</h3><p id="result-net-value">$0.00</p></div>
+          <div class="card"><h3>Max Cashout Note</h3><p id="result-cashout-note">No max cashout cap entered.</p></div>
         </section>
+
+        <div class="card glass-card section-tight">
+          <h3>Plain-English result</h3>
+          <p id="result-explanation">Run the calculator to see a full bonus terms breakdown.</p>
+        </div>
       </div>
     </section>
 
@@ -205,15 +261,35 @@
       <div class="container">
         <div class="section-header">
           <span class="eyebrow eyebrow-muted">Bonus math guide</span>
-          <h2 id="bonus-ev-education-title" class="section-title">How casino bonus EV works</h2>
+          <h2 id="bonus-ev-education-title" class="section-title">How this bonus reality check works</h2>
         </div>
         <div class="grid grid-2">
-          <article class="card glass-card"><h3>What is casino bonus EV?</h3><p>Casino bonus EV is the estimated average value of a promotion after the expected gambling loss needed to clear it. Positive EV on paper still does not guarantee profit in one account, one session, or one bonus run.</p></article>
-          <article class="card glass-card"><h3>Why wagering requirements matter</h3><p>Wagering requirements multiply the amount you must bet before withdrawal. A 30x bonus-only requirement on a $100 bonus starts at $3,000 in wagering before game contribution adjustments.</p></article>
-          <article class="card glass-card"><h3>Why RTP matters</h3><p>RTP estimates the long-run percentage returned by a game. The calculator uses house edge as 1 minus RTP, so a 96% RTP game has an estimated 4% house edge.</p></article>
-          <article class="card glass-card"><h3>Why game contribution matters</h3><p>If a game contributes 50%, every dollar wagered only counts as fifty cents toward the requirement. That effectively doubles the actual wagering needed to clear the bonus.</p></article>
-          <article class="card glass-card"><h3>Why max cashout can kill a good-looking bonus</h3><p>A max cashout cap limits upside. Even if the headline bonus looks profitable, the casino may cap withdrawals while the full downside remains very real.</p></article>
+          <article class="card glass-card"><h3>How bonus amount is calculated</h3><p>The tool calculates bonus amount as the lesser of deposit × bonus match percentage and the max bonus cap.</p></article>
+          <article class="card glass-card"><h3>Why wagering requirements matter</h3><p>Wagering requirements multiply what must be bet before terms clear. Deposit + bonus terms can double the base compared with bonus-only terms.</p></article>
+          <article class="card glass-card"><h3>Why RTP matters</h3><p>House edge is calculated as 1 − RTP. That edge is applied to adjusted wagering to estimate long-run expected loss.</p></article>
+          <article class="card glass-card"><h3>Why game contribution matters</h3><p>Lower contribution means more real wagering to satisfy the same requirement. A 50% contribution doubles the adjusted wagering needed.</p></article>
+          <article class="card glass-card"><h3>How max cashout is treated</h3><p>This calculator treats max cashout as a total withdrawal cap from bonus play. Profit above the original deposit is capped at max cashout minus deposit.</p></article>
           <article class="card glass-card"><h3>Common bonus traps</h3><ul class="check-list"><li>High wagering requirements</li><li>Low game contribution</li><li>Max bet limits</li><li>Game exclusions</li><li>Max cashout caps</li><li>Short expiration windows</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="bonus-faq-title">
+      <div class="container">
+        <h2 id="bonus-faq-title" class="section-title">Casino bonus FAQ</h2>
+        <div class="grid grid-2">
+          <article class="card glass-card">
+            <h3>What does this calculator estimate?</h3>
+            <p>It estimates theoretical bonus value after wagering requirements, game contribution, RTP house edge, optional cashout caps, and optional fees.</p>
+          </article>
+          <article class="card glass-card">
+            <h3>How is max cashout handled?</h3>
+            <p>Max cashout is treated as the maximum total withdrawal from bonus play. Profit above your original deposit is capped at max cashout minus deposit.</p>
+          </article>
+          <article class="card glass-card">
+            <h3>Does this predict what happens tonight?</h3>
+            <p>No. This tool gives long-run math estimates. Short-term outcomes can be very different because variance and bonus rules still apply.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -247,7 +323,7 @@
       <div class="footer-links">
         <a href="index.html">Home</a>
         <a href="tools/">Tools</a>
-        <a href="casino-bonus-ev-calculator.html">Casino Bonus EV Calculator</a>
+        <a href="casino-bonus-calculator.html">Casino Bonus Reality Check Calculator</a>
         <a href="bankroll-tools.html">Bankroll Tools</a>
         <a href="casino-reviews.html">Casino Reviews</a>
         <a href="how-we-calculate-odds.html">How We Calculate Odds</a>
@@ -268,7 +344,7 @@
   </footer>
 
   <script src="js/tracking.js" defer></script>
-  <script src="casino-bonus-ev-calculator.js" defer></script>
+  <script src="js/casino-bonus-calculator.js" defer></script>
   <script src="nav.js" defer></script>
 </body>
 </html>
