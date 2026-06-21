@@ -102,12 +102,19 @@
 
     if (maxCashout > 0) {
       cashoutLimitedProfit = maxCashout - depositAmount;
-      theoreticalBonusValue = Math.min(
-        uncappedTheoreticalBonusValue,
-        cashoutLimitedProfit
-      );
-      restrictiveCashout = cashoutLimitedProfit < uncappedTheoreticalBonusValue;
-      cashoutText = `Assumption used: max cashout is a total withdrawal cap of ${money.format(maxCashout)}. Profit above deposit is capped at ${money.format(cashoutLimitedProfit)} (max cashout - deposit).`;
+      if (cashoutLimitedProfit < 0) {
+        // max cashout is below deposit — no withdrawable profit above deposit is possible
+        theoreticalBonusValue = Math.min(uncappedTheoreticalBonusValue, 0);
+        restrictiveCashout = true;
+        cashoutText = `Warning: max cashout (${money.format(maxCashout)}) is below your deposit (${money.format(depositAmount)}). Under this assumption, the bonus terms do not allow withdrawable profit above your original deposit.`;
+      } else {
+        theoreticalBonusValue = Math.min(
+          uncappedTheoreticalBonusValue,
+          cashoutLimitedProfit
+        );
+        restrictiveCashout = cashoutLimitedProfit < uncappedTheoreticalBonusValue;
+        cashoutText = `Assumption used: max cashout is a total withdrawal cap of ${money.format(maxCashout)}. Profit above deposit is capped at ${money.format(cashoutLimitedProfit)} (max cashout − deposit).`;
+      }
     }
 
     const netTheoreticalValue = theoreticalBonusValue - fees;
@@ -143,7 +150,9 @@
           : "Enter an average bet size above $0 to estimate bets/spins needed.";
       const cashoutExplain =
         maxCashout > 0
-          ? `With max cashout set, displayed theoretical value is capped by max cashout - deposit (${money.format(cashoutLimitedProfit)}).`
+          ? (cashoutLimitedProfit < 0
+              ? `Warning: the max cashout (${money.format(maxCashout)}) is below your deposit. Under this assumption, the bonus terms do not allow withdrawable profit above your original deposit.`
+              : `With max cashout set, displayed theoretical value is capped by max cashout − deposit (${money.format(cashoutLimitedProfit)}).`)
           : "No max cashout cap was applied.";
       const feesExplain =
         fees > 0
