@@ -218,10 +218,12 @@ ol {
   backdrop-filter: blur(10px);
   background: rgba(10, 13, 18, 0.88);
   border-bottom: 1px solid var(--border);
+  overflow: visible;
 }
 
 .site-header .container.nav {
   padding: 0;
+  overflow: visible;
 }
 
 .nav {
@@ -230,6 +232,7 @@ ol {
   align-items: center;
   justify-content: space-between;
   gap: 18px;
+  overflow: visible;
 }
 
 .brand {
@@ -261,6 +264,7 @@ ol {
   align-items: center;
   justify-content: flex-end;
   gap: 6px;
+  overflow: visible;
 }
 
 .nav-link,
@@ -325,11 +329,12 @@ ol {
 
 .nav-panel {
   position: absolute;
-  top: calc(100% + 10px);
+  top: 100%;
   left: 0;
-  z-index: 1200;
+  z-index: 9999;
   display: grid;
   min-width: 250px;
+  max-height: none;
   margin: 0;
   padding: 10px;
   border: 1px solid var(--border-strong);
@@ -342,6 +347,7 @@ ol {
   visibility: hidden;
   transform: translateY(8px);
   pointer-events: none;
+  overflow: visible;
   transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s ease;
 }
 
@@ -349,7 +355,7 @@ ol {
   min-width: 290px;
 }
 
-.nav-menu > .nav-item-dropdown:last-child > .nav-panel {
+.nav-menu > .nav-item-dropdown:nth-last-child(-n + 2) > .nav-panel {
   right: 0;
   left: auto;
 }
@@ -435,6 +441,7 @@ ol {
 
 .nav-group {
   position: relative;
+  overflow: visible;
 }
 
 .nav-trigger {
@@ -456,10 +463,12 @@ ol {
 
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: 100%;
   left: 0;
+  z-index: 9999;
   display: none;
   min-width: 230px;
+  max-height: none;
   margin: 0;
   padding: 8px;
   list-style: none;
@@ -468,6 +477,7 @@ ol {
   background: rgba(10, 13, 18, 0.94);
   box-shadow: var(--shadow);
   backdrop-filter: blur(12px);
+  overflow: visible;
 }
 
 .dropdown-menu-right {
@@ -509,6 +519,7 @@ ol {
   position: sticky;
   top: 0;
   z-index: 999;
+  overflow: visible;
 }
 
 .navbar a {
@@ -3344,4 +3355,78 @@ table td {
 
 .tools-next-steps .hero-actions {
   margin-top: 12px;
+}
+
+.page-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 420px);
+  gap: 2rem;
+  align-items: center;
+  margin: 2rem auto;
+}
+
+.page-feature-content {
+  display: grid;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+.page-feature-media {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+}
+
+.page-feature img,
+.page-feature-image,
+.tool-hero-image {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+  border-radius: 18px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 800px) {
+  .page-feature {
+    grid-template-columns: 1fr;
+  }
+
+  .page-feature img,
+  .page-feature-image,
+  .tool-hero-image {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .hero-grid.page-feature,
+  .page-hero-split.page-feature,
+  .page-hero-inner.page-feature {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-grid.page-feature .page-feature-content,
+  .page-hero-split.page-feature .page-feature-content,
+  .page-hero-inner.page-feature .page-feature-content {
+    max-width: 100%;
+  }
+
+  .hero-grid.page-feature .page-feature-media,
+  .page-hero-split.page-feature .page-feature-media,
+  .page-hero-inner.page-feature .page-feature-media {
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  .hero-grid.page-feature .tool-hero-image,
+  .page-hero-split.page-feature .tool-hero-image,
+  .page-hero-inner.page-feature .tool-hero-image {
+    max-width: 460px;
+    width: 100%;
+  }
 }

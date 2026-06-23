@@ -64,6 +64,12 @@ function getCanonicalHref(html) {
   return match ? extractAttr(match[0], 'href') : '';
 }
 
+function publicPathForHtmlFile(file) {
+  if (file === 'index.html') return '/';
+  if (file.endsWith('/index.html')) return `/${file.replace(/\/index\.html$/i, '/')}`;
+  return `/${file}`;
+}
+
 function canonicalInvalidReason(url, file) {
   if (!url) return 'missing canonical URL';
   if (url.startsWith('http://')) return 'must not use http://';
@@ -71,7 +77,7 @@ function canonicalInvalidReason(url, file) {
   if (url.includes('github.io')) return 'must not contain github.io';
   if (!url.startsWith(`${SITE_ORIGIN}/`)) return `must start with ${SITE_ORIGIN}/`;
 
-  let expectedPath = file === 'index.html' ? '/' : `/${file}`;
+  const expectedPath = publicPathForHtmlFile(file);
   let parsed;
   try {
     parsed = new URL(url);
@@ -137,24 +143,32 @@ function resolveLocalPath(htmlFile, localRef) {
   return clean;
 }
 
-function htmlFileFromSiteUrl(url) {
+function htmlFilesFromSiteUrl(url) {
   let parsed;
   try {
     parsed = new URL(url);
   } catch {
-    return null;
+    return [];
   }
 
-  if (parsed.origin !== SITE_ORIGIN) return null;
-  if (parsed.search || parsed.hash) return null;
+  if (parsed.origin !== SITE_ORIGIN) return [];
+  if (parsed.search || parsed.hash) return [];
 
-  if (parsed.pathname === '/' || parsed.pathname === '') return 'index.html';
+  if (parsed.pathname === '/' || parsed.pathname === '') return ['index.html'];
 
   const pathname = parsed.pathname.replace(/^\/+/, '');
-  if (!pathname.endsWith('.html')) return null;
-  if (pathname.includes('/')) return null;
 
-  return pathname;
+  if (pathname.endsWith('/')) {
+    const cleanPath = pathname.replace(/\/+$/, '');
+    if (!cleanPath) return ['index.html'];
+
+    return [`${cleanPath}/index.html`];
+  }
+
+  if (!pathname.endsWith('.html')) return [];
+  if (pathname.includes('/')) return [];
+
+  return [pathname];
 }
 
 function parseSitemapUrls(xml) {
@@ -220,8 +234,44 @@ function audit() {
   const missingRefs = [];
   const jsonLdIssues = [];
 
-  const htmlFiles = listRequiredHtmlFiles();
-  const htmlSet = new Set(htmlFiles);
+  const rootHtmlFiles = listRequiredHtmlFiles();
+  const htmlSet = new Set(rootHtmlFiles);
+  const sitemapMappedFiles = new Set();
+
+  if (fs.existsSync(SITEMAP_PATH)) {
+    const sitemap = readText(SITEMAP_PATH);
+    const sitemapUrls = parseSitemapUrls(sitemap);
+
+    for (const url of sitemapUrls) {
+      const sitemapHtmlFiles = htmlFilesFromSiteUrl(url);
+
+      if (sitemapHtmlFiles.length === 0) {
+        sitemapIssues.push(`sitemap URL is not a valid EdgeOverLuck HTML URL: ${url}`);
+        continue;
+      }
+
+      const htmlFile = sitemapHtmlFiles.find((file) => fileExists(file));
+
+      if (!htmlFile) {
+        sitemapIssues.push(`sitemap URL does not map to a real HTML file: ${url}`);
+        continue;
+      }
+
+      if (isIgnoredHtmlFile(htmlFile)) continue;
+
+      const html = readText(path.join(ROOT, htmlFile));
+      const canonicalHref = getCanonicalHref(html);
+      if (canonicalHref !== url) {
+        sitemapIssues.push(`${htmlFile}: sitemap URL ${url} does not match canonical ${canonicalHref || '(missing)'}`);
+        continue;
+      }
+
+      sitemapMappedFiles.add(htmlFile);
+      htmlSet.add(htmlFile);
+    }
+  }
+
+  const htmlFiles = [...htmlSet].sort();
 
   for (const file of htmlFiles) {
     const html = readText(path.join(ROOT, file));
@@ -263,33 +313,11 @@ function audit() {
   if (!fs.existsSync(SITEMAP_PATH)) {
     sitemapIssues.push('sitemap.xml is missing');
   } else {
-    const sitemap = readText(SITEMAP_PATH);
-    const sitemapUrls = parseSitemapUrls(sitemap);
-    const mapped = new Set();
-
-    for (const url of sitemapUrls) {
-      const htmlFile = htmlFileFromSiteUrl(url);
-
-      if (!htmlFile) {
-        sitemapIssues.push(`sitemap URL is not a valid root EdgeOverLuck HTML URL: ${url}`);
-        continue;
-      }
-
-      if (isIgnoredHtmlFile(htmlFile)) continue;
-
-      if (!htmlSet.has(htmlFile)) {
-        sitemapIssues.push(`sitemap URL does not map to a real root HTML file: ${url}`);
-        continue;
-      }
-
-      mapped.add(htmlFile);
-    }
-
     for (const file of htmlFiles) {
       if (OPTIONAL_SITEMAP_HTML.has(file)) continue;
 
-      if (!mapped.has(file)) {
-        sitemapIssues.push(`root HTML page missing from sitemap.xml: ${file}`);
+      if (!sitemapMappedFiles.has(file)) {
+        sitemapIssues.push(`HTML page missing from sitemap.xml: ${file}`);
       }
     }
   }
