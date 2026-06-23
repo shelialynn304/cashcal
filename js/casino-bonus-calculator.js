@@ -2,6 +2,7 @@
   const form = document.querySelector("#bonus-form");
   const results = document.querySelector("#bonus-results");
   const message = document.querySelector("#bonus-message");
+  const runButton = document.querySelector("#run-bonus-reality-check");
 
   if (!form || !results) return;
 
@@ -103,7 +104,6 @@
     if (maxCashout > 0) {
       cashoutLimitedProfit = maxCashout - depositAmount;
       if (cashoutLimitedProfit < 0) {
-        // max cashout is below deposit — no withdrawable profit above deposit is possible
         theoreticalBonusValue = Math.min(uncappedTheoreticalBonusValue, 0);
         restrictiveCashout = true;
         cashoutText = `Warning: max cashout (${money.format(maxCashout)}) is below your deposit (${money.format(depositAmount)}). Under this assumption, the bonus terms do not allow withdrawable profit above your original deposit.`;
@@ -113,7 +113,7 @@
           cashoutLimitedProfit
         );
         restrictiveCashout = cashoutLimitedProfit < uncappedTheoreticalBonusValue;
-        cashoutText = `Assumption used: max cashout is a total withdrawal cap of ${money.format(maxCashout)}. Profit above deposit is capped at ${money.format(cashoutLimitedProfit)} (max cashout − deposit).`;
+        cashoutText = `Assumption used: max cashout is a total withdrawal cap of ${money.format(maxCashout)}. Profit above deposit is capped at ${money.format(cashoutLimitedProfit)} (max cashout minus deposit).`;
       }
     }
 
@@ -206,6 +206,13 @@
     event.preventDefault();
     calculateBonusRealityCheck();
   });
+
+  if (runButton) {
+    runButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      calculateBonusRealityCheck();
+    });
+  }
 
   form.addEventListener("input", calculateBonusRealityCheck);
   calculateBonusRealityCheck();
