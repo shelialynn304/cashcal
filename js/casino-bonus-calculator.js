@@ -1,320 +1,212 @@
-(() => {
-  const CURRENCY_FORMAT = new Intl.NumberFormat("en-US", {
+(function () {
+  const form = document.querySelector("#bonus-form");
+  const results = document.querySelector("#bonus-results");
+  const message = document.querySelector("#bonus-message");
+
+  if (!form || !results) return;
+
+  const money = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
+    maximumFractionDigits: 2,
   });
 
-  const WHOLE_NUMBER_FORMAT = new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: 0
+  const pct = new Intl.NumberFormat("en-US", {
+    style: "percent",
+    maximumFractionDigits: 2,
   });
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("bonusCalcForm");
-    const results = document.getElementById("bonusCalcResults");
-    const errorBox = document.getElementById("bonusCalcError");
-    const warningBox = document.getElementById("bonusCalcWarnings");
-
-    if (!form || !results || !errorBox || !warningBox) {
-      return;
-    }
-
-    const output = {
-      bonusAmount: document.getElementById("resultBonusAmount"),
-      startingBalance: document.getElementById("resultStartingBalance"),
-      rawWagering: document.getElementById("resultRawWagering"),
-      adjustedWagering: document.getElementById("resultAdjustedWagering"),
-      expectedLoss: document.getElementById("resultExpectedLoss"),
-      numberOfBets: document.getElementById("resultNumberOfBets"),
-      theoreticalValue: document.getElementById("resultTheoreticalValue"),
-      riskRating: document.getElementById("resultRiskRating"),
-      riskSummary: document.getElementById("resultRiskSummary")
-    };
-
-    const hasAllOutputs = Object.values(output).every(Boolean);
-    if (!hasAllOutputs) {
-      return;
-    }
-
-    function parseOptionalNumber(value) {
-      if (value === "" || value === null || value === undefined) {
-        return null;
-      }
-      const parsed = Number.parseFloat(value);
-      return Number.isFinite(parsed) ? parsed : null;
-    }
-
-    function getInputValues() {
-      return {
-        depositAmount: Number.parseFloat(form.depositAmount.value),
-        bonusMatchPercent: Number.parseFloat(form.bonusMatchPercent.value),
-        maxBonusAmount: Number.parseFloat(form.maxBonusAmount.value),
-        wageringMultiplier: Number.parseFloat(form.wageringMultiplier.value),
-        wageringAppliesTo: form.wageringAppliesTo.value,
-        gameContributionPercent: Number.parseFloat(form.gameContributionPercent.value),
-        rtpPercent: Number.parseFloat(form.rtpPercent.value),
-        averageBetSize: parseOptionalNumber(form.averageBetSize.value),
-        maxCashout: parseOptionalNumber(form.maxCashout.value),
-        timeLimitDays: parseOptionalNumber(form.timeLimitDays.value)
-      };
-    }
-
-    function validateInputs(values) {
-      if (!Number.isFinite(values.depositAmount) || values.depositAmount < 0) {
-        return "Deposit amount must be 0 or greater.";
-      }
-
-      if (!Number.isFinite(values.bonusMatchPercent) || values.bonusMatchPercent < 0) {
-        return "Bonus match percentage must be 0 or greater.";
-      }
-
-      if (!Number.isFinite(values.maxBonusAmount) || values.maxBonusAmount < 0) {
-        return "Maximum bonus amount must be 0 or greater.";
-      }
-
-      if (!Number.isFinite(values.wageringMultiplier) || values.wageringMultiplier < 0) {
-        return "Wagering requirement multiplier must be 0 or greater.";
-      }
-
-      if (!Number.isFinite(values.gameContributionPercent) || values.gameContributionPercent <= 0 || values.gameContributionPercent > 100) {
-        return "Game contribution must be more than 0% and no higher than 100%.";
-      }
-
-      if (!Number.isFinite(values.rtpPercent) || values.rtpPercent < 0 || values.rtpPercent > 100) {
-        return "RTP must be between 0% and 100%.";
-      }
-
-      if (values.averageBetSize !== null && values.averageBetSize < 0) {
-        return "Average bet size cannot be negative.";
-      }
-
-      if (values.maxCashout !== null && values.maxCashout < 0) {
-        return "Max cashout cannot be negative.";
-      }
-
-      if (values.timeLimitDays !== null && values.timeLimitDays < 0) {
-        return "Time limit in days cannot be negative.";
-      }
-
-      if (values.wageringAppliesTo !== "bonus-only" && values.wageringAppliesTo !== "deposit-plus-bonus") {
-        return "Choose a valid wagering base option.";
-      }
-
-      return "";
-    }
-
-    function calculateBonusMath(values) {
-      const bonusAmount = Math.min((values.depositAmount * values.bonusMatchPercent) / 100, values.maxBonusAmount);
-      const startingBalance = values.depositAmount + bonusAmount;
-      const wageringBase = values.wageringAppliesTo === "bonus-only" ? bonusAmount : startingBalance;
-      const rawWageringRequired = wageringBase * values.wageringMultiplier;
-      const adjustedWageringRequired = rawWageringRequired / (values.gameContributionPercent / 100);
-      const houseEdge = 1 - values.rtpPercent / 100;
-      const estimatedExpectedLoss = adjustedWageringRequired * houseEdge;
-      const estimatedNumberOfBets = values.averageBetSize && values.averageBetSize > 0
-        ? adjustedWageringRequired / values.averageBetSize
-        : null;
-      const theoreticalBonusValue = bonusAmount - estimatedExpectedLoss;
-
-      return {
-        bonusAmount,
-        startingBalance,
-        wageringBase,
-        rawWageringRequired,
-        adjustedWageringRequired,
-        houseEdge,
-        estimatedExpectedLoss,
-        estimatedNumberOfBets,
-        theoreticalBonusValue
-      };
-    }
-
-    function isMaxCashoutRestrictive(maxCashout, adjustedWageringRequired, startingBalance) {
-      if (!Number.isFinite(maxCashout) || maxCashout <= 0) {
-        return false;
-      }
-
-      const cashoutToWagerRatio = maxCashout / Math.max(adjustedWageringRequired, 1);
-      return maxCashout <= startingBalance || cashoutToWagerRatio < 0.1;
-    }
-
-    function getRiskRating(values, result) {
-      const restrictiveCashout = isMaxCashoutRestrictive(values.maxCashout, result.adjustedWageringRequired, result.startingBalance);
-      const stronglyNegative = result.theoreticalBonusValue <= -Math.max(50, result.bonusAmount * 0.5);
-      const veryLowContribution = values.gameContributionPercent <= 30;
-
-      if (stronglyNegative || values.wageringMultiplier > 50 || veryLowContribution || restrictiveCashout) {
-        return {
-          label: "Dumpster Fire",
-          summary: "Math warning: this setup is heavily stacked against the player before variance even gets involved."
-        };
-      }
-
-      if (result.theoreticalBonusValue < 0 || values.wageringMultiplier > 35) {
-        return {
-          label: "Ugly",
-          summary: "Theoretical value is negative or wagering is very high, so this bonus likely costs more than it gives."
-        };
-      }
-
-      if (result.theoreticalBonusValue > 0 && values.wageringMultiplier <= 20 && values.gameContributionPercent === 100) {
-        return {
-          label: "Fair",
-          summary: "This setup is cleaner than most: positive theoretical value with moderate wagering and full game contribution."
-        };
-      }
-
-      return {
-        label: "Risky",
-        summary: "Theoretical value may be positive, but high wagering or reduced contribution increases bankroll pressure."
-      };
-    }
-
-    function formatMoney(value) {
-      return CURRENCY_FORMAT.format(value);
-    }
-
-    function formatWhole(value) {
-      return WHOLE_NUMBER_FORMAT.format(value);
-    }
-
-
-    function showError(message) {
-      errorBox.textContent = message;
-      results.hidden = true;
-    }
-
-    function clearMessages() {
-      errorBox.textContent = "";
-      warningBox.textContent = "";
-      warningBox.hidden = true;
-    }
-
-    function renderWarnings(values, result) {
-      const warnings = [];
-
-      if (!values.averageBetSize || values.averageBetSize <= 0) {
-        warnings.push("Average bet size must be above 0 to estimate number of bets/spins.");
-      }
-
-      if (isMaxCashoutRestrictive(values.maxCashout, result.adjustedWageringRequired, result.startingBalance)) {
-        warnings.push("Max cashout looks restrictive versus the required wagering. You could clear wagering and still be capped hard.");
-      }
-
-      if (Number.isFinite(values.timeLimitDays) && values.timeLimitDays > 0 && Number.isFinite(result.estimatedNumberOfBets)) {
-        const betsPerDay = result.estimatedNumberOfBets / values.timeLimitDays;
-        if (betsPerDay > 1000) {
-          warnings.push(`Time pressure warning: this setup needs about ${formatWhole(betsPerDay)} bets/spins per day to clear in time.`);
-        }
-      }
-
-      if (warnings.length === 0) {
-        warningBox.textContent = "";
-        warningBox.hidden = true;
-        return;
-      }
-
-      const warningList = document.createElement("ul");
-      warnings.forEach((warning) => {
-        const item = document.createElement("li");
-        item.textContent = warning;
-        warningList.appendChild(item);
-      });
-      warningBox.replaceChildren(warningList);
-      warningBox.hidden = false;
-    }
-
-    function render(values, result) {
-      const risk = getRiskRating(values, result);
-
-      output.bonusAmount.textContent = formatMoney(result.bonusAmount);
-      output.startingBalance.textContent = formatMoney(result.startingBalance);
-      output.rawWagering.textContent = formatMoney(result.rawWageringRequired);
-      output.adjustedWagering.textContent = formatMoney(result.adjustedWageringRequired);
-      output.expectedLoss.textContent = formatMoney(result.estimatedExpectedLoss);
-      output.numberOfBets.textContent = Number.isFinite(result.estimatedNumberOfBets)
-        ? `${formatWhole(result.estimatedNumberOfBets)} bets/spins`
-        : "Enter average bet > 0";
-      output.theoreticalValue.textContent = formatMoney(result.theoreticalBonusValue);
-      output.riskRating.textContent = risk.label;
-      output.riskRating.dataset.riskLevel = risk.label.toLowerCase().replace(/\s+/g, "-");
-      output.riskSummary.textContent = `${risk.summary} Expected loss is theoretical, not predictive.`;
-
-      renderWarnings(values, result);
-      results.hidden = false;
-    }
-
-    function handleCalculate(event) {
-      if (event) {
-        event.preventDefault();
-      }
-
-      clearMessages();
-      const values = getInputValues();
-      const validationMessage = validateInputs(values);
-
-      if (validationMessage) {
-        showError(validationMessage);
-        return;
-      }
-
-      const result = calculateBonusMath(values);
-      render(values, result);
-    }
-
-    function assertClose(actual, expected, tolerance = 0.0001, label = "value") {
-      if (Math.abs(actual - expected) > tolerance) {
-        console.warn(`${label} mismatch: expected ${expected}, got ${actual}`);
-      }
-    }
-
-    function runSanityChecks() {
-      const testCaseOne = calculateBonusMath({
-        depositAmount: 100,
-        bonusMatchPercent: 100,
-        maxBonusAmount: 100,
-        wageringMultiplier: 30,
-        wageringAppliesTo: "bonus-only",
-        gameContributionPercent: 100,
-        rtpPercent: 96,
-        averageBetSize: 1,
-        maxCashout: null,
-        timeLimitDays: null
-      });
-
-      assertClose(testCaseOne.bonusAmount, 100, 0.0001, "Test 1 bonus amount");
-      assertClose(testCaseOne.startingBalance, 200, 0.0001, "Test 1 starting balance");
-      assertClose(testCaseOne.rawWageringRequired, 3000, 0.0001, "Test 1 raw wagering");
-      assertClose(testCaseOne.adjustedWageringRequired, 3000, 0.0001, "Test 1 adjusted wagering");
-      assertClose(testCaseOne.estimatedExpectedLoss, 120, 0.0001, "Test 1 expected loss");
-      assertClose(testCaseOne.estimatedNumberOfBets || 0, 3000, 0.0001, "Test 1 number of bets");
-      assertClose(testCaseOne.theoreticalBonusValue, -20, 0.0001, "Test 1 theoretical bonus value");
-
-      const testCaseTwo = calculateBonusMath({
-        depositAmount: 100,
-        bonusMatchPercent: 100,
-        maxBonusAmount: 100,
-        wageringMultiplier: 30,
-        wageringAppliesTo: "deposit-plus-bonus",
-        gameContributionPercent: 100,
-        rtpPercent: 96,
-        averageBetSize: 1,
-        maxCashout: null,
-        timeLimitDays: null
-      });
-
-      assertClose(testCaseTwo.rawWageringRequired, 6000, 0.0001, "Test 2 raw wagering");
-      assertClose(testCaseTwo.adjustedWageringRequired, 6000, 0.0001, "Test 2 adjusted wagering");
-      assertClose(testCaseTwo.estimatedExpectedLoss, 240, 0.0001, "Test 2 expected loss");
-      assertClose(testCaseTwo.theoreticalBonusValue, -140, 0.0001, "Test 2 theoretical bonus value");
-    }
-
-    form.addEventListener("submit", handleCalculate);
-    form.addEventListener("input", handleCalculate);
-
-    runSanityChecks();
-    handleCalculate();
-
+  const number = new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 0,
   });
+
+  function getNumber(id) {
+    const el = document.getElementById(id);
+    if (!el) {
+      console.warn(`Missing calculator input: ${id}`);
+      return 0;
+    }
+    const value = Number(el.value);
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  }
+
+  function showError(text) {
+    if (!message) return;
+    message.textContent = text;
+    message.className = "warning-box";
+  }
+
+  function showNote(text, isWarning = false) {
+    if (!message) return;
+    message.textContent = text;
+    message.className = isWarning ? "warning-box" : "info-box";
+  }
+
+  function calculateBonusRealityCheck() {
+    const depositAmount = getNumber("deposit-amount");
+    const bonusMatchPercent = getNumber("bonus-match-percent");
+    const maxBonusAmount = getNumber("max-bonus-amount");
+    const wageringMultiplier = getNumber("wagering-multiplier");
+    const contributionPercent = getNumber("game-contribution");
+    const rtpPercent = getNumber("game-rtp");
+    const averageBetSize = getNumber("average-bet-size");
+    const maxCashout = getNumber("max-cashout");
+    const fees = getNumber("fees");
+    const timeLimitHours = getNumber("time-limit-hours");
+
+    const wageringAppliesTo = document.querySelector(
+      'input[name="wagering-base"]:checked'
+    )?.value || "bonus";
+
+    if (depositAmount < 0) return showError("Deposit amount cannot be negative.");
+    if (bonusMatchPercent < 0) return showError("Bonus match cannot be negative.");
+    if (maxBonusAmount < 0) return showError("Max bonus amount cannot be negative.");
+    if (wageringMultiplier < 0) return showError("Wagering multiplier cannot be negative.");
+    if (contributionPercent <= 0 || contributionPercent > 100) return showError("Game contribution must be greater than 0% and no more than 100%.");
+    if (rtpPercent < 0 || rtpPercent > 100) return showError("RTP must be between 0% and 100%.");
+    if (averageBetSize < 0) return showError("Average bet size cannot be negative.");
+    if (maxCashout < 0) return showError("Max cashout cannot be negative.");
+    if (fees < 0) return showError("Optional fees cannot be negative.");
+    if (timeLimitHours < 0) return showError("Time limit cannot be negative.");
+
+    const bonusAmount = Math.min(
+      (depositAmount * bonusMatchPercent) / 100,
+      maxBonusAmount
+    );
+    const startingBalance = depositAmount + bonusAmount;
+    const wageringBase =
+      wageringAppliesTo === "deposit-plus-bonus"
+        ? depositAmount + bonusAmount
+        : bonusAmount;
+    const rawWageringRequired = wageringBase * wageringMultiplier;
+    const adjustedWageringRequired =
+      rawWageringRequired / (contributionPercent / 100);
+    const houseEdge = 1 - rtpPercent / 100;
+    const estimatedExpectedLoss = adjustedWageringRequired * houseEdge;
+    const estimatedNumberOfBets =
+      averageBetSize > 0
+        ? Math.ceil(adjustedWageringRequired / averageBetSize)
+        : 0;
+    const uncappedTheoreticalBonusValue =
+      bonusAmount - estimatedExpectedLoss;
+
+    let theoreticalBonusValue = uncappedTheoreticalBonusValue;
+    let cashoutLimitedProfit = null;
+    let cashoutText = "No max cashout cap entered.";
+    let restrictiveCashout = false;
+
+    if (maxCashout > 0) {
+      cashoutLimitedProfit = maxCashout - depositAmount;
+      if (cashoutLimitedProfit < 0) {
+        // max cashout is below deposit — no withdrawable profit above deposit is possible
+        theoreticalBonusValue = Math.min(uncappedTheoreticalBonusValue, 0);
+        restrictiveCashout = true;
+        cashoutText = `Warning: max cashout (${money.format(maxCashout)}) is below your deposit (${money.format(depositAmount)}). Under this assumption, the bonus terms do not allow withdrawable profit above your original deposit.`;
+      } else {
+        theoreticalBonusValue = Math.min(
+          uncappedTheoreticalBonusValue,
+          cashoutLimitedProfit
+        );
+        restrictiveCashout = cashoutLimitedProfit < uncappedTheoreticalBonusValue;
+        cashoutText = `Assumption used: max cashout is a total withdrawal cap of ${money.format(maxCashout)}. Profit above deposit is capped at ${money.format(cashoutLimitedProfit)} (max cashout − deposit).`;
+      }
+    }
+
+    const netTheoreticalValue = theoreticalBonusValue - fees;
+    const baseLabel =
+      wageringAppliesTo === "deposit-plus-bonus"
+        ? "deposit + bonus"
+        : "bonus only";
+
+    setText("result-bonus-amount", money.format(bonusAmount));
+    setText("result-starting-balance", money.format(startingBalance));
+    setText("result-wagering-base", money.format(wageringBase));
+    setText("result-raw-wagering", money.format(rawWageringRequired));
+    setText(
+      "result-adjusted-wagering",
+      money.format(adjustedWageringRequired)
+    );
+    setText("result-bets-count", number.format(estimatedNumberOfBets));
+    setText("result-house-edge", pct.format(houseEdge));
+    setText("result-expected-loss", money.format(estimatedExpectedLoss));
+    setText(
+      "result-uncapped-value",
+      money.format(uncappedTheoreticalBonusValue)
+    );
+    setText("result-theoretical-value", money.format(theoreticalBonusValue));
+    setText("result-net-value", money.format(netTheoreticalValue));
+    setText("result-cashout-note", cashoutText);
+
+    const explanation = document.getElementById("result-explanation");
+    if (explanation) {
+      const betsText =
+        averageBetSize > 0
+          ? `At ${money.format(averageBetSize)} average bet size, that is at least ${number.format(estimatedNumberOfBets)} bets/spins.`
+          : "Enter an average bet size above $0 to estimate bets/spins needed.";
+      const cashoutExplain =
+        maxCashout > 0
+          ? (cashoutLimitedProfit < 0
+              ? `Warning: the max cashout (${money.format(maxCashout)}) is below your deposit. Under this assumption, the bonus terms do not allow withdrawable profit above your original deposit.`
+              : `With max cashout set, displayed theoretical value is capped by max cashout − deposit (${money.format(cashoutLimitedProfit)}).`)
+          : "No max cashout cap was applied.";
+      const feesExplain =
+        fees > 0
+          ? `Optional fees of ${money.format(fees)} are subtracted to show net theoretical value.`
+          : "No optional fees were entered.";
+      const timeText =
+        timeLimitHours > 0
+          ? `A ${number.format(timeLimitHours)}-hour time limit was entered; compare it with required wagering pace.`
+          : "No time limit was entered.";
+
+      explanation.textContent = `You deposit ${money.format(depositAmount)}. With a ${pct.format(
+        bonusMatchPercent / 100
+      )} match and ${money.format(maxBonusAmount)} max bonus, the calculated bonus is ${money.format(
+        bonusAmount
+      )}, so starting balance is ${money.format(
+        startingBalance
+      )}. Wagering applies to ${baseLabel}, giving a wagering base of ${money.format(
+        wageringBase
+      )}. You must wager ${money.format(
+        rawWageringRequired
+      )} before terms clear, and ${money.format(
+        adjustedWageringRequired
+      )} after ${pct.format(contributionPercent / 100)} game contribution. ${betsText} At ${pct.format(
+        rtpPercent / 100
+      )} RTP (house edge ${pct.format(
+        houseEdge
+      )}), estimated expected loss is ${money.format(
+        estimatedExpectedLoss
+      )}. Uncapped theoretical bonus value is ${money.format(
+        uncappedTheoreticalBonusValue
+      )}. ${cashoutExplain} ${feesExplain} ${timeText} These are theoretical estimates only, not guaranteed profit, and this calculator does not predict wins.`;
+    }
+
+    if (netTheoreticalValue < 0 || restrictiveCashout) {
+      showNote(
+        "Warning: this offer looks restrictive or negative after wagering pressure, cap rules, and fees.",
+        true
+      );
+    } else if (Math.abs(netTheoreticalValue) <= 0.01) {
+      showNote(
+        "This offer looks roughly break-even on paper before real-session variance and hidden terms."
+      );
+    } else {
+      showNote(
+        "This offer may look positive on paper, but variance and bonus terms can still reduce real outcomes."
+      );
+    }
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    calculateBonusRealityCheck();
+  });
+
+  form.addEventListener("input", calculateBonusRealityCheck);
+  calculateBonusRealityCheck();
 })();
