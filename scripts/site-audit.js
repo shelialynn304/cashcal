@@ -12,8 +12,8 @@ const IGNORE_HTML_PATTERNS = [
 ];
 
 const OPTIONAL_SITEMAP_HTML = new Set([
-  // Keep this empty unless you intentionally want to allow a real public page
-  // to exist outside sitemap.xml.
+  // noindex private page — intentionally excluded from sitemap
+  'member-downloads.html',
 ]);
 
 const IGNORE_LOCAL_REF_PATTERNS = [
