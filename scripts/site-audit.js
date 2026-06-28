@@ -166,9 +166,12 @@ function htmlFilesFromSiteUrl(url) {
   }
 
   if (!pathname.endsWith('.html')) return [];
-  if (pathname.includes('/')) return [];
 
-  return [pathname];
+  const cleanPath = path.normalize(pathname);
+  if (cleanPath.startsWith('..') || path.isAbsolute(cleanPath)) return [];
+  if (cleanPath !== pathname) return [];
+
+  return [cleanPath];
 }
 
 function parseSitemapUrls(xml) {
