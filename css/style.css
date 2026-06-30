@@ -924,6 +924,30 @@ ol {
   padding: 22px;
 }
 
+.newsletter-cta {
+  max-width: 900px;
+  margin: 3rem auto;
+  text-align: center;
+}
+
+.newsletter-cta > * + * {
+  margin-top: 1rem;
+}
+
+.newsletter-cta .newsletter-embed {
+  width: min(100%, 640px);
+  margin: 1.5rem auto 0;
+}
+
+.newsletter-cta .newsletter-embed iframe,
+.newsletter-cta .newsletter-embed > div {
+  max-width: 100%;
+}
+
+.newsletter-cta .fine-print {
+  margin-bottom: 0;
+}
+
 .stat-card,
 .pressure-card {
   min-height: 150px;
