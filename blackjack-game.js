@@ -452,8 +452,10 @@ function setReason(text){
 }
 
 function updateMoney(){
-  bankrollEl.textContent=bankroll
-  betEl.textContent=bet
+  // 3:2 blackjack payouts can leave 50-cent amounts (e.g. $5 pays $7.50),
+  // so show two decimals only when the value is fractional.
+  bankrollEl.textContent=Number.isInteger(bankroll) ? bankroll : bankroll.toFixed(2)
+  betEl.textContent=Number.isInteger(bet) ? bet : bet.toFixed(2)
   renderBankrollStack()
 }
 
@@ -585,10 +587,12 @@ function renderBankrollStack(){
 
 function updateButtons(){
   dealBtn.disabled=!gameOver || dealingInProgress
-  hitBtn.disabled=gameOver || dealingInProgress
+  // Split trainer mode deals one card to each split hand and settles on
+  // Stand; further hits would corrupt the two-hand layout, so lock them out.
+  hitBtn.disabled=gameOver || dealingInProgress || splitModeActive
   standBtn.disabled=gameOver || dealingInProgress
-  doubleBtn.disabled=gameOver || dealingInProgress || player.length!==2 || bankroll<bet
-  splitBtn.disabled=gameOver || dealingInProgress || !isPair(player) || bankroll<bet
+  doubleBtn.disabled=gameOver || dealingInProgress || splitModeActive || player.length!==2 || bankroll<bet
+  splitBtn.disabled=gameOver || dealingInProgress || splitModeActive || !isPair(player) || bankroll<bet
   clearBetBtn.disabled=!gameOver || bet===0 || dealingInProgress
   if(repeatBetBtn){
     repeatBetBtn.disabled=!gameOver || bet>0 || lastValidBetAmount<=0 || dealingInProgress
@@ -706,13 +710,20 @@ function isPair(hand){
     normalizeRank(hand[0].rank)===normalizeRank(hand[1].rank)
 }
 
-function getBasicStrategy(playerHand,dealerCard){
+// Basic strategy (multi-deck, S17, DAS) with availability awareness.
+// options.canDouble / options.canSplit reflect what the player can actually
+// do right now (2-card hand, sufficient bankroll). When the book play is
+// unavailable, this returns the correct fallback play instead of an
+// impossible recommendation.
+function getBasicStrategy(playerHand,dealerCard,options={}){
+  const canDouble = options.canDouble !== false
+  const canSplit = options.canSplit !== false
   const total=handValue(playerHand)
   const dealerUp=cardValue(dealerCard.rank)
   const soft=isSoftHand(playerHand)
   const pair=isPair(playerHand)
 
-  if(pair){
+  if(pair && canSplit){
     const pairRank=normalizeRank(playerHand[0].rank)
 
     if(pairRank==="A" || pairRank==="8") return "Split"
@@ -720,18 +731,22 @@ function getBasicStrategy(playerHand,dealerCard){
     if(pairRank==="9") return [2,3,4,5,6,8,9].includes(dealerUp) ? "Split" : "Stand"
     if(pairRank==="7") return dealerUp>=2 && dealerUp<=7 ? "Split" : "Hit"
     if(pairRank==="6") return dealerUp>=2 && dealerUp<=6 ? "Split" : "Hit"
-    if(pairRank==="5") return dealerUp>=2 && dealerUp<=9 ? "Double" : "Hit"
+    if(pairRank==="5") return (dealerUp>=2 && dealerUp<=9 && canDouble) ? "Double" : "Hit"
     if(pairRank==="4") return (dealerUp===5 || dealerUp===6) ? "Split" : "Hit"
     if(pairRank==="3" || pairRank==="2") return dealerUp>=2 && dealerUp<=7 ? "Split" : "Hit"
   }
 
   if(soft){
-    if(total===13 || total===14) return (dealerUp===5 || dealerUp===6) ? "Double" : "Hit"
-    if(total===15 || total===16) return (dealerUp>=4 && dealerUp<=6) ? "Double" : "Hit"
-    if(total===17) return (dealerUp>=3 && dealerUp<=6) ? "Double" : "Hit"
+    // Soft 12 (an unsplittable A,A) can never bust: always hit.
+    if(total===12) return "Hit"
+    // Fallback when doubling is unavailable: soft 13-17 hit; soft 18 stands
+    // against 3-6 (double-else-stand); soft 19+ stands.
+    if(total===13 || total===14) return ((dealerUp===5 || dealerUp===6) && canDouble) ? "Double" : "Hit"
+    if(total===15 || total===16) return (dealerUp>=4 && dealerUp<=6 && canDouble) ? "Double" : "Hit"
+    if(total===17) return (dealerUp>=3 && dealerUp<=6 && canDouble) ? "Double" : "Hit"
 
     if(total===18){
-      if(dealerUp>=3 && dealerUp<=6) return "Double"
+      if(dealerUp>=3 && dealerUp<=6) return canDouble ? "Double" : "Stand"
       if([2,7,8].includes(dealerUp)) return "Stand"
       return "Hit"
     }
@@ -739,23 +754,38 @@ function getBasicStrategy(playerHand,dealerCard){
     if(total>=19) return "Stand"
   }
 
+  // Fallback when doubling is unavailable: hard 9-11 are hit hands.
   if(total<=8) return "Hit"
-  if(total===9) return (dealerUp>=3 && dealerUp<=6) ? "Double" : "Hit"
-  if(total===10) return (dealerUp>=2 && dealerUp<=9) ? "Double" : "Hit"
-  if(total===11) return dealerUp===11 ? "Hit" : "Double"
+  if(total===9) return (dealerUp>=3 && dealerUp<=6 && canDouble) ? "Double" : "Hit"
+  if(total===10) return (dealerUp>=2 && dealerUp<=9 && canDouble) ? "Double" : "Hit"
+  if(total===11) return dealerUp===11 ? "Hit" : (canDouble ? "Double" : "Hit")
   if(total===12) return (dealerUp>=4 && dealerUp<=6) ? "Stand" : "Hit"
   if(total>=13 && total<=16) return (dealerUp>=2 && dealerUp<=6) ? "Stand" : "Hit"
   return "Stand"
 }
 
+// What the player can legally do right now, matching updateButtons() and
+// getBetValidation(): double/split need a 2-card hand (a true pair for
+// split) and enough bankroll to match the bet.
+function getActionAvailability(){
+  return {
+    canDouble: player.length===2 && bankroll>=bet,
+    canSplit: isPair(player) && bankroll>=bet
+  }
+}
 
-function getStrategyExplanation(playerHand,dealerCard){
-  const move=getBasicStrategy(playerHand,dealerCard)
+
+function getStrategyExplanation(playerHand,dealerCard,availability={}){
+  const move=getBasicStrategy(playerHand,dealerCard,availability)
+  const idealMove=getBasicStrategy(playerHand,dealerCard,{canDouble:true,canSplit:true})
   const total=handValue(playerHand)
   const dealerUp=cardValue(dealerCard.rank)
   const dealerLabel=normalizeRank(dealerCard.rank)
   const soft=isSoftHand(playerHand)
-  const pair=isPair(playerHand)
+  // Only narrate this as a pair decision when splitting was actually on the
+  // table; otherwise describe it as a normal total so the advice matches
+  // what the player can do.
+  const pair=isPair(playerHand) && availability.canSplit !== false
 
   let shortText=""
   let detailedText=""
@@ -822,6 +852,17 @@ function getStrategyExplanation(playerHand,dealerCard){
     }
   }
 
+  // If the pure book play is not available (3+ card hand or short bankroll),
+  // say so instead of recommending a move the buttons will not allow.
+  if(idealMove !== move){
+    const reasonBits = []
+    if(availability.canDouble === false && idealMove === "Double") reasonBits.push("doubling is only available on your first two cards with enough bankroll to match the bet")
+    if(availability.canSplit === false && idealMove === "Split") reasonBits.push("splitting needs a matching bet you can cover")
+    const why = reasonBits.length ? ` because ${reasonBits.join(" and ")}` : ""
+    detailedText += ` (${idealMove} would be the book play, but it isn't available here${why}, so ${move} is the correct available move.)`
+    shortText += ` (${idealMove} unavailable → ${move})`
+  }
+
   return {
     move,
     text: detailedExplanations ? detailedText : shortText
@@ -833,8 +874,10 @@ function getStrategyExplanation(playerHand,dealerCard){
 function maybeShowStrategy(){
   if(gameOver) return
   if(player.length<2 || dealer.length<1) return
+  // No combined-total advice in split trainer mode; the only move is Stand.
+  if(splitModeActive) return
 
-  const advice=getStrategyExplanation(player,dealer[0])
+  const advice=getStrategyExplanation(player,dealer[0],getActionAvailability())
 
 
   hitBtn.classList.remove("correct-glow")
@@ -863,8 +906,11 @@ function showImage(src){
 
 function explainMove(action){
   if(!dealer[0] || player.length<2) return
+  // In split trainer mode the player array holds two hands, so a combined
+  // total is meaningless — do not grade decisions there.
+  if(splitModeActive) return
 
-  const advice=getStrategyExplanation(player,dealer[0])
+  const advice=getStrategyExplanation(player,dealer[0],getActionAvailability())
   lastStrategyMove=advice.move
 
   reactToStrategyDecision(action, advice)
@@ -1041,18 +1087,19 @@ function deal(){
           if(dealToken !== activeDealToken || gameOver) return
           dealingInProgress = false
           updateButtons()
-          setMessage("Your move")
-          if(handValue(player) === 21){
-            render(false)
-            setReason("🎉 Blackjack. You hit 21 immediately, which is the dream before the casino remembers whose building this is.")
-            playBlackjackSound()
-            dealerVoice("cardsInTheAir", { category: "big-card", cooldownMs: 26000, chance: 0.38 })
-            showImage(IMAGES.blackjack)
-          }else{
-            setReason(trainerHintsEnabled
-              ? "Hints are ON. The coach is showing the recommended move."
-              : "Hints are OFF. Make your choice and I’ll explain it after.")
+          // Naturals settle immediately: player blackjack pays 3:2, and the
+          // dealer peeks — a dealer blackjack ends the hand before any
+          // decisions (protecting doubles/splits), both naturals push.
+          const playerNatural = player.length===2 && handValue(player)===21
+          const dealerNatural = dealer.length===2 && handValue(dealer)===21
+          if(playerNatural || dealerNatural){
+            settleNaturals(playerNatural, dealerNatural)
+            return
           }
+          setMessage("Your move")
+          setReason(trainerHintsEnabled
+            ? "Hints are ON. The coach is showing the recommended move."
+            : "Hints are OFF. Make your choice and I’ll explain it after.")
           maybeShowStrategy()
         }, reducedMotion ? 0 : 140)
       }
@@ -1061,8 +1108,67 @@ function deal(){
 }
 
   
+// Immediate settlement for natural blackjacks (two-card 21 on the deal).
+// Payout math: the bet was already deducted from bankroll when placed, so a
+// 3:2 blackjack returns stake + 1.5x stake = bet * 2.5, a push returns
+// bet * 1, and a dealer blackjack returns nothing (the peek means only the
+// original bet is ever at risk).
+function settleNaturals(playerNatural, dealerNatural){
+  const settledBet = bet
+  const pt = handValue(player)
+  const dt = handValue(dealer)
+
+  render(true)
+  playFlipSound()
+
+  if(playerNatural && dealerNatural){
+    bankroll += settledBet
+    setMessage("Double blackjack — push")
+    setReason("🤝 You and the dealer both have blackjack, so the hand pushes and your bet comes back.")
+    handleHandSettled(0, "push", { betAmount: settledBet, playerTotal: pt, dealerTotal: dt })
+  }else if(playerNatural){
+    bankroll += settledBet * 2.5
+    const winnings = settledBet * 1.5
+    setMessage("Blackjack! Paid 3:2")
+    setReason(`🎉 Blackjack pays 3:2 here: your $${settledBet} bet wins $${Number.isInteger(winnings) ? winnings : winnings.toFixed(2)} on top of your returned stake. This payout is a big part of why 3:2 tables beat 6:5 tables.`)
+    playBlackjackSound()
+    showImage(IMAGES.blackjack)
+    handleHandSettled(winnings, "win", { betAmount: settledBet, playerTotal: pt, dealerTotal: dt })
+  }else{
+    setMessage("Dealer has blackjack")
+    setReason(`❌ The dealer peeked and has blackjack, so the hand ends immediately and you lose your $${settledBet} bet. The peek rule protects you from losing extra money on a double or split against a made 21.`)
+    playLoseSound()
+    showImage(IMAGES.dealerLaugh)
+    handleHandSettled(-settledBet, "loss", { betAmount: settledBet, playerTotal: pt, dealerTotal: dt })
+  }
+
+  bet = 0
+  gameOver = true
+  hideStrategyPopup()
+
+  hitBtn.classList.remove("correct-glow")
+  standBtn.classList.remove("correct-glow")
+  doubleBtn.classList.remove("correct-glow")
+  splitBtn.classList.remove("correct-glow")
+
+  updateMoney()
+  updateButtons()
+
+  if(bankroll<=0){
+    setTimeout(()=>{
+      setMessage("Out of money")
+      setReason("💸 Bankroll wiped out. The dealer shrugging at an empty tray feels about right.")
+      showImage(IMAGES.broke)
+    },700)
+  }
+}
+
 function hit(){
   if(gameOver || dealingInProgress) return
+  if(splitModeActive){
+    setMessage("Press Stand to settle your split hands.")
+    return
+  }
 
   explainMove("Hit")
   if(isDramaticHit()){
@@ -1238,6 +1344,10 @@ if(handValue(player) > 21){
 }
 function doubleDown(){
   if(gameOver || dealingInProgress) return
+  if(splitModeActive){
+    setMessage("Press Stand to settle your split hands.")
+    return
+  }
 
   const validation = getBetValidation(bet, { action:"double" })
   if(!validation.ok){
@@ -1286,7 +1396,7 @@ function doubleDown(){
 }
 
 function splitHand(){
-  if(gameOver || dealingInProgress) return
+  if(gameOver || dealingInProgress || splitModeActive) return
   if(!isPair(player)){
     setMessage("Split only works on pairs.")
     return
@@ -1309,7 +1419,7 @@ function splitHand(){
   updateMoney()
   updateButtons()
   setMessage("Split trainer mode active")
-  setReason("Split dealt one extra card to each split hand. Continue practicing with Hit / Stand.")
+  setReason("Each split hand received one card. In this simplified trainer, split hands play one card each — press Stand to see how both hands do against the dealer.")
   maybeShowStrategy()
 }
 
