@@ -143,6 +143,43 @@ function resolveLocalPath(htmlFile, localRef) {
   return clean;
 }
 
+function isSafeSitemapHtmlPath(pathname) {
+  let decoded;
+  try {
+    decoded = decodeURIComponent(pathname);
+  } catch {
+    return false;
+  }
+
+  const relative = decoded.replace(/^\/+/, '');
+  if (!relative || relative.includes('\\')) return false;
+
+  const segments = relative.split('/');
+  if (segments.some((segment) => !segment || segment === '.' || segment === '..')) return false;
+
+  const firstSegment = segments[0].toLowerCase();
+  if (['assets', 'css', 'js', 'member', 'members', 'member-only'].includes(firstSegment)) return false;
+
+  const normalized = path.posix.normalize(relative);
+  if (normalized !== relative || normalized.startsWith('../') || path.posix.isAbsolute(normalized)) return false;
+
+  return true;
+}
+
+function rawUrlPathHasUnsafeSegments(url) {
+  const match = String(url).match(/^[a-z][a-z\d+.-]*:\/\/[^/?#]*(\/[^?#]*)?/i);
+  const rawPath = match && match[1] ? match[1] : '/';
+
+  let decoded;
+  try {
+    decoded = decodeURIComponent(rawPath);
+  } catch {
+    return true;
+  }
+
+  return decoded.split('/').some((segment) => segment === '.' || segment === '..');
+}
+
 function htmlFilesFromSiteUrl(url) {
   let parsed;
   try {
@@ -152,6 +189,7 @@ function htmlFilesFromSiteUrl(url) {
   }
 
   if (parsed.origin !== SITE_ORIGIN) return [];
+  if (rawUrlPathHasUnsafeSegments(url)) return [];
   if (parsed.search || parsed.hash) return [];
 
   if (parsed.pathname === '/' || parsed.pathname === '') return ['index.html'];
@@ -161,12 +199,13 @@ function htmlFilesFromSiteUrl(url) {
   if (pathname.endsWith('/')) {
     const cleanPath = pathname.replace(/\/+$/, '');
     if (!cleanPath) return ['index.html'];
+    if (!isSafeSitemapHtmlPath(`${cleanPath}/index.html`)) return [];
 
     return [`${cleanPath}/index.html`];
   }
 
   if (!pathname.endsWith('.html')) return [];
-  if (pathname.includes('/')) return [];
+  if (!isSafeSitemapHtmlPath(pathname)) return [];
 
   return [pathname];
 }
