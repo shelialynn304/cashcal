@@ -1,0 +1,35 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://edgeoverluck.com/",
+      "service-doc": [
+        {
+          "href": "https://edgeoverluck.com/tools/",
+          "type": "text/html",
+          "title": "Edge Over Luck tools directory"
+        }
+      ],
+      "help": [
+        {
+          "href": "https://edgeoverluck.com/contact.html",
+          "type": "text/html",
+          "title": "Contact Edge Over Luck"
+        }
+      ],
+      "privacy-policy": [
+        {
+          "href": "https://edgeoverluck.com/privacy-policy.html",
+          "type": "text/html",
+          "title": "Privacy Policy"
+        }
+      ],
+      "terms-of-service": [
+        {
+          "href": "https://edgeoverluck.com/terms.html",
+          "type": "text/html",
+          "title": "Terms of Use"
+        }
+      ]
+    }
+  ]
+}
