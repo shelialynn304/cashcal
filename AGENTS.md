@@ -204,3 +204,73 @@ Use specialist skills when relevant:
 - static-agent-discovery-validator: API catalog, OpenAPI, `.well-known`, robots.txt Content Signals, Cloudflare header docs, and agent-discovery validation
 
 Do not load or apply specialist guidance unless the task matches the skill or the user explicitly asks for it.
+
+# Edge Over Luck Repo Instructions for Codex
+
+## Site context
+
+This is a static educational website for Edge Over Luck.
+
+The site provides:
+- casino math education
+- bankroll calculators
+- blackjack, roulette, slots, and horse betting explainers
+- static public metadata endpoints
+- downloadable educational materials
+
+The site does NOT:
+- place bets
+- process gambling transactions
+- provide guaranteed winning systems
+- provide financial advice
+- provide OAuth/OIDC login
+- run an MCP server
+- expose protected APIs
+- support Agent-to-Agent protocol unless explicitly implemented later
+
+## Hosting context
+
+- Domain: edgeoverluck.com
+- Hosting: GitHub Pages
+- DNS/CDN: Cloudflare
+- GitHub Pages does not process `_headers`
+- Production HTTP response headers are handled by Cloudflare Snippets, not repo files
+- `.nojekyll` must exist so GitHub Pages serves `.well-known/`
+
+## Important rules
+
+1. Do not invent fake infrastructure.
+2. Do not add fake OAuth/OIDC/auth.md/MCP/WebMCP/DNS-AID support.
+3. Do not claim DNS records are live from repo changes.
+4. Do not rely on `_headers` for production behavior.
+5. Do not remove SEO, analytics, canonical, Open Graph, structured data, or existing navigation unless explicitly asked.
+6. Keep all JSON valid.
+7. Keep OpenAPI strict OpenAPI 3.1.
+8. Use `components.schemas` in OpenAPI, not top-level `$defs`.
+9. Do not invent URLs. Search the repo and use real files.
+10. Keep gambling disclaimers accurate: educational use only, no guaranteed wins, gamble responsibly, follow local laws.
+
+## Validation required before final response
+
+Before finishing any task that touches discovery files, validate:
+
+- `.nojekyll` exists
+- `.well-known/api-catalog` exists with no `.json` extension
+- `/api/tools.json` exists
+- `/api/status.json` exists
+- `/api/openapi.json` exists
+- all JSON parses
+- OpenAPI uses `components.schemas`
+- no top-level `$defs` exists in OpenAPI
+- every listed tool URL exists in the repo
+- `index.html` discovery links are inside `<head>`
+- `robots.txt` preserves sitemap and includes Content-Signal
+- no fake OAuth/OIDC/MCP/auth.md/protected-resource/WebMCP files were added
+
+## Preferred response from Codex
+
+When done, report:
+- files changed
+- validation performed
+- any warnings
+- any manual Cloudflare steps still required
