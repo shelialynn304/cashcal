@@ -201,5 +201,6 @@ Use specialist skills when relevant:
 - edge-over-luck-seo: title tags, metadata, internal links, schema, content clusters
 - edge-over-luck-aeo-foundations: robots.txt, llms.txt, AI-readability, structured content
 - edge-over-luck-devops: GitHub Actions, link checks, deployment safety, audits
+- static-agent-discovery-validator: API catalog, OpenAPI, `.well-known`, robots.txt Content Signals, Cloudflare header docs, and agent-discovery validation
 
 Do not load or apply specialist guidance unless the task matches the skill or the user explicitly asks for it.
