@@ -1,8 +1,8 @@
 # Agent Discovery Header Rules
 
-EdgeOverLuck.com is currently deployed with GitHub Pages. GitHub Pages does not process `_headers`, so production HTTP response headers for agent discovery must be added at the CDN/proxy layer.
+EdgeOverLuck.com is deployed with GitHub Pages behind Cloudflare. GitHub Pages does not process `_headers`, so production HTTP response headers for agent discovery must be added with Cloudflare Snippets.
 
-Use Cloudflare Response Header Transform Rules or a Cloudflare Worker if Edge Over Luck is routed through Cloudflare.
+Do not add repo-local `_headers` files for production behavior on the current deployment.
 
 ## Homepage rule
 
