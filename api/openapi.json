@@ -2,28 +2,28 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Edge Over Luck Public Metadata API",
-    "description": "Static read-only metadata endpoints for Edge Over Luck educational tools. This is not a gambling API, betting API, account API, protected API, or transaction API.",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "description": "Read-only metadata endpoints for Edge Over Luck educational casino math tools, calculators, and site status. This is a static public metadata API, not a gambling, betting, protected, account, or transaction API."
   },
   "servers": [
     {
-      "url": "https://edgeoverluck.com",
-      "description": "Production static site"
+      "url": "https://edgeoverluck.com"
     }
   ],
   "paths": {
     "/api/tools.json": {
       "get": {
-        "summary": "List Edge Over Luck tools",
-        "description": "Returns public metadata for educational casino math tools and guides available on EdgeOverLuck.com.",
-        "operationId": "getToolsMetadata",
+        "summary": "List Edge Over Luck public tools",
+        "description": "Returns public metadata for Edge Over Luck educational tools and calculators.",
+        "operationId": "getTools",
+        "tags": ["Metadata"],
         "responses": {
           "200": {
-            "description": "Public tools metadata",
+            "description": "A list of public educational tools on Edge Over Luck.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/$defs/ToolsResponse"
+                  "$ref": "#/components/schemas/ToolsResponse"
                 }
               }
             }
@@ -33,16 +33,17 @@
     },
     "/api/status.json": {
       "get": {
-        "summary": "Check metadata API status",
-        "description": "Returns a simple status object for the static public metadata API.",
-        "operationId": "getMetadataApiStatus",
+        "summary": "Get public API status",
+        "description": "Returns the public metadata API status.",
+        "operationId": "getStatus",
+        "tags": ["Metadata"],
         "responses": {
           "200": {
-            "description": "Static metadata API status",
+            "description": "Current public API status.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/$defs/StatusResponse"
+                  "$ref": "#/components/schemas/StatusResponse"
                 }
               }
             }
@@ -51,41 +52,82 @@
       }
     }
   },
-  "$defs": {
-    "Tool": {
-      "type": "object",
-      "required": ["name", "category", "url", "description"],
-      "properties": {
-        "name": { "type": "string" },
-        "category": { "type": "string" },
-        "url": { "type": "string", "format": "uri" },
-        "description": { "type": "string" }
+  "components": {
+    "schemas": {
+      "ToolsResponse": {
+        "type": "object",
+        "required": ["siteName", "description", "version", "tools"],
+        "properties": {
+          "siteName": {
+            "type": "string",
+            "example": "Edge Over Luck"
+          },
+          "description": {
+            "type": "string",
+            "example": "Educational casino math tools, bankroll calculators, and strategy explainers."
+          },
+          "version": {
+            "type": "string",
+            "example": "1.0.0"
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tool"
+            }
+          }
+        },
+        "additionalProperties": false
       },
-      "additionalProperties": false
-    },
-    "ToolsResponse": {
-      "type": "object",
-      "required": ["siteName", "description", "version", "tools"],
-      "properties": {
-        "siteName": { "type": "string" },
-        "description": { "type": "string" },
-        "version": { "type": "string" },
-        "tools": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/Tool" }
-        }
+      "Tool": {
+        "type": "object",
+        "required": ["name", "category", "url", "description"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Blackjack Trainer"
+          },
+          "category": {
+            "type": "string",
+            "example": "Blackjack"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://edgeoverluck.com/blackjack-game.html"
+          },
+          "description": {
+            "type": "string",
+            "example": "Practice blackjack decisions using basic strategy."
+          }
+        },
+        "additionalProperties": false
       },
-      "additionalProperties": false
-    },
-    "StatusResponse": {
-      "type": "object",
-      "required": ["status", "service", "version"],
-      "properties": {
-        "status": { "type": "string", "const": "ok" },
-        "service": { "type": "string" },
-        "version": { "type": "string" }
-      },
-      "additionalProperties": false
+      "StatusResponse": {
+        "type": "object",
+        "required": ["status", "service", "version"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "service": {
+            "type": "string",
+            "example": "Edge Over Luck Public Metadata API"
+          },
+          "version": {
+            "type": "string",
+            "example": "1.0.0"
+          }
+        },
+        "additionalProperties": false
+      }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "Metadata",
+      "description": "Read-only public metadata endpoints."
+    }
+  ]
 }
