@@ -1,0 +1,91 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Edge Over Luck Public Metadata API",
+    "description": "Static read-only metadata endpoints for Edge Over Luck educational tools. This is not a gambling API, betting API, account API, protected API, or transaction API.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://edgeoverluck.com",
+      "description": "Production static site"
+    }
+  ],
+  "paths": {
+    "/api/tools.json": {
+      "get": {
+        "summary": "List Edge Over Luck tools",
+        "description": "Returns public metadata for educational casino math tools and guides available on EdgeOverLuck.com.",
+        "operationId": "getToolsMetadata",
+        "responses": {
+          "200": {
+            "description": "Public tools metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/$defs/ToolsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/status.json": {
+      "get": {
+        "summary": "Check metadata API status",
+        "description": "Returns a simple status object for the static public metadata API.",
+        "operationId": "getMetadataApiStatus",
+        "responses": {
+          "200": {
+            "description": "Static metadata API status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/$defs/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "Tool": {
+      "type": "object",
+      "required": ["name", "category", "url", "description"],
+      "properties": {
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "description": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "ToolsResponse": {
+      "type": "object",
+      "required": ["siteName", "description", "version", "tools"],
+      "properties": {
+        "siteName": { "type": "string" },
+        "description": { "type": "string" },
+        "version": { "type": "string" },
+        "tools": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Tool" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "StatusResponse": {
+      "type": "object",
+      "required": ["status", "service", "version"],
+      "properties": {
+        "status": { "type": "string", "const": "ok" },
+        "service": { "type": "string" },
+        "version": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

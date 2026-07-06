@@ -2,11 +2,56 @@
   "linkset": [
     {
       "anchor": "https://edgeoverluck.com/",
+      "item": [
+        {
+          "href": "https://edgeoverluck.com/api/tools.json",
+          "type": "application/json",
+          "title": "Edge Over Luck public tools metadata"
+        }
+      ],
+      "help": [
+        {
+          "href": "https://edgeoverluck.com/contact.html",
+          "type": "text/html",
+          "title": "Contact Edge Over Luck"
+        }
+      ],
+      "privacy-policy": [
+        {
+          "href": "https://edgeoverluck.com/privacy-policy.html",
+          "type": "text/html",
+          "title": "Privacy Policy"
+        }
+      ],
+      "terms-of-service": [
+        {
+          "href": "https://edgeoverluck.com/terms.html",
+          "type": "text/html",
+          "title": "Terms of Use"
+        }
+      ]
+    },
+    {
+      "anchor": "https://edgeoverluck.com/api/tools.json",
+      "service-desc": [
+        {
+          "href": "https://edgeoverluck.com/api/openapi.json",
+          "type": "application/vnd.oai.openapi+json",
+          "title": "Edge Over Luck Public Metadata API OpenAPI description"
+        }
+      ],
       "service-doc": [
         {
           "href": "https://edgeoverluck.com/tools/",
           "type": "text/html",
           "title": "Edge Over Luck tools directory"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://edgeoverluck.com/api/status.json",
+          "type": "application/json",
+          "title": "Edge Over Luck Public Metadata API status"
         }
       ],
       "help": [

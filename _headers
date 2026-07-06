@@ -1,8 +1,14 @@
+# Not active on the current GitHub Pages deployment.
+# GitHub Pages does not process `_headers`; these entries are retained only as
+# reference material for a possible future Cloudflare Pages migration.
+# For production on the current deployment, add Link and Content-Type headers
+# using Cloudflare Response Header Transform Rules or a Cloudflare Worker.
+
 /
-  Link: </.well-known/api-catalog>; rel="api-catalog", </tools/>; rel="service-doc", </contact.html>; rel="help", </privacy-policy.html>; rel="privacy-policy", </terms.html>; rel="terms-of-service"
+  Link: </.well-known/api-catalog>; rel="api-catalog", </api/openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json", </tools/>; rel="service-doc", </contact.html>; rel="help", </privacy-policy.html>; rel="privacy-policy", </terms.html>; rel="terms-of-service"
 
 /index.html
-  Link: </.well-known/api-catalog>; rel="api-catalog", </tools/>; rel="service-doc", </contact.html>; rel="help", </privacy-policy.html>; rel="privacy-policy", </terms.html>; rel="terms-of-service"
+  Link: </.well-known/api-catalog>; rel="api-catalog", </api/openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json", </tools/>; rel="service-doc", </contact.html>; rel="help", </privacy-policy.html>; rel="privacy-policy", </terms.html>; rel="terms-of-service"
 
 /.well-known/api-catalog
   Content-Type: application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"
