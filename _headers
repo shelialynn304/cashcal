@@ -1,0 +1,9 @@
+/
+  Link: </.well-known/api-catalog>; rel="api-catalog", </tools/>; rel="service-doc", </contact.html>; rel="help", </privacy-policy.html>; rel="privacy-policy", </terms.html>; rel="terms-of-service"
+
+/index.html
+  Link: </.well-known/api-catalog>; rel="api-catalog", </tools/>; rel="service-doc", </contact.html>; rel="help", </privacy-policy.html>; rel="privacy-policy", </terms.html>; rel="terms-of-service"
+
+/.well-known/api-catalog
+  Content-Type: application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"
+  Link: </.well-known/api-catalog>; rel="api-catalog"
