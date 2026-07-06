@@ -42,6 +42,43 @@ Avoid:
 
 Keep the site fast, lightweight, and easy to audit.
 
+## Hosting and Agent Discovery Rules
+
+- Domain: edgeoverluck.com
+- Hosting: GitHub Pages
+- DNS/CDN: Cloudflare
+- GitHub Pages does not process `_headers`
+- Production HTTP response headers are handled by Cloudflare Snippets, not repo files
+- `.nojekyll` must exist so GitHub Pages serves `.well-known/`
+
+For agent discovery work:
+
+1. Do not invent fake infrastructure.
+2. Do not add fake OAuth, OIDC, auth.md, MCP, WebMCP, protected-resource metadata, or fake DNS-AID completion.
+3. Do not claim DNS records are live from repo changes.
+4. Do not rely on `_headers` for production behavior.
+5. Keep all JSON valid.
+6. Keep OpenAPI strict OpenAPI 3.1.
+7. Use `components.schemas` in OpenAPI, not top-level `$defs`.
+8. Do not invent URLs. Search the repo and use real files.
+9. API catalogs must point to actual public API/member endpoints, not normal website pages pretending to be APIs.
+10. Keep all gambling disclaimers accurate: educational use only, no guaranteed wins, gamble responsibly, follow local laws.
+
+Before finishing any task that touches agent discovery files, validate:
+
+- `.nojekyll` exists
+- `.well-known/api-catalog` exists with no `.json` extension
+- `/api/tools.json` exists
+- `/api/status.json` exists
+- `/api/openapi.json` exists
+- all JSON parses
+- OpenAPI uses `components.schemas`
+- no top-level `$defs` exists in OpenAPI
+- every listed tool URL exists in the repo
+- `index.html` discovery links are inside `<head>`
+- `robots.txt` preserves sitemap and includes Content-Signal
+- no fake OAuth/OIDC/MCP/auth.md/protected-resource/WebMCP files were added
+
 ## Global Development Rules
 
 - Preserve existing URLs.
