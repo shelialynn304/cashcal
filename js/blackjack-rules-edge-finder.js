@@ -206,11 +206,10 @@
   }
 
   function explainInputs(inputs) {
-    const payoutText = {
-      "3to2": "3:2 blackjack",
-      "6to5": "6:5 blackjack",
-      "1to1": "even-money blackjack",
-    }[inputs.blackjackPayout];
+    const payoutText =
+      ({ "3to2": "3:2 blackjack", "6to5": "6:5 blackjack", "1to1": "even-money blackjack" }[
+        inputs.blackjackPayout
+      ] || "unknown blackjack payout");
 
     const soft17Text =
       inputs.soft17 === "hit"
