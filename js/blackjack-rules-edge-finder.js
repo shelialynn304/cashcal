@@ -202,6 +202,18 @@
       return "Avoid no-peek rules when extra doubled/split money can be exposed to dealer blackjack.";
     }
 
+    if (top.label === "Deck count") {
+      return "Prefer fewer decks when possible (single- or double-deck games are usually lower edge).";
+    }
+
+    if (top.label === "Surrender") {
+      return "Prefer tables that offer late surrender when you can use it.";
+    }
+
+    if (top.label === "Re-split aces") {
+      return "Prefer tables that allow re-splitting aces.";
+    }
+
     return `Improve: ${top.label}.`;
   }
 
