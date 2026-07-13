@@ -74,7 +74,6 @@ function canonicalInvalidReason(url, file) {
   if (!url) return 'missing canonical URL';
   if (url.startsWith('http://')) return 'must not use http://';
   if (url.includes('www.edgeoverluck.com')) return 'must not contain www.edgeoverluck.com';
-  if (url.includes('github.io')) return 'must not contain github.io';
   if (!url.startsWith(`${SITE_ORIGIN}/`)) return `must start with ${SITE_ORIGIN}/`;
 
   const expectedPath = publicPathForHtmlFile(file);
@@ -85,6 +84,9 @@ function canonicalInvalidReason(url, file) {
     return 'is not a valid URL';
   }
 
+  if (parsed.hostname === 'github.io' || parsed.hostname.endsWith('.github.io')) {
+    return 'must not contain github.io';
+  }
   if (parsed.origin !== SITE_ORIGIN) return `must use ${SITE_ORIGIN}`;
   if (parsed.pathname !== expectedPath) {
     return `path should be ${expectedPath}, found ${parsed.pathname}`;
