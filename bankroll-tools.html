@@ -209,10 +209,10 @@
           <div class="field">
             <label for="quickGame">Game you plan to play</label>
             <select id="quickGame">
-              <option value="blackjack-bankroll-calculator.html">Blackjack</option>
-              <option value="roulette-bankroll-calculator.html">Roulette</option>
-              <option value="bankroll-survival-slots.html">Slots</option>
-              <option value="exotic-bet-calculator.html">Horse racing</option>
+              <option value="blackjack">Blackjack</option>
+              <option value="roulette">Roulette</option>
+              <option value="slots">Slots</option>
+              <option value="horseracing">Horse racing</option>
             </select>
           </div>
           <div class="field">
@@ -579,6 +579,13 @@
 
       if (!bankrollInput || !betInput || !gameSelect || !sessionSelect) return;
 
+      var CALC_LINKS = {
+        blackjack: 'blackjack-bankroll-calculator.html',
+        roulette: 'roulette-bankroll-calculator.html',
+        slots: 'bankroll-survival-slots.html',
+        horseracing: 'exotic-bet-calculator.html'
+      };
+
       function money(n) {
         return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       }
@@ -605,7 +612,7 @@
         }
 
         if (openCalcLink) {
-          openCalcLink.setAttribute('href', gameSelect.value);
+          openCalcLink.setAttribute('href', CALC_LINKS[gameSelect.value] || CALC_LINKS.blackjack);
         }
       }
 
