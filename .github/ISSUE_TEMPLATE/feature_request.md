@@ -1,20 +1,53 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
-assignees: ''
-
+about: Suggest a new Edge Over Luck tool, page, calculator, UX improvement, or content idea
+title: "[Feature]: "
+labels: "enhancement"
+assignees: ""
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## What problem does this solve?
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+Describe the problem or user need.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+Example:
+Players do not understand how much bankroll pressure a roulette betting system creates.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## What should be added or changed?
+
+Describe the feature, page, calculator, content section, or design improvement.
+
+## Where should this apply?
+
+Page/tool if known:
+
+- URL or file:
+- Related section:
+- Mobile, desktop, or both:
+
+## What type of feature is this?
+
+Check one:
+
+- [ ] Calculator/math tool
+- [ ] Simulator
+- [ ] SEO/content page
+- [ ] Design/layout improvement
+- [ ] Newsletter/resource funnel
+- [ ] Affiliate/compliance improvement
+- [ ] Bug-adjacent improvement
+- [ ] Other
+
+## Math or compliance concerns
+
+If this touches gambling math, odds, expected value, house edge, RTP, bankroll risk, or betting systems, list assumptions here.
+
+Also note any responsible gambling language needed.
+
+## Alternatives considered
+
+Describe any other way this could be handled.
+
+## Additional context
+
+Add screenshots, examples, competitor references, or notes.

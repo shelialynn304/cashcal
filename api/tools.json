@@ -1,0 +1,97 @@
+{
+  "siteName": "Edge Over Luck",
+  "description": "Read-only public metadata for Edge Over Luck educational gambling math tools. This endpoint lists static tool pages; it is not a gambling, betting, account, or transaction API.",
+  "version": "1.0.0",
+  "tools": [
+    {
+      "name": "Blackjack Trainer",
+      "category": "Blackjack",
+      "url": "https://edgeoverluck.com/blackjack-game.html",
+      "description": "Practice blackjack decisions with educational table logic and basic-strategy feedback."
+    },
+    {
+      "name": "Blackjack Bankroll Calculator",
+      "category": "Blackjack",
+      "url": "https://edgeoverluck.com/blackjack-bankroll-calculator.html",
+      "description": "Estimate blackjack session risk, bet sizing, and bankroll pressure."
+    },
+    {
+      "name": "Blackjack EV Calculator",
+      "category": "Blackjack",
+      "url": "https://edgeoverluck.com/blackjack-ev-calculator.html",
+      "description": "Explore expected-value estimates for blackjack decisions and assumptions."
+    },
+    {
+      "name": "Blackjack Rules Edge Finder",
+      "category": "Blackjack",
+      "url": "https://edgeoverluck.com/blackjack-rules-edge-finder.html",
+      "description": "Compare how common blackjack table rules can affect the house edge."
+    },
+    {
+      "name": "Roulette Simulator",
+      "category": "Roulette",
+      "url": "https://edgeoverluck.com/roulette-simulator.html",
+      "description": "Simulate roulette sessions to see how house edge and variance affect bankroll outcomes."
+    },
+    {
+      "name": "Roulette Calculator",
+      "category": "Roulette",
+      "url": "https://edgeoverluck.com/roulette-calculator.html",
+      "description": "Calculate payouts, probabilities, expected value, and risk for common roulette bets."
+    },
+    {
+      "name": "Roulette Bankroll Calculator",
+      "category": "Roulette",
+      "url": "https://edgeoverluck.com/roulette-bankroll-calculator.html",
+      "description": "Estimate roulette bankroll pressure from bet size, session length, and wheel rules."
+    },
+    {
+      "name": "Roulette Strategy Simulator",
+      "category": "Roulette",
+      "url": "https://edgeoverluck.com/roulette-strategy-simulator.html",
+      "description": "Test roulette betting-system outcomes for educational variance comparison without changing the house edge."
+    },
+    {
+      "name": "Slot Simulator",
+      "category": "Slots",
+      "url": "https://edgeoverluck.com/slot-simulator.html",
+      "description": "Model slot RTP, volatility, hit frequency, and streak behavior for educational use."
+    },
+    {
+      "name": "Slot Bankroll Survival Calculator",
+      "category": "Slots",
+      "url": "https://edgeoverluck.com/bankroll-survival-slots.html",
+      "description": "Estimate how bet size, RTP, volatility, and session length affect slot bankroll survival."
+    },
+    {
+      "name": "Casino Bonus Reality Check Calculator",
+      "category": "Bonus and Promotions",
+      "url": "https://edgeoverluck.com/casino-bonus-calculator.html",
+      "description": "Reality-check casino bonus terms using wagering requirements, RTP, game contribution, and cashout assumptions."
+    },
+    {
+      "name": "Bubble Craps Simulator",
+      "category": "Craps",
+      "url": "https://edgeoverluck.com/bubble-craps.html",
+      "description": "Simulate bubble craps bets to understand payout math, house edge, and session variance."
+    },
+    {
+      "name": "Takeout and Overlay Calculator",
+      "category": "Horse Racing",
+      "url": "https://edgeoverluck.com/takeout-overlay-calculator.html",
+      "description": "Compare horse-racing takeout, implied probability, and overlay assumptions for educational analysis."
+    },
+    {
+      "name": "Exotic Bet Cost Calculator",
+      "category": "Horse Racing",
+      "url": "https://edgeoverluck.com/exotic-bet-calculator.html",
+      "description": "Calculate ticket cost for common exotic horse-racing bet structures."
+    },
+    {
+      "name": "Gambler Personality Quiz",
+      "category": "Responsible Gambling",
+      "url": "https://edgeoverluck.com/gambler-personality-quiz.html",
+      "description": "Reflect on gambling habits and risk patterns for educational responsible-gambling awareness."
+    }
+  ]
+}

@@ -6,7 +6,7 @@ This file is for design, writing, layout, and user-experience consistency.
 
 Use `REVIEW.md` for simulator testing and calculator QA.
 Use `AGENTS.md` for repository-level AI/Codex editing rules.
-Use `.github/agents/agentsmath.md.agent.md` for gambling math, calculator, EV, RTP, probability, and simulation review.
+Use `.github/agents/Casino-Math-Calculator-Agent.md` for gambling math, calculator, EV, RTP, probability, and simulation review.
 
 ---
 

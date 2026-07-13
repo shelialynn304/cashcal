@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SLW7YE234T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-SLW7YE234T');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
+
+  <title>Blackjack Rules Edge Finder | House Edge &amp; Bankroll Impact</title>
+  <meta name="description" content="Convert blackjack table rules into an approximate house edge, expected loss, and bankroll impact before you sit down." />
+  <link rel="canonical" href="https://edgeoverluck.com/blackjack-rules-edge-finder.html" />
+
+  <meta property="og:title" content="Blackjack Rules Edge Finder | House Edge &amp; Bankroll Impact" />
+  <meta property="og:description" content="Estimate blackjack house edge from table rules like decks, blackjack payout, soft 17, double rules, surrender, and DAS." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://edgeoverluck.com/blackjack-rules-edge-finder.html" />
+  <meta property="og:image" content="https://edgeoverluck.com/assets/images/logo/edgeoverluck-logo-square.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Blackjack Rules Edge Finder | House Edge &amp; Bankroll Impact" />
+  <meta name="twitter:description" content="Estimate blackjack house edge from table rules like decks, blackjack payout, soft 17, double rules, surrender, and DAS." />
+  <meta name="twitter:image" content="https://edgeoverluck.com/assets/images/logo/edgeoverluck-logo-square.png" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/logo/favicon-192.png" />
+  <link rel="apple-touch-icon" href="assets/images/logo/apple-touch-icon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/blackjack.css" />
+
+  <script defer data-workspace="69b01028d6e4c738cf4abf0f" src="https://cdn.jsdelivr.net/npm/litlyx-js@latest/browser/litlyx.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Blackjack Rules Edge Finder",
+    "url": "https://edgeoverluck.com/blackjack-rules-edge-finder.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "description": "A free blackjack rules edge finder that estimates house edge, player RTP, expected loss, and bankroll pressure from common table rules."
+  }
+  </script>
+</head>
+
+<body data-tool-name="blackjack_rules_edge_finder">
+  <header class="site-header">
+    <div class="container nav site-nav">
+      <a href="index.html" class="brand brand-logo" aria-label="Edge Over Luck home">
+        <img src="assets/images/logo/edgeoverluck-logo-horizontal.svg" alt="Edge Over Luck" width="240" height="64">
+      </a>
+      <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+        <span class="nav-toggle-label">Menu</span>
+      </button>
+      <nav id="primary-nav" class="nav-menu" aria-label="Primary navigation">
+        <a class="nav-link nav-priority-link" href="tools/">Tools</a>
+        <a class="nav-link nav-priority-link" href="roulette-simulator.html">Roulette Simulator</a>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-horse-racing">Horse Racing</button>
+          <div id="nav-horse-racing" class="nav-panel nav-panel-wide">
+            <a href="exotic-bet-calculator.html">Exotic Bet Cost Calculator</a>
+            <a href="horse-racing-guide.html">Horse Racing Guide</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-blackjack">Blackjack</button>
+          <div id="nav-blackjack" class="nav-panel nav-panel-wide">
+            <a href="blackjack-game.html">Blackjack Trainer</a>
+            <a href="blackjack-strategy.html">Blackjack Strategy Guide</a>
+            <a href="blackjack-trainer-guide.html">Blackjack Trainer Guide</a>
+            <a href="blackjack-ev-calculator.html">Blackjack EV Calculator</a>
+            <a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>
+            <a href="blackjack-rules-edge-finder.html" aria-current="page">Blackjack Rules Edge Finder</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-roulette">Roulette</button>
+          <div id="nav-roulette" class="nav-panel nav-panel-wide">
+            <a href="roulette.html">Roulette Guide</a>
+            <a href="roulette-simulator.html">Roulette Simulator</a>
+            <a href="roulette-calculator.html">Roulette Calculator</a>
+            <a href="roulette-strategy-simulator.html">Roulette Strategy Simulator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-slots">Slots</button>
+          <div id="nav-slots" class="nav-panel nav-panel-wide">
+            <a href="slots.html">Slots Guide</a>
+            <a href="slot-simulator.html">Slot Simulator</a>
+            <a href="slot-rtp-explained.html">Slot RTP Guide</a>
+            <a href="slot-volatility-guide.html">Slot Volatility Guide</a>
+            <a href="bankroll-survival-slots.html">Slot Bankroll Survival Calculator</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-more">More</button>
+          <div id="nav-more" class="nav-panel nav-panel-wide">
+            <a href="bankroll-tools.html">Bankroll Tools</a>
+            <a href="bubble-craps.html">Bubble Craps Simulator</a>
+            <a href="gambler-personality-quiz.html">Gambler Personality Quiz</a>
+          </div>
+        </div>
+        <div class="nav-item nav-item-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-about">About</button>
+          <div id="nav-about" class="nav-panel nav-panel-wide">
+            <a href="responsible-gambling.html">Responsible Gambling</a>
+            <a href="casino-reviews.html">Casino Reviews</a>
+            <a href="how-we-calculate-odds.html">How We Find Odds</a>
+            <a href="editorial-policy.html">Editorial Policy</a>
+            <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
+            <a href="about.html">About Edge Over Luck</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero section hero-modern">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Blackjack table rules calculator</p>
+          <h1>Blackjack Rules Edge Finder</h1>
+          <p class="hero-subtitle">Convert common blackjack table rules into an approximate house edge, expected loss, and bankroll-pressure estimate.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#blackjack-rules-form">Find Table Edge</a>
+            <a class="btn btn-secondary" href="blackjack-strategy.html">Blackjack Strategy Guide</a>
+          </div>
+        </div>
+        <aside class="card glass-card hero-card">
+          <span class="eyebrow">Fast rule scan</span>
+          <h2>Bad blackjack rules can quietly cost more than bad luck.</h2>
+          <p>Blackjack payout, soft 17, surrender, and double-after-split rules can move the edge before the first card is dealt.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="rules-edge-title">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow eyebrow-muted">Calculator</span>
+          <h2 id="rules-edge-title" class="section-title">Estimate house edge from table rules</h2>
+          <p class="section-subtext">Educational approximation for basic-strategy play, not exact combinatorial analysis.</p>
+        </div>
+
+        <form id="blackjack-rules-form" class="calculator-card card glass-card">
+          <div class="grid grid-2">
+            <label>Number of decks<select id="rule-decks" name="decks"><option value="1">Single deck</option><option value="2">Double deck</option><option value="4">4 decks</option><option value="6" selected>6 decks</option><option value="8">8 decks</option></select></label>
+            <label>Blackjack payout<select id="rule-blackjack-payout" name="blackjackPayout"><option value="3to2" selected>3:2</option><option value="6to5">6:5</option><option value="1to1">Even money / 1:1</option></select></label>
+            <label>Dealer soft 17 rule<select id="rule-soft-17" name="soft17"><option value="stand" selected>Dealer stands on soft 17</option><option value="hit">Dealer hits soft 17</option></select></label>
+            <label>Double down allowed<select id="rule-double" name="doubleRule"><option value="any" selected>Any first two cards</option><option value="9-11">Only 9–11</option><option value="10-11">Only 10–11</option><option value="none">No double down</option></select></label>
+            <label>Double after split<select id="rule-das" name="doubleAfterSplit"><option value="yes" selected>Allowed</option><option value="no">Not allowed</option></select></label>
+            <label>Surrender<select id="rule-surrender" name="surrender"><option value="none" selected>No surrender</option><option value="late">Late surrender</option></select></label>
+            <label>Re-split aces<select id="rule-resplit-aces" name="resplitAces"><option value="no" selected>Not allowed</option><option value="yes">Allowed</option></select></label>
+            <label>Dealer peek / hole card rule<select id="rule-peek" name="peekRule"><option value="peek" selected>Dealer peeks for blackjack</option><option value="no-peek">No peek / ENHC-style risk</option></select></label>
+            <label>Average bet size ($)<input id="avg-bet-size" name="avgBetSize" type="number" min="1" step="1" value="25" inputmode="decimal"></label>
+            <label>Hands per hour<input id="hands-per-hour" name="handsPerHour" type="number" min="1" step="1" value="60" inputmode="numeric"></label>
+            <label>Session hours<input id="session-hours" name="sessionHours" type="number" min="0.25" step="0.25" value="2" inputmode="decimal"></label>
+            <label>Session bankroll ($)<input id="session-bankroll" name="sessionBankroll" type="number" min="1" step="1" value="500" inputmode="decimal"></label>
+          </div>
+
+          <button class="btn" type="submit" data-track-event="tool_calculate" data-track-label="Calculate Blackjack Rules Edge">Calculate Rule Edge</button>
+        </form>
+
+        <div id="rules-edge-message" class="info-box" aria-live="polite">Choose a rule set and calculate. This starts from a common 6-deck 3:2 S17 baseline and applies approximate rule adjustments.</div>
+
+        <section id="rules-edge-results" class="grid grid-3" aria-label="Blackjack rules edge results" data-track-result="blackjack-rules-edge-results" data-result-ready="false">
+          <div class="card"><h3>Estimated House Edge</h3><p id="result-house-edge">—</p></div>
+          <div class="card"><h3>Player RTP</h3><p id="result-rtp">—</p></div>
+          <div class="card"><h3>Expected Loss / $1,000 Wagered</h3><p id="result-loss-per-1000">—</p></div>
+          <div class="card"><h3>Expected Loss / Hour</h3><p id="result-loss-per-hour">—</p></div>
+          <div class="card"><h3>Session Expected Loss</h3><p id="result-session-loss">—</p></div>
+          <div class="card"><h3>Total Action</h3><p id="result-total-action">—</p></div>
+          <div class="card"><h3>Bankroll Pressure</h3><p id="result-bankroll-pressure">—</p></div>
+          <div class="card"><h3>Rule Grade</h3><p id="result-rule-grade">—</p></div>
+          <div class="card"><h3>Best Rule Fix</h3><p id="result-best-fix">—</p></div>
+        </section>
+
+        <div class="card glass-card section-tight">
+          <h3>Plain-English result</h3>
+          <p id="result-explanation">Choose rules to see the table estimate.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-divider">
+      <div class="container">
+        <h2 class="section-title">How to read this tool</h2>
+        <div class="grid grid-3">
+          <article class="card glass-card"><h3>3:2 matters most</h3><p>Changing blackjack payout from 3:2 to 6:5 is one of the largest common rule downgrades.</p></article>
+          <article class="card glass-card"><h3>Soft 17 matters</h3><p>Dealer hitting soft 17 usually increases the house edge compared with standing on soft 17.</p></article>
+          <article class="card glass-card"><h3>Bankroll impact is volume</h3><p>A small edge can still cost meaningful money when average bet size and hands per hour are high.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section next-steps">
+      <div class="container">
+        <h2 class="section-title">Next tools to try</h2>
+        <ul>
+          <li><a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a></li>
+          <li><a href="blackjack-strategy.html">Blackjack Strategy Guide</a></li>
+          <li><a href="blackjack-ev-calculator.html">Blackjack EV Calculator</a></li>
+          <li><a href="responsible-gambling.html">Set Safer Gambling Limits</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container warning-box disclaimer-block">
+        <h2 class="section-title">Important disclaimer</h2>
+        <p>This calculator gives approximate rule-based estimates for educational use. Exact blackjack house edge depends on full rules, deck penetration, strategy, side bets, number of players, cut card placement, and local procedures. No strategy or calculator guarantees profit.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-brand">Edge Over Luck</p>
+      <p>Edge Over Luck gives players gambling math tools, bankroll calculators, and casino simulators for understanding risk. These tools do not guarantee profit. Variance remains undefeated.</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a><a href="tools/">Tools</a><a href="blackjack-game.html">Blackjack Trainer</a><a href="blackjack-strategy.html">Blackjack Strategy Guide</a><a href="blackjack-rules-edge-finder.html">Blackjack Rules Edge Finder</a><a href="responsible-gambling.html">Responsible Gambling</a>
+      </div>
+      <p class="affiliate-note"><strong>Affiliate Disclosure:</strong> This site may contain affiliate links and may earn commissions at no extra cost to you. Affiliate relationships do not change the math, odds, house edge, or editorial standards used on Edge Over Luck.</p>
+      <p class="gambling-warning"><strong>21+ / Legal Gambling Notice:</strong> 21+ only where legal. Gambling involves financial risk and can be addictive. These tools are for education and entertainment only and do not guarantee profit.</p>
+      <p class="responsible">Play legally, set limits, and never risk money you cannot afford to lose. If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use your local problem gambling support service. See our <a href="responsible-gambling.html">responsible gambling resources</a>.</p>
+      <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>
+    </div>
+  </footer>
+
+  <script src="js/blackjack-rules-edge-finder.js" defer></script>
+  <script src="js/tracking.js" defer></script>
+  <script src="nav.js" defer></script>
+</body>
+</html>

@@ -77,6 +77,7 @@
             <a href="blackjack-trainer-guide.html">Blackjack Trainer Guide</a>
             <a href="blackjack-ev-calculator.html">Blackjack EV Calculator</a>
             <a href="blackjack-bankroll-calculator.html">Blackjack Bankroll Calculator</a>
+            <a href="blackjack-rules-edge-finder.html">Blackjack Rules Edge Finder</a>
           </div>
         </div>
         <div class="nav-item nav-item-dropdown">
@@ -185,7 +186,7 @@
           <div class="field"><label for="betSize">Base Bet ($)</label><input id="betSize" type="number" min="1" value="25" /></div>
         </div>
 
-        <div class="field input-spaced"><label for="trueCount">True Count (optional rough boost)</label><input id="trueCount" type="number" min="-10" max="10" step="1" value="0" /></div>
+        <div class="field input-spaced"><label for="trueCount">True Count (Hi-Lo, optional)</label><input id="trueCount" type="number" min="-10" max="10" step="1" value="0" /></div>
         <div class="form-row">
           <div class="field"><label for="monteCarloToggle"><input id="monteCarloToggle" type="checkbox" /> Monte‑Carlo verification</label></div>
           <div class="field"><label for="mcTrials">MC Trials</label><input id="mcTrials" type="number" min="1000" step="1000" value="50000" /></div>
@@ -197,7 +198,7 @@
           <button class="btn btn-outline" id="resetBtn" type="button">Reset</button>
         </div>
 
-        <p class="small-note">Model assumptions (important): This calculator provides approximate EV estimates for Hit, Stand, and Double in a single blackjack spot. It uses an infinite-shoe card model (fixed card probabilities), S17 dealer behavior (dealer stands on all 17s), and simplified rule/count adjustments. Dealer outcome distributions are estimated with simulation and may vary slightly between runs. The optional Monte Carlo check uses a simple hit policy and is a sanity check, not an exact validator. Use results to compare decisions directionally, not as guaranteed exact EV for every table.</p>
+        <p class="small-note">Model assumptions (important): This calculator estimates EV for Hit, Stand, and Double in a single blackjack spot using a fixed-composition card model: the deck count and dealer upcard set the card probabilities, which do not update as cards are drawn during the hand. Dealer outcomes are computed exactly for S17 rules (dealer stands on all 17s) and assume the dealer has already checked for blackjack. True count is modeled as a shift in remaining card density (a Hi-Lo approximation), so count effects come from the math rather than a flat adjustment; borderline count plays can differ from published index numbers by a point or two. Blackjack payout (3:2 vs 6:5) changes the overall house edge but not the best play for a hand you already hold, so it is shown as context and excluded from these EVs. Splits, surrender, and insurance are not modeled. In rare borderline spots (such as 11 vs Ace) a fixed-composition model can differ from multi-deck strategy charts. Use results to compare decisions, not as guaranteed exact EV for every table.</p>
       </div>
 
       <div class="card glass-card-strong glow-cyan">
@@ -231,7 +232,7 @@
         <p>This page compares decision quality by expected value in one blackjack spot.</p>
         <ul>
           <li><strong>Estimates:</strong> Expected value for available blackjack decisions under the selected setup.</li>
-          <li><strong>Assumes:</strong> The chosen rules, deck/setup assumptions, payout settings, and page input probabilities.</li>
+          <li><strong>Assumes:</strong> The chosen deck count, dealer upcard, and true count set the card probabilities; blackjack payout is shown as context and does not change per-hand EV.</li>
           <li><strong>Does not guarantee:</strong> A winning hand or session, and it does not replace basic strategy discipline.</li>
         </ul>
         <p class="small-note">For limits, warning signs, and help resources, read our <a href="responsible-gambling.html">responsible gambling guide</a>.</p>

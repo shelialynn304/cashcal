@@ -137,13 +137,17 @@
     addRule(adjustments, "Blackjack payout", RULE_ADJUSTMENTS.blackjackPayout[inputs.blackjackPayout] || 0);
     addRule(adjustments, "Soft 17 rule", RULE_ADJUSTMENTS.soft17[inputs.soft17] || 0);
     addRule(adjustments, "Double rule", RULE_ADJUSTMENTS.double[inputs.double] || 0);
-    addRule(adjustments, "Double after split", RULE_ADJUSTMENTS.das[inputs.das] || 0);
+    addRule(
+      adjustments,
+      "Double after split",
+      inputs.double === "none" ? 0 : RULE_ADJUSTMENTS.das[inputs.das] || 0
+    );
     addRule(adjustments, "Surrender", RULE_ADJUSTMENTS.surrender[inputs.surrender] || 0);
     addRule(adjustments, "Re-split aces", RULE_ADJUSTMENTS.resplitAces[inputs.resplitAces] || 0);
     addRule(adjustments, "Peek rule", RULE_ADJUSTMENTS.peek[inputs.peek] || 0);
 
     const totalAdjustment = adjustments.reduce((sum, item) => sum + item.value, 0);
-    const houseEdge = Math.max(0, BASE_EDGE + totalAdjustment);
+    const houseEdge = BASE_EDGE + totalAdjustment;
     const totalHands = inputs.handsPerHour * inputs.sessionHours;
     const totalAction = inputs.avgBetSize * totalHands;
     const expectedLossPerHour = inputs.avgBetSize * inputs.handsPerHour * houseEdge;
@@ -164,6 +168,8 @@
   }
 
   function getRuleGrade(edge) {
+    if (edge < 0) return "Player-favorable estimate";
+    if (edge === 0) return "Break-even estimate";
     if (edge <= 0.004) return "Excellent table";
     if (edge <= 0.0075) return "Good table";
     if (edge <= 0.0125) return "Playable but costly";
@@ -255,6 +261,13 @@
     setText("result-rule-grade", grade);
     setText("result-best-fix", bestFix);
 
+    const expectationText =
+      result.sessionExpectedLoss < 0
+        ? `an estimated player advantage of ${money.format(
+            Math.abs(result.sessionExpectedLoss)
+          )}`
+        : `an expected loss near ${money.format(result.sessionExpectedLoss)}`;
+
     setText(
       "result-explanation",
       `${explainInputs(inputs)} Estimated edge is ${percent.format(
@@ -267,9 +280,7 @@
         inputs.sessionHours
       } hours, total action is about ${money.format(
         result.totalAction
-      )} with an expected loss near ${money.format(
-        result.sessionExpectedLoss
-      )}.`
+      )} with ${expectationText}.`
     );
 
     if (result.houseEdge >= 0.02) {
