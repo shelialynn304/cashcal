@@ -1,0 +1,46 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start preview server",
+      "type": "shell",
+      "command": "bash .devcontainer/postStart.sh",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "group": "build"
+    },
+    {
+      "label": "JS syntax check",
+      "type": "shell",
+      "command": "node scripts/js-syntax-check.js",
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Math sanity check",
+      "type": "shell",
+      "command": "node scripts/math-sanity-check.js",
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Site audit",
+      "type": "shell",
+      "command": "node scripts/site-audit.js",
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Run all validation checks",
+      "dependsOn": ["JS syntax check", "Math sanity check", "Site audit"],
+      "dependsOrder": "sequence",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    }
+  ]
+}
