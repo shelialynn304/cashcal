@@ -59,7 +59,6 @@ Before suggesting changes, preserve:
 * Existing canonical tags
 * Non-www domain preference
 * Google Analytics / tracking events
-* Litlyx or other tracking snippets
 * Internal links
 * Responsible gambling disclaimers
 * Affiliate disclosures

@@ -85,7 +85,7 @@ Before finishing any task that touches agent discovery files, validate:
 - Preserve canonical tags.
 - Preserve non-www canonical preference.
 - Preserve SEO metadata unless the task is specifically SEO-related.
-- Preserve Google Analytics, Litlyx, and tracking snippets.
+- Preserve Google Analytics and tracking snippets.
 - Preserve responsible gambling language.
 - Preserve affiliate disclosures.
 - Do not remove working features unless there is a clear math, logic, accessibility, SEO, or bug reason.
