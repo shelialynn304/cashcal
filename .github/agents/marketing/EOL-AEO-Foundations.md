@@ -43,7 +43,6 @@ Preserve:
 * SEO structure
 * Internal links
 * Google Analytics events
-* Litlyx or other tracking snippets
 * Responsible gambling language
 * Affiliate disclosures
 * Page-specific tool functionality
