@@ -34,12 +34,27 @@ const mimeTypes = {
   '.txt': 'text/plain; charset=utf-8'
 };
 
+// '.well-known' is the one dotted path this repo intentionally serves
+// publicly (agent-discovery metadata) -- everything else dotted, plus
+// .git/.devcontainer/.vscode/.github/.agents, stays off the preview.
+const ALLOWED_DOT_SEGMENTS = new Set(['.well-known']);
+
+function isPathSafe(filePath) {
+  const relPath = path.relative(root, filePath);
+  if (relPath === '' || relPath === '..' || relPath.startsWith('..' + path.sep) || path.isAbsolute(relPath)) {
+    return false;
+  }
+  return relPath.split(path.sep).every((segment) => {
+    return !segment.startsWith('.') || ALLOWED_DOT_SEGMENTS.has(segment);
+  });
+}
+
 http.createServer((req, res) => {
   let reqPath = decodeURIComponent(req.url.split('?')[0]);
   if (reqPath.endsWith('/')) reqPath += 'index.html';
   const filePath = path.normalize(path.join(root, reqPath));
 
-  if (!filePath.startsWith(root)) {
+  if (!isPathSafe(filePath)) {
     res.writeHead(403);
     res.end('Forbidden');
     return;
