@@ -72,7 +72,9 @@
       {"@type": "Question", "name": "Can bankroll management make gambling profitable?", "acceptedAnswer": {"@type": "Answer", "text": "No. Bankroll management can help control exposure and session pressure, but it does not turn negative expected-value bets into profitable bets or remove the house edge."}},
       {"@type": "Question", "name": "Why does bet size matter so much?", "acceptedAnswer": {"@type": "Answer", "text": "Bet size determines how many units your bankroll contains. A large average bet gives normal losing streaks much more power to end the session quickly."}},
       {"@type": "Question", "name": "Which game is hardest on a bankroll?", "acceptedAnswer": {"@type": "Answer", "text": "It depends on rules and bet choices, but high-volatility slots, roulette progressions, and horse racing exotic tickets can pressure a bankroll quickly because swings or ticket costs can grow fast."}},
-      {"@type": "Question", "name": "Should I use the same bankroll calculator for every game?", "acceptedAnswer": {"@type": "Answer", "text": "No. Use a calculator or guide that matches the game because blackjack hands, roulette spins, slot pulls, and horse racing tickets all create different risk patterns."}}
+      {"@type": "Question", "name": "Should I use the same bankroll calculator for every game?", "acceptedAnswer": {"@type": "Answer", "text": "No. Use a calculator or guide that matches the game because blackjack hands, roulette spins, slot pulls, and horse racing tickets all create different risk patterns."}},
+      {"@type": "Question", "name": "What is a bankroll unit?", "acceptedAnswer": {"@type": "Answer", "text": "A unit is your bankroll divided by your average bet size. More units generally means more decisions before the bankroll is at risk of running out, though it does not remove variance."}},
+      {"@type": "Question", "name": "What is the fastest way to lower bankroll pressure?", "acceptedAnswer": {"@type": "Answer", "text": "Lower the average bet size relative to the bankroll. It is usually a bigger lever than shortening the session, and it does not require changing which game you play."}}
     ]
   }
   </script>
@@ -176,36 +178,125 @@
       </div>
     </section>
 
+    <section class="section-tight" aria-labelledby="bankroll-basics-title">
+      <div class="container">
+        <h2 id="bankroll-basics-title" class="section-title">Why bankroll math matters</h2>
+        <div class="stat-grid card-grid-tight">
+          <div class="stat-card"><span class="eyebrow-cyan">Lever #1</span><strong>Bet size</strong><p class="mb-0">Bet size decides how many units your bankroll actually contains. Small bets buy more decisions.</p></div>
+          <div class="stat-card"><span class="eyebrow-muted">Lever #2</span><strong>Session length</strong><p class="mb-0">Longer sessions give the house edge more chances to show up in the results.</p></div>
+          <div class="stat-card"><span class="eyebrow-cyan">Lever #3</span><strong>Game variance</strong><p class="mb-0">High-variance games can swing a bankroll fast even when the long-run math looks fine.</p></div>
+          <div class="stat-card"><span class="eyebrow-muted">Lever #4</span><strong>Stop discipline</strong><p class="mb-0">Raising bets after losses turns a planned session into an unplanned one.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" id="quick-check" aria-labelledby="quick-check-title">
+      <div class="container section-panel section-gradient">
+        <div class="section-header">
+          <span class="eyebrow-cyan">Interactive</span>
+          <h2 id="quick-check-title" class="section-title">Quick bankroll pressure check</h2>
+          <p class="section-subtext">Get a fast read on bankroll units before opening a full calculator. This is a simple sizing check, not a simulation.</p>
+        </div>
+        <div class="grid grid-2">
+          <div class="field">
+            <label for="quickBankroll">Bankroll ($)</label>
+            <input id="quickBankroll" type="number" min="1" step="5" value="300" inputmode="decimal" />
+          </div>
+          <div class="field">
+            <label for="quickBet">Average bet size ($)</label>
+            <input id="quickBet" type="number" min="0.1" step="0.5" value="10" inputmode="decimal" />
+          </div>
+          <div class="field">
+            <label for="quickGame">Game you plan to play</label>
+            <select id="quickGame">
+              <option value="blackjack">Blackjack</option>
+              <option value="roulette">Roulette</option>
+              <option value="slots">Slots</option>
+              <option value="horseracing">Horse racing</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="quickSession">Planned session length</label>
+            <select id="quickSession">
+              <option value="60">About 60 decisions (short session)</option>
+              <option value="150" selected>About 150 decisions (average session)</option>
+              <option value="300">About 300 decisions (long session)</option>
+            </select>
+          </div>
+        </div>
+        <div class="result-list" aria-live="polite" style="margin-top:1rem;">
+          <div class="result-item stat-card"><span>Bankroll units</span><strong id="quickUnits">30.0</strong></div>
+          <div class="result-item stat-card"><span>Safer max bet (50 units)</span><strong id="quickSaferBet">$6.00</strong></div>
+          <div class="result-item stat-card"><span>Rough exposure at session length</span><strong id="quickExposure">$1,500.00</strong></div>
+          <div class="result-item stat-card pressure-card" id="quickRiskCard"><span>Estimated pressure</span><strong id="quickRiskTag">Medium</strong></div>
+        </div>
+        <p class="small-note" style="margin-top:1rem;">This is a rough unit check, not a model of expected loss, variance, or house edge. Open the matching calculator below for a fuller picture.</p>
+        <div class="hero-actions" style="margin-top:1rem;">
+          <a id="quickOpenCalc" class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Open the matching calculator</a>
+        </div>
+      </div>
+    </section>
+
     <section class="section section-divider" id="choose-bankroll-tool" aria-labelledby="choose-bankroll-tool-title">
       <div class="container">
         <h2 id="choose-bankroll-tool-title" class="section-title">Choose the right bankroll tool</h2>
         <p class="section-subtext">Start with the game you actually plan to play. A blackjack hand, roulette spin, slot pull, and horse racing ticket do not create the same risk shape.</p>
         <div class="grid grid-3">
           <article class="card premium-card interactive-card">
+            <span class="tag tag-low">Lower edge possible</span>
             <h3>Blackjack Bankroll Calculator</h3>
             <p>Estimate blackjack bankroll pressure, expected loss, and session risk based on bet size and hands played.</p>
             <a class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Open Blackjack Calculator</a>
           </article>
           <article class="card premium-card interactive-card">
+            <span class="tag tag-mid">Fixed house edge</span>
             <h3>Roulette Bankroll Calculator</h3>
             <p>Estimate roulette session pressure by wheel type, bet size, bet type, and number of spins.</p>
             <a class="btn btn-secondary" href="roulette-bankroll-calculator.html">Open Roulette Calculator</a>
           </article>
           <article class="card premium-card interactive-card">
+            <span class="tag tag-high">Volatility driven</span>
             <h3>Slot Bankroll Survival Calculator</h3>
             <p>Estimate how slot RTP, volatility, bet size, and session length can pressure a bankroll.</p>
             <a class="btn btn-secondary" href="bankroll-survival-slots.html">Check Slot Survival</a>
           </article>
           <article class="card premium-card interactive-card">
+            <span class="tag tag-mid">Pool + takeout based</span>
             <h3>Horse Racing Bankroll Guidance</h3>
             <p>Learn unit sizing, ticket exposure, and session discipline for horse racing.</p>
             <a class="btn btn-secondary" href="horse-racing-guide.html">Read Horse Racing Guidance</a>
           </article>
           <article class="card premium-card interactive-card">
+            <span class="tag tag-high">Ticket cost grows fast</span>
             <h3>Exotic Bet Cost Calculator</h3>
             <p>Calculate exacta, trifecta, and superfecta box ticket cost before combinations get expensive.</p>
             <a class="btn btn-secondary" href="exotic-bet-calculator.html">Calculate Ticket Cost</a>
           </article>
+          <article class="card premium-card interactive-card">
+            <span class="tag tag-low">Free download</span>
+            <h3>Printable Bankroll Planner</h3>
+            <p>Track sessions, bet size, and stop points on a printable workbook page.</p>
+            <a class="btn btn-secondary" href="workbook/bankroll-planner.html">Open Bankroll Planner</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="workbook-title">
+      <div class="container">
+        <div class="card card-glass glow-gold hover-glow page-feature">
+          <div class="page-feature-content">
+            <span class="eyebrow-muted">Want it on paper?</span>
+            <h2 id="workbook-title" class="section-title">The Casino Bankroll Workbook</h2>
+            <p>For players who want a physical version of the planning habit, the <strong>Casino Bankroll Workbook</strong> from Edge Over Luck includes pages for planning sessions, tracking results, and logging bankroll decisions across blackjack, roulette, slots, and horse racing.</p>
+            <p class="small-note">As an Amazon Associate, Edge Over Luck earns from qualifying purchases. This is an affiliate link, and Edge Over Luck may earn a commission at no extra cost to you. It does not change the price you pay.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="https://amzn.to/4prZmf1" target="_blank" rel="sponsored nofollow noopener noreferrer" data-track-event="affiliate_click" data-track-label="Casino Bankroll Workbook Amazon">Get the Workbook on Amazon</a>
+            </div>
+          </div>
+          <div class="page-feature-media">
+            <img class="page-feature-image" src="assets/images/shop/casino-bankroll-workbook-cover.webp" width="600" height="776" loading="lazy" alt="Cover of The Casino Bankroll Workbook by Edge Over Luck, with pages for blackjack, roulette, slots, and horse racing" />
+          </div>
         </div>
       </div>
     </section>
@@ -238,28 +329,73 @@
             <thead>
               <tr>
                 <th>Game type</th>
+                <th>Typical house edge range</th>
                 <th>Bankroll pressure factors</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td><strong>Blackjack</strong></td>
-                <td>Lower house edge is possible with correct basic strategy. Mistakes increase cost, and many decisions per session can compound small errors.</td>
+                <td>~0.5% with correct basic strategy</td>
+                <td>Lower house edge is possible with correct basic strategy. Mistakes increase cost, and many decisions per session can compound small errors. See the <a href="blackjack-strategy.html">blackjack strategy guide</a>.</td>
               </tr>
               <tr>
                 <td><strong>Roulette</strong></td>
+                <td>2.70% European / 5.26% American</td>
                 <td>Roulette has a fixed house edge, wheel type matters, and betting systems do not change expected loss. Compare odds with the <a href="roulette-calculator.html">roulette calculator</a> or test sessions in the <a href="roulette-simulator.html">roulette simulator</a>.</td>
               </tr>
               <tr>
                 <td><strong>Slots</strong></td>
-                <td>RTP and volatility matter. Bonus rounds create uneven results, and high volatility can drain a bankroll quickly even when the long-run RTP looks reasonable.</td>
+                <td>Varies widely by machine RTP</td>
+                <td>RTP and volatility matter. Bonus rounds create uneven results, and high volatility can drain a bankroll quickly even when the long-run RTP looks reasonable. See the <a href="slot-volatility-guide.html">slot volatility guide</a>.</td>
               </tr>
               <tr>
                 <td><strong>Horse Racing</strong></td>
-                <td>Pari-mutuel pools and takeout matter. Ticket structure can multiply cost, and exotic bets usually have high variance.</td>
+                <td>Set by track takeout, not a fixed edge</td>
+                <td>Pari-mutuel pools and takeout matter. Ticket structure can multiply cost, and exotic bets usually have high variance. See the <a href="how-we-calculate-odds.html">how we calculate odds</a> notes.</td>
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="glossary-title">
+      <div class="container">
+        <h2 id="glossary-title" class="section-title">Bankroll math glossary</h2>
+        <p class="section-subtext">Quick definitions for the terms bankroll calculators use most often.</p>
+        <div class="stat-grid card-grid-tight">
+          <div class="stat-card"><span class="eyebrow-cyan">Term</span><strong>Bankroll</strong><p class="mb-0">The total money set aside for gambling, kept separate from bills, savings, and living expenses.</p></div>
+          <div class="stat-card"><span class="eyebrow-muted">Term</span><strong>Unit</strong><p class="mb-0">Bankroll divided by average bet size. More units generally means more decisions before the bankroll is at risk of running out.</p></div>
+          <div class="stat-card"><span class="eyebrow-cyan">Term</span><strong>Expected loss</strong><p class="mb-0">The average amount a bet is expected to lose over time, based on house edge, bet size, and number of decisions.</p></div>
+          <div class="stat-card"><span class="eyebrow-muted">Term</span><strong>Variance</strong><p class="mb-0">How much actual results can swing above or below the expected average, even when the long-run math is unchanged.</p></div>
+          <div class="stat-card"><span class="eyebrow-cyan">Term</span><strong>Ruin risk</strong><p class="mb-0">The estimated chance a bankroll hits zero before the planned session ends, given bet size, edge, and variance.</p></div>
+          <div class="stat-card"><span class="eyebrow-muted">Term</span><strong>Session length</strong><p class="mb-0">How many hands, spins, races, or pulls are planned. Longer sessions give the house edge more room to show up.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="mistakes-title">
+      <div class="container">
+        <h2 id="mistakes-title" class="section-title">Common bankroll mistakes</h2>
+        <p class="section-subtext">Most bankroll damage comes from a handful of repeatable habits, not bad luck alone.</p>
+        <div class="grid grid-2">
+          <article class="card warning-box glass-panel hover-glow">
+            <h3>Sizing bets from feel, not from bankroll units</h3>
+            <p class="mb-0">A bet that feels small can still be too large relative to the total bankroll. Check the unit count before playing, not after a losing streak.</p>
+          </article>
+          <article class="card warning-box glass-panel hover-glow">
+            <h3>Raising bets to chase losses</h3>
+            <p class="mb-0">Increasing stakes after a downswing does not change the house edge. It usually compresses the session and increases the chance of ruin.</p>
+          </article>
+          <article class="card warning-box glass-panel hover-glow">
+            <h3>No target session length</h3>
+            <p class="mb-0">Without a planned number of hands, spins, or races, it is hard to judge whether the bankroll is actually built for the session.</p>
+          </article>
+          <article class="card warning-box glass-panel hover-glow">
+            <h3>Mixing bill money with bankroll</h3>
+            <p class="mb-0">A bankroll should be money already set aside for entertainment, never rent, savings, or money needed for real obligations.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -295,10 +431,51 @@
             <a href="roulette-calculator.html">Use the roulette calculator</a>
           </article>
           <article class="card glass-card interactive-card">
+            <h3>Blackjack Strategy Guide</h3>
+            <p>Learn correct basic strategy so decisions, not house edge mistakes, drive your session results.</p>
+            <a href="blackjack-strategy.html">Read the strategy guide</a>
+          </article>
+          <article class="card glass-card interactive-card">
+            <h3>Slot Volatility Guide</h3>
+            <p>Understand how RTP and volatility combine to shape slot bankroll swings.</p>
+            <a href="slot-volatility-guide.html">Read the volatility guide</a>
+          </article>
+          <article class="card glass-card interactive-card">
+            <h3>Gambler Personality Quiz</h3>
+            <p>Find the bankroll behavior pattern most likely to drain your sessions.</p>
+            <a href="gambler-personality-quiz.html">Take the quiz</a>
+          </article>
+          <article class="card glass-card interactive-card">
             <h3>Responsible Gambling</h3>
             <p>Set limits before playing and get help resources if gambling stops feeling controlled.</p>
             <a href="responsible-gambling.html">Read responsible gambling resources</a>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="bankroll-quiz-title">
+      <div class="container quiz-cta-card card glass-panel glow-cyan hover-glow">
+        <span class="chip">Personality leak check</span>
+        <h2 id="bankroll-quiz-title" class="section-title">Some players lose from bad odds. Others lose from reactive decisions.</h2>
+        <p>Find out whether your biggest bankroll leak comes from chasing, overplaying, overconfidence, or poor session planning.</p>
+        <div class="hero-actions">
+          <a class="btn" href="gambler-personality-quiz.html" data-track-event="quiz_start" data-track-label="Take the Gambler Personality Quiz from Bankroll Tools">Take the Gambler Personality Quiz</a>
+          <a class="btn btn-secondary" href="responsible-gambling.html" data-track-event="responsible_gambling_click" data-track-label="Set Safer Limits from Bankroll Tools">Set safer limits</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="bankroll-tools-newsletter-title">
+      <div class="container">
+        <div class="newsletter-cta card-glass glow-gold" data-track-event="subscribe_cta_click" data-track-label="Beehiiv Subscribe Form">
+          <span class="eyebrow-muted">Free for Subscribers</span>
+          <h2 id="bankroll-tools-newsletter-title" class="section-title">Get the NEW Edge Over Luck Series workbook FREE by download</h2>
+          <p>Subscribe for printable casino math workbooks, bankroll tools, strategy charts, and new member downloads. Educational use only. No systems. No miracle nonsense. Just math.</p>
+          <div class="newsletter-embed" data-track-event="subscribe_cta_click" data-track-label="Beehiiv Subscribe Form">
+            <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="e40b1059-9df1-458c-baaf-415c688fd00b"></script>
+          </div>
+          <p class="fine-print small-note">21+ where legal. Educational use only. Gambling involves financial risk. Always follow your local laws and gamble responsibly.</p>
         </div>
       </div>
     </section>
@@ -330,6 +507,14 @@
           <details class="card glass-card">
             <summary>Should I use the same bankroll calculator for every game?</summary>
             <p>No. Use a calculator or guide that matches the game because blackjack hands, roulette spins, slot pulls, and horse racing tickets all create different risk patterns.</p>
+          </details>
+          <details class="card glass-card">
+            <summary>What is a bankroll unit?</summary>
+            <p>A unit is your bankroll divided by your average bet size. More units generally means more decisions before the bankroll is at risk of running out, though it does not remove variance.</p>
+          </details>
+          <details class="card glass-card">
+            <summary>What is the fastest way to lower bankroll pressure?</summary>
+            <p>Lower the average bet size relative to the bankroll. It is usually a bigger lever than shortening the session, and it does not require changing which game you play.</p>
           </details>
         </div>
       </div>
@@ -379,5 +564,65 @@
   </footer>
   <script src="js/tracking.js" defer></script>
   <script src="nav.js" defer></script>
+  <script>
+    (function () {
+      var bankrollInput = document.getElementById('quickBankroll');
+      var betInput = document.getElementById('quickBet');
+      var gameSelect = document.getElementById('quickGame');
+      var sessionSelect = document.getElementById('quickSession');
+      var unitsOut = document.getElementById('quickUnits');
+      var saferBetOut = document.getElementById('quickSaferBet');
+      var exposureOut = document.getElementById('quickExposure');
+      var riskTagOut = document.getElementById('quickRiskTag');
+      var riskCard = document.getElementById('quickRiskCard');
+      var openCalcLink = document.getElementById('quickOpenCalc');
+
+      if (!bankrollInput || !betInput || !gameSelect || !sessionSelect) return;
+
+      var CALC_LINKS = {
+        blackjack: 'blackjack-bankroll-calculator.html',
+        roulette: 'roulette-bankroll-calculator.html',
+        slots: 'bankroll-survival-slots.html',
+        horseracing: 'exotic-bet-calculator.html'
+      };
+
+      function money(n) {
+        return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function update() {
+        var bankroll = Math.max(0, parseFloat(bankrollInput.value) || 0);
+        var bet = Math.max(0.01, parseFloat(betInput.value) || 0.01);
+        var decisions = parseInt(sessionSelect.value, 10) || 150;
+        var units = bankroll / bet;
+
+        unitsOut.textContent = units.toFixed(1);
+        saferBetOut.textContent = money(bankroll / 50);
+        exposureOut.textContent = money(bet * decisions);
+
+        riskCard.classList.remove('is-danger', 'is-good');
+        if (units < 20) {
+          riskTagOut.textContent = 'High pressure';
+          riskCard.classList.add('is-danger');
+        } else if (units < 50) {
+          riskTagOut.textContent = 'Medium pressure';
+        } else {
+          riskTagOut.textContent = 'Lower pressure';
+          riskCard.classList.add('is-good');
+        }
+
+        if (openCalcLink) {
+          openCalcLink.setAttribute('href', CALC_LINKS[gameSelect.value] || CALC_LINKS.blackjack);
+        }
+      }
+
+      [bankrollInput, betInput, gameSelect, sessionSelect].forEach(function (el) {
+        el.addEventListener('input', update);
+        el.addEventListener('change', update);
+      });
+
+      update();
+    })();
+  </script>
 </body>
 </html>
