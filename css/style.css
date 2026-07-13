@@ -928,6 +928,15 @@ ol {
   max-width: 900px;
   margin: 3rem auto;
   text-align: center;
+  /* .card-glass sets overflow:hidden for its rounded-corner background.
+     The Beehiiv embed can render a consent checkbox after the iframe's
+     initial height is set; clipping it here made the checkbox
+     unreachable. Never clip this container's content. */
+  overflow: visible;
+}
+
+.glass-panel:has(#subscribe-form) {
+  overflow: visible;
 }
 
 .newsletter-cta > * + * {

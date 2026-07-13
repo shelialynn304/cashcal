@@ -16,9 +16,10 @@ echo "Starting Edge Over Luck static preview server on port ${PORT}..."
 nohup node -e "
 const http = require('node:http');
 const fs = require('node:fs');
+const fsp = require('node:fs/promises');
 const path = require('node:path');
 
-const root = process.cwd();
+const root = fs.realpathSync(process.cwd());
 const port = ${PORT};
 
 const mimeTypes = {
@@ -34,27 +35,62 @@ const mimeTypes = {
   '.txt': 'text/plain; charset=utf-8'
 };
 
-http.createServer((req, res) => {
-  let reqPath = decodeURIComponent(req.url.split('?')[0]);
-  if (reqPath.endsWith('/')) reqPath += 'index.html';
-  const filePath = path.normalize(path.join(root, reqPath));
+// '.well-known' is the one dotted path this repo intentionally serves
+// publicly (agent-discovery metadata) -- everything else dotted, plus
+// .git/.devcontainer/.vscode/.github/.agents, stays off the preview.
+const ALLOWED_DOT_SEGMENTS = new Set(['.well-known']);
 
-  if (!filePath.startsWith(root)) {
-    res.writeHead(403);
-    res.end('Forbidden');
-    return;
+function isWithinRoot(candidatePath) {
+  const relPath = path.relative(root, candidatePath);
+  if (relPath === '' || relPath === '..' || relPath.startsWith('..' + path.sep) || path.isAbsolute(relPath)) {
+    return false;
   }
+  return relPath.split(path.sep).every((segment) => {
+    return !segment.startsWith('.') || ALLOWED_DOT_SEGMENTS.has(segment);
+  });
+}
 
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
+http.createServer(async (req, res) => {
+  try {
+    let reqPath = decodeURIComponent(req.url.split('?')[0]);
+    if (reqPath.endsWith('/')) reqPath += 'index.html';
+    const filePath = path.normalize(path.join(root, reqPath));
+
+    // Lexical check first (cheap, catches obvious traversal/dotfile
+    // requests without touching the filesystem).
+    if (!isWithinRoot(filePath)) {
+      res.writeHead(403);
+      res.end('Forbidden');
+      return;
+    }
+
+    // A lexical check alone can be bypassed by an in-repo symlink that
+    // points outside root (or at a blocked dotted path). Resolve the
+    // real, symlink-free path and re-apply the same policy to it before
+    // ever reading file contents.
+    let realFilePath;
+    try {
+      realFilePath = await fsp.realpath(filePath);
+    } catch (err) {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.end('Not found: ' + reqPath);
       return;
     }
-    const ext = path.extname(filePath);
+
+    if (!isWithinRoot(realFilePath)) {
+      res.writeHead(403);
+      res.end('Forbidden');
+      return;
+    }
+
+    const data = await fsp.readFile(realFilePath);
+    const ext = path.extname(realFilePath);
     res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'application/octet-stream' });
     res.end(data);
-  });
+  } catch (err) {
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end('Not found');
+  }
 }).listen(port, () => {
   console.log('Edge Over Luck preview server listening on http://localhost:' + port);
 });
