@@ -146,6 +146,35 @@ function percentile(arr, p) {
   return sorted[lower] * (1 - weight) + sorted[upper] * weight;
 }
 
+function validateBlackjackBankrollInputs(input) {
+  const bankroll = Number(input.bankroll);
+  const betSize = Number(input.betSize);
+  const houseEdge = Number(input.houseEdge);
+  const bets = Number.parseInt(input.bets, 10);
+  const simulations = Number.parseInt(input.simulations, 10);
+  const riskTarget = Number(input.riskTarget);
+
+  if (!Number.isFinite(bankroll) || bankroll < 1) return "Starting bankroll must be at least $1.";
+  if (!Number.isFinite(betSize) || betSize < 0.01) return "Bet size must be at least $0.01.";
+  if (betSize > bankroll) return "Bet size must be positive and no larger than bankroll.";
+  if (!Number.isFinite(houseEdge) || houseEdge < 0 || houseEdge > 10) return "House edge must be between 0% and 10%.";
+  if (!Number.isFinite(bets) || bets < 1) return "Hands played must be at least 1.";
+  if (!Number.isFinite(simulations) || simulations < 500 || simulations > 50000) return "Simulations must be between 500 and 50,000.";
+  if (!Number.isFinite(riskTarget) || riskTarget < 1 || riskTarget > 99) return "Target bust risk must be between 1% and 99%.";
+  return "";
+}
+
+function normalizeBlackjackBankrollInputs(input) {
+  return {
+    bankroll: Number(input.bankroll),
+    betSize: Number(input.betSize),
+    houseEdge: Number(input.houseEdge),
+    bets: Number.parseInt(input.bets, 10),
+    simulations: Number.parseInt(input.simulations, 10),
+    riskTarget: Number(input.riskTarget)
+  };
+}
+
 function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
   const endings = [];
   const bustHands = [];
@@ -204,6 +233,73 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
     p10Ending,
     p90Ending
   };
+}
+
+
+function calculateBlackjackBankroll(input) {
+  const normalized = normalizeBlackjackBankrollInputs(input);
+  const error = validateBlackjackBankrollInputs(normalized);
+  if (error) throw new Error(error);
+
+  const results = runMonteCarlo(
+    normalized.bankroll,
+    normalized.betSize,
+    normalized.houseEdge,
+    normalized.bets,
+    normalized.simulations
+  );
+  const recommendedBet = findRecommendedBet(
+    normalized.bankroll,
+    normalized.houseEdge,
+    normalized.bets,
+    normalized.riskTarget,
+    Math.min(5000, Math.max(500, Math.round(normalized.simulations / 2)))
+  );
+
+  return { ...normalized, results, recommendedBet };
+}
+
+function renderBlackjackBankroll(calculation) {
+  const { bankroll, betSize, bets, simulations, riskTarget, results, recommendedBet } = calculation;
+  updateRiskLevel(bankroll, betSize);
+
+  document.getElementById("expectedLoss").textContent = formatMoney(bankroll - results.averageEnding);
+  document.getElementById("endingBankroll").textContent = formatMoney(results.averageEnding);
+  document.getElementById("bustRisk").textContent = `${results.bustRisk.toFixed(1)}%`;
+  document.getElementById("profitChance").textContent = `${results.profitChance.toFixed(1)}%`;
+  document.getElementById("p10Ending").textContent = formatMoney(results.p10Ending);
+  document.getElementById("p90Ending").textContent = formatMoney(results.p90Ending);
+  document.getElementById("recommendedBet").textContent = `${formatMoney(recommendedBet)} @ ${riskTarget.toFixed(0)}% bust risk`;
+
+  const lastsHandsStat = document.getElementById("lastsHandsStat");
+  const lastsHandsNote = document.getElementById("lastsHandsNote");
+
+  if (lastsHandsStat && lastsHandsNote) {
+    if (results.bustHands.length > 0) {
+      lastsHandsStat.textContent = `YOU LAST ~${Math.round(results.medianBustHand).toLocaleString()} HANDS`;
+      lastsHandsNote.textContent =
+        `Among busted sessions, the median bust point was about hand ${Math.round(results.medianBustHand).toLocaleString()}, and full-session survival was ${results.survivalRate.toFixed(1)}%.`;
+    } else {
+      lastsHandsStat.textContent = `YOU LAST THE FULL ${bets.toLocaleString()} HANDS`;
+      lastsHandsNote.textContent =
+        `In these simulations, the bankroll survived the full session every time. That still does not make the game beatable.`;
+    }
+  }
+
+  const summaryElement = document.getElementById("summary");
+  summaryElement.textContent = formatBlackjackBankrollText(calculation);
+  summaryElement.setAttribute("data-result-ready", "true");
+}
+
+function formatBlackjackBankrollText(calculation) {
+  const { bankroll, simulations, results } = calculation;
+  return `Educational estimate only: based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}. ` +
+    `Bust risk was ${results.bustRisk.toFixed(1)}%, full-session survival was ${results.survivalRate.toFixed(1)}%, and the chance of finishing ahead was ${results.profitChance.toFixed(1)}%. ` +
+    `The worst simulated result was ${formatMoney(results.minEnding)}, and the best was ${formatMoney(results.maxEnding)}. ` +
+    `These estimates do not guarantee gambling outcomes.` +
+    (results.bustHands.length > 0
+      ? ` Busted sessions died around hand ${Math.round(results.avgBustHand).toLocaleString()} on average, with a median bust point of hand ${Math.round(results.medianBustHand).toLocaleString()}.`
+      : ``);
 }
 
 function estimateBustRiskForBet(bankroll, betSize, houseEdgePercent, bets, simulations) {
@@ -295,78 +391,26 @@ if (form) {
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const bankroll = parseFloat(bankrollInput.value);
-    const betSize = parseFloat(betSizeInput.value);
-    const houseEdge = parseFloat(document.getElementById("houseEdge").value);
-    const bets = parseInt(document.getElementById("bets").value, 10);
-    const simulations = parseInt(document.getElementById("simulations").value, 10);
-    const riskTarget = parseFloat(riskTargetInput.value);
+    const input = {
+      bankroll: bankrollInput.value,
+      betSize: betSizeInput.value,
+      houseEdge: document.getElementById("houseEdge").value,
+      bets: document.getElementById("bets").value,
+      simulations: document.getElementById("simulations").value,
+      riskTarget: riskTargetInput.value
+    };
 
-    updateRiskLevel(bankroll, betSize);
-
-    if (
-      !Number.isFinite(bankroll) ||
-      !Number.isFinite(betSize) ||
-      !Number.isFinite(houseEdge) ||
-      !Number.isFinite(bets) ||
-      !Number.isFinite(simulations) ||
-      !Number.isFinite(riskTarget) ||
-      bankroll <= 0 ||
-      betSize <= 0 ||
-      betSize > bankroll ||
-      bets <= 0 ||
-      houseEdge < 0 ||
-      houseEdge > 10 ||
-      simulations < 500 ||
-      riskTarget <= 0 ||
-      riskTarget >= 100
-    ) {
-      alert("Please enter valid numbers. Bet size must be positive and no larger than bankroll, and house edge should be between 0 and 10%.\nTypical blackjack edge is near 0.5% with proper basic strategy.");
+    const error = validateBlackjackBankrollInputs(normalizeBlackjackBankrollInputs(input));
+    if (error) {
+      updateRiskLevel(parseFloat(bankrollInput.value), parseFloat(betSizeInput.value));
+      alert(error + "\nTypical blackjack edge is near 0.5% with proper basic strategy.");
       return;
     }
 
-    const results = runMonteCarlo(bankroll, betSize, houseEdge, bets, simulations);
-    const recommendedBet = findRecommendedBet(
-      bankroll,
-      houseEdge,
-      bets,
-      riskTarget,
-      Math.min(5000, Math.max(500, Math.round(simulations / 2)))
-    );
+    const calculation = calculateBlackjackBankroll(input);
+    renderBlackjackBankroll(calculation);
 
-    document.getElementById("expectedLoss").textContent = formatMoney(bankroll - results.averageEnding);
-    document.getElementById("endingBankroll").textContent = formatMoney(results.averageEnding);
-    document.getElementById("bustRisk").textContent = `${results.bustRisk.toFixed(1)}%`;
-    document.getElementById("profitChance").textContent = `${results.profitChance.toFixed(1)}%`;
-    document.getElementById("p10Ending").textContent = formatMoney(results.p10Ending);
-    document.getElementById("p90Ending").textContent = formatMoney(results.p90Ending);
-    document.getElementById("recommendedBet").textContent = `${formatMoney(recommendedBet)} @ ${riskTarget.toFixed(0)}% bust risk`;
-
-    const lastsHandsStat = document.getElementById("lastsHandsStat");
-    const lastsHandsNote = document.getElementById("lastsHandsNote");
-
-    if (lastsHandsStat && lastsHandsNote) {
-      if (results.bustHands.length > 0) {
-        lastsHandsStat.textContent = `YOU LAST ~${Math.round(results.medianBustHand).toLocaleString()} HANDS`;
-        lastsHandsNote.textContent =
-          `Among busted sessions, the median bust point was about hand ${Math.round(results.medianBustHand).toLocaleString()}, and full-session survival was ${results.survivalRate.toFixed(1)}%.`;
-      } else {
-        lastsHandsStat.textContent = `YOU LAST THE FULL ${bets.toLocaleString()} HANDS`;
-        lastsHandsNote.textContent =
-          `In these simulations, the bankroll survived the full session every time. That still does not make the game beatable.`;
-      }
-    }
-
-    const summaryElement = document.getElementById("summary");
-    summaryElement.textContent =
-      `Based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}. ` +
-      `Bust risk was ${results.bustRisk.toFixed(1)}%, full-session survival was ${results.survivalRate.toFixed(1)}%, and the chance of finishing ahead was ${results.profitChance.toFixed(1)}%. ` +
-      `The worst simulated result was ${formatMoney(results.minEnding)}, and the best was ${formatMoney(results.maxEnding)}.` +
-      (results.bustHands.length > 0
-        ? ` Busted sessions died around hand ${Math.round(results.avgBustHand).toLocaleString()} on average, with a median bust point of hand ${Math.round(results.medianBustHand).toLocaleString()}.`
-        : ``);
-    summaryElement.setAttribute("data-result-ready", "true");
-
+    const { bankroll, betSize, houseEdge, bets, results } = calculation;
     const resultsCanvas = document.getElementById("resultsChart");
     if (resultsCanvas) {
       const resultsCtx = resultsCanvas.getContext("2d");
@@ -433,4 +477,38 @@ if (form) {
   });
 }
 
+function registerBlackjackBankrollWebMcp() {
+  if (!form || !navigator || !("modelContext" in navigator) || typeof navigator.modelContext.provideContext !== "function") return;
+  if (window.__edgeOverLuckBlackjackBankrollWebMcpRegistered) return;
+  window.__edgeOverLuckBlackjackBankrollWebMcpRegistered = true;
+
+  navigator.modelContext.provideContext({
+    tools: [{
+      name: "calculate-blackjack-bankroll",
+      description: "Estimate blackjack bankroll pressure, bust risk, expected loss, and profit chance using the visible calculator's simplified educational simulation model.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          bankroll: { type: "number", minimum: 1, maximum: 1000000, description: "Starting session bankroll in dollars." },
+          betSize: { type: "number", minimum: 0.01, maximum: 1000000, description: "Base bet per blackjack hand in dollars; must not exceed bankroll." },
+          houseEdge: { type: "number", minimum: 0, maximum: 10, description: "Estimated blackjack house edge percentage." },
+          bets: { type: "integer", minimum: 1, maximum: 100000, description: "Planned hands played." },
+          simulations: { type: "integer", minimum: 500, maximum: 50000, description: "Simulation sessions to run." },
+          riskTarget: { type: "number", minimum: 1, maximum: 99, description: "Target bust risk percentage for recommended max bet." }
+        },
+        required: ["bankroll", "betSize", "houseEdge", "bets", "simulations", "riskTarget"],
+        additionalProperties: false
+      },
+      execute: function (input) {
+        const calculation = calculateBlackjackBankroll(input || {});
+        renderBlackjackBankroll(calculation);
+        return { content: [{ type: "text", text: formatBlackjackBankrollText(calculation) }] };
+      }
+    }]
+  });
+}
+
+window.EdgeOverLuckBlackjackBankroll = { calculateBlackjackBankroll, validateBlackjackBankrollInputs, formatBlackjackBankrollText };
+
+document.addEventListener("DOMContentLoaded", registerBlackjackBankrollWebMcp);
 document.getElementById("bankrollForm").dispatchEvent(new Event("submit"));

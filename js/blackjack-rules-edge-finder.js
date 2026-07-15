@@ -121,11 +121,45 @@
       return "Session bankroll must be greater than $0.";
     }
 
+    const allowed = {
+      decks: ["1", "2", "4", "6", "8"],
+      blackjackPayout: ["3to2", "6to5", "1to1"],
+      soft17: ["stand", "hit"],
+      double: ["any", "9-11", "10-11", "none"],
+      das: ["yes", "no"],
+      surrender: ["none", "late"],
+      resplitAces: ["no", "yes"],
+      peek: ["peek", "no-peek"]
+    };
+
+    for (const key in allowed) {
+      if (allowed[key].indexOf(String(inputs[key])) === -1) {
+        return `Unsupported blackjack rule value for ${key}.`;
+      }
+    }
+
     return "";
   }
 
   function addRule(adjustments, label, value) {
     adjustments.push({ label, value });
+  }
+
+  function normalizeRuleInputs(inputs) {
+    return {
+      decks: String(inputs.decks),
+      blackjackPayout: String(inputs.blackjackPayout),
+      soft17: String(inputs.soft17),
+      double: String(inputs.double),
+      das: String(inputs.das),
+      surrender: String(inputs.surrender),
+      resplitAces: String(inputs.resplitAces),
+      peek: inputs.peek === undefined ? "peek" : String(inputs.peek),
+      avgBetSize: Number(inputs.avgBetSize),
+      handsPerHour: Number(inputs.handsPerHour),
+      sessionHours: Number(inputs.sessionHours),
+      sessionBankroll: Number(inputs.sessionBankroll),
+    };
   }
 
   function calculateEdge(inputs) {
@@ -293,7 +327,7 @@
   }
 
   function runCalculator() {
-    const inputs = readInputs();
+    const inputs = normalizeRuleInputs(readInputs());
     const error = validateInputs(inputs);
 
     if (error) {
@@ -304,6 +338,53 @@
     const result = calculateEdge(inputs);
     render(inputs, result);
   }
+
+  function formatRuleResultText(inputs, result) {
+    return `Educational estimate only: ${explainInputs(inputs)} Estimated house edge is ${percent.format(result.houseEdge)}, player RTP is ${percent.format(result.playerRtp)}, expected loss per hour is ${money.format(result.expectedLossPerHour)}, and session expected loss is ${money.format(result.sessionExpectedLoss)}. These estimates do not guarantee gambling outcomes.`;
+  }
+
+  function registerRulesWebMcp() {
+    if (!("modelContext" in navigator) || typeof navigator.modelContext.provideContext !== "function") return;
+    if (window.__edgeOverLuckBlackjackRulesWebMcpRegistered) return;
+    window.__edgeOverLuckBlackjackRulesWebMcpRegistered = true;
+
+    navigator.modelContext.provideContext({
+      tools: [{
+        name: "evaluate-blackjack-rules",
+        description: "Evaluate blackjack rule settings and estimate house edge, RTP, expected loss, and bankroll pressure using the visible rules edge finder.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            decks: { type: "string", enum: ["1", "2", "4", "6", "8"] },
+            blackjackPayout: { type: "string", enum: ["3to2", "6to5", "1to1"] },
+            soft17: { type: "string", enum: ["stand", "hit"] },
+            double: { type: "string", enum: ["any", "9-11", "10-11", "none"] },
+            das: { type: "string", enum: ["yes", "no"] },
+            surrender: { type: "string", enum: ["none", "late"] },
+            resplitAces: { type: "string", enum: ["no", "yes"] },
+            peek: { type: "string", enum: ["peek", "no-peek"] },
+            avgBetSize: { type: "number", minimum: 1, maximum: 1000000 },
+            handsPerHour: { type: "number", minimum: 1, maximum: 1000 },
+            sessionHours: { type: "number", minimum: 0.25, maximum: 168 },
+            sessionBankroll: { type: "number", minimum: 1, maximum: 1000000 }
+          },
+          required: ["decks", "blackjackPayout", "soft17", "double", "das", "surrender", "resplitAces", "peek", "avgBetSize", "handsPerHour", "sessionHours", "sessionBankroll"],
+          additionalProperties: false
+        },
+        execute: function (input) {
+          const inputs = normalizeRuleInputs(input || {});
+          const error = validateInputs(inputs);
+          if (error) throw new Error(error);
+          const result = calculateEdge(inputs);
+          render(inputs, result);
+          return { content: [{ type: "text", text: formatRuleResultText(inputs, result) }] };
+        }
+      }]
+    });
+  }
+
+  window.EdgeOverLuckBlackjackRules = { calculateEdge, validateInputs, formatRuleResultText };
+  document.addEventListener("DOMContentLoaded", registerRulesWebMcp);
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();

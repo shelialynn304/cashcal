@@ -7,7 +7,8 @@
     calculateSpinMath,
     formatMoney,
     toPercent,
-    randomSpinWin
+    randomSpinWin,
+    hasBetType
   } = window.RouletteMath;
 
   const betTypeSelect = document.getElementById('betType');
@@ -15,6 +16,36 @@
     .map((bet) => `<option value="${bet.key}">${bet.label}</option>`)
     .join('');
   betTypeSelect.value = 'evenMoney';
+
+  function validateRouletteCalculatorInputs(input) {
+    const wheelTypes = ['european', 'american'];
+    const wheelType = String(input.wheelType || '').trim().toLowerCase();
+    const betType = String(input.betType || '').trim();
+    const bankroll = Number(input.bankroll);
+    const betSize = Number(input.betSize);
+    const spins = Number.parseInt(input.spins, 10);
+    const sessions = Number.parseInt(input.sessions, 10);
+
+    if (wheelTypes.indexOf(wheelType) === -1) return 'Wheel type must be european or american.';
+    if (!hasBetType(betType) || !ROULETTE_BET_TYPES[betType]) return 'Choose a supported roulette wager type.';
+    if (!Number.isFinite(bankroll) || bankroll < 10) return 'Starting bankroll must be at least $10.';
+    if (!Number.isFinite(betSize) || betSize < 1) return 'Bet size must be at least $1.';
+    if (betSize > bankroll) return 'Bet size must not exceed bankroll.';
+    if (!Number.isFinite(spins) || spins < 1 || spins > 100000) return 'Spins must be between 1 and 100,000.';
+    if (!Number.isFinite(sessions) || sessions < 200 || sessions > 50000) return 'Simulation sessions must be between 200 and 50,000.';
+    return '';
+  }
+
+  function normalizeRouletteCalculatorInputs(input) {
+    return {
+      wheelType: String(input.wheelType || '').trim().toLowerCase(),
+      betType: String(input.betType || '').trim(),
+      bankroll: Number(input.bankroll),
+      betSize: Number(input.betSize),
+      spins: Number.parseInt(input.spins, 10),
+      sessions: Number.parseInt(input.sessions, 10)
+    };
+  }
 
   function runMonteCarlo(input) {
     let profitSessions = 0;
@@ -39,44 +70,63 @@
     };
   }
 
-  function calculateOdds(markResultReady) {
-    const wheelType = document.getElementById('wheelType').value;
-    const betType = document.getElementById('betType').value;
-    const bankroll = clampNumber(document.getElementById('bankroll').value, 300, 10);
-    const betSize = clampNumber(document.getElementById('betSize').value, 10, 1);
-    const spins = clampNumber(document.getElementById('spins').value, 100, 1);
-    const sessions = clampNumber(document.getElementById('sessions').value, 2000, 200);
 
-    const math = calculateSpinMath(wheelType, betType, betSize);
-    const expectedLoss = Math.max(0, -(math.evDollars * spins));
-    const expectedEnding = bankroll - expectedLoss;
+  function calculateRouletteProbability(input) {
+    const normalized = normalizeRouletteCalculatorInputs(input);
+    const error = validateRouletteCalculatorInputs(normalized);
+    if (error) throw new Error(error);
+
+    const math = calculateSpinMath(normalized.wheelType, normalized.betType, normalized.betSize);
+    const expectedLoss = Math.max(0, -(math.evDollars * normalized.spins));
+    const expectedEnding = normalized.bankroll - expectedLoss;
     const sim = runMonteCarlo({
-      sessions,
-      spins,
-      bankroll,
-      betSize,
+      sessions: normalized.sessions,
+      spins: normalized.spins,
+      bankroll: normalized.bankroll,
+      betSize: normalized.betSize,
       winProb: math.winProb,
       payout: math.bet.payout
     });
 
-    document.getElementById('winChance').textContent = toPercent(math.winProb, 2);
-    document.getElementById('payoutRatio').textContent = `${math.bet.payout}:1`;
-    document.getElementById('houseEdge').textContent = `${math.wheel.houseEdge.toFixed(2)}%`;
-    document.getElementById('evSpin').textContent = formatMoney(math.evDollars);
-    document.getElementById('expectedLoss').textContent = formatMoney(expectedLoss);
-    document.getElementById('endBankroll').textContent = formatMoney(expectedEnding);
-    document.getElementById('profitChance').textContent = toPercent(sim.profitChance, 1);
-    document.getElementById('bustRisk').textContent = toPercent(sim.bustRisk, 1);
+    return { ...normalized, math, expectedLoss, expectedEnding, sim };
+  }
+
+  function formatRouletteProbabilityText(result) {
+    return `Educational estimate only: on ${result.math.wheel.label} roulette, a ${formatMoney(result.betSize)} ${result.math.bet.label.toLowerCase()} has ${toPercent(result.math.winProb, 2)} win chance per spin and ${formatMoney(result.math.evDollars)} EV per spin. Over ${result.spins} spins, expected loss is ${formatMoney(result.expectedLoss)}, estimated bust risk is ${toPercent(result.sim.bustRisk, 1)}, and chance of any profit is ${toPercent(result.sim.profitChance, 1)}. These estimates do not guarantee gambling outcomes.`;
+  }
+
+  function renderRouletteProbability(result, markResultReady) {
+    document.getElementById('winChance').textContent = toPercent(result.math.winProb, 2);
+    document.getElementById('payoutRatio').textContent = `${result.math.bet.payout}:1`;
+    document.getElementById('houseEdge').textContent = `${result.math.wheel.houseEdge.toFixed(2)}%`;
+    document.getElementById('evSpin').textContent = formatMoney(result.math.evDollars);
+    document.getElementById('expectedLoss').textContent = formatMoney(result.expectedLoss);
+    document.getElementById('endBankroll').textContent = formatMoney(result.expectedEnding);
+    document.getElementById('profitChance').textContent = toPercent(result.sim.profitChance, 1);
+    document.getElementById('bustRisk').textContent = toPercent(result.sim.bustRisk, 1);
 
     const summary = document.getElementById('summary');
-    summary.textContent = `On ${math.wheel.label} roulette, a ${formatMoney(betSize)} ${math.bet.label.toLowerCase()} has ${toPercent(math.winProb, 2)} win chance per spin and ${formatMoney(math.evDollars)} EV per spin. Over ${spins} spins, expected loss is ${formatMoney(expectedLoss)}.`;
+    summary.textContent = formatRouletteProbabilityText(result);
     summary.dataset.resultReady = markResultReady ? 'true' : 'false';
 
     const resultExplanation = document.getElementById('roulette-result-explanation');
     if (resultExplanation) {
-      const sessionTone = spins <= 50 ? 'This is a short session, so winning, weird, or choppy results can absolutely happen.' : 'This is a longer session, so the house edge gets more chances to show up through the noise.';
-      resultExplanation.textContent = `Winning sessions can happen, especially over short runs. ${sessionTone} Your ${formatMoney(betSize)} bet on ${math.wheel.label.toLowerCase()} roulette creates an estimated ${toPercent(sim.bustRisk, 1)} bust risk across ${sessions} simulated sessions.`;
+      const sessionTone = result.spins <= 50 ? 'This is a short session, so winning, weird, or choppy results can absolutely happen.' : 'This is a longer session, so the house edge gets more chances to show up through the noise.';
+      resultExplanation.textContent = `Winning sessions can happen, especially over short runs. ${sessionTone} Your ${formatMoney(result.betSize)} bet on ${result.math.wheel.label.toLowerCase()} roulette creates an estimated ${toPercent(result.sim.bustRisk, 1)} bust risk across ${result.sessions} simulated sessions. Educational estimates do not guarantee outcomes.`;
     }
+  }
+
+  function calculateOdds(markResultReady) {
+    const input = {
+      wheelType: document.getElementById('wheelType').value,
+      betType: document.getElementById('betType').value,
+      bankroll: document.getElementById('bankroll').value,
+      betSize: document.getElementById('betSize').value,
+      spins: document.getElementById('spins').value,
+      sessions: document.getElementById('sessions').value
+    };
+    const result = calculateRouletteProbability(input);
+    renderRouletteProbability(result, markResultReady);
   }
 
   function runDemoSession() {
@@ -103,6 +153,40 @@
 
     document.getElementById('spinLog').innerHTML = rows.join('');
   }
+
+  function registerRouletteWebMcp() {
+    if (!("modelContext" in navigator) || typeof navigator.modelContext.provideContext !== "function") return;
+    if (window.__edgeOverLuckRouletteCalculatorWebMcpRegistered) return;
+    window.__edgeOverLuckRouletteCalculatorWebMcpRegistered = true;
+
+    navigator.modelContext.provideContext({
+      tools: [{
+        name: "calculate-roulette-probability",
+        description: "Calculate roulette win probability, payout, expected value, house edge, and bankroll pressure for supported wager categories.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            wheelType: { type: "string", enum: ["european", "american"] },
+            betType: { type: "string", enum: Object.keys(ROULETTE_BET_TYPES) },
+            bankroll: { type: "number", minimum: 10, maximum: 1000000 },
+            betSize: { type: "number", minimum: 1, maximum: 1000000 },
+            spins: { type: "integer", minimum: 1, maximum: 100000 },
+            sessions: { type: "integer", minimum: 200, maximum: 50000 }
+          },
+          required: ["wheelType", "betType", "bankroll", "betSize", "spins", "sessions"],
+          additionalProperties: false
+        },
+        execute: function (input) {
+          const result = calculateRouletteProbability(input || {});
+          renderRouletteProbability(result, true);
+          return { content: [{ type: "text", text: formatRouletteProbabilityText(result) }] };
+        }
+      }]
+    });
+  }
+
+  window.EdgeOverLuckRouletteCalculator = { calculateRouletteProbability, validateRouletteCalculatorInputs, formatRouletteProbabilityText };
+  document.addEventListener("DOMContentLoaded", registerRouletteWebMcp);
 
   document.getElementById('calcBtn').addEventListener('click', function () { calculateOdds(true); });
   document.getElementById('spinDemoBtn').addEventListener('click', runDemoSession);
