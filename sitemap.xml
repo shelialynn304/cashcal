@@ -109,7 +109,28 @@
 
   <url>
     <loc>https://edgeoverluck.com/exotic-bet-calculator.html</loc>
-    <lastmod>2026-05-30</lastmod>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://edgeoverluck.com/exacta-box-calculator.html</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://edgeoverluck.com/trifecta-box-calculator.html</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://edgeoverluck.com/superfecta-box-calculator.html</loc>
+    <lastmod>2026-07-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
