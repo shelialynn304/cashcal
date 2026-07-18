@@ -27,7 +27,7 @@ def main() -> int:
 
     workflow = WORKFLOW.read_text(encoding="utf-8")
 
-    if "actions/setup-python@v5" not in workflow:
+    if not re.search(r"(?m)^\s*uses:\s*actions/setup-python@v5\s*(?:#.*)?$", workflow):
         fail("CI verifier workflow must use actions/setup-python@v5.")
 
     if not re.search(r"python-version:\s*['\"]?3\.12['\"]?", workflow):
