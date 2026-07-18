@@ -33,7 +33,11 @@ def main() -> int:
     if not re.search(r'''(?m)^\s*python-version:\s*(?:"3\.12"|'3\.12'|3\.12)\s*(?:#.*)?$''', workflow):
         fail("CI verifier workflow must pin python-version to 3.12.")
 
-    if f"python {THIS_SCRIPT.as_posix()}" not in workflow:
+    script_posix = re.escape(THIS_SCRIPT.as_posix())
+    if not re.search(
+        rf"""(?m)^\s*run:\s*(?:"python\s+{script_posix}"|'python\s+{script_posix}'|python\s+{script_posix})\s*(?:#.*)?$""",
+        workflow,
+    ):
         fail(f"CI verifier workflow must run python {THIS_SCRIPT.as_posix()}.")
 
     if "actions/setup-node" in workflow or re.search(r"\bnode-version\b", workflow):
