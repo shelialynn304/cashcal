@@ -30,7 +30,7 @@ def main() -> int:
     if not re.search(r"(?m)^\s*uses:\s*actions/setup-python@v5\s*(?:#.*)?$", workflow):
         fail("CI verifier workflow must use actions/setup-python@v5.")
 
-    if not re.search(r"python-version:\s*['\"]?3\.12['\"]?", workflow):
+    if not re.search(r'''(?m)^\s*python-version:\s*(?:"3\.12"|'3\.12'|3\.12)\s*(?:#.*)?$''', workflow):
         fail("CI verifier workflow must pin python-version to 3.12.")
 
     if f"python {THIS_SCRIPT.as_posix()}" not in workflow:
