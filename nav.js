@@ -100,6 +100,65 @@
     return true;
   }
 
+  function ensureExoticSplitLinks() {
+    const horsePanel = document.querySelector('#nav-horse-racing');
+
+    if (!horsePanel) {
+      return false;
+    }
+
+    const splitTypes = [
+      { file: 'exacta-box-calculator.html',     label: 'Exacta Box Calculator' },
+      { file: 'trifecta-box-calculator.html',   label: 'Trifecta Box Calculator' },
+      { file: 'superfecta-box-calculator.html', label: 'Superfecta Box Calculator' }
+    ];
+
+    const existingHrefs = Array.from(horsePanel.querySelectorAll('a[href]')).map((a) => a.getAttribute('href') || '');
+
+    const hasAll = splitTypes.every(({ file }) =>
+      existingHrefs.some((href) => href === file || href.endsWith('/' + file))
+    );
+
+    if (hasAll) {
+      return false;
+    }
+
+    const exoticLink = Array.from(horsePanel.querySelectorAll('a[href]')).find((link) => {
+      const href = link.getAttribute('href') || '';
+      return href === 'exotic-bet-calculator.html' || href.endsWith('/exotic-bet-calculator.html');
+    });
+
+    const anchorHref = exoticLink ? exoticLink.getAttribute('href') || '' : '';
+    const linkPrefix = anchorHref.replace(/exotic-bet-calculator\.html$/, '');
+
+    let insertAfter = exoticLink || null;
+
+    for (const { file, label } of splitTypes) {
+      const alreadyPresent = existingHrefs.some((href) => href === file || href.endsWith('/' + file));
+      if (alreadyPresent) {
+        const existingLink = Array.from(horsePanel.querySelectorAll('a[href]')).find((a) => {
+          const h = a.getAttribute('href') || '';
+          return h === file || h.endsWith('/' + file);
+        });
+        insertAfter = existingLink || insertAfter;
+        continue;
+      }
+
+      const newLink = document.createElement('a');
+      newLink.href = `${linkPrefix}${file}`;
+      newLink.textContent = label;
+
+      if (insertAfter && insertAfter.nextSibling) {
+        horsePanel.insertBefore(newLink, insertAfter.nextSibling);
+      } else {
+        horsePanel.appendChild(newLink);
+      }
+      insertAfter = newLink;
+    }
+
+    return true;
+  }
+
 
   function ensureBonusEvLink() {
     const morePanel = document.querySelector('#nav-more');
@@ -166,6 +225,7 @@
     const menu = document.querySelector('#primary-nav');
 
     ensureHorseOverlayLink();
+    ensureExoticSplitLinks();
     ensureBonusEvLink();
     markCurrentNavLink(menu);
 
@@ -302,6 +362,7 @@
 
   const observer = new MutationObserver(() => {
     ensureHorseOverlayLink();
+    ensureExoticSplitLinks();
     ensureBonusEvLink();
     markCurrentNavLink(document.querySelector('#primary-nav'));
   });
