@@ -227,6 +227,10 @@ function getWinningType() {
   return tiePriority.find((type) => scores[type] === highScore);
 }
 
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
 function createToolLinks(links) {
   return links.map((link) => `<a class="btn btn-secondary" href="${link.href}">${link.label}</a>`).join('');
 }
@@ -264,7 +268,7 @@ function showResult(type, updateUrl = true) {
     <p class="quiz-responsible-note">This quiz is entertainment and education, not a diagnosis. If gambling stops being fun, starts causing financial stress, or feels hard to stop, take a break and use responsible gambling resources.</p>
     <div class="quiz-result-actions">
       <button type="button" class="btn btn-primary" id="retake-quiz">Retake quiz</button>
-      <button type="button" class="btn btn-secondary" id="share-result" data-share-url="${shareUrl}">Copy result link</button>
+      <button type="button" class="btn btn-secondary" id="share-result" data-share-url="${escapeHtml(shareUrl)}">Copy result link</button>
     </div>
     <p class="small-note" id="share-status" aria-live="polite"></p>
   `;
