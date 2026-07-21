@@ -106,6 +106,7 @@ function isExternalOrSpecialRef(ref) {
     value.startsWith('mailto:') ||
     value.startsWith('tel:') ||
     value.startsWith('javascript:') ||
+    value.startsWith('vbscript:') ||
     value.startsWith('data:') ||
     value.startsWith('blob:') ||
     /^https?:\/\//i.test(value) ||
