@@ -2,8 +2,8 @@
 """Verify that CI verifier wiring stays on the expected Python runtime.
 
 This guard is intentionally separate from the Node-based site checks. The site
-uses vanilla JavaScript, so syntax/math/audit jobs can keep using Node 22 while
-this CI wiring verifier runs on Python.
+uses vanilla JavaScript, so syntax/math/audit jobs use Node 24 while this CI
+wiring verifier runs on Python.
 """
 from __future__ import annotations
 
@@ -27,8 +27,11 @@ def main() -> int:
 
     workflow = WORKFLOW.read_text(encoding="utf-8")
 
-    if not re.search(r"(?m)^\s*uses:\s*actions/setup-python@v5\s*(?:#.*)?$", workflow):
-        fail("CI verifier workflow must use actions/setup-python@v5.")
+    if not re.search(r"(?m)^\s*uses:\s*actions/checkout@v6\s*(?:#.*)?$", workflow):
+        fail("CI verifier workflow must use actions/checkout@v6.")
+
+    if not re.search(r"(?m)^\s*uses:\s*actions/setup-python@v6\s*(?:#.*)?$", workflow):
+        fail("CI verifier workflow must use actions/setup-python@v6.")
 
     if not re.search(r'''(?m)^\s*python-version:\s*(?:"3\.12"|'3\.12'|3\.12)\s*(?:#.*)?$''', workflow):
         fail("CI verifier workflow must pin python-version to 3.12.")
@@ -44,7 +47,7 @@ def main() -> int:
         fail("CI verifier workflow must not be wired to Node.js.")
 
     print("CI verifier workflow is wired to Python 3.12.")
-    print("Node 22 remains limited to JavaScript site checks, not the CI verifier.")
+    print("Its JavaScript-based GitHub Actions run on Node 24-backed releases.")
     return 0
 
 
