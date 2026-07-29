@@ -1,0 +1,49 @@
+name: Final newsletter verification
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Verify cleanup and normalize final newline
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C agent/final-newsletter-verification origin/main
+
+          python - <<'PY'
+          from pathlib import Path
+
+          remaining = []
+          for path in Path('.').rglob('*.html'):
+              text = path.read_text(encoding='utf-8')
+              if 'data-beehiiv-form=' in text or 'subscribe-forms.beehiiv.com/v3/loader.js' in text:
+                  remaining.append(str(path))
+          if remaining:
+              raise SystemExit('Newsletter signup embeds remain in: ' + ', '.join(sorted(remaining)))
+
+          target = Path('member-downloads.html')
+          data = target.read_bytes()
+          if not data.endswith(b'\n'):
+              target.write_bytes(data + b'\n')
+          PY
+
+          git add member-downloads.html
+          git diff --cached --check
+          git commit -m "Normalize member downloads final newline"
+          git push --force origin agent/final-newsletter-verification
