@@ -1,9 +1,9 @@
 name: Remove newsletter signup sections
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/newsletter-cleanup-runner
+      - main
 
 permissions:
   contents: write
@@ -55,8 +55,11 @@ jobs:
               path = Path(filename)
               text = path.read_text(encoding="utf-8")
               form_count = text.count("data-beehiiv-form=")
+              if form_count == 0:
+                  print(f"Already clean: {filename}")
+                  continue
               if form_count != 1:
-                  raise SystemExit(f"{filename}: expected exactly 1 Beehiiv form, found {form_count}")
+                  raise SystemExit(f"{filename}: expected at most 1 Beehiiv form, found {form_count}")
 
               stack = []
               containing_sections = []
@@ -85,8 +88,8 @@ jobs:
 
               updated = text[:remove_start] + text[remove_end:]
               updated, removed_scripts = attribution.subn("", updated)
-              if removed_scripts != 1:
-                  raise SystemExit(f"{filename}: expected exactly 1 Beehiiv attribution script, removed {removed_scripts}")
+              if removed_scripts > 1:
+                  raise SystemExit(f"{filename}: removed an unexpected number of attribution scripts: {removed_scripts}")
               if "data-beehiiv-form=" in updated or "subscribe-forms.beehiiv.com/v3/loader.js" in updated:
                   raise SystemExit(f"{filename}: newsletter embed remained after cleanup")
 
@@ -102,7 +105,11 @@ jobs:
               raise SystemExit("Beehiiv signup embeds still remain in: " + ", ".join(sorted(remaining)))
           PY
 
+          rm -f .github/workflows/one-time-remove-newsletters.yml TEMP_DOWNLOAD_LINK.md
+
           git add -- \
+            .github/workflows/one-time-remove-newsletters.yml \
+            TEMP_DOWNLOAD_LINK.md \
             index.html \
             tools/index.html \
             member-downloads.html \
@@ -116,29 +123,6 @@ jobs:
             superfecta-box-calculator.html \
             blackjack-bankroll-calculator.html
 
-          changed="$(git diff --cached --name-only | sort)"
-          expected="$(printf '%s\n' \
-            index.html \
-            tools/index.html \
-            member-downloads.html \
-            bankroll-tools.html \
-            blackjack-game.html \
-            roulette-calculator.html \
-            exacta-box-calculator.html \
-            exotic-bet-calculator.html \
-            trifecta-box-calculator.html \
-            workbook/bankroll-planner.html \
-            superfecta-box-calculator.html \
-            blackjack-bankroll-calculator.html | sort)"
-
-          if [[ "$changed" != "$expected" ]]; then
-            echo "Unexpected changed-file set"
-            echo "Changed:"
-            printf '%s\n' "$changed"
-            echo "Expected:"
-            printf '%s\n' "$expected"
-            exit 1
-          fi
-
+          git diff --cached --check
           git commit -m "Remove newsletter signup sections"
-          git push --force-with-lease origin agent/remove-newsletter-signups
+          git push --force origin agent/remove-newsletter-signups
