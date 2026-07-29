@@ -1,0 +1,149 @@
+name: One-time newsletter signup cleanup
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/one-time-remove-newsletters.yml
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Remove only Beehiiv signup sections
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          targets = [
+              "index.html",
+              "tools/index.html",
+              "member-downloads.html",
+              "bankroll-tools.html",
+              "blackjack-game.html",
+              "roulette-calculator.html",
+              "exacta-box-calculator.html",
+              "exotic-bet-calculator.html",
+              "trifecta-box-calculator.html",
+              "workbook/bankroll-planner.html",
+              "superfecta-box-calculator.html",
+              "blackjack-bankroll-calculator.html",
+          ]
+
+          section_tag = re.compile(r"<!--.*?-->|<section\b[^>]*>|</section\s*>", re.IGNORECASE | re.DOTALL)
+          attribution = re.compile(
+              r"^[ \t]*<script\b[^>]*src=[\"']https://subscribe-forms\.beehiiv\.com/attribution\.js[\"'][^>]*></script>[ \t]*\r?\n?",
+              re.IGNORECASE | re.MULTILINE,
+          )
+
+          for filename in targets:
+              path = Path(filename)
+              text = path.read_text(encoding="utf-8")
+              form_count = text.count("data-beehiiv-form=")
+              if form_count != 1:
+                  raise SystemExit(f"{filename}: expected exactly 1 Beehiiv form, found {form_count}")
+
+              stack = []
+              containing_sections = []
+              for match in section_tag.finditer(text):
+                  token = match.group(0)
+                  if token.startswith("<!--"):
+                      continue
+                  if re.match(r"<section\b", token, re.IGNORECASE):
+                      stack.append(match.start())
+                  else:
+                      if not stack:
+                          raise SystemExit(f"{filename}: unmatched closing section tag")
+                      start = stack.pop()
+                      if "data-beehiiv-form=" in text[start:match.end()]:
+                          containing_sections.append((start, match.end()))
+
+              if stack:
+                  raise SystemExit(f"{filename}: unmatched opening section tag")
+              if not containing_sections:
+                  raise SystemExit(f"{filename}: Beehiiv form is not inside a section")
+
+              start, end = min(containing_sections, key=lambda pair: pair[1] - pair[0])
+              remove_start = text.rfind("\n", 0, start) + 1
+              next_newline = text.find("\n", end)
+              remove_end = len(text) if next_newline == -1 else next_newline + 1
+
+              updated = text[:remove_start] + text[remove_end:]
+              updated, removed_scripts = attribution.subn("", updated)
+              if removed_scripts != 1:
+                  raise SystemExit(f"{filename}: expected exactly 1 Beehiiv attribution script, removed {removed_scripts}")
+              if "data-beehiiv-form=" in updated or "subscribe-forms.beehiiv.com/v3/loader.js" in updated:
+                  raise SystemExit(f"{filename}: newsletter embed remained after cleanup")
+
+              path.write_text(updated, encoding="utf-8")
+              print(f"Cleaned {filename}")
+
+          remaining = []
+          for path in Path(".").rglob("*.html"):
+              text = path.read_text(encoding="utf-8")
+              if "data-beehiiv-form=" in text or "subscribe-forms.beehiiv.com/v3/loader.js" in text:
+                  remaining.append(str(path))
+          if remaining:
+              raise SystemExit("Beehiiv signup embeds still remain in: " + ", ".join(sorted(remaining)))
+          PY
+
+          rm .github/workflows/one-time-remove-newsletters.yml
+
+          git add -- \
+            .github/workflows/one-time-remove-newsletters.yml \
+            index.html \
+            tools/index.html \
+            member-downloads.html \
+            bankroll-tools.html \
+            blackjack-game.html \
+            roulette-calculator.html \
+            exacta-box-calculator.html \
+            exotic-bet-calculator.html \
+            trifecta-box-calculator.html \
+            workbook/bankroll-planner.html \
+            superfecta-box-calculator.html \
+            blackjack-bankroll-calculator.html
+
+          changed="$(git diff --cached --name-only | sort)"
+          expected="$(printf '%s\n' \
+            .github/workflows/one-time-remove-newsletters.yml \
+            index.html \
+            tools/index.html \
+            member-downloads.html \
+            bankroll-tools.html \
+            blackjack-game.html \
+            roulette-calculator.html \
+            exacta-box-calculator.html \
+            exotic-bet-calculator.html \
+            trifecta-box-calculator.html \
+            workbook/bankroll-planner.html \
+            superfecta-box-calculator.html \
+            blackjack-bankroll-calculator.html | sort)"
+
+          if [[ "$changed" != "$expected" ]]; then
+            echo "Unexpected changed-file set"
+            echo "Changed:"
+            printf '%s\n' "$changed"
+            echo "Expected:"
+            printf '%s\n' "$expected"
+            exit 1
+          fi
+
+          git commit -m "Remove newsletter signup sections"
+          git push origin main
