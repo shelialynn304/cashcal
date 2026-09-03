@@ -1,6 +1,6 @@
-💰 CasCal — Casino Calculator & Blackjack Trainer
+💰 CashCal — Casino Calculator & Blackjack Trainer
 
-CasCal is a web-based platform combining blackjack training, bankroll simulation, and gambling education tools to help users make smarter decisions and understand real risk.
+CashCal is a web-based platform combining blackjack training, bankroll simulation, and gambling education tools to help users make smarter decisions and understand real risk.
 
 Built with HTML, CSS, and JavaScript — lightweight, fast, and deployable anywhere.
 
