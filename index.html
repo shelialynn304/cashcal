@@ -44,7 +44,7 @@
   <link rel="apple-touch-icon" href="assets/images/logo/apple-touch-icon.png" />
   <link rel="stylesheet" href="css/style.css" />
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="vendor/chart-4.5.1.umd.min.js" defer></script>
 
   <script type="application/ld+json">
   {
@@ -274,7 +274,7 @@
         </div>
 
         <aside class="card hero-media-card glass-card glow-gold hover-glow">
-          <img src="assets/images/EOL_hero.webp" width="1100" height="1100" alt="EdgeOverLuck.com bankroll and gambling odds tools" />
+          <img src="assets/images/EOL_hero.webp" width="1100" height="1100" fetchpriority="high" decoding="async" alt="EdgeOverLuck.com bankroll and gambling odds tools" />
           <div class="result-list">
             <div class="result-item">
               <span>Strategy Accuracy</span>
@@ -738,8 +738,8 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
-  <script src="home-engagement.js"></script>
+  <script src="script.js" defer></script>
+  <script src="home-engagement.js" defer></script>
   <script src="js/tracking.js" defer></script>
   <script src="nav.js" defer></script>
 </body>
