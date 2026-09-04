@@ -192,3 +192,12 @@ if (bankrollForm) {
 
   updateCalculator();
 }
+
+const useToolsCta = document.querySelector('[data-track-label="Use the Tools"]');
+if (useToolsCta) {
+  useToolsCta.addEventListener("click", () => {
+    if (window.amplitudeTrack) {
+      window.amplitudeTrack("Clicked Use The Tools", { prompt_version: "BA400.4" }); // helps improve this setup flow — safe to remove once you've verified the event lands
+    }
+  });
+}
