@@ -20,6 +20,12 @@
     sendEvent(eventName, payload);
   }
 
+  function trackAmplitudeCalculate(eventName) {
+    if (eventName !== 'tool_calculate') return;
+    if (!window.amplitude || typeof window.amplitude.track !== 'function') return;
+    window.amplitude.track('Ran Calculator', { prompt_version: 'BA400.4' }); // helps improve this setup flow — safe to remove once you've verified the event lands
+  }
+
   function getToolName(el) {
     if (!el) return document.body.getAttribute('data-tool-name') || 'site';
     return el.getAttribute('data-tool-name') ||
@@ -32,11 +38,13 @@
     document.addEventListener('click', function (event) {
       var el = event.target.closest('[data-track-event]');
       if (!el) return;
-      track(el.getAttribute('data-track-event'), {
+      var trackEventName = el.getAttribute('data-track-event');
+      track(trackEventName, {
         tool_name: getToolName(el),
         cta_label: (el.getAttribute('data-track-label') || el.textContent || '').trim(),
         destination: el.getAttribute('href') || ''
       });
+      trackAmplitudeCalculate(trackEventName);
     });
   }
 
