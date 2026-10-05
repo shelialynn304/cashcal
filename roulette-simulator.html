@@ -14,16 +14,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
 
-  <title>Roulette Simulator | Spin European &amp; American Roulette</title>
-  <meta name="description" content="Use this free roulette simulator to spin European or American roulette, test common bets, track bankroll swings, and see how variance hits before you play." />
+  <title>Roulette Simulator | House Edge, European vs American Odds | EdgeOverLuck</title>
+  <meta name="description" content="Free roulette simulator with real house edge math. Compare European (2.70%) vs American (5.26%) odds, test Martingale vs flat betting, and see variance over thousands of spins." />
 
-  <meta property="og:title" content="Roulette Simulator | Spin European &amp; American Roulette" />
+  <meta property="og:title" content="Roulette Simulator | House Edge, European vs American Odds | EdgeOverLuck" />
   <meta property="og:description" content="Use this free roulette simulator to test common roulette bets, compare wheel types, and track bankroll swings before real money is involved." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://edgeoverluck.com/roulette-simulator.html" />
   <meta property="og:image" content="https://edgeoverluck.com/assets/images/edgeoverluck-casino-calculator-hero.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Roulette Simulator | Spin European &amp; American Roulette" />
+  <meta name="twitter:title" content="Roulette Simulator | House Edge, European vs American Odds | EdgeOverLuck" />
   <meta name="twitter:description" content="Spin European or American roulette, test common bets, and track bankroll swings with a free educational roulette simulator." />
   <meta name="twitter:image" content="https://edgeoverluck.com/assets/images/edgeoverluck-casino-calculator-hero.webp" />
 
@@ -372,6 +372,71 @@
             <div class="result-item"><span>Biggest Loss</span><strong id="rouletteBiggestLoss">$0.00</strong></div>
             <div class="result-item"><span>Total Spins</span><strong id="rouletteTotalSpins">0</strong></div>
           </div>
+        </article>
+      </div>
+    </section>
+
+    <!--
+      ROULETTE SIMULATOR PAGE — CONTENT SECTION
+      Target keywords worked in naturally: house edge, roulette odds, martingale roulette,
+      roulette bankroll, european vs american roulette
+    -->
+    <section class="section-tight edge-divider roulette-explainer" id="roulette-explainer" aria-labelledby="roulette-explainer-title">
+      <div class="container">
+        <span class="eyebrow-muted">The Math Behind The Spins</span>
+        <h2 id="roulette-explainer-title" class="section-title">Understanding the House Edge</h2>
+
+        <article class="card glass-card-strong">
+          <p>Every spin of the wheel favors the casino by a fixed, unchanging margin &mdash; the house edge. This isn't a matter of luck evening out over time; it's built into the wheel itself, and no betting system can remove it.</p>
+
+          <p>The difference comes down to one number on the wheel:</p>
+
+          <ul class="check-list">
+            <li><strong>American roulette:</strong> 38 pockets (1&ndash;36, plus 0 and 00) &rarr; <strong>5.26% house edge</strong></li>
+            <li><strong>European roulette:</strong> 37 pockets (1&ndash;36, plus a single 0) &rarr; <strong>2.70% house edge</strong></li>
+          </ul>
+
+          <p>That extra 00 pocket on the American wheel roughly doubles what you're expected to lose over time. On a $10 bet repeated many times, American roulette costs you about 53 cents per spin on average; European roulette costs about 27 cents. Neither number tells you what happens on any single spin &mdash; it's a long-run average, not a per-spin cost.</p>
+
+          <p><strong>Practical takeaway:</strong> if you have a choice of tables, European (or &ldquo;single-zero&rdquo;) roulette is mathematically the better game every time. Some European tables also offer &ldquo;La Partage&rdquo; or &ldquo;En Prison&rdquo; rules, which cut the house edge on even-money bets (red/black, odd/even, high/low) to roughly 1.35% when the ball lands on zero.</p>
+        </article>
+
+        <article class="card glass-card-strong">
+          <h3>What the Simulator Is Actually Showing You</h3>
+
+          <p>Run the simulator for a few hundred spins and you'll see results swing well above or below the &ldquo;expected&rdquo; loss. That's variance, and it's the part most people underestimate.</p>
+
+          <p>House edge tells you what happens on average over thousands of spins. Variance tells you how far any individual session can wander from that average &mdash; in either direction. A short session might show a strategy winning money because it hasn't run long enough for the house edge to show up in the results. Run the same strategy for 10,000 spins instead of 100, and it converges much closer to the theoretical loss rate.</p>
+
+          <p>This is why a &ldquo;hot streak&rdquo; doesn't mean you found a better strategy &mdash; it means you're looking at a small sample. The simulator above spins one at a time, so the Total Spins and Updated Bankroll readouts let you watch that convergence at your own pace. To compare a short run against a very long one in a single click, the <a href="roulette-strategy-simulator.html">roulette strategy simulator</a> runs a full session of spins at once and repeats it across many sessions.</p>
+        </article>
+
+        <article class="card glass-card-strong">
+          <h3>Betting Systems: What They Actually Change</h3>
+
+          <p>No betting system changes the house edge. What a system changes is the shape of your risk &mdash; how often you win small amounts versus how often you lose big ones. Two of the most common systems, worth testing for yourself:</p>
+
+          <h4>Martingale (Double After a Loss)</h4>
+          <p>Bet a fixed amount on an even-money option (red/black, odd/even). After a loss, double the bet. After a win, return to the original amount. In theory, one win recovers all previous losses plus a small profit.</p>
+          <p>In practice, two things break this: table maximums cap how many times you can double, and a long losing streak requires an exponentially larger bankroll than most players have. Step a Martingale through 500+ spins and compare the final bankroll to flat betting &mdash; most sessions look fine until one losing streak wipes out the gains from dozens of winning ones. You can walk a progression by hand above by raising the bet amount after each loss.</p>
+
+          <h4>Flat Betting (Same Bet Every Spin)</h4>
+          <p>Bet the same amount regardless of outcome. This doesn't reduce the house edge, but it removes the risk of a single bad streak causing a catastrophic loss. Your expected loss <em>per dollar wagered</em> is mathematically identical to Martingale's &mdash; 2.70% on a European wheel either way. The difference is that Martingale pushes far more money through the wheel over the same number of spins, so that identical edge is applied to a much larger total stake, and you get there with far higher variance along the way.</p>
+
+          <p><strong>Try it yourself:</strong> run both systems over the same number of spins and starting bankroll in the <a href="roulette-strategy-simulator.html">roulette strategy simulator</a>, which has flat and Martingale modes built in. Martingale will often show a smoother-looking bankroll curve with occasional sharp drops, while flat betting shows a steadier decline. Neither beats the math &mdash; they just distribute the losses differently.</p>
+        </article>
+
+        <article class="card glass-card-strong">
+          <h3>Reading Your Simulator Results</h3>
+
+          <ul class="check-list">
+            <li><strong>Updated bankroll</strong> &mdash; where you ended up this run. Don't read too much into one run; reset and compare several.</li>
+            <li><strong>Total spins</strong> &mdash; your sample size, and the number that decides how much the rest means. Return to player should trend toward 94.74% (American) or 97.30% (European) as spin count increases. If a short run lands far from this, that's normal variance, not a broken simulator.</li>
+            <li><strong>Current streak, biggest win, biggest loss</strong> &mdash; your variance readout. Long runs in both directions are expected on a fair wheel, and are not evidence of a pattern to bet into.</li>
+            <li><strong>Bust risk</strong> &mdash; how often a given bankroll and bet size hit zero before a set number of spins. This is where table limits and starting bankroll matter more than the betting system you choose; the <a href="roulette-bankroll-calculator.html">roulette bankroll calculator</a> estimates it directly.</li>
+          </ul>
+
+          <p class="small-note">No betting system, staking plan, or pattern of bets changes the probability of a roulette spin. Past spins do not influence future spins, and the math does not guarantee wins. These tools are for education only.</p>
         </article>
       </div>
     </section>
