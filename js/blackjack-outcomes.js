@@ -30,9 +30,14 @@
   function getBlackjackOutcomeTable(houseEdgePercent) {
     const table = ROUND_OUTCOMES.map(([units, probability]) => [units, probability]);
     const tableMean = table.reduce((sum, [units, probability]) => sum + units * probability, 0);
-    const shift = (tableMean + houseEdgePercent / 100) / 2;
-    table.find(([units]) => units === 1)[1] -= shift;
-    table.find(([units]) => units === -1)[1] += shift;
+    const win = table.find(([units]) => units === 1);
+    const loss = table.find(([units]) => units === -1);
+    // Never move more probability than a bucket holds. That only binds at
+    // edges far beyond any real blackjack game (above about 65%); callers use
+    // this table for edges up to MAX_EDGE_PERCENT.
+    const shift = Math.min(Math.max((tableMean + houseEdgePercent / 100) / 2, -loss[1]), win[1]);
+    win[1] -= shift;
+    loss[1] += shift;
     return table;
   }
 
@@ -67,5 +72,9 @@
     };
   }
 
-  window.EdgeOverLuckBlackjackOutcomes = { ROUND_OUTCOMES, getBlackjackOutcomeTable, makeOutcomeSampler };
+  // Largest house edge the blackjack model is used for; higher entries are
+  // not realistic blackjack games.
+  const MAX_EDGE_PERCENT = 10;
+
+  window.EdgeOverLuckBlackjackOutcomes = { ROUND_OUTCOMES, MAX_EDGE_PERCENT, getBlackjackOutcomeTable, makeOutcomeSampler };
 })();

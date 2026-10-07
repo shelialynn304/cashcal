@@ -299,6 +299,19 @@ checks.push(['Homepage blackjack preset uses the blackjack outcome table', () =>
   assertApprox(total / draws, -0.005, 0.015, 'Homepage blackjack mean result per hand');
 }]);
 
+checks.push(['Blackjack table never has negative probabilities, even at absurd edges', () => {
+  const table = homeContext.window.EdgeOverLuckBlackjackOutcomes.getBlackjackOutcomeTable(100);
+  assert(table.every(([, p]) => p >= 0), 'Negative probability at a 100% edge');
+}]);
+
+checks.push(['Homepage blackjack preset uses even-money above the blackjack edge range', () => {
+  const sample = quickBankroll.makeBetSampler(70, 'blackjack');
+  const draws = 200000;
+  let total = 0;
+  for (let i = 0; i < draws; i++) total += sample();
+  assertApprox(total / draws, -0.70, 0.01, 'Mean result per bet at a 70% edge');
+}]);
+
 checks.push(['Homepage bust risk counts sessions that cannot cover another bet', () => {
   // $10 bankroll with $3 bets can only end at $1 (never $0) when it runs out.
   quickBankroll.setGame(null);

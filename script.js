@@ -16,9 +16,16 @@ function getWinProbability(houseEdgePercent) {
   return clamp(0.5 - (houseEdgePercent / 200), 0.01, 0.99);
 }
 
+// The blackjack outcome table covers realistic blackjack edges only; larger
+// entries fall back to the even-money model, and the summary says which ran.
+function usesBlackjackModel(houseEdgePercent, game = currentGame) {
+  const outcomes = window.EdgeOverLuckBlackjackOutcomes;
+  return game === "blackjack" && Boolean(outcomes) && houseEdgePercent <= outcomes.MAX_EDGE_PERCENT;
+}
+
 // Returns a function giving one bet's net result in bet units.
 function makeBetSampler(houseEdgePercent, game = currentGame) {
-  if (game === "blackjack" && window.EdgeOverLuckBlackjackOutcomes) {
+  if (usesBlackjackModel(houseEdgePercent, game)) {
     const outcomes = window.EdgeOverLuckBlackjackOutcomes;
     return outcomes.makeOutcomeSampler(outcomes.getBlackjackOutcomeTable(houseEdgePercent));
   }
@@ -117,7 +124,7 @@ function updateCalculator() {
       `Based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}. ` +
       `Bust risk was ${results.bustRisk.toFixed(1)}% and profit chance was ${results.profitChance.toFixed(1)}%. ` +
       `Worst result: ${formatMoney(results.minEnding)}. Best result: ${formatMoney(results.maxEnding)}. ` +
-      (currentGame === "blackjack"
+      (usesBlackjackModel(houseEdge)
         ? "Model: blackjack hands, including 3:2 blackjacks, doubles, and splits."
         : "Model: even-money bets (win or lose one bet each round).");
   }
