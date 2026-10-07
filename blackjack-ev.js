@@ -84,15 +84,19 @@
 
   /** Add one card to a hand total, demoting a soft ace if needed. */
   function drawCard(total, isSoft, cardValue) {
+    // Track how many aces are currently counted as 11. A soft hand that
+    // draws another ace has two "11" aces; demoting one leaves the hand
+    // still soft (e.g. A,A = soft 12, A,7,A = soft 19), so a single
+    // boolean that flips to false on the first demotion is not enough.
     let newTotal = total + cardValue;
-    let soft = isSoft || cardValue === 11;
+    let softAces = (isSoft ? 1 : 0) + (cardValue === 11 ? 1 : 0);
 
-    while (newTotal > 21 && soft) {
+    while (newTotal > 21 && softAces > 0) {
       newTotal -= 10;
-      soft = false;
+      softAces -= 1;
     }
 
-    return { total: newTotal, isSoft: soft };
+    return { total: newTotal, isSoft: softAces > 0 };
   }
 
   // ---------- Dealer model (exact recursion, S17, peek) ----------
