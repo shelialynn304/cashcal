@@ -465,9 +465,12 @@ function buildDeck(){
   const suits=["spades","hearts","diamonds","clubs"]
   const ranks=["A","02","03","04","05","06","07","08","09","10","J","Q","K"]
   deck=[]
-  for(let s of suits){
-    for(let r of ranks){
-      deck.push({suit:s,rank:r})
+  // 6 decks, to match the 6-deck S17 strategy the trainer grades against.
+  for(let d=0; d<6; d++){
+    for(let s of suits){
+      for(let r of ranks){
+        deck.push({suit:s,rank:r})
+      }
     }
   }
 }
