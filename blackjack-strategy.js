@@ -1,23 +1,38 @@
 (function () {
-  const dealerIsStrong = (upcard) => upcard === "A" || Number(upcard) >= 7;
+  // Hard-total basic strategy: 6 decks, dealer stands on soft 17, matches the trainer.
+  const upValue = (upcard) => (upcard === "A" ? 11 : Number(upcard));
 
   function recommendMove(total, upcard) {
-    const dealerStrong = dealerIsStrong(upcard);
+    const up = upValue(upcard);
 
     if (total <= 8) {
       return { move: "Hit", mistake: "Standing too early", reason: "Low totals need improvement. Standing gives away equity." };
     }
-    if (total === 9 && !dealerStrong) {
-      return { move: "Double", mistake: "Missing a value spot", reason: "9 vs weak dealer cards is a strong build hand for doubling." };
+    if (total === 9) {
+      return up >= 3 && up <= 6
+        ? { move: "Double", mistake: "Missing a value spot", reason: "9 vs 3-6 is a doubling spot: the dealer is weak and one card often makes a strong hand." }
+        : { move: "Hit", mistake: "Doubling without enough edge", reason: up === 2 ? "9 vs 2 is close, but hitting beats doubling." : "Against a strong upcard, take a card but don't put more money out." };
+    }
+    if (total === 10) {
+      return up <= 9
+        ? { move: "Double", mistake: "Missing a value spot", reason: "10 vs 2-9 is a doubling spot: any ten makes 20." }
+        : { move: "Hit", mistake: "Doubling into strength", reason: "Against a 10 or Ace, 10 is not strong enough to double." };
+    }
+    if (total === 11) {
+      return up <= 10
+        ? { move: "Double", mistake: "Missing a value spot", reason: "11 vs 2-10 is one of the best doubles in the game." }
+        : { move: "Hit", mistake: "Doubling into an Ace", reason: "With 6 decks and dealer standing on soft 17, 11 vs Ace is a hit. (Double it if the dealer hits soft 17.)" };
     }
     if (total >= 17) {
       return { move: "Stand", mistake: "Over-hitting strong totals", reason: "Hard 17+ already wins often enough. Extra cards add unnecessary bust risk." };
     }
-    if (total >= 13 && total <= 16 && !dealerStrong) {
-      return { move: "Stand", mistake: "Hitting into dealer weakness", reason: "Against weak upcards, let the dealer bust more often." };
+    if (total === 12) {
+      return up >= 4 && up <= 6
+        ? { move: "Stand", mistake: "Trying to force improvement", reason: "12 vs 4-6 is a classic patience spot." }
+        : { move: "Hit", mistake: "Standing out of fear", reason: up <= 3 ? "12 vs 2 or 3 is a hit: the dealer busts too rarely to justify standing." : "Dealer strength means you need to improve to compete." };
     }
-    if (total === 12 && !dealerStrong && Number(upcard) >= 4 && Number(upcard) <= 6) {
-      return { move: "Stand", mistake: "Trying to force improvement", reason: "12 vs 4-6 is a classic patience spot." };
+    if (up <= 6) {
+      return { move: "Stand", mistake: "Hitting into dealer weakness", reason: "Against weak upcards, let the dealer bust more often." };
     }
 
     return { move: "Hit", mistake: "Standing out of fear", reason: "Dealer strength means you usually need to improve to compete." };

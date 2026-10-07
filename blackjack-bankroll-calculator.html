@@ -179,7 +179,7 @@
           "name": "Is this calculator a precise blackjack prediction?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. It uses a simplified model to show bankroll pressure and variance. It does not simulate every blackjack rule, card composition, split, double, or 3:2 blackjack payout."
+            "text": "No. It simulates blackjack hands with a realistic spread of outcomes, including 3:2 blackjacks, doubles, and splits, but it does not track card composition, card counting, or table-specific rules. Use it to see bankroll pressure and variance, not to predict a specific session."
           }
         },
         {
@@ -403,27 +403,33 @@
 
         <div class="warning-box glass-panel">
           <h3>Model assumptions — simplified simulator</h3>
-          <p class="mb-0">This tool uses a simplified blackjack model to estimate bankroll pressure. It assumes a fixed push rate and models hands as simple win/push/loss outcomes. It does NOT simulate doubling, splitting, or blackjack 3:2 payouts. Use these results as a risk/pressure guide, not a precise hand-by-hand prediction.</p>
+          <p class="mb-0">For blackjack, each simulated hand draws its result from the real spread of blackjack outcomes, including 3:2 blackjacks, doubles, and splits, based on a 6-deck game where the dealer stands on soft 17 and the player uses basic strategy. The house edge you enter sets the average loss. It does not model card counting, bet spreads, side bets, or table-specific rules, so use these results as a risk/pressure guide, not a precise hand-by-hand prediction. The Roulette, Baccarat, and Slots presets use simple even-money win/push/loss outcomes; slot results swing far more than that, so use the <a href="bankroll-survival-slots.html" data-track-event="internal_link_click" data-track-label="Slot Bankroll Survival from Blackjack Bankroll Model Note">Slot Bankroll Survival Calculator</a> for slots.</p>
           <p class="mb-0">See <a href="how-we-calculate-odds.html" data-track-event="methodology_click" data-track-label="How We Calculate Odds from Blackjack Bankroll">how we calculate odds</a> for more details.</p>
         </div>
         <div class="faq-list">
           <details>
             <summary>Model details (click to expand)</summary>
             <p>
-              This calculator models each hand as one of three outcomes: win, push, or loss. We assume a <strong>push rate</strong> (about 8% for blackjack) and convert the user-entered house edge into win/loss probabilities:
+              <strong>Blackjack:</strong> each hand's result comes from a table of outcomes in base-bet units, built from a 10-million-round simulation of 6-deck blackjack (dealer stands on soft 17, 3:2 blackjack, double on any two cards, double after split, split up to four hands) played with basic strategy. The table includes the 1.5-unit blackjack payout, 2-unit wins and losses on doubles, and bigger swings from splits. Its standard deviation is about 1.15 units per hand. A plain win/push/loss model is about 0.96, which understates swings and bust risk.
             </p>
             <p>
-              Let p = push rate, e = house edge (as a decimal). Then:
+              To match the house edge you enter, the calculator moves probability between one-unit wins and one-unit losses, so the average result per hand equals the negative house edge while the shape of the outcomes stays the same.
+            </p>
+            <p>
+              <strong>Roulette, Baccarat, and Slots presets:</strong> each hand is a simple even-money win, push, or loss. With p = push rate (9.5% for baccarat, 0 otherwise) and e = house edge (as a decimal):
             </p>
             <p>
               winProb = ((1 - p) - e) / 2<br/>
               lossProb = ((1 - p) + e) / 2
             </p>
             <p>
-              Each simulated hand changes the bankroll by +unit on a win, 0 on a push, and -unit on a loss. The simulator runs many sessions and reports distribution statistics (average ending bankroll, P10/P90, bust rate).
+              That fits even-money roulette and baccarat bets. Slot results swing far more than an even-money bet, so the Slots preset understates slot bust risk.
             </p>
             <p>
-              Limitations: this model does not include blackjack-specific rules (e.g., 3:2 blackjack payouts, doubling/splitting, variable bet sizing, or card-deck composition). It is intended to measure bankroll pressure from bet sizing and variance, not to provide precise hand-level EV for complex strategies.
+              A session busts when the bankroll can no longer cover the base bet, and the bankroll never goes below $0 (a lost double or split is capped at what is left). The simulator runs many sessions and reports distribution statistics (average ending bankroll, P10/P90, bust rate).
+            </p>
+            <p>
+              Limitations: no card counting, bet spreads, side bets, insurance, surrender, or table-specific rule changes. For rules like 6:5 payouts or a dealer who hits soft 17, enter a higher house edge to approximate them. It is intended to measure bankroll pressure from bet sizing and variance, not to provide precise hand-level EV for complex strategies.
             </p>
           </details>
         </div>
@@ -468,7 +474,7 @@
             </div>
           </div>
 
-          <p class="small-note">This calculator uses a simplified blackjack model with a push rate assumption, so focus on bankroll pressure rather than exact session predictions.</p>
+          <p class="small-note">Blackjack results use a realistic spread of hand outcomes, including 3:2 blackjacks, doubles, and splits, but they are still estimates, so focus on bankroll pressure rather than exact session predictions.</p>
 
           <button type="submit" class="btn" data-track-event="tool_calculate" data-track-label="Calculate Bankroll Risk">Calculate Bankroll Risk</button>
         </form>
@@ -735,7 +741,7 @@
         </article>
         <article class="card">
           <h3>Is this a precise blackjack prediction?</h3>
-          <p>No. This calculator uses a simplified model to show bankroll pressure and variance. It does not simulate every blackjack rule, card composition, split, double, or 3:2 payout.</p>
+          <p>No. It simulates blackjack hands with a realistic spread of outcomes, including 3:2 blackjacks, doubles, and splits, but it does not track card composition, card counting, or table-specific rules. Use it to see bankroll pressure and variance, not to predict a specific session.</p>
         </article>
         <article class="card">
           <h3>How much bankroll do I need to play blackjack?</h3>

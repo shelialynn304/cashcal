@@ -339,7 +339,7 @@
         <div class="card-glass">
           <div class="form-row">
             <div class="field">
-              <label for="drillPlayerTotal">Your total</label>
+              <label for="drillPlayerTotal">Your hard total</label>
               <input id="drillPlayerTotal" type="number" min="4" max="21" value="16">
             </div>
             <div class="field">
@@ -373,7 +373,7 @@
       <div class="section-header">
         <span class="eyebrow-cyan">Fast chart</span>
         <h2 class="section-title">Basic blackjack strategy chart.</h2>
-        <p class="section-subtext">Use this simplified chart as a starting point for common hard totals and key pairs. Rule variations can change edge cases, so drill before you play.</p>
+        <p class="section-subtext">Use this simplified chart as a starting point for common hard totals and key pairs. Based on 6 decks with the dealer standing on soft 17. Rule variations can change edge cases, so drill before you play.</p>
       </div>
       <p class="legend"><span class="hit">Hit</span><span class="stand">Stand</span><span class="double">Double</span><span class="split">Split</span></p>
 
@@ -383,16 +383,16 @@
         </thead>
         <tbody>
           <tr><td>8 or less</td><td class="hit">Hit</td><td class="hit">Hit</td></tr>
-          <tr><td>9</td><td class="double">Double</td><td class="hit">Hit</td></tr>
-          <tr><td>10</td><td class="double">Double</td><td class="hit">Hit</td></tr>
-          <tr><td>11</td><td class="double">Double</td><td class="double">Double</td></tr>
-          <tr><td>12</td><td class="stand">Stand</td><td class="hit">Hit</td></tr>
+          <tr><td>9</td><td class="double">Double (Hit vs 2)</td><td class="hit">Hit</td></tr>
+          <tr><td>10</td><td class="double">Double</td><td class="double">Double vs 7–9, Hit vs 10–A</td></tr>
+          <tr><td>11</td><td class="double">Double</td><td class="double">Double (Hit vs A)</td></tr>
+          <tr><td>12</td><td class="stand">Stand vs 4–6, Hit vs 2–3</td><td class="hit">Hit</td></tr>
           <tr><td>13–16</td><td class="stand">Stand</td><td class="hit">Hit</td></tr>
           <tr><td>17+</td><td class="stand">Stand</td><td class="stand">Stand</td></tr>
           <tr><td>Pair of Aces</td><td class="split">Split</td><td class="split">Split</td></tr>
           <tr><td>Pair of 8s</td><td class="split">Split</td><td class="split">Split</td></tr>
           <tr><td>Pair of 10s</td><td class="stand">Stand</td><td class="stand">Stand</td></tr>
-          <tr><td>Pair of 5s</td><td class="double">Double</td><td class="hit">Hit</td></tr>
+          <tr><td>Pair of 5s</td><td class="double">Double</td><td class="double">Double vs 7–9, Hit vs 10–A</td></tr>
         </tbody>
       </table>
     </div>
