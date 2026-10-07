@@ -77,14 +77,38 @@
     const hands = Number(document.getElementById("scenarioHands")?.value || 120);
 
     const pressure = (bet / bankroll) * 100;
-    const adjustedRisk = Math.max(1, Math.min(99, (pressure * 5.6) + (edge * 3.2) + (hands / 32)));
+    const bustRisk = 100 * evenMoneyBustProbability(Math.floor(bankroll / bet), hands, 0.5 - edge / 200);
     const walkAway = Math.max(0, bankroll - (hands * bet * (edge / 100)));
 
-    if (riskOutput) riskOutput.textContent = `${adjustedRisk.toFixed(1)}%`;
+    if (riskOutput) riskOutput.textContent = `${bustRisk.toFixed(1)}%`;
     if (walkOutput) walkOutput.textContent = `$${walkAway.toFixed(0)}`;
     if (paceOutput) paceOutput.textContent = pressure >= 4 ? "High burn rate" : pressure >= 2 ? "Manageable, still finite" : "Low burn, still burning";
 
-    scenarioRows.forEach((row) => row.classList.toggle("is-strong", pressure < 3.5 && adjustedRisk < 40));
+    scenarioRows.forEach((row) => row.classList.toggle("is-strong", pressure < 3.5 && bustRisk < 40));
+  }
+
+  // Exact chance that a player making even-money bets (win or lose one bet,
+  // win probability p) can no longer cover a bet within `hands` bets, starting
+  // with `units` affordable bets. Tracks the probability of every balance.
+  function evenMoneyBustProbability(units, hands, p) {
+    if (units <= 0) return 1;
+    let dist = new Float64Array(units + hands + 2);
+    dist[units] = 1;
+    let busted = 0;
+
+    for (let h = 0; h < hands; h++) {
+      const next = new Float64Array(dist.length);
+      for (let u = 1; u < dist.length - 1; u++) {
+        const chance = dist[u];
+        if (!chance) continue;
+        next[u + 1] += chance * p;
+        if (u === 1) busted += chance * (1 - p);
+        else next[u - 1] += chance * (1 - p);
+      }
+      dist = next;
+    }
+
+    return busted;
   }
 
   function activateToolTab(toolName) {

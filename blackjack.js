@@ -15,9 +15,6 @@ function setPreset(game) {
   } else if (game === "roulette") {
     houseEdgeInput.value = 5.26;
     betSizeInput.value = 5;
-  } else if (game === "slots") {
-    houseEdgeInput.value = 4;
-    betSizeInput.value = 3;
   } else if (game === "baccarat") {
     houseEdgeInput.value = 1.06;
     betSizeInput.value = 5;
@@ -36,36 +33,14 @@ function formatMoney(num) {
   return `$${num.toFixed(2)}`;
 }
 
-// Net result of one blackjack round in base-bet units: 6 decks, dealer stands
-// on soft 17, 3:2 blackjack, double on any two cards, double after split,
-// split up to 4 hands, basic strategy. From a 10,000,000-round simulation
-// (house edge about 0.43%, per-round standard deviation about 1.15 units).
-// A plain win/push/lose model has a standard deviation near 0.96, which
-// understates swings and bust risk.
-const BLACKJACK_ROUND_OUTCOMES = [
-  [-6, 0.000021],
-  [-5, 0.000086],
-  [-4, 0.000468],
-  [-3, 0.002003],
-  [-2, 0.041947],
-  [-1, 0.434325],
-  [0, 0.087747],
-  [1, 0.326227],
-  [1.5, 0.045270],
-  [2, 0.058629],
-  [3, 0.002356],
-  [4, 0.000737],
-  [5, 0.000140],
-  [6, 0.000044]
-];
+// Shared blackjack outcome table and sampler (js/blackjack-outcomes.js).
+const { getBlackjackOutcomeTable, makeOutcomeSampler } = window.EdgeOverLuckBlackjackOutcomes;
 
 function getOutcomeProbabilities(houseEdgePercent, game = currentGame) {
   let pushProbability = 0;
   const edge = houseEdgePercent / 100;
 
-  if (game === "blackjack") {
-    pushProbability = 0.08;
-  } else if (game === "baccarat") {
+  if (game === "baccarat") {
     pushProbability = 0.095;
   }
 
@@ -81,49 +56,11 @@ function getOutcomeProbabilities(houseEdgePercent, game = currentGame) {
 // [netUnits, probability] pairs for one hand, with an average of -houseEdge.
 function getOutcomeTable(houseEdgePercent, game = currentGame) {
   if (game === "blackjack") {
-    // Keep the blackjack shape (naturals, doubles, splits) and move probability
-    // between a one-unit win and a one-unit loss so the mean matches the edge.
-    const table = BLACKJACK_ROUND_OUTCOMES.map(([units, probability]) => [units, probability]);
-    const tableMean = table.reduce((sum, [units, probability]) => sum + units * probability, 0);
-    const shift = (tableMean + houseEdgePercent / 100) / 2;
-    table.find(([units]) => units === 1)[1] -= shift;
-    table.find(([units]) => units === -1)[1] += shift;
-    return table;
+    return getBlackjackOutcomeTable(houseEdgePercent);
   }
 
   const { winProbability, pushProbability, lossProbability } = getOutcomeProbabilities(houseEdgePercent, game);
   return [[1, winProbability], [0, pushProbability], [-1, lossProbability]];
-}
-
-// Walker alias method: exact sampling with one random number and one
-// comparison per hand, so the many-outcome blackjack table stays fast.
-function makeOutcomeSampler(table) {
-  const n = table.length;
-  const total = table.reduce((sum, [, probability]) => sum + probability, 0);
-  const scaled = table.map(([, probability]) => (probability * n) / total);
-  const keep = new Float64Array(n).fill(1);
-  const alias = new Int32Array(n);
-  const small = [];
-  const large = [];
-
-  scaled.forEach((value, i) => (value < 1 ? small : large).push(i));
-
-  while (small.length && large.length) {
-    const s = small.pop();
-    const l = large.pop();
-    keep[s] = scaled[s];
-    alias[s] = l;
-    scaled[l] += scaled[s] - 1;
-    (scaled[l] < 1 ? small : large).push(l);
-  }
-
-  const units = table.map(([value]) => value);
-
-  return function sampleUnits() {
-    const x = Math.random() * n;
-    const i = x | 0;
-    return x - i < keep[i] ? units[i] : units[alias[i]];
-  };
 }
 
 function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
