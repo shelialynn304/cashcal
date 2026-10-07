@@ -87,6 +87,20 @@
     if (element) element.textContent = value;
   }
 
+  // A negative expected loss is an estimated player gain: relabel the card
+  // and show the amount as positive instead of a negative "loss".
+  function setSignedResult(id, lossLabel, gainLabel, value, formatter) {
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    const heading = element.parentElement
+      ? element.parentElement.querySelector("h3")
+      : null;
+    if (heading) heading.textContent = value < 0 ? gainLabel : lossLabel;
+
+    element.textContent = formatter.format(Math.abs(value));
+  }
+
   function showMessage(text, isWarning) {
     if (!message) return;
 
@@ -281,11 +295,35 @@
 
     setText("result-house-edge", percent.format(result.houseEdge));
     setText("result-rtp", percent.format(result.playerRtp));
-    setText("result-loss-per-1000", money.format(result.lossPer1000));
-    setText("result-loss-per-hour", money.format(result.expectedLossPerHour));
-    setText("result-session-loss", money.format(result.sessionExpectedLoss));
+    setSignedResult(
+      "result-loss-per-1000",
+      "Expected Loss / $1,000 Wagered",
+      "Estimated Gain / $1,000 Wagered",
+      result.lossPer1000,
+      money
+    );
+    setSignedResult(
+      "result-loss-per-hour",
+      "Expected Loss / Hour",
+      "Estimated Gain / Hour",
+      result.expectedLossPerHour,
+      money
+    );
+    setSignedResult(
+      "result-session-loss",
+      "Session Expected Loss",
+      "Session Estimated Gain",
+      result.sessionExpectedLoss,
+      money
+    );
     setText("result-total-action", money.format(result.totalAction));
-    setText("result-bankroll-pressure", percent.format(result.bankrollPressure));
+    setSignedResult(
+      "result-bankroll-pressure",
+      "Bankroll Pressure",
+      "Estimated Gain vs Bankroll",
+      result.bankrollPressure,
+      percent
+    );
     setText("result-rule-grade", grade);
     setText("result-best-fix", bestFix);
 
@@ -360,7 +398,16 @@
   }
 
   function formatRuleResultText(inputs, result) {
-    return `Educational estimate only: ${explainInputs(inputs)} Estimated house edge is ${percent.format(result.houseEdge)}, player RTP is ${percent.format(result.playerRtp)}, expected loss per hour is ${money.format(result.expectedLossPerHour)}, and session expected loss is ${money.format(result.sessionExpectedLoss)}. These estimates do not guarantee gambling outcomes.`;
+    const hourlyText =
+      result.expectedLossPerHour < 0
+        ? `estimated player gain per hour is ${money.format(Math.abs(result.expectedLossPerHour))}`
+        : `expected loss per hour is ${money.format(result.expectedLossPerHour)}`;
+    const sessionText =
+      result.sessionExpectedLoss < 0
+        ? `session estimated player gain is ${money.format(Math.abs(result.sessionExpectedLoss))}`
+        : `session expected loss is ${money.format(result.sessionExpectedLoss)}`;
+
+    return `Educational estimate only: ${explainInputs(inputs)} Estimated house edge is ${percent.format(result.houseEdge)}, player RTP is ${percent.format(result.playerRtp)}, ${hourlyText}, and ${sessionText}. These estimates do not guarantee gambling outcomes.`;
   }
 
   function registerRulesWebMcp() {
