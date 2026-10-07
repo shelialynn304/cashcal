@@ -187,6 +187,74 @@ checks.push(['American even-money EV units is approximately -2/38', () => {
   assertApprox(result.evUnits, -2 / 38, 1e-12, 'American even-money EV units');
 }]);
 
+// Blackjack bankroll calculator outcome model (blackjack.js)
+const bankrollForm = { addEventListener() {}, dispatchEvent() {} };
+const bankrollContext = {
+  window: {},
+  console,
+  Math,
+  Number,
+  Object,
+  Array,
+  String,
+  Boolean,
+  Date,
+  Float64Array,
+  Int32Array,
+  Event: class Event {},
+  navigator: {},
+  alert() {},
+  document: {
+    getElementById: (id) => (id === 'bankrollForm' ? bankrollForm : null),
+    addEventListener() {}
+  }
+};
+
+vm.createContext(bankrollContext);
+vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'blackjack.js'), 'utf8'), bankrollContext, { filename: 'blackjack.js' });
+
+const getOutcomeTable = bankrollContext.window.EdgeOverLuckBlackjackBankroll &&
+  bankrollContext.window.EdgeOverLuckBlackjackBankroll.getOutcomeTable;
+
+function tableStats(table) {
+  const total = table.reduce((sum, [, p]) => sum + p, 0);
+  const mean = table.reduce((sum, [units, p]) => sum + units * p, 0);
+  const sd = Math.sqrt(table.reduce((sum, [units, p]) => sum + units * units * p, 0) - mean * mean);
+  return { total, mean, sd };
+}
+
+checks.push(['Blackjack bankroll outcome table is exposed', () => {
+  assert(typeof getOutcomeTable === 'function', 'Missing helper: EdgeOverLuckBlackjackBankroll.getOutcomeTable');
+}]);
+
+checks.push(['Blackjack outcomes sum to 1 and match the entered house edge', () => {
+  for (const edge of [0, 0.5, 2, 10]) {
+    const table = getOutcomeTable(edge, 'blackjack');
+    const { total, mean } = tableStats(table);
+    assertApprox(total, 1, 1e-9, `Blackjack table total at ${edge}%`);
+    assertApprox(mean, -edge / 100, 1e-12, `Blackjack mean at ${edge}%`);
+    assert(table.every(([, p]) => p >= 0), `Negative probability at ${edge}% edge`);
+  }
+}]);
+
+checks.push(['Blackjack per-hand standard deviation is about 1.15 units', () => {
+  const { sd } = tableStats(getOutcomeTable(0.5, 'blackjack'));
+  assert(sd > 1.12 && sd < 1.18, `Expected about 1.15, got ${sd}`);
+}]);
+
+checks.push(['Blackjack outcomes include 3:2 naturals and doubled bets', () => {
+  const units = getOutcomeTable(0.5, 'blackjack').map(([value]) => value);
+  for (const expected of [1.5, 2, -2]) {
+    assert(units.includes(expected), `Missing ${expected}-unit outcome`);
+  }
+}]);
+
+checks.push(['Roulette preset stays even-money with 18/38 win probability', () => {
+  const table = getOutcomeTable(100 * (2 / 38), 'roulette');
+  const win = table.find(([units]) => units === 1)[1];
+  assertApprox(win, 18 / 38, 1e-12, 'Roulette even-money win probability');
+}]);
+
 let failures = 0;
 for (const [name, fn] of checks) {
   if (!runCheck(name, fn)) failures += 1;
