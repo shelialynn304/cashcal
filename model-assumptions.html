@@ -117,35 +117,35 @@
         <h2>How to use this page</h2>
         <ul>
           <li>Read the assumptions before you use the calculator.</li>
-          <li>Use the formulas below to see how win, push, and loss probabilities are derived.</li>
+          <li>Use the formulas below to see how hand outcomes and their probabilities are set.</li>
           <li>Note the limitations: this is a risk/pressure model, not a full blackjack rule simulator.</li>
         </ul>
       </div>
 
       <h2>Summary</h2>
       <ul>
-        <li>Each hand is modeled as a single outcome: win, push, or loss.</li>
-        <li>Push rate: default ~8% for blackjack (varies by rules and shoe composition).</li>
-        <li>House edge (user input) is converted into win/loss probabilities via simple formulas (below).</li>
-        <li>Win payout modeled as +1 unit, loss as -1 unit, push as 0 units.</li>
+        <li>Blackjack hands draw their result from a table of real blackjack outcomes in base-bet units, including 3:2 blackjacks (+1.5), doubled bets (±2), and split hands. The table comes from a 10-million-round simulation of 6-deck blackjack (dealer stands on soft 17, double after split, split up to four hands) played with basic strategy.</li>
+        <li>House edge (user input) sets the average: probability is moved between one-unit wins and one-unit losses so the average result per hand equals the negative house edge. The spread of results (a standard deviation of about 1.15 units per hand) stays the same.</li>
+        <li>The Roulette, Baccarat, and Slots presets model each bet as an even-money win (+1 unit), push (0), or loss (-1 unit). Push rate: 9.5% for baccarat, 0 for roulette and slots.</li>
       </ul>
 
       <h2>Formulas</h2>
-      <p>Let <strong>p</strong> = push rate, <strong>e</strong> = house edge (decimal). Then:</p>
+      <p>Even-money presets: let <strong>p</strong> = push rate, <strong>e</strong> = house edge (decimal). Then:</p>
       <pre style="color: #fff; background: rgba(0,0,0,0.15); padding: 10px; border-radius:6px;">winProb = ((1 - p) - e) / 2
 lossProb = ((1 - p) + e) / 2</pre>
+      <p>Blackjack: let <strong>m</strong> = the outcome table's built-in average result per hand. The calculator moves <strong>(m + e) / 2</strong> of probability from the one-unit win to the one-unit loss, which makes the average exactly <strong>-e</strong>.</p>
 
       <h2>How simulations work</h2>
       <ol>
         <li>Run N sessions (user-selected). Each session plays M hands at a fixed unit size.</li>
-        <li>For each hand, draw outcome using the probabilities above and update bankroll by +unit/0/-unit.</li>
+        <li>For each hand, draw an outcome from the blackjack table (or the even-money probabilities for other presets) and change the bankroll by outcome × unit. The bankroll never goes below $0, and a session busts when it can no longer cover the unit.</li>
         <li>Collect ending bankrolls, bust points, and summary statistics (average ending bankroll, P10/P90, bust rate).</li>
       </ol>
 
       <h2>Limitations</h2>
       <ul>
-        <li>No doubling, splitting, surrender, or blackjack 3:2 payout adjustments are modeled.</li>
-        <li>No card-counting or deck composition effects are simulated.</li>
+        <li>Blackjack: no card counting, deck-composition tracking, insurance, surrender, side bets, or table-specific rules. Enter a higher house edge to approximate rules like 6:5 payouts or a dealer who hits soft 17.</li>
+        <li>Slots preset: real slot results swing far more than an even-money bet, so it understates slot bust risk. Use the <a href="bankroll-survival-slots.html">Slot Bankroll Survival Calculator</a> for slots.</li>
         <li>Bet sizing is fixed per hand for each simulated session (no progressive systems simulated).</li>
         <li>Intended to measure bankroll pressure and variance, not exact hand-level expectation for advanced strategies.</li>
       </ul>

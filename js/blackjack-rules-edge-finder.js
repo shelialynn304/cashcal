@@ -52,7 +52,9 @@
       any: 0,
       "9-11": 0.001,
       "10-11": 0.0018,
-      none: 0.014,
+      // Losing every double costs about 1.5% (paired 6-deck simulation:
+      // +1.54% +/- 0.05%), more than the 1.4% previously used.
+      none: 0.0155,
     },
     das: {
       yes: 0,
