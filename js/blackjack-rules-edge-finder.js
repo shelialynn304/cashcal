@@ -22,15 +22,22 @@
     maximumFractionDigits: 0,
   });
 
-  const BASE_EDGE = 0.0064;
+  // Baseline: 6 decks, 3:2, dealer stands soft 17, double any two cards,
+  // double after split allowed, no resplit aces, no surrender, dealer peeks.
+  // Benchmark and rule effects: Arnold Snyder, "The House Edge at Blackjack"
+  // (Blackbelt in Blackjack, 3rd ed.).
+  // Snyder: 6 decks Vegas Strip (no DAS) = 0.54% house edge; DAS = -0.14%.
+  const BASE_EDGE = 0.0040;
 
   const RULE_ADJUSTMENTS = {
+    // Snyder Vegas Strip edge by decks (1: -0.02%, 2: 0.31%, 4: 0.48%,
+    // 6: 0.54%, 8: 0.57%), expressed relative to the 6-deck baseline.
     decks: {
-      "1": -0.0018,
-      "2": -0.0012,
-      "4": -0.0003,
+      "1": -0.0056,
+      "2": -0.0023,
+      "4": -0.0006,
       "6": 0,
-      "8": 0.0002,
+      "8": 0.0003,
     },
     blackjackPayout: {
       "3to2": 0,
@@ -289,15 +296,20 @@
           )}`
         : `an expected loss near ${money.format(result.sessionExpectedLoss)}`;
 
+    const hourlyText =
+      result.expectedLossPerHour < 0
+        ? `an estimated player advantage of about ${money.format(
+            Math.abs(result.expectedLossPerHour)
+          )} per hour`
+        : `about ${money.format(result.expectedLossPerHour)} expected loss per hour`;
+
     setText(
       "result-explanation",
       `${explainInputs(inputs)} Estimated edge is ${percent.format(
         result.houseEdge
       )}. At ${money.format(inputs.avgBetSize)} per hand and ${number.format(
         inputs.handsPerHour
-      )} hands/hour, that is about ${money.format(
-        result.expectedLossPerHour
-      )} expected loss per hour. Over ${
+      )} hands/hour, that is ${hourlyText}. Over ${
         inputs.sessionHours
       } hours, total action is about ${money.format(
         result.totalAction
@@ -316,6 +328,14 @@
       showMessage(
         "These rules look costly. Check payout and soft-17 rules before playing.",
         true
+      );
+      return;
+    }
+
+    if (result.houseEdge < 0) {
+      showMessage(
+        "These rules show a small estimated player edge, and only with perfect basic strategy. Tables with rules this good are rare, variance dominates short sessions, and math does not guarantee wins.",
+        false
       );
       return;
     }
