@@ -124,7 +124,7 @@ const resultData = {
     playSmarter: 'Track total spins, not just bet size. Tiny bets still add up when the session volume gets high.',
     links: [
       { label: 'Slot Simulator', href: 'slot-simulator.html' },
-      { label: 'Bankroll Calculator', href: 'blackjack-bankroll-calculator.html' },
+      { label: 'Slot Bankroll Calculator', href: 'bankroll-survival-slots.html' },
       { label: 'RTP Guide', href: 'slot-rtp-explained.html' }
     ]
   },
@@ -138,7 +138,7 @@ const resultData = {
     links: [
       { label: 'Slot Simulator', href: 'slot-simulator.html' },
       { label: 'Roulette Calculator', href: 'roulette-calculator.html' },
-      { label: 'Bankroll Calculator', href: 'blackjack-bankroll-calculator.html' }
+      { label: 'Slot Bankroll Calculator', href: 'bankroll-survival-slots.html' }
     ]
   },
   strategist: {

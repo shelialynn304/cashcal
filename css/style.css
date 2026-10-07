@@ -1426,6 +1426,7 @@ button:hover,
 }
 
 .presets button:hover,
+.presets button[aria-pressed="true"],
 .presets a:hover {
   background: rgba(241,196,91,0.14);
   color: var(--gold);

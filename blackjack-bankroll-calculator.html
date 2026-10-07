@@ -395,10 +395,10 @@
         </div>
 
         <div class="presets">
-          <button type="button" onclick="setPreset('blackjack')" data-track-event="preset_click" data-track-label="Blackjack Bankroll Preset">Blackjack</button>
-          <button type="button" onclick="setPreset('roulette')" data-track-event="preset_click" data-track-label="Roulette Preset from Blackjack Bankroll">Roulette</button>
+          <button type="button" onclick="setPreset('blackjack')" data-game="blackjack" aria-pressed="true" data-track-event="preset_click" data-track-label="Blackjack Bankroll Preset">Blackjack</button>
+          <button type="button" onclick="setPreset('roulette')" data-game="roulette" aria-pressed="false" data-track-event="preset_click" data-track-label="Roulette Preset from Blackjack Bankroll">Roulette</button>
           <a href="bankroll-survival-slots.html" aria-label="Slots: open the Slot Bankroll Survival Calculator" data-track-event="internal_link_click" data-track-label="Slots Preset to Slot Bankroll Survival from Blackjack Bankroll">Slots &rarr;</a>
-          <button type="button" onclick="setPreset('baccarat')" data-track-event="preset_click" data-track-label="Baccarat Preset from Blackjack Bankroll">Baccarat</button>
+          <button type="button" onclick="setPreset('baccarat')" data-game="baccarat" aria-pressed="false" data-track-event="preset_click" data-track-label="Baccarat Preset from Blackjack Bankroll">Baccarat</button>
         </div>
 
         <div class="warning-box glass-panel">
@@ -498,7 +498,7 @@
             </div>
 
             <div class="result-item glass-card">
-              <span>Average Ending Bankroll</span>
+              <span>Average Ending Bankroll (simulated)</span>
               <strong id="endingBankroll">$0.00</strong>
             </div>
 

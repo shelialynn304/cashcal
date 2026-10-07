@@ -206,6 +206,7 @@ const bankrollContext = {
   alert() {},
   document: {
     getElementById: (id) => (id === 'bankrollForm' ? bankrollForm : null),
+    querySelectorAll: () => [],
     addEventListener() {}
   }
 };
@@ -280,6 +281,14 @@ vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'js', 'blackjack-outc
 vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'script.js'), 'utf8'), homeContext, { filename: 'script.js' });
 
 const quickBankroll = homeContext.window.EdgeOverLuckQuickBankroll;
+
+checks.push(['Bankroll expected loss inputs: average hands played covers every session', () => {
+  const runMonteCarlo = bankrollContext.window.EdgeOverLuckBlackjackBankroll.runMonteCarlo;
+  // $1,000 on $1 bets for 50 hands cannot bust, so every session plays all 50.
+  const result = runMonteCarlo(1000, 1, 0.5, 50, 500);
+  assertApprox(result.averageHandsPlayed, 50, 1e-9, 'Average hands played with no busts');
+  assert(result.medianHandsLasted === 50, `Expected median hands lasted 50, got ${result.medianHandsLasted}`);
+}]);
 
 checks.push(['Homepage quick bankroll check is exposed', () => {
   assert(quickBankroll && typeof quickBankroll.runMonteCarlo === 'function', 'Missing helper: EdgeOverLuckQuickBankroll.runMonteCarlo');

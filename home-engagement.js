@@ -32,7 +32,7 @@
     slots: {
       title: "Slot Simulator",
       text: "Use the slot simulator to see how RTP and volatility can still ambush a short session.",
-      href: "slots.html",
+      href: "slot-simulator.html",
       cta: "Spin the Simulator"
     },
     horses: {

@@ -582,15 +582,20 @@
         var bet = Math.max(0.01, parseFloat(betInput.value) || 0.01);
         var decisions = parseInt(sessionSelect.value, 10) || 150;
         var units = bankroll / bet;
+        // Slot spins swing several times more than a table-game bet, so the
+        // 50-unit rule of thumb does not make a slot session low pressure.
+        var isSlots = gameSelect.value === 'slots';
 
         unitsOut.textContent = units.toFixed(1);
-        saferBetOut.textContent = money(bankroll / 50);
+        saferBetOut.textContent = isSlots ? 'See slot calculator' : money(bankroll / 50);
         exposureOut.textContent = money(bet * decisions);
 
         riskCard.classList.remove('is-danger', 'is-good');
         if (units < 20) {
           riskTagOut.textContent = 'High pressure';
           riskCard.classList.add('is-danger');
+        } else if (isSlots) {
+          riskTagOut.textContent = 'Depends on volatility';
         } else if (units < 50) {
           riskTagOut.textContent = 'Medium pressure';
         } else {

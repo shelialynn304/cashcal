@@ -198,6 +198,9 @@ function setPreset(game) {
   }
 
   currentGame = game;
+  document.querySelectorAll("[data-preset]").forEach((button) => {
+    button.setAttribute("aria-pressed", button.dataset.preset === game ? "true" : "false");
+  });
   updateCalculator();
 }
 

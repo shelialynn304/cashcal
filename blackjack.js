@@ -21,8 +21,24 @@ function setPreset(game) {
   }
 
   currentGame = game;
+  markActivePreset();
 
   form.dispatchEvent(new Event("submit"));
+}
+
+// Show which preset's model is in use (the presets keep their model until
+// another preset is clicked).
+function markActivePreset() {
+  document.querySelectorAll(".presets button[data-game]").forEach((button) => {
+    button.setAttribute("aria-pressed", button.dataset.game === currentGame ? "true" : "false");
+  });
+}
+
+function describeModel(game = currentGame) {
+  if (game === "blackjack") return "blackjack hands, including 3:2 blackjacks, doubles, and splits";
+  if (game === "roulette") return "even-money roulette bets (Roulette preset)";
+  if (game === "baccarat") return "even-money baccarat bets with ties as pushes (Baccarat preset)";
+  return "even-money bets";
 }
 
 function clamp(value, min, max) {
@@ -172,6 +188,8 @@ function normalizeBlackjackBankrollInputs(input) {
 function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
   const endings = [];
   const bustHands = [];
+  const handsLasted = [];
+  let handsPlayedTotal = 0;
   let bustCount = 0;
   let profitCount = 0;
   let lossCount = 0;
@@ -182,6 +200,8 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
     const ending = result.endingBalance;
 
     endings.push(ending);
+    handsPlayedTotal += result.handsPlayed;
+    handsLasted.push(result.bust ? result.bustHand : bets);
 
     if (result.bust) {
       bustCount++;
@@ -208,6 +228,9 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
   const survivalRate = (survivedFullSessionCount / simulations) * 100;
   const avgBustHand = average(bustHands);
   const medianBustHand = median(bustHands);
+  // Every session, counting survivors at the full session length.
+  const medianHandsLasted = median(handsLasted);
+  const averageHandsPlayed = handsPlayedTotal / simulations;
   const p10Ending = percentile(endings, 0.1);
   const p90Ending = percentile(endings, 0.9);
 
@@ -223,6 +246,8 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
     lossCount,
     avgBustHand,
     medianBustHand,
+    medianHandsLasted,
+    averageHandsPlayed,
     bustHands,
     p10Ending,
     p90Ending
@@ -254,10 +279,14 @@ function calculateBlackjackBankroll(input) {
 }
 
 function renderBlackjackBankroll(calculation) {
-  const { bankroll, betSize, bets, simulations, riskTarget, results, recommendedBet } = calculation;
+  const { bankroll, betSize, houseEdge, bets, simulations, riskTarget, results, recommendedBet } = calculation;
   updateRiskLevel(bankroll, betSize);
 
-  document.getElementById("expectedLoss").textContent = formatMoney(bankroll - results.averageEnding);
+  // Average loss per hand is exactly the house edge times the bet, so the
+  // expected loss is edge x bet x average hands played (sessions stop at a
+  // bust). This avoids the run-to-run noise of a simulated average.
+  const expectedLoss = Math.max(0, (houseEdge / 100) * betSize * results.averageHandsPlayed);
+  document.getElementById("expectedLoss").textContent = formatMoney(expectedLoss);
   document.getElementById("endingBankroll").textContent = formatMoney(results.averageEnding);
   document.getElementById("bustRisk").textContent = `${results.bustRisk.toFixed(1)}%`;
   document.getElementById("profitChance").textContent = `${results.profitChance.toFixed(1)}%`;
@@ -269,10 +298,14 @@ function renderBlackjackBankroll(calculation) {
   const lastsHandsNote = document.getElementById("lastsHandsNote");
 
   if (lastsHandsStat && lastsHandsNote) {
-    if (results.bustHands.length > 0) {
-      lastsHandsStat.textContent = `YOU LAST ~${Math.round(results.medianBustHand).toLocaleString()} HANDS`;
+    if (results.bustHands.length > 0 && results.survivalRate >= 50) {
+      lastsHandsStat.textContent = `MOST SESSIONS LAST ALL ${bets.toLocaleString()} HANDS`;
       lastsHandsNote.textContent =
-        `Among busted sessions, the median bust point was about hand ${Math.round(results.medianBustHand).toLocaleString()}, and full-session survival was ${results.survivalRate.toFixed(1)}%.`;
+        `${results.bustRisk.toFixed(1)}% of simulated sessions went bust first; among those, the median bust point was about hand ${Math.round(results.medianBustHand).toLocaleString()}.`;
+    } else if (results.bustHands.length > 0) {
+      lastsHandsStat.textContent = `YOU LAST ~${Math.round(results.medianHandsLasted).toLocaleString()} HANDS`;
+      lastsHandsNote.textContent =
+        `Half of simulated sessions went bust by about hand ${Math.round(results.medianHandsLasted).toLocaleString()}. Full-session survival was ${results.survivalRate.toFixed(1)}%.`;
     } else {
       lastsHandsStat.textContent = `YOU LAST THE FULL ${bets.toLocaleString()} HANDS`;
       lastsHandsNote.textContent =
@@ -290,7 +323,7 @@ function formatBlackjackBankrollText(calculation) {
   return `Educational estimate only: based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}. ` +
     `Bust risk was ${results.bustRisk.toFixed(1)}%, full-session survival was ${results.survivalRate.toFixed(1)}%, and the chance of finishing ahead was ${results.profitChance.toFixed(1)}%. ` +
     `The worst simulated result was ${formatMoney(results.minEnding)}, and the best was ${formatMoney(results.maxEnding)}. ` +
-    `These estimates do not guarantee gambling outcomes.` +
+    `Model: ${describeModel()}. These estimates do not guarantee gambling outcomes.` +
     (results.bustHands.length > 0
       ? ` Busted sessions died around hand ${Math.round(results.avgBustHand).toLocaleString()} on average, with a median bust point of hand ${Math.round(results.medianBustHand).toLocaleString()}.`
       : ``);
@@ -502,7 +535,9 @@ function registerBlackjackBankrollWebMcp() {
   });
 }
 
-window.EdgeOverLuckBlackjackBankroll = { calculateBlackjackBankroll, validateBlackjackBankrollInputs, formatBlackjackBankrollText, getOutcomeTable };
+markActivePreset();
+
+window.EdgeOverLuckBlackjackBankroll = { calculateBlackjackBankroll, validateBlackjackBankrollInputs, formatBlackjackBankrollText, getOutcomeTable, runMonteCarlo };
 
 document.addEventListener("DOMContentLoaded", registerBlackjackBankrollWebMcp);
 document.getElementById("bankrollForm").dispatchEvent(new Event("submit"));
