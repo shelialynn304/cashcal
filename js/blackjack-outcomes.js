@@ -87,14 +87,29 @@
   function makeHandPlayer(table) {
     const sampleUnits = makeOutcomeSampler(table);
     const total = table.reduce((sum, [, probability]) => sum + probability, 0);
-    const largest = Math.max(...table.map(([units]) => Math.abs(units)));
-    const meanAt = (maxUnits) =>
-      table.reduce((sum, [units, probability]) => sum + settleUnits(units, maxUnits) * probability, 0) / total;
-    const fullMean = meanAt(largest);
+    // Between consecutive double/split sizes the set of capped outcomes is
+    // fixed, so the average is uncapped + maxUnits * capped there.
+    const sizes = [...new Set(table.map(([units]) => Math.abs(units)).filter((size) => size >= 2))].sort((a, b) => a - b);
+    const pieces = [0, ...sizes].map((floor) => {
+      let uncapped = 0;
+      let capped = 0;
+      table.forEach(([units, probability]) => {
+        if (Math.abs(units) >= 2 && Math.abs(units) > floor) capped += Math.sign(units) * probability;
+        else uncapped += units * probability;
+      });
+      return { floor, uncapped: uncapped / total, capped: capped / total };
+    });
+    const largest = sizes.length ? sizes[sizes.length - 1] : 0;
+    const fullMean = pieces[pieces.length - 1].uncapped;
 
     return {
-      play: (maxUnits) => settleUnits(sampleUnits(), maxUnits),
-      meanUnits: (maxUnits) => (maxUnits >= largest ? fullMean : meanAt(maxUnits))
+      play: (maxUnits) => (maxUnits >= largest ? sampleUnits() : settleUnits(sampleUnits(), maxUnits)),
+      meanUnits: (maxUnits) => {
+        if (maxUnits >= largest) return fullMean;
+        let i = 0;
+        while (i + 1 < pieces.length && maxUnits >= pieces[i + 1].floor) i++;
+        return pieces[i].uncapped + maxUnits * pieces[i].capped;
+      }
     };
   }
 

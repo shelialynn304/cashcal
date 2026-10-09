@@ -35,6 +35,19 @@ function makeBetPlayer(houseEdgePercent, game = currentGame) {
   return { play: () => (Math.random() < winProbability ? 1 : -1) };
 }
 
+// Reuse one player across the thousands of sessions in a run.
+let cachedPlayer = null;
+let cachedPlayerKey = "";
+
+function getBetPlayer(houseEdgePercent) {
+  const key = `${currentGame}:${houseEdgePercent}`;
+  if (key !== cachedPlayerKey) {
+    cachedPlayer = makeBetPlayer(houseEdgePercent);
+    cachedPlayerKey = key;
+  }
+  return cachedPlayer;
+}
+
 // One bet. On a short bankroll a blackjack double or split is made for less,
 // so neither the win nor the loss can exceed the balance (Math.max only
 // absorbs rounding).
@@ -44,7 +57,7 @@ function playBet(player, balance, betSize) {
 
 function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
   let balance = bankroll;
-  const player = makeBetPlayer(houseEdgePercent);
+  const player = getBetPlayer(houseEdgePercent);
 
   for (let i = 0; i < bets; i++) {
     if (balance < betSize) break;
@@ -57,7 +70,7 @@ function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
 function generateSession(bankroll, betSize, houseEdgePercent, bets) {
   const balances = [bankroll];
   let balance = bankroll;
-  const player = makeBetPlayer(houseEdgePercent);
+  const player = getBetPlayer(houseEdgePercent);
 
   for (let i = 0; i < bets; i++) {
     if (balance < betSize) break;

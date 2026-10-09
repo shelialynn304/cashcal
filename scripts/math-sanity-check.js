@@ -348,11 +348,13 @@ checks.push(['Homepage one-hand blackjack session at a positive edge loses on av
   assert(result.averageEnding < 100, `Expected an average ending below $100, got ${result.averageEnding}`);
 }]);
 
-checks.push(['Bankroll expected loss matches the simulated average loss on a short bankroll', () => {
+checks.push(['Bankroll expected loss matches the exact model on a short bankroll', () => {
   const runMonteCarlo = bankrollContext.window.EdgeOverLuckBlackjackBankroll.runMonteCarlo;
-  const result = runMonteCarlo(100, 100, 0.5, 100, 20000);
-  const simulatedLoss = 100 - result.averageEnding;
-  assertApprox(result.expectedLoss, simulatedLoss, 2, 'Expected loss vs bankroll minus average ending');
+  // $50 bankroll, $25 bets, 0.5% edge, 100 hands: an exact dynamic program of
+  // the same model gives an average loss of $3.7028 (house edge x bet x hands
+  // played alone would give about $2.95). Run-to-run spread is about $0.03.
+  const result = runMonteCarlo(50, 25, 0.5, 100, 20000);
+  assertApprox(result.expectedLoss, 3.7028, 0.2, 'Expected loss at $50 / $25 / 0.5% / 100 hands');
   assert(result.minEnding >= 0, `Bankroll went below $0: ${result.minEnding}`);
 }]);
 

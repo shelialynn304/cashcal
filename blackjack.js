@@ -79,9 +79,23 @@ function getOutcomeTable(houseEdgePercent, game = currentGame) {
   return [[1, winProbability], [0, pushProbability], [-1, lossProbability]];
 }
 
+// Building a player sets up its sampler, so reuse it while the model and
+// edge stay the same (thousands of sessions per run).
+let cachedPlayer = null;
+let cachedPlayerKey = "";
+
+function getHandPlayer(houseEdgePercent, game = currentGame) {
+  const key = `${game}:${houseEdgePercent}`;
+  if (key !== cachedPlayerKey) {
+    cachedPlayer = makeHandPlayer(getOutcomeTable(houseEdgePercent, game));
+    cachedPlayerKey = key;
+  }
+  return cachedPlayer;
+}
+
 function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
   let balance = bankroll;
-  const player = makeHandPlayer(getOutcomeTable(houseEdgePercent));
+  const player = getHandPlayer(houseEdgePercent);
   let bustHand = null;
   let handsPlayed = 0;
   let expectedLoss = 0;
@@ -118,7 +132,7 @@ function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
 function generateSession(bankroll, betSize, houseEdgePercent, bets) {
   const balances = [];
   let balance = bankroll;
-  const player = makeHandPlayer(getOutcomeTable(houseEdgePercent));
+  const player = getHandPlayer(houseEdgePercent);
 
   balances.push(balance);
 
