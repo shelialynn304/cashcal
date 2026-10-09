@@ -49,7 +49,15 @@ function formatMoney(num) {
   return `$${num.toFixed(2)}`;
 }
 
-// Shared blackjack outcome table and sampler (js/blackjack-outcomes.js).
+// Percent with one decimal, without rounding a rare event to 0.0% or a
+// near-certain one to 100.0%.
+function formatShare(percent) {
+  if (percent > 0 && percent < 0.05) return "under 0.1%";
+  if (percent >= 99.95 && percent < 100) return "over 99.9%";
+  return `${percent.toFixed(1)}%`;
+}
+
+// Shared blackjack outcome table and hand player (js/blackjack-outcomes.js).
 const { getBlackjackOutcomeTable, makeHandPlayer } = window.EdgeOverLuckBlackjackOutcomes;
 
 function getOutcomeProbabilities(houseEdgePercent, game = currentGame) {
@@ -311,8 +319,8 @@ function renderBlackjackBankroll(calculation) {
   const expectedLoss = clamp(results.expectedLoss, 0, bankroll);
   document.getElementById("expectedLoss").textContent = formatMoney(expectedLoss);
   document.getElementById("endingBankroll").textContent = formatMoney(results.averageEnding);
-  document.getElementById("bustRisk").textContent = `${results.bustRisk.toFixed(1)}%`;
-  document.getElementById("profitChance").textContent = `${results.profitChance.toFixed(1)}%`;
+  document.getElementById("bustRisk").textContent = formatShare(results.bustRisk);
+  document.getElementById("profitChance").textContent = formatShare(results.profitChance);
   document.getElementById("p10Ending").textContent = formatMoney(results.p10Ending);
   document.getElementById("p90Ending").textContent = formatMoney(results.p90Ending);
   document.getElementById("recommendedBet").textContent = `${formatMoney(recommendedBet)} @ ${riskTarget.toFixed(0)}% bust risk`;
@@ -323,13 +331,12 @@ function renderBlackjackBankroll(calculation) {
   if (lastsHandsStat && lastsHandsNote) {
     if (results.bustHands.length > 0 && results.survivalRate >= 50) {
       lastsHandsStat.textContent = `MOST SESSIONS LAST ALL ${bets.toLocaleString()} HANDS`;
-      const bustShare = results.bustRisk < 0.05 ? "under 0.1%" : `${results.bustRisk.toFixed(1)}%`;
       lastsHandsNote.textContent =
-        `${results.bustCount.toLocaleString()} of ${simulations.toLocaleString()} simulated sessions (${bustShare}) went bust first; among those, the median bust point was about hand ${Math.round(results.medianBustHand).toLocaleString()}.`;
+        `${results.bustCount.toLocaleString()} of ${simulations.toLocaleString()} simulated sessions (${formatShare(results.bustRisk)}) went bust first; among those, the median bust point was about hand ${Math.round(results.medianBustHand).toLocaleString()}.`;
     } else if (results.bustHands.length > 0) {
       lastsHandsStat.textContent = `YOU LAST ~${Math.round(results.medianHandsLasted).toLocaleString()} HANDS`;
       lastsHandsNote.textContent =
-        `Half of simulated sessions went bust by about hand ${Math.round(results.medianHandsLasted).toLocaleString()}. Full-session survival was ${results.survivalRate.toFixed(1)}%.`;
+        `Half of simulated sessions went bust by about hand ${Math.round(results.medianHandsLasted).toLocaleString()}. Full-session survival was ${formatShare(results.survivalRate)}.`;
     } else {
       lastsHandsStat.textContent = `YOU LAST THE FULL ${bets.toLocaleString()} HANDS`;
       lastsHandsNote.textContent =
@@ -345,7 +352,7 @@ function renderBlackjackBankroll(calculation) {
 function formatBlackjackBankrollText(calculation) {
   const { bankroll, simulations, results } = calculation;
   return `Educational estimate only: based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}. ` +
-    `Bust risk was ${results.bustRisk.toFixed(1)}%, full-session survival was ${results.survivalRate.toFixed(1)}%, and the chance of finishing ahead was ${results.profitChance.toFixed(1)}%. ` +
+    `Bust risk was ${formatShare(results.bustRisk)}, full-session survival was ${formatShare(results.survivalRate)}, and the chance of finishing ahead was ${formatShare(results.profitChance)}. ` +
     `The worst simulated result was ${formatMoney(results.minEnding)}, and the best was ${formatMoney(results.maxEnding)}. ` +
     `Model: ${describeModel()}. These estimates do not guarantee gambling outcomes.` +
     (results.bustHands.length > 0

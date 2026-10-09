@@ -282,12 +282,16 @@ vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'script.js'), 'utf8')
 
 const quickBankroll = homeContext.window.EdgeOverLuckQuickBankroll;
 
-checks.push(['Bankroll expected loss inputs: average hands played covers every session', () => {
+checks.push(['Bankroll expected loss with a deep bankroll is house edge x bet x hands', () => {
   const runMonteCarlo = bankrollContext.window.EdgeOverLuckBlackjackBankroll.runMonteCarlo;
   // $1,000 on $1 bets for 50 hands cannot bust, so every session plays all 50.
   const result = runMonteCarlo(1000, 1, 0.5, 50, 500);
   assertApprox(result.averageHandsPlayed, 50, 1e-9, 'Average hands played with no busts');
   assert(result.medianHandsLasted === 50, `Expected median hands lasted 50, got ${result.medianHandsLasted}`);
+  assertApprox(result.expectedLoss, 0.25, 1e-9, 'Expected loss at $1 x 50 hands x 0.5%');
+  // Bankroll = bet for one hand always covers only the base bet: 0.5% edge
+  // plus about 1.85% for doubling or splitting for less.
+  assertApprox(runMonteCarlo(100, 100, 0.5, 1, 500).expectedLoss, 2.3526, 1e-9, 'One-hand expected loss at bankroll = bet');
 }]);
 
 checks.push(['Homepage quick bankroll check is exposed', () => {
