@@ -125,7 +125,7 @@
       <h2>Summary</h2>
       <ul>
         <li>Blackjack hands draw their result from a table of real blackjack outcomes in base-bet units, including 3:2 blackjacks (+1.5), doubled bets (±2), and split hands. The table comes from a 10-million-round simulation of 6-deck blackjack (dealer stands on soft 17, double after split, split up to four hands) played with basic strategy.</li>
-        <li>House edge (user input) sets the average: probability is moved between one-unit wins and one-unit losses so the average result per hand equals the negative house edge. The spread of results (a standard deviation of about 1.15 units per hand) stays the same.</li>
+        <li>House edge (user input) sets the average: probability is moved between one-unit wins and one-unit losses so the average result per hand equals the negative house edge whenever the bankroll can cover full doubles and splits. The spread of results (a standard deviation of about 1.15 units per hand) stays the same.</li>
         <li>The Roulette and Baccarat presets model each bet as an even-money win (+1 unit), push (0), or loss (-1 unit). Push rate: 9.5% for baccarat, 0 for roulette.</li>
       </ul>
 
@@ -138,7 +138,7 @@ lossProb = ((1 - p) + e) / 2</pre>
       <h2>How simulations work</h2>
       <ol>
         <li>Run N sessions (user-selected). Each session plays M hands at a fixed unit size.</li>
-        <li>For each hand, draw an outcome from the blackjack table (or the even-money probabilities for other presets) and change the bankroll by outcome × unit. The bankroll never goes below $0, and a session busts when it can no longer cover the unit.</li>
+        <li>For each hand, draw an outcome from the blackjack table (or the even-money probabilities for other presets) and change the bankroll by outcome × unit. If the bankroll cannot cover a full double or split, the simulator has the hand double or split for less (a simplification, since real tables usually require a full bet to split), so the win and the loss both shrink to what is left and the bankroll never goes below $0. Doubles and splits win more often than they lose, so making them for less costs a little extra: up to about 1.9% of the bet on a hand where only the base bet is covered. On a short bankroll the expected loss can therefore be a bit higher than house edge &times; bet &times; hands played, even at a 0% house edge. A session busts when it can no longer cover the unit.</li>
         <li>Collect ending bankrolls, bust points, and summary statistics (average ending bankroll, P10/P90, bust rate).</li>
       </ol>
 

@@ -72,9 +72,50 @@
     };
   }
 
+  // A player who cannot cover a full double or split doubles or splits for
+  // less: the win and the loss both shrink to what the bankroll can stake
+  // (maxUnits base bets). A natural only needs the base bet.
+  function settleUnits(units, maxUnits) {
+    return Math.abs(units) >= 2 && Math.abs(units) > maxUnits ? Math.sign(units) * maxUnits : units;
+  }
+
+  // Plays hands from an outcome table against a bankroll. play(maxUnits)
+  // returns one hand's net result in base-bet units; meanUnits(maxUnits) is
+  // that hand's average result. With maxUnits = balance / bet (at least 1,
+  // since a session stops when a bet cannot be covered) the balance never
+  // drops below $0, and no loss is forgiven while the matching win is paid.
+  function makeHandPlayer(table) {
+    const sampleUnits = makeOutcomeSampler(table);
+    const total = table.reduce((sum, [, probability]) => sum + probability, 0);
+    // Between consecutive double/split sizes the set of capped outcomes is
+    // fixed, so the average is uncapped + maxUnits * capped there.
+    const sizes = [...new Set(table.map(([units]) => Math.abs(units)).filter((size) => size >= 2))].sort((a, b) => a - b);
+    const pieces = [0, ...sizes].map((floor) => {
+      let uncapped = 0;
+      let capped = 0;
+      table.forEach(([units, probability]) => {
+        if (Math.abs(units) >= 2 && Math.abs(units) > floor) capped += Math.sign(units) * probability;
+        else uncapped += units * probability;
+      });
+      return { floor, uncapped: uncapped / total, capped: capped / total };
+    });
+    const largest = sizes.length ? sizes[sizes.length - 1] : 0;
+    const fullMean = pieces[pieces.length - 1].uncapped;
+
+    return {
+      play: (maxUnits) => (maxUnits >= largest ? sampleUnits() : settleUnits(sampleUnits(), maxUnits)),
+      meanUnits: (maxUnits) => {
+        if (maxUnits >= largest) return fullMean;
+        let i = 0;
+        while (i + 1 < pieces.length && maxUnits >= pieces[i + 1].floor) i++;
+        return pieces[i].uncapped + maxUnits * pieces[i].capped;
+      }
+    };
+  }
+
   // Largest house edge the blackjack model is used for; higher entries are
   // not realistic blackjack games.
   const MAX_EDGE_PERCENT = 10;
 
-  window.EdgeOverLuckBlackjackOutcomes = { ROUND_OUTCOMES, MAX_EDGE_PERCENT, getBlackjackOutcomeTable, makeOutcomeSampler };
+  window.EdgeOverLuckBlackjackOutcomes = { ROUND_OUTCOMES, MAX_EDGE_PERCENT, getBlackjackOutcomeTable, makeOutcomeSampler, makeHandPlayer };
 })();

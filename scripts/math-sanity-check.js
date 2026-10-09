@@ -282,12 +282,16 @@ vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'script.js'), 'utf8')
 
 const quickBankroll = homeContext.window.EdgeOverLuckQuickBankroll;
 
-checks.push(['Bankroll expected loss inputs: average hands played covers every session', () => {
+checks.push(['Bankroll expected loss with a deep bankroll is house edge x bet x hands', () => {
   const runMonteCarlo = bankrollContext.window.EdgeOverLuckBlackjackBankroll.runMonteCarlo;
   // $1,000 on $1 bets for 50 hands cannot bust, so every session plays all 50.
   const result = runMonteCarlo(1000, 1, 0.5, 50, 500);
   assertApprox(result.averageHandsPlayed, 50, 1e-9, 'Average hands played with no busts');
   assert(result.medianHandsLasted === 50, `Expected median hands lasted 50, got ${result.medianHandsLasted}`);
+  assertApprox(result.expectedLoss, 0.25, 1e-9, 'Expected loss at $1 x 50 hands x 0.5%');
+  // Bankroll = bet for one hand always covers only the base bet: 0.5% edge
+  // plus about 1.85% for doubling or splitting for less.
+  assertApprox(runMonteCarlo(100, 100, 0.5, 1, 500).expectedLoss, 2.3526, 1e-9, 'One-hand expected loss at bankroll = bet');
 }]);
 
 checks.push(['Homepage quick bankroll check is exposed', () => {
@@ -295,12 +299,12 @@ checks.push(['Homepage quick bankroll check is exposed', () => {
 }]);
 
 checks.push(['Homepage blackjack preset uses the blackjack outcome table', () => {
-  const sample = quickBankroll.makeBetSampler(0.5, 'blackjack');
+  const player = quickBankroll.makeBetPlayer(0.5, 'blackjack');
   const draws = 200000;
   let total = 0;
   let sawNatural = false;
   for (let i = 0; i < draws; i++) {
-    const units = sample();
+    const units = player.play(Infinity);
     total += units;
     if (units === 1.5) sawNatural = true;
   }
@@ -314,10 +318,10 @@ checks.push(['Blackjack table never has negative probabilities, even at absurd e
 }]);
 
 checks.push(['Homepage blackjack preset uses even-money above the blackjack edge range', () => {
-  const sample = quickBankroll.makeBetSampler(70, 'blackjack');
+  const player = quickBankroll.makeBetPlayer(70, 'blackjack');
   const draws = 200000;
   let total = 0;
-  for (let i = 0; i < draws; i++) total += sample();
+  for (let i = 0; i < draws; i++) total += player.play(Infinity);
   assertApprox(total / draws, -0.70, 0.01, 'Mean result per bet at a 70% edge');
 }]);
 
@@ -326,6 +330,36 @@ checks.push(['Homepage bust risk counts sessions that cannot cover another bet',
   quickBankroll.setGame(null);
   const result = quickBankroll.runMonteCarlo(10, 3, 0, 1000, 2000);
   assert(result.bustRisk > 50, `Expected most sessions to bust, got ${result.bustRisk}%`);
+}]);
+
+checks.push(['Short bankrolls double or split for less instead of forgiving losses', () => {
+  const outcomes = homeContext.window.EdgeOverLuckBlackjackOutcomes;
+  const player = outcomes.makeHandPlayer(outcomes.getBlackjackOutcomeTable(0.5));
+  assertApprox(player.meanUnits(Infinity), -0.005, 1e-12, 'Average result with a deep bankroll');
+  assert(player.meanUnits(1) < -0.005, `Covering only the base bet should cost more than the edge, got ${player.meanUnits(1)}`);
+  for (let i = 0; i < 100000; i++) {
+    const units = player.play(1.25);
+    assert(units >= -1.25 && units <= 1.5, `One hand at 1.25 bets deep returned ${units} units`);
+  }
+}]);
+
+checks.push(['Homepage one-hand blackjack session at a positive edge loses on average', () => {
+  // Bankroll equals the bet: before doubles and splits were made for less,
+  // a lost double was forgiven while a won double paid in full (avg ~ +$4).
+  quickBankroll.setGame('blackjack');
+  const result = quickBankroll.runMonteCarlo(100, 100, 0.5, 1, 40000);
+  quickBankroll.setGame(null);
+  assert(result.averageEnding < 100, `Expected an average ending below $100, got ${result.averageEnding}`);
+}]);
+
+checks.push(['Bankroll expected loss matches the exact model on a short bankroll', () => {
+  const runMonteCarlo = bankrollContext.window.EdgeOverLuckBlackjackBankroll.runMonteCarlo;
+  // $50 bankroll, $25 bets, 0.5% edge, 100 hands: an exact dynamic program of
+  // the same model gives an average loss of $3.7028 (house edge x bet x hands
+  // played alone would give about $2.95). Run-to-run spread is about $0.03.
+  const result = runMonteCarlo(50, 25, 0.5, 100, 20000);
+  assertApprox(result.expectedLoss, 3.7028, 0.2, 'Expected loss at $50 / $25 / 0.5% / 100 hands');
+  assert(result.minEnding >= 0, `Bankroll went below $0: ${result.minEnding}`);
 }]);
 
 let failures = 0;

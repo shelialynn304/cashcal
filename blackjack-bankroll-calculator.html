@@ -403,7 +403,7 @@
 
         <div class="warning-box glass-panel">
           <h3>Model assumptions — simplified simulator</h3>
-          <p class="mb-0">For blackjack, each simulated hand draws its result from the real spread of blackjack outcomes, including 3:2 blackjacks, doubles, and splits, based on a 6-deck game where the dealer stands on soft 17 and the player uses basic strategy. The house edge you enter sets the average loss. It does not model card counting, bet spreads, side bets, or table-specific rules, so use these results as a risk/pressure guide, not a precise hand-by-hand prediction. The Roulette and Baccarat presets use simple even-money win/push/loss outcomes. Slot results swing far more than that, so the Slots button opens the <a href="bankroll-survival-slots.html" data-track-event="internal_link_click" data-track-label="Slot Bankroll Survival from Blackjack Bankroll Model Note">Slot Bankroll Survival Calculator</a>, which models slot volatility with calibrated payout presets.</p>
+          <p class="mb-0">For blackjack, each simulated hand draws its result from the real spread of blackjack outcomes, including 3:2 blackjacks, doubles, and splits, based on a 6-deck game where the dealer stands on soft 17 and the player uses basic strategy. The house edge you enter sets the average loss per hand; hands played with only a few bets left lose a little more (see Model details). It does not model card counting, bet spreads, side bets, or table-specific rules, so use these results as a risk/pressure guide, not a precise hand-by-hand prediction. The Roulette and Baccarat presets use simple even-money win/push/loss outcomes. Slot results swing far more than that, so the Slots button opens the <a href="bankroll-survival-slots.html" data-track-event="internal_link_click" data-track-label="Slot Bankroll Survival from Blackjack Bankroll Model Note">Slot Bankroll Survival Calculator</a>, which models slot volatility with calibrated payout presets.</p>
           <p class="mb-0">See <a href="how-we-calculate-odds.html" data-track-event="methodology_click" data-track-label="How We Calculate Odds from Blackjack Bankroll">how we calculate odds</a> for more details.</p>
         </div>
         <div class="faq-list">
@@ -413,7 +413,7 @@
               <strong>Blackjack:</strong> each hand's result comes from a table of outcomes in base-bet units, built from a 10-million-round simulation of 6-deck blackjack (dealer stands on soft 17, 3:2 blackjack, double on any two cards, double after split, split up to four hands) played with basic strategy. The table includes the 1.5-unit blackjack payout, 2-unit wins and losses on doubles, and bigger swings from splits. Its standard deviation is about 1.15 units per hand. A plain win/push/loss model is about 0.96, which understates swings and bust risk.
             </p>
             <p>
-              To match the house edge you enter, the calculator moves probability between one-unit wins and one-unit losses, so the average result per hand equals the negative house edge while the shape of the outcomes stays the same.
+              To match the house edge you enter, the calculator moves probability between one-unit wins and one-unit losses, so the average result per hand equals the negative house edge (whenever the bankroll can cover full doubles and splits) while the shape of the outcomes stays the same.
             </p>
             <p>
               <strong>Roulette and Baccarat presets:</strong> each hand is a simple even-money win, push, or loss. With p = push rate (9.5% for baccarat, 0 for roulette) and e = house edge (as a decimal):
@@ -426,7 +426,7 @@
               That fits even-money roulette and baccarat bets. Slots are not modeled here: a slot spin swings far more than an even-money bet, so the Slots button links to the Slot Bankroll Survival Calculator instead.
             </p>
             <p>
-              A session busts when the bankroll can no longer cover the base bet, and the bankroll never goes below $0 (a lost double or split is capped at what is left). The simulator runs many sessions and reports distribution statistics (average ending bankroll, P10/P90, bust rate).
+              A session busts when the bankroll can no longer cover the base bet. When the bankroll cannot cover a full double or split, the simulator has the hand double or split for less (a simplification, since real tables usually require a full bet to split), so the win and the loss both shrink to what is left and the bankroll never goes below $0. Doubles and splits win more often than they lose, so making them for less costs a little extra: up to about 1.9% of the bet on a hand where only the base bet is covered. On a short bankroll, Expected Loss can therefore be a bit higher than house edge &times; bet &times; hands played, even at a 0% house edge. The simulator runs many sessions and reports distribution statistics (average ending bankroll, P10/P90, bust rate).
             </p>
             <p>
               Limitations: no card counting, bet spreads, side bets, insurance, surrender, or table-specific rule changes. For rules like 6:5 payouts or a dealer who hits soft 17, enter a higher house edge to approximate them. It is intended to measure bankroll pressure from bet sizing and variance, not to provide precise hand-level EV for complex strategies.
