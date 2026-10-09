@@ -46,16 +46,16 @@
     const trials = Math.max(250, Number(trialsInput.value) || 2000);
     const preset = window.SlotsTools.getPresetById(presetSelect.value);
 
-    if (betSize >= bankroll) {
-      warning.textContent = "Bet size must be smaller than bankroll for a meaningful survival estimate. Lower your bet or increase the bankroll.";
+    if (!(betSize > 0) || betSize >= bankroll) {
+      warning.textContent = betSize > 0
+        ? "Bet size must be smaller than bankroll for a meaningful survival estimate. Lower your bet or increase the bankroll."
+        : "Enter a bet size above $0 to run the survival estimate.";
       warning.style.display = "block";
       trialWarning.textContent = "";
       trialWarning.style.display = "none";
-      survivalOdds.textContent = "-";
-      spinRange.textContent = "-";
+      // Clear every result so no figure from an earlier run is left on screen.
+      [survivalOdds, avgRtp, spinRange, ruinRisk, medianEnd, p10End, p90End].forEach((el) => { el.textContent = "-"; });
       document.getElementById('survivalTrials').textContent = "0";
-      ruinRisk.textContent = "-";
-      medianEnd.textContent = "$0.00";
       detail.textContent = "";
       return;
     }

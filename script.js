@@ -1,5 +1,8 @@
 let resultsChart;
 let sessionChart;
+// Set by the preset buttons. Blackjack uses the shared blackjack outcome
+// table; everything else is modeled as even-money bets.
+let currentGame = null;
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
@@ -13,13 +16,32 @@ function getWinProbability(houseEdgePercent) {
   return clamp(0.5 - (houseEdgePercent / 200), 0.01, 0.99);
 }
 
+// The blackjack outcome table covers realistic blackjack edges only; larger
+// entries fall back to the even-money model, and the summary says which ran.
+function usesBlackjackModel(houseEdgePercent, game = currentGame) {
+  const outcomes = window.EdgeOverLuckBlackjackOutcomes;
+  return game === "blackjack" && Boolean(outcomes) && houseEdgePercent <= outcomes.MAX_EDGE_PERCENT;
+}
+
+// Returns a function giving one bet's net result in bet units.
+function makeBetSampler(houseEdgePercent, game = currentGame) {
+  if (usesBlackjackModel(houseEdgePercent, game)) {
+    const outcomes = window.EdgeOverLuckBlackjackOutcomes;
+    return outcomes.makeOutcomeSampler(outcomes.getBlackjackOutcomeTable(houseEdgePercent));
+  }
+
+  const winProbability = getWinProbability(houseEdgePercent);
+  return () => (Math.random() < winProbability ? 1 : -1);
+}
+
 function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
   let balance = bankroll;
-  const winProbability = getWinProbability(houseEdgePercent);
+  const sampleUnits = makeBetSampler(houseEdgePercent);
 
   for (let i = 0; i < bets; i++) {
     if (balance < betSize) break;
-    balance += Math.random() < winProbability ? betSize : -betSize;
+    // A lost double or split can cost more than one bet; the bankroll stops at $0.
+    balance = Math.max(0, balance + betSize * sampleUnits());
   }
 
   return balance;
@@ -28,11 +50,11 @@ function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
 function generateSession(bankroll, betSize, houseEdgePercent, bets) {
   const balances = [bankroll];
   let balance = bankroll;
-  const winProbability = getWinProbability(houseEdgePercent);
+  const sampleUnits = makeBetSampler(houseEdgePercent);
 
   for (let i = 0; i < bets; i++) {
     if (balance < betSize) break;
-    balance += Math.random() < winProbability ? betSize : -betSize;
+    balance = Math.max(0, balance + betSize * sampleUnits());
     balances.push(balance);
   }
 
@@ -49,7 +71,8 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
     const ending = simulateSession(bankroll, betSize, houseEdgePercent, bets);
     endings.push(ending);
 
-    if (ending <= 0) bustCount++;
+    // Bust = the session ended without enough left to cover another bet.
+    if (ending < betSize) bustCount++;
     else if (ending > bankroll) profitCount++;
     else lossCount++;
   }
@@ -100,7 +123,10 @@ function updateCalculator() {
     summaryEl.textContent =
       `Based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}. ` +
       `Bust risk was ${results.bustRisk.toFixed(1)}% and profit chance was ${results.profitChance.toFixed(1)}%. ` +
-      `Worst result: ${formatMoney(results.minEnding)}. Best result: ${formatMoney(results.maxEnding)}.`;
+      `Worst result: ${formatMoney(results.minEnding)}. Best result: ${formatMoney(results.maxEnding)}. ` +
+      (usesBlackjackModel(houseEdge)
+        ? "Model: blackjack hands, including 3:2 blackjacks, doubles, and splits."
+        : "Model: even-money bets (win or lose one bet each round).");
   }
 
   const resultsCanvas = document.getElementById("resultsChart");
@@ -166,18 +192,20 @@ function setPreset(game) {
   } else if (game === "roulette") {
     houseEdgeInput.value = 5.26;
     betSizeInput.value = 5;
-  } else if (game === "slots") {
-    houseEdgeInput.value = 4;
-    betSizeInput.value = 3;
   } else if (game === "baccarat") {
     houseEdgeInput.value = 1.06;
     betSizeInput.value = 5;
   }
 
+  currentGame = game;
+  document.querySelectorAll("[data-preset]").forEach((button) => {
+    button.setAttribute("aria-pressed", button.dataset.preset === game ? "true" : "false");
+  });
   updateCalculator();
 }
 
 window.setPreset = setPreset;
+window.EdgeOverLuckQuickBankroll = { runMonteCarlo, makeBetSampler, setGame: (game) => { currentGame = game; } };
 
 const bankrollForm = document.getElementById("bankrollForm");
 if (bankrollForm) {

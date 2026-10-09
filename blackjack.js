@@ -15,17 +15,30 @@ function setPreset(game) {
   } else if (game === "roulette") {
     houseEdgeInput.value = 5.26;
     betSizeInput.value = 5;
-  } else if (game === "slots") {
-    houseEdgeInput.value = 4;
-    betSizeInput.value = 3;
   } else if (game === "baccarat") {
     houseEdgeInput.value = 1.06;
     betSizeInput.value = 5;
   }
 
   currentGame = game;
+  markActivePreset();
 
   form.dispatchEvent(new Event("submit"));
+}
+
+// Show which preset's model is in use (the presets keep their model until
+// another preset is clicked).
+function markActivePreset() {
+  document.querySelectorAll(".presets button[data-game]").forEach((button) => {
+    button.setAttribute("aria-pressed", button.dataset.game === currentGame ? "true" : "false");
+  });
+}
+
+function describeModel(game = currentGame) {
+  if (game === "blackjack") return "blackjack hands, including 3:2 blackjacks, doubles, and splits";
+  if (game === "roulette") return "even-money roulette bets (Roulette preset)";
+  if (game === "baccarat") return "even-money baccarat bets with ties as pushes (Baccarat preset)";
+  return "even-money bets";
 }
 
 function clamp(value, min, max) {
@@ -36,36 +49,14 @@ function formatMoney(num) {
   return `$${num.toFixed(2)}`;
 }
 
-// Net result of one blackjack round in base-bet units: 6 decks, dealer stands
-// on soft 17, 3:2 blackjack, double on any two cards, double after split,
-// split up to 4 hands, basic strategy. From a 10,000,000-round simulation
-// (house edge about 0.43%, per-round standard deviation about 1.15 units).
-// A plain win/push/lose model has a standard deviation near 0.96, which
-// understates swings and bust risk.
-const BLACKJACK_ROUND_OUTCOMES = [
-  [-6, 0.000021],
-  [-5, 0.000086],
-  [-4, 0.000468],
-  [-3, 0.002003],
-  [-2, 0.041947],
-  [-1, 0.434325],
-  [0, 0.087747],
-  [1, 0.326227],
-  [1.5, 0.045270],
-  [2, 0.058629],
-  [3, 0.002356],
-  [4, 0.000737],
-  [5, 0.000140],
-  [6, 0.000044]
-];
+// Shared blackjack outcome table and sampler (js/blackjack-outcomes.js).
+const { getBlackjackOutcomeTable, makeOutcomeSampler } = window.EdgeOverLuckBlackjackOutcomes;
 
 function getOutcomeProbabilities(houseEdgePercent, game = currentGame) {
   let pushProbability = 0;
   const edge = houseEdgePercent / 100;
 
-  if (game === "blackjack") {
-    pushProbability = 0.08;
-  } else if (game === "baccarat") {
+  if (game === "baccarat") {
     pushProbability = 0.095;
   }
 
@@ -81,49 +72,11 @@ function getOutcomeProbabilities(houseEdgePercent, game = currentGame) {
 // [netUnits, probability] pairs for one hand, with an average of -houseEdge.
 function getOutcomeTable(houseEdgePercent, game = currentGame) {
   if (game === "blackjack") {
-    // Keep the blackjack shape (naturals, doubles, splits) and move probability
-    // between a one-unit win and a one-unit loss so the mean matches the edge.
-    const table = BLACKJACK_ROUND_OUTCOMES.map(([units, probability]) => [units, probability]);
-    const tableMean = table.reduce((sum, [units, probability]) => sum + units * probability, 0);
-    const shift = (tableMean + houseEdgePercent / 100) / 2;
-    table.find(([units]) => units === 1)[1] -= shift;
-    table.find(([units]) => units === -1)[1] += shift;
-    return table;
+    return getBlackjackOutcomeTable(houseEdgePercent);
   }
 
   const { winProbability, pushProbability, lossProbability } = getOutcomeProbabilities(houseEdgePercent, game);
   return [[1, winProbability], [0, pushProbability], [-1, lossProbability]];
-}
-
-// Walker alias method: exact sampling with one random number and one
-// comparison per hand, so the many-outcome blackjack table stays fast.
-function makeOutcomeSampler(table) {
-  const n = table.length;
-  const total = table.reduce((sum, [, probability]) => sum + probability, 0);
-  const scaled = table.map(([, probability]) => (probability * n) / total);
-  const keep = new Float64Array(n).fill(1);
-  const alias = new Int32Array(n);
-  const small = [];
-  const large = [];
-
-  scaled.forEach((value, i) => (value < 1 ? small : large).push(i));
-
-  while (small.length && large.length) {
-    const s = small.pop();
-    const l = large.pop();
-    keep[s] = scaled[s];
-    alias[s] = l;
-    scaled[l] += scaled[s] - 1;
-    (scaled[l] < 1 ? small : large).push(l);
-  }
-
-  const units = table.map(([value]) => value);
-
-  return function sampleUnits() {
-    const x = Math.random() * n;
-    const i = x | 0;
-    return x - i < keep[i] ? units[i] : units[alias[i]];
-  };
 }
 
 function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
@@ -235,6 +188,8 @@ function normalizeBlackjackBankrollInputs(input) {
 function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
   const endings = [];
   const bustHands = [];
+  const handsLasted = [];
+  let handsPlayedTotal = 0;
   let bustCount = 0;
   let profitCount = 0;
   let lossCount = 0;
@@ -245,6 +200,8 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
     const ending = result.endingBalance;
 
     endings.push(ending);
+    handsPlayedTotal += result.handsPlayed;
+    handsLasted.push(result.bust ? result.bustHand : bets);
 
     if (result.bust) {
       bustCount++;
@@ -271,6 +228,9 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
   const survivalRate = (survivedFullSessionCount / simulations) * 100;
   const avgBustHand = average(bustHands);
   const medianBustHand = median(bustHands);
+  // Every session, counting survivors at the full session length.
+  const medianHandsLasted = median(handsLasted);
+  const averageHandsPlayed = handsPlayedTotal / simulations;
   const p10Ending = percentile(endings, 0.1);
   const p90Ending = percentile(endings, 0.9);
 
@@ -286,6 +246,8 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
     lossCount,
     avgBustHand,
     medianBustHand,
+    medianHandsLasted,
+    averageHandsPlayed,
     bustHands,
     p10Ending,
     p90Ending
@@ -317,10 +279,14 @@ function calculateBlackjackBankroll(input) {
 }
 
 function renderBlackjackBankroll(calculation) {
-  const { bankroll, betSize, bets, simulations, riskTarget, results, recommendedBet } = calculation;
+  const { bankroll, betSize, houseEdge, bets, simulations, riskTarget, results, recommendedBet } = calculation;
   updateRiskLevel(bankroll, betSize);
 
-  document.getElementById("expectedLoss").textContent = formatMoney(bankroll - results.averageEnding);
+  // Average loss per hand is exactly the house edge times the bet, so the
+  // expected loss is edge x bet x average hands played (sessions stop at a
+  // bust). This avoids the run-to-run noise of a simulated average.
+  const expectedLoss = Math.max(0, (houseEdge / 100) * betSize * results.averageHandsPlayed);
+  document.getElementById("expectedLoss").textContent = formatMoney(expectedLoss);
   document.getElementById("endingBankroll").textContent = formatMoney(results.averageEnding);
   document.getElementById("bustRisk").textContent = `${results.bustRisk.toFixed(1)}%`;
   document.getElementById("profitChance").textContent = `${results.profitChance.toFixed(1)}%`;
@@ -332,10 +298,14 @@ function renderBlackjackBankroll(calculation) {
   const lastsHandsNote = document.getElementById("lastsHandsNote");
 
   if (lastsHandsStat && lastsHandsNote) {
-    if (results.bustHands.length > 0) {
-      lastsHandsStat.textContent = `YOU LAST ~${Math.round(results.medianBustHand).toLocaleString()} HANDS`;
+    if (results.bustHands.length > 0 && results.survivalRate >= 50) {
+      lastsHandsStat.textContent = `MOST SESSIONS LAST ALL ${bets.toLocaleString()} HANDS`;
       lastsHandsNote.textContent =
-        `Among busted sessions, the median bust point was about hand ${Math.round(results.medianBustHand).toLocaleString()}, and full-session survival was ${results.survivalRate.toFixed(1)}%.`;
+        `${results.bustRisk.toFixed(1)}% of simulated sessions went bust first; among those, the median bust point was about hand ${Math.round(results.medianBustHand).toLocaleString()}.`;
+    } else if (results.bustHands.length > 0) {
+      lastsHandsStat.textContent = `YOU LAST ~${Math.round(results.medianHandsLasted).toLocaleString()} HANDS`;
+      lastsHandsNote.textContent =
+        `Half of simulated sessions went bust by about hand ${Math.round(results.medianHandsLasted).toLocaleString()}. Full-session survival was ${results.survivalRate.toFixed(1)}%.`;
     } else {
       lastsHandsStat.textContent = `YOU LAST THE FULL ${bets.toLocaleString()} HANDS`;
       lastsHandsNote.textContent =
@@ -353,7 +323,7 @@ function formatBlackjackBankrollText(calculation) {
   return `Educational estimate only: based on ${simulations.toLocaleString()} simulated sessions, the average ending bankroll was ${formatMoney(results.averageEnding)}. ` +
     `Bust risk was ${results.bustRisk.toFixed(1)}%, full-session survival was ${results.survivalRate.toFixed(1)}%, and the chance of finishing ahead was ${results.profitChance.toFixed(1)}%. ` +
     `The worst simulated result was ${formatMoney(results.minEnding)}, and the best was ${formatMoney(results.maxEnding)}. ` +
-    `These estimates do not guarantee gambling outcomes.` +
+    `Model: ${describeModel()}. These estimates do not guarantee gambling outcomes.` +
     (results.bustHands.length > 0
       ? ` Busted sessions died around hand ${Math.round(results.avgBustHand).toLocaleString()} on average, with a median bust point of hand ${Math.round(results.medianBustHand).toLocaleString()}.`
       : ``);
@@ -565,7 +535,9 @@ function registerBlackjackBankrollWebMcp() {
   });
 }
 
-window.EdgeOverLuckBlackjackBankroll = { calculateBlackjackBankroll, validateBlackjackBankrollInputs, formatBlackjackBankrollText, getOutcomeTable };
+markActivePreset();
+
+window.EdgeOverLuckBlackjackBankroll = { calculateBlackjackBankroll, validateBlackjackBankrollInputs, formatBlackjackBankrollText, getOutcomeTable, runMonteCarlo };
 
 document.addEventListener("DOMContentLoaded", registerBlackjackBankrollWebMcp);
 document.getElementById("bankrollForm").dispatchEvent(new Event("submit"));

@@ -206,11 +206,13 @@ const bankrollContext = {
   alert() {},
   document: {
     getElementById: (id) => (id === 'bankrollForm' ? bankrollForm : null),
+    querySelectorAll: () => [],
     addEventListener() {}
   }
 };
 
 vm.createContext(bankrollContext);
+vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'js', 'blackjack-outcomes.js'), 'utf8'), bankrollContext, { filename: 'js/blackjack-outcomes.js' });
 vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'blackjack.js'), 'utf8'), bankrollContext, { filename: 'blackjack.js' });
 
 const getOutcomeTable = bankrollContext.window.EdgeOverLuckBlackjackBankroll &&
@@ -253,6 +255,77 @@ checks.push(['Roulette preset stays even-money with 18/38 win probability', () =
   const table = getOutcomeTable(100 * (2 / 38), 'roulette');
   const win = table.find(([units]) => units === 1)[1];
   assertApprox(win, 18 / 38, 1e-12, 'Roulette even-money win probability');
+}]);
+
+// Homepage quick bankroll check (script.js) uses the same blackjack outcomes
+const homeContext = {
+  window: {},
+  console,
+  Math,
+  Number,
+  Object,
+  Array,
+  String,
+  Boolean,
+  Date,
+  Float64Array,
+  Int32Array,
+  document: {
+    getElementById: () => null,
+    querySelectorAll: () => []
+  }
+};
+
+vm.createContext(homeContext);
+vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'js', 'blackjack-outcomes.js'), 'utf8'), homeContext, { filename: 'js/blackjack-outcomes.js' });
+vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'script.js'), 'utf8'), homeContext, { filename: 'script.js' });
+
+const quickBankroll = homeContext.window.EdgeOverLuckQuickBankroll;
+
+checks.push(['Bankroll expected loss inputs: average hands played covers every session', () => {
+  const runMonteCarlo = bankrollContext.window.EdgeOverLuckBlackjackBankroll.runMonteCarlo;
+  // $1,000 on $1 bets for 50 hands cannot bust, so every session plays all 50.
+  const result = runMonteCarlo(1000, 1, 0.5, 50, 500);
+  assertApprox(result.averageHandsPlayed, 50, 1e-9, 'Average hands played with no busts');
+  assert(result.medianHandsLasted === 50, `Expected median hands lasted 50, got ${result.medianHandsLasted}`);
+}]);
+
+checks.push(['Homepage quick bankroll check is exposed', () => {
+  assert(quickBankroll && typeof quickBankroll.runMonteCarlo === 'function', 'Missing helper: EdgeOverLuckQuickBankroll.runMonteCarlo');
+}]);
+
+checks.push(['Homepage blackjack preset uses the blackjack outcome table', () => {
+  const sample = quickBankroll.makeBetSampler(0.5, 'blackjack');
+  const draws = 200000;
+  let total = 0;
+  let sawNatural = false;
+  for (let i = 0; i < draws; i++) {
+    const units = sample();
+    total += units;
+    if (units === 1.5) sawNatural = true;
+  }
+  assert(sawNatural, 'Expected 1.5-unit blackjack payouts in the homepage blackjack model');
+  assertApprox(total / draws, -0.005, 0.015, 'Homepage blackjack mean result per hand');
+}]);
+
+checks.push(['Blackjack table never has negative probabilities, even at absurd edges', () => {
+  const table = homeContext.window.EdgeOverLuckBlackjackOutcomes.getBlackjackOutcomeTable(100);
+  assert(table.every(([, p]) => p >= 0), 'Negative probability at a 100% edge');
+}]);
+
+checks.push(['Homepage blackjack preset uses even-money above the blackjack edge range', () => {
+  const sample = quickBankroll.makeBetSampler(70, 'blackjack');
+  const draws = 200000;
+  let total = 0;
+  for (let i = 0; i < draws; i++) total += sample();
+  assertApprox(total / draws, -0.70, 0.01, 'Mean result per bet at a 70% edge');
+}]);
+
+checks.push(['Homepage bust risk counts sessions that cannot cover another bet', () => {
+  // $10 bankroll with $3 bets can only end at $1 (never $0) when it runs out.
+  quickBankroll.setGame(null);
+  const result = quickBankroll.runMonteCarlo(10, 3, 0, 1000, 2000);
+  assert(result.bustRisk > 50, `Expected most sessions to bust, got ${result.bustRisk}%`);
 }]);
 
 let failures = 0;

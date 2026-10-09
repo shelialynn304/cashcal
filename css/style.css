@@ -1407,7 +1407,13 @@ button:hover,
   margin-bottom: 15px;
 }
 
-.presets button {
+.presets button,
+.presets a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  text-decoration: none;
   background: var(--panel);
   color: var(--text);
   border: 1px solid var(--border);
@@ -1419,7 +1425,9 @@ button:hover,
   min-height: auto;
 }
 
-.presets button:hover {
+.presets button:hover,
+.presets button[aria-pressed="true"],
+.presets a:hover {
   background: rgba(241,196,91,0.14);
   color: var(--gold);
 }
@@ -1958,7 +1966,8 @@ table td {
 
   .btn,
   .button,
-  button {
+  button,
+  .presets a {
     width: 100%;
   }
 

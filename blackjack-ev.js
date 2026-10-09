@@ -365,9 +365,14 @@
     ].sort((a, b) => b.ev - a.ev);
 
     const best = actions[0];
+    // Near-ties can flip on details this fixed-composition model leaves out
+    // (such as the player's own cards), so flag them instead of overselling.
+    const closeCall = actions[1].ev > best.ev - 0.01
+      ? ` Close call: ${actions[1].label} is within 0.01 units in this model, so check the basic strategy chart for this spot.`
+      : "";
     document.getElementById("bestMove").textContent = best.label;
     document.getElementById("bestMoveDetail").textContent =
-      `${buildReason(best.label, total, dealerCard, effectiveSoft)} Model-estimated return: ${formatEV(best.ev)} units (${formatMoney(best.dollars)} on a ${formatMoney(betSize)} base bet).`;
+      `${buildReason(best.label, total, dealerCard, effectiveSoft)} Model-estimated return: ${formatEV(best.ev)} units (${formatMoney(best.dollars)} on a ${formatMoney(betSize)} base bet).${closeCall}`;
 
     const resultsElement = document.getElementById("results");
     resultsElement.innerHTML = actions.map((action) => `
