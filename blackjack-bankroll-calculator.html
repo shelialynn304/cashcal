@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Amplitude Analytics + Session Replay -->
+  <script type="module">
+    import * as amplitude from 'https://cdn.jsdelivr.net/npm/@amplitude/unified@1/+esm';
+
+    // Amplitude ingestion key — public by design; move to an env var when you set up environments.
+    const AMPLITUDE_API_KEY = '8a4022368b20bf1e7d46632beeef889';
+
+    amplitude.initAll(AMPLITUDE_API_KEY, {"analytics":{"autocapture":true},"sessionReplay":{"sampleRate":1}});
+
+    window.amplitude = amplitude;
+  </script>
   <meta charset="UTF-8" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SLW7YE234T"></script>
