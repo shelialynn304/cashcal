@@ -138,7 +138,7 @@ lossProb = ((1 - p) + e) / 2</pre>
       <h2>How simulations work</h2>
       <ol>
         <li>Run N sessions (user-selected). Each session plays M hands at a fixed unit size.</li>
-        <li>For each hand, draw an outcome from the blackjack table (or the even-money probabilities for other presets) and change the bankroll by outcome × unit. The bankroll never goes below $0, and a session busts when it can no longer cover the unit.</li>
+        <li>For each hand, draw an outcome from the blackjack table (or the even-money probabilities for other presets) and change the bankroll by outcome × unit. If the bankroll cannot cover a full double or split, the hand doubles or splits for less, so the win and the loss both shrink to what is left and the bankroll never goes below $0. A session busts when it can no longer cover the unit.</li>
         <li>Collect ending bankrolls, bust points, and summary statistics (average ending bankroll, P10/P90, bust rate).</li>
       </ol>
 

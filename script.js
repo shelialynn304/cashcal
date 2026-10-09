@@ -23,25 +23,32 @@ function usesBlackjackModel(houseEdgePercent, game = currentGame) {
   return game === "blackjack" && Boolean(outcomes) && houseEdgePercent <= outcomes.MAX_EDGE_PERCENT;
 }
 
-// Returns a function giving one bet's net result in bet units.
-function makeBetSampler(houseEdgePercent, game = currentGame) {
+// Returns { play(maxUnits) }, giving one bet's net result in bet units when
+// the balance covers maxUnits bets.
+function makeBetPlayer(houseEdgePercent, game = currentGame) {
   if (usesBlackjackModel(houseEdgePercent, game)) {
     const outcomes = window.EdgeOverLuckBlackjackOutcomes;
-    return outcomes.makeOutcomeSampler(outcomes.getBlackjackOutcomeTable(houseEdgePercent));
+    return outcomes.makeHandPlayer(outcomes.getBlackjackOutcomeTable(houseEdgePercent));
   }
 
   const winProbability = getWinProbability(houseEdgePercent);
-  return () => (Math.random() < winProbability ? 1 : -1);
+  return { play: () => (Math.random() < winProbability ? 1 : -1) };
+}
+
+// One bet. On a short bankroll a blackjack double or split is made for less,
+// so neither the win nor the loss can exceed the balance (Math.max only
+// absorbs rounding).
+function playBet(player, balance, betSize) {
+  return Math.max(0, balance + betSize * player.play(balance / betSize));
 }
 
 function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
   let balance = bankroll;
-  const sampleUnits = makeBetSampler(houseEdgePercent);
+  const player = makeBetPlayer(houseEdgePercent);
 
   for (let i = 0; i < bets; i++) {
     if (balance < betSize) break;
-    // A lost double or split can cost more than one bet; the bankroll stops at $0.
-    balance = Math.max(0, balance + betSize * sampleUnits());
+    balance = playBet(player, balance, betSize);
   }
 
   return balance;
@@ -50,11 +57,11 @@ function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
 function generateSession(bankroll, betSize, houseEdgePercent, bets) {
   const balances = [bankroll];
   let balance = bankroll;
-  const sampleUnits = makeBetSampler(houseEdgePercent);
+  const player = makeBetPlayer(houseEdgePercent);
 
   for (let i = 0; i < bets; i++) {
     if (balance < betSize) break;
-    balance = Math.max(0, balance + betSize * sampleUnits());
+    balance = playBet(player, balance, betSize);
     balances.push(balance);
   }
 
@@ -205,7 +212,7 @@ function setPreset(game) {
 }
 
 window.setPreset = setPreset;
-window.EdgeOverLuckQuickBankroll = { runMonteCarlo, makeBetSampler, setGame: (game) => { currentGame = game; } };
+window.EdgeOverLuckQuickBankroll = { runMonteCarlo, makeBetPlayer, setGame: (game) => { currentGame = game; } };
 
 const bankrollForm = document.getElementById("bankrollForm");
 if (bankrollForm) {

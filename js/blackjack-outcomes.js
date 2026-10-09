@@ -72,9 +72,35 @@
     };
   }
 
+  // A player who cannot cover a full double or split doubles or splits for
+  // less: the win and the loss both shrink to what the bankroll can stake
+  // (maxUnits base bets). A natural only needs the base bet.
+  function settleUnits(units, maxUnits) {
+    return Math.abs(units) >= 2 && Math.abs(units) > maxUnits ? Math.sign(units) * maxUnits : units;
+  }
+
+  // Plays hands from an outcome table against a bankroll. play(maxUnits)
+  // returns one hand's net result in base-bet units; meanUnits(maxUnits) is
+  // that hand's average result. With maxUnits = balance / bet (at least 1,
+  // since a session stops when a bet cannot be covered) the balance never
+  // drops below $0, and no loss is forgiven while the matching win is paid.
+  function makeHandPlayer(table) {
+    const sampleUnits = makeOutcomeSampler(table);
+    const total = table.reduce((sum, [, probability]) => sum + probability, 0);
+    const largest = Math.max(...table.map(([units]) => Math.abs(units)));
+    const meanAt = (maxUnits) =>
+      table.reduce((sum, [units, probability]) => sum + settleUnits(units, maxUnits) * probability, 0) / total;
+    const fullMean = meanAt(largest);
+
+    return {
+      play: (maxUnits) => settleUnits(sampleUnits(), maxUnits),
+      meanUnits: (maxUnits) => (maxUnits >= largest ? fullMean : meanAt(maxUnits))
+    };
+  }
+
   // Largest house edge the blackjack model is used for; higher entries are
   // not realistic blackjack games.
   const MAX_EDGE_PERCENT = 10;
 
-  window.EdgeOverLuckBlackjackOutcomes = { ROUND_OUTCOMES, MAX_EDGE_PERCENT, getBlackjackOutcomeTable, makeOutcomeSampler };
+  window.EdgeOverLuckBlackjackOutcomes = { ROUND_OUTCOMES, MAX_EDGE_PERCENT, getBlackjackOutcomeTable, makeOutcomeSampler, makeHandPlayer };
 })();

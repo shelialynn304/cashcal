@@ -47,9 +47,9 @@ Blackjack
 
 Roulette
 
-Slots
-
 Baccarat
+
+Slots button (links to the Slot Bankroll Survival Calculator)
 
 🧠 Strategy Education
 

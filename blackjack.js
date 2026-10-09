@@ -50,7 +50,7 @@ function formatMoney(num) {
 }
 
 // Shared blackjack outcome table and sampler (js/blackjack-outcomes.js).
-const { getBlackjackOutcomeTable, makeOutcomeSampler } = window.EdgeOverLuckBlackjackOutcomes;
+const { getBlackjackOutcomeTable, makeHandPlayer } = window.EdgeOverLuckBlackjackOutcomes;
 
 function getOutcomeProbabilities(houseEdgePercent, game = currentGame) {
   let pushProbability = 0;
@@ -81,9 +81,10 @@ function getOutcomeTable(houseEdgePercent, game = currentGame) {
 
 function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
   let balance = bankroll;
-  const sampleUnits = makeOutcomeSampler(getOutcomeTable(houseEdgePercent));
+  const player = makeHandPlayer(getOutcomeTable(houseEdgePercent));
   let bustHand = null;
   let handsPlayed = 0;
+  let expectedLoss = 0;
 
   for (let i = 0; i < bets; i++) {
     if (balance < betSize) {
@@ -91,9 +92,11 @@ function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
       break;
     }
 
-    // A lost double or split can cost more than one bet; a player cannot
-    // lose more than the bankroll on the table.
-    balance = Math.max(0, balance + betSize * sampleUnits());
+    // On a short bankroll a double or split is made for less, so neither the
+    // win nor the loss can exceed the balance (Math.max only absorbs rounding).
+    const maxUnits = balance / betSize;
+    expectedLoss -= betSize * player.meanUnits(maxUnits);
+    balance = Math.max(0, balance + betSize * player.play(maxUnits));
 
     handsPlayed = i + 1;
 
@@ -107,21 +110,22 @@ function simulateSession(bankroll, betSize, houseEdgePercent, bets) {
     endingBalance: balance,
     bust: bustHand !== null,
     bustHand,
-    handsPlayed
+    handsPlayed,
+    expectedLoss
   };
 }
 
 function generateSession(bankroll, betSize, houseEdgePercent, bets) {
   const balances = [];
   let balance = bankroll;
-  const sampleUnits = makeOutcomeSampler(getOutcomeTable(houseEdgePercent));
+  const player = makeHandPlayer(getOutcomeTable(houseEdgePercent));
 
   balances.push(balance);
 
   for (let i = 0; i < bets; i++) {
     if (balance < betSize) break;
 
-    balance = Math.max(0, balance + betSize * sampleUnits());
+    balance = Math.max(0, balance + betSize * player.play(balance / betSize));
 
     balances.push(balance);
   }
@@ -190,6 +194,7 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
   const bustHands = [];
   const handsLasted = [];
   let handsPlayedTotal = 0;
+  let expectedLossTotal = 0;
   let bustCount = 0;
   let profitCount = 0;
   let lossCount = 0;
@@ -201,6 +206,7 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
 
     endings.push(ending);
     handsPlayedTotal += result.handsPlayed;
+    expectedLossTotal += result.expectedLoss;
     handsLasted.push(result.bust ? result.bustHand : bets);
 
     if (result.bust) {
@@ -231,6 +237,7 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
   // Every session, counting survivors at the full session length.
   const medianHandsLasted = median(handsLasted);
   const averageHandsPlayed = handsPlayedTotal / simulations;
+  const expectedLoss = expectedLossTotal / simulations;
   const p10Ending = percentile(endings, 0.1);
   const p90Ending = percentile(endings, 0.9);
 
@@ -248,6 +255,7 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
     medianBustHand,
     medianHandsLasted,
     averageHandsPlayed,
+    expectedLoss,
     bustHands,
     p10Ending,
     p90Ending
@@ -282,10 +290,11 @@ function renderBlackjackBankroll(calculation) {
   const { bankroll, betSize, houseEdge, bets, simulations, riskTarget, results, recommendedBet } = calculation;
   updateRiskLevel(bankroll, betSize);
 
-  // Average loss per hand is exactly the house edge times the bet, so the
-  // expected loss is edge x bet x average hands played (sessions stop at a
-  // bust). This avoids the run-to-run noise of a simulated average.
-  const expectedLoss = Math.max(0, (houseEdge / 100) * betSize * results.averageHandsPlayed);
+  // Sum of each simulated hand's average loss: house edge x bet, plus the
+  // extra cost of doubling or splitting for less on a short bankroll. Same
+  // average as bankroll minus the average ending, with far less run-to-run
+  // noise.
+  const expectedLoss = clamp(results.expectedLoss, 0, bankroll);
   document.getElementById("expectedLoss").textContent = formatMoney(expectedLoss);
   document.getElementById("endingBankroll").textContent = formatMoney(results.averageEnding);
   document.getElementById("bustRisk").textContent = `${results.bustRisk.toFixed(1)}%`;
@@ -300,8 +309,9 @@ function renderBlackjackBankroll(calculation) {
   if (lastsHandsStat && lastsHandsNote) {
     if (results.bustHands.length > 0 && results.survivalRate >= 50) {
       lastsHandsStat.textContent = `MOST SESSIONS LAST ALL ${bets.toLocaleString()} HANDS`;
+      const bustShare = results.bustRisk < 0.05 ? "under 0.1%" : `${results.bustRisk.toFixed(1)}%`;
       lastsHandsNote.textContent =
-        `${results.bustRisk.toFixed(1)}% of simulated sessions went bust first; among those, the median bust point was about hand ${Math.round(results.medianBustHand).toLocaleString()}.`;
+        `${results.bustCount.toLocaleString()} of ${simulations.toLocaleString()} simulated sessions (${bustShare}) went bust first; among those, the median bust point was about hand ${Math.round(results.medianBustHand).toLocaleString()}.`;
     } else if (results.bustHands.length > 0) {
       lastsHandsStat.textContent = `YOU LAST ~${Math.round(results.medianHandsLasted).toLocaleString()} HANDS`;
       lastsHandsNote.textContent =
