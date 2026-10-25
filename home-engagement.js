@@ -77,30 +77,41 @@
     const hands = Number(document.getElementById("scenarioHands")?.value || 120);
 
     const pressure = (bet / bankroll) * 100;
-    const bustRisk = 100 * evenMoneyBustProbability(Math.floor(bankroll / bet), hands, 0.5 - edge / 200);
-    const walkAway = Math.max(0, bankroll - (hands * bet * (edge / 100)));
+    const session = evenMoneySession(Math.floor(bankroll / bet), hands, 0.5 - edge / 200);
+    const bustRisk = 100 * session.busted;
+    // Each bet loses edge x bet on average, and busted sessions stop early,
+    // so the average loss is edge x bet x the average number of hands played.
+    const walkAway = bankroll - bet * (edge / 100) * session.expectedHands;
 
     if (riskOutput) riskOutput.textContent = `${bustRisk.toFixed(1)}%`;
     if (walkOutput) walkOutput.textContent = `$${walkAway.toFixed(0)}`;
-    if (paceOutput) paceOutput.textContent = pressure >= 4 ? "High burn rate" : pressure >= 2 ? "Manageable, still finite" : "Low burn, still burning";
+    if (paceOutput) {
+      paceOutput.textContent = bet > bankroll
+        ? "Bet is larger than bankroll"
+        : pressure >= 4 ? "High burn rate" : pressure >= 2 ? "Manageable, still finite" : "Low burn, still burning";
+    }
 
     scenarioRows.forEach((row) => row.classList.toggle("is-strong", pressure < 3.5 && bustRisk < 40));
   }
 
-  // Exact chance that a player making even-money bets (win or lose one bet,
-  // win probability p) can no longer cover a bet within `hands` bets, starting
-  // with `units` affordable bets. Tracks the probability of every balance.
-  function evenMoneyBustProbability(units, hands, p) {
-    if (units <= 0) return 1;
+  // Exact results for a player making even-money bets (win or lose one bet,
+  // win probability p) for up to `hands` bets, starting with `units`
+  // affordable bets. Tracks the probability of every balance and returns the
+  // chance of no longer being able to cover a bet (busted) and the average
+  // number of bets actually placed (expectedHands).
+  function evenMoneySession(units, hands, p) {
+    if (units <= 0) return { busted: 1, expectedHands: 0 };
     let dist = new Float64Array(units + hands + 2);
     dist[units] = 1;
     let busted = 0;
+    let expectedHands = 0;
 
     for (let h = 0; h < hands; h++) {
       const next = new Float64Array(dist.length);
       for (let u = 1; u < dist.length - 1; u++) {
         const chance = dist[u];
         if (!chance) continue;
+        expectedHands += chance;
         next[u + 1] += chance * p;
         if (u === 1) busted += chance * (1 - p);
         else next[u - 1] += chance * (1 - p);
@@ -108,7 +119,7 @@
       dist = next;
     }
 
-    return busted;
+    return { busted, expectedHands };
   }
 
   function activateToolTab(toolName) {
