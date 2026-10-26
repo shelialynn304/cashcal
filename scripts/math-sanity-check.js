@@ -272,6 +272,7 @@ const homeContext = {
   Int32Array,
   document: {
     getElementById: () => null,
+    querySelector: () => null,
     querySelectorAll: () => []
   }
 };
