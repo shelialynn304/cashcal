@@ -51,6 +51,7 @@
     .roulette-learn-pill { display: inline-block; padding: 4px 10px; border-radius: 999px; background: rgba(241,196,91,0.12); color: var(--gold); font-weight: 800; font-size: 0.82rem; }
     .roulette-learn-result-box { margin-top: 16px; padding: 16px; border-radius: var(--radius-sm); background: rgba(241,196,91,0.08); border: 1px solid rgba(241,196,91,0.22); }
     .roulette-learn-result-box h3 { margin-top: 0; }
+    .roulette-calc-error { margin: 12px 0 0; color: #ffb4b4; font-weight: 800; }
     @media (max-width: 768px) {
       .roulette-learn-stats { display: grid; grid-template-columns: 1fr; }
       .roulette-learn-table th, .roulette-learn-table td { padding: 10px 8px; }
@@ -146,18 +147,26 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "How is roulette probability calculated?",
+            "name": "Why does expected value stay negative for all standard bets?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Roulette probability is covered pockets divided by total pockets. Example: an even-money bet covers 18 pockets, so chance is 18/37 in European roulette and 18/38 in American roulette."
+              "text": "Payouts are slightly lower than true fair odds, and the zero pockets create that gap. This built-in difference is the house edge."
             }
           },
           {
             "@type": "Question",
-            "name": "Do higher payouts mean better expected value?",
+            "name": "Can this tool predict exact future outcomes?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Not in standard roulette. Higher payouts come with lower hit probability, and both are priced to keep the house edge negative for players."
+              "text": "No. It models probabilities and long-run expectation. Individual sessions can deviate significantly due to variance."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Should I increase stake after losses?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Increasing stake raises volatility and bust risk. It can change short-term paths but not long-run expected value."
             }
           },
           {
@@ -170,10 +179,26 @@
           },
           {
             "@type": "Question",
-            "name": "Can a roulette calculator predict the next spin?",
+            "name": "Can this calculator predict the next spin?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. A roulette calculator can show probability, payout, expected value, and bankroll pressure, but it cannot predict independent random spins."
+              "text": "No. It can show probability, payout, expected value, and bankroll pressure, but it cannot predict independent random spins."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How is roulette probability calculated?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Roulette probability is covered pockets divided by total pockets. Example: an even-money bet covers 18 pockets, so the chance is 18/37 (48.65%) in European roulette and 18/38 (47.37%) in American roulette. Expected value per $1 = win chance x payout - loss chance, which is -1/37 (-2.70%) on a European wheel and -2/38 (-5.26%) on an American wheel for every standard bet."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do higher payouts mean better expected value?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not in standard roulette. Higher payouts come with lower hit probability, and both are priced to keep the house edge negative for players."
             }
           }
         ]
@@ -310,7 +335,7 @@
         <ol class="check-list">
           <li>Choose a roulette wheel type.</li>
           <li>Pick the bankroll you are actually willing to lose.</li>
-          <li>Choose a bet size or strategy.</li>
+          <li>Choose a flat bet size per spin (test progressions in the <a href="roulette-strategy-simulator.html">roulette strategy simulator</a>).</li>
           <li>Run the calculator or simulation.</li>
           <li>Read the plain-English risk report.</li>
           <li>Change one setting and watch the pressure move.</li>
@@ -357,6 +382,7 @@
             <button type="button" id="calcBtn" class="btn btn-primary" data-track-event="tool_calculate" data-track-label="Calculate Roulette Risk">Calculate Roulette Risk</button>
             <button type="button" id="spinDemoBtn" class="btn btn-secondary" data-track-event="tool_calculate" data-track-label="Run Demo Session">Run Demo Session</button>
           </div>
+          <p id="roulette-calc-error" class="roulette-calc-error" role="alert"></p>
           <p class="small-note mb-0">This is educational modeling. Winning runs happen; roulette still keeps the long-run edge.</p>
         </article>
 
@@ -368,8 +394,9 @@
             <div class="result-item"><span>Payout</span><strong id="payoutRatio">--</strong></div>
             <div class="result-item"><span>House Edge</span><strong id="houseEdge">--</strong></div>
             <div class="result-item"><span>Expected Value / Spin</span><strong id="evSpin">--</strong></div>
-            <div class="result-item"><span>Expected Session Loss</span><strong id="expectedLoss">--</strong></div>
+            <div class="result-item"><span>Expected Session Loss (stops if bankroll can't cover the bet)</span><strong id="expectedLoss">--</strong></div>
             <div class="result-item"><span>Expected Ending Bankroll</span><strong id="endBankroll">--</strong></div>
+            <div class="result-item"><span id="expectedLossAllLabel">Expected loss if all 100 spins are played (with rebuys)</span><strong id="expectedLossAll">--</strong></div>
             <div class="result-item"><span>Chance of Any Profit</span><strong id="profitChance">--</strong></div>
             <div class="result-item"><span>Estimated Bust Risk</span><strong id="bustRisk">--</strong></div>
           </div>
@@ -422,7 +449,7 @@
               <div class="roulette-learn-range-labels"><span>European</span><span>American</span></div>
             </div>
             <div class="roulette-learn-stats">
-              <span class="roulette-learn-stat">Projected bankroll after 100 $5 bets<strong id="roulette-learn-wheel-bankroll">$186.50</strong></span>
+              <span class="roulette-learn-stat">Projected bankroll after 100 $5 bets<strong id="roulette-learn-wheel-bankroll">$186.49</strong></span>
               <span class="roulette-learn-stat">House edge<strong id="roulette-learn-wheel-edge">2.70%</strong></span>
             </div>
             <p id="roulette-learn-wheel-copy" class="summary">European roulette uses one zero, so the same $200 example keeps more expected bankroll than American roulette.</p>
@@ -574,6 +601,14 @@
             <summary>Can this calculator predict the next spin?</summary>
             <p>No. It can show probability, payout, expected value, and bankroll pressure, but it cannot predict independent random spins.</p>
           </details>
+          <details class="card glass-card hover-glow">
+            <summary>How is roulette probability calculated?</summary>
+            <p>Roulette probability is covered pockets divided by total pockets. Example: an even-money bet covers 18 pockets, so the chance is 18/37 (48.65%) in European roulette and 18/38 (47.37%) in American roulette. Expected value per $1 = win chance x payout - loss chance, which is -1/37 (-2.70%) on a European wheel and -2/38 (-5.26%) on an American wheel for every standard bet.</p>
+          </details>
+          <details class="card glass-card hover-glow">
+            <summary>Do higher payouts mean better expected value?</summary>
+            <p>Not in standard roulette. Higher payouts come with lower hit probability, and both are priced to keep the house edge negative for players.</p>
+          </details>
         </div>
       </div>
     </section>
@@ -581,7 +616,7 @@
     <section class="section-tight">
       <div class="container disclaimer-block">
         <h2 class="section-title">Responsible gambling and 21+ notice</h2>
-        <p>21+ only where legal. This tool is for education and entertainment only. Gambling involves financial risk, and no calculator, simulator, betting system, or strategy can guarantee profit. Set limits before you play, and never risk money you cannot afford to lose. If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use your local problem gambling support service.</p>
+        <p>21+ only where legal. This tool is for education and entertainment only. Gambling involves financial risk, and no calculator, simulator, betting system, or strategy can guarantee profit. Set limits before you play, and never risk money you cannot afford to lose. If gambling is causing harm, call or text the National Problem Gambling Helpline at <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738) in the U.S., or use your local problem gambling support service.</p>
         <p class="mb-0">More help and support options are available on our <a href="responsible-gambling.html" data-track-event="responsible_gambling_click" data-track-label="Responsible Gambling Resources from Roulette Calculator">responsible gambling resources</a> page.</p>
       </div>
     </section>
@@ -647,9 +682,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html" data-track-event="responsible_gambling_click" data-track-label="Responsible Gambling Resources from Roulette Calculator">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>

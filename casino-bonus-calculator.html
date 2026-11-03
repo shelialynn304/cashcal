@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SLW7YE234T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-SLW7YE234T');
+  </script>
   <script src="js/amplitude-init.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
@@ -42,10 +51,10 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What does this casino bonus calculator estimate?",
+        "name": "What does this calculator estimate?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "It estimates bonus value after wagering, game contribution, house edge from RTP, optional max cashout limits, and optional fees. It is a theoretical estimate, not a prediction."
+          "text": "It estimates theoretical bonus value after wagering requirements, game contribution, RTP house edge, optional cashout caps, and optional fees."
         }
       },
       {
@@ -53,7 +62,7 @@
         "name": "How is max cashout handled?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "This tool treats max cashout as the maximum total withdrawal from bonus play. Profit above your original deposit is capped at max cashout minus deposit."
+          "text": "Max cashout is treated as the maximum total withdrawal from bonus play. Profit above your original deposit is capped at max cashout minus deposit, which is negative when the cap is below your deposit. The calculator applies the cap to the average result. In real play it cuts off every session that finishes above the cap, so the cap costs at least the amount shown and usually more, especially on high-volatility slots."
         }
       },
       {
@@ -185,7 +194,7 @@
             </label>
 
             <label>
-              Max bonus amount ($)
+              Max bonus amount ($, 0 = no cap)
               <input id="max-bonus-amount" type="number" min="0" step="0.01" value="100">
             </label>
 
@@ -216,7 +225,7 @@
             </label>
 
             <label>
-              Max cashout (total withdrawal cap, $)
+              Max cashout (total withdrawal cap, $, 0 = no cap)
               <input id="max-cashout" type="number" min="0" step="0.01" value="0">
             </label>
 
@@ -244,7 +253,7 @@
           <div class="card"><h3>Adjusted Wagering Required</h3><p id="result-adjusted-wagering">$0.00</p></div>
           <div class="card"><h3>Estimated Bets / Spins Needed</h3><p id="result-bets-count">0</p></div>
           <div class="card"><h3>House Edge</h3><p id="result-house-edge">0%</p></div>
-          <div class="card"><h3>Theoretical Expected Loss</h3><p id="result-expected-loss">$0.00</p></div>
+          <div class="card"><h3>Expected Loss if You Play the Full Wagering</h3><p id="result-expected-loss">$0.00</p></div>
           <div class="card"><h3>Uncapped Theoretical Bonus Value</h3><p id="result-uncapped-value">$0.00</p></div>
           <div class="card"><h3>Displayed Theoretical Value</h3><p id="result-theoretical-value">$0.00</p></div>
           <div class="card"><h3>Net Theoretical Value (after fees)</h3><p id="result-net-value">$0.00</p></div>
@@ -265,9 +274,9 @@
           <h2 id="bonus-ev-education-title" class="section-title">How this bonus reality check works</h2>
         </div>
         <div class="grid grid-2">
-          <article class="card glass-card"><h3>How bonus amount is calculated</h3><p>The tool calculates bonus amount as the lesser of deposit × bonus match percentage and the max bonus cap.</p></article>
+          <article class="card glass-card"><h3>How bonus amount is calculated</h3><p>The tool calculates bonus amount as the lesser of deposit × bonus match percentage and the max bonus cap. A max bonus of 0 means no cap.</p></article>
           <article class="card glass-card"><h3>Why wagering requirements matter</h3><p>Wagering requirements multiply what must be bet before terms clear. Deposit + bonus terms can double the base and magnify expected loss.</p></article>
-          <article class="card glass-card"><h3>Why RTP matters</h3><p>House edge is calculated as 1 − RTP. That edge is applied to adjusted wagering to estimate long-run expected loss.</p></article>
+          <article class="card glass-card"><h3>Why RTP matters</h3><p>House edge is calculated as 1 − RTP. That edge is applied to adjusted wagering to estimate the expected loss if you play the full wagering. Bonus wagering is mostly slot play, and running out of balance early changes the real result, so <a href="bankroll-survival-slots.html">check how often a balance survives the wagering in the Slot Bankroll Survival Calculator</a>.</p></article>
           <article class="card glass-card"><h3>Why game contribution matters</h3><p>Lower contribution means more real wagering to satisfy the same requirement. A 50% contribution doubles the adjusted wagering load.</p></article>
           <article class="card glass-card"><h3>How max cashout is treated</h3><p>This calculator treats max cashout as a total withdrawal cap from bonus play. Profit above the original deposit is capped.</p></article>
           <article class="card glass-card"><h3>Common bonus traps</h3><ul class="check-list"><li>High wagering requirements</li><li>Low game contribution</li><li>Max bet limits</li><li>Game exclusions</li><li>Short time limits</li></ul></article>
@@ -285,7 +294,7 @@
           </article>
           <article class="card glass-card">
             <h3>How is max cashout handled?</h3>
-            <p>Max cashout is treated as the maximum total withdrawal from bonus play. Profit above your original deposit is capped at max cashout minus deposit.</p>
+            <p>Max cashout is treated as the maximum total withdrawal from bonus play. Profit above your original deposit is capped at max cashout minus deposit, which is negative when the cap is below your deposit. The calculator applies the cap to the average result. In real play it cuts off every session that finishes above the cap, so the cap costs at least the amount shown and usually more, especially on high-volatility slots.</p>
           </article>
           <article class="card glass-card">
             <h3>Does this predict what happens tonight?</h3>
@@ -339,7 +348,7 @@
       </div>
       <p class="affiliate-note"><strong>Affiliate Disclosure:</strong> This site may contain affiliate links and may earn commissions at no extra cost to you. Affiliate relationships do not change our math, analysis, or editorial standards.</p>
       <p class="gambling-warning"><strong>21+ / Legal Gambling Notice:</strong> 21+ only where legal. Gambling involves financial risk and can be addictive. These tools are for education and entertainment only.</p>
-      <p class="responsible">Play legally, set limits, and never risk money you cannot afford to lose. If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use local support resources.</p>
+      <p class="responsible">Play legally, set limits, and never risk money you cannot afford to lose. If gambling is causing harm, call or text the National Problem Gambling Helpline at <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738) in the U.S., or use local support resources.</p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>
     </div>
   </footer>

@@ -149,7 +149,7 @@
             "name": "How can I make a slot bankroll last longer?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Lowering bet size, reducing target spins, and avoiding high-volatility profiles can usually reduce bankroll pressure, but none of those choices removes the house edge."
+              "text": "Lowering bet size, reducing target spins, and, at the same RTP, choosing lower volatility usually reduce bankroll pressure. In this calculator the low-volatility preset also has a lower RTP (94%), so over very long sessions it can bust as often as the high-volatility preset. None of these choices removes the house edge."
             }
           }
         ]
@@ -287,19 +287,20 @@
           <div class="grid grid-2">
             <div class="field">
               <label for="survivalBankroll">Bankroll ($)</label>
-              <input id="survivalBankroll" type="number" min="20" step="5" value="250" required />
+              <input id="survivalBankroll" type="number" min="20" step="0.01" value="250" required />
             </div>
             <div class="field">
               <label for="survivalBet">Bet size ($)</label>
-              <input id="survivalBet" type="number" min="0.1" step="0.1" value="1.5" required />
+              <input id="survivalBet" type="number" min="0.1" step="0.01" value="1.5" required />
             </div>
             <div class="field">
               <label for="survivalPreset">RTP + volatility preset</label>
               <select id="survivalPreset" data-track-event="tool_interaction" data-track-label="Slot Survival Preset"></select>
+              <p class="small-note">Each preset changes RTP and volatility together.</p>
             </div>
             <div class="field">
               <label for="survivalTargetSpins">Target spins</label>
-              <input id="survivalTargetSpins" type="number" min="50" step="50" value="600" required />
+              <input id="survivalTargetSpins" type="number" min="50" max="10000" step="1" value="600" required />
             </div>
           </div>
           <div class="section-panel section-gradient-smoke" style="margin-top:1rem; padding:1rem;">
@@ -319,7 +320,7 @@
             </div>
             <div class="field">
               <label for="survivalTrialsInput">Manual trial override</label>
-              <input id="survivalTrialsInput" type="number" min="250" step="250" value="2000" />
+              <input id="survivalTrialsInput" type="number" min="250" max="5000" step="1" value="2000" />
               <p class="small-note">Use manual sample size only if you need a custom trial count.</p>
               <p id="survivalTrialWarning" class="small-note" style="color:#f1b0b0; display:none; margin-top:0.5rem;"></p>
             </div>
@@ -343,12 +344,12 @@
           <div class="result-item stat-card"><span>90th percentile bankroll</span><strong id="survivalP90End">$0.00</strong></div>
         </div>
         <p class="small-note mt-1">Spin range is estimated from the 10th–90th percentile of simulated session lengths, not a guaranteed outcome.</p>
-        <p class="small-note mt-1">Ruin risk is the model's true simulated bust probability from the session Monte Carlo.</p>
+        <p class="small-note mt-1">Ruin risk is the share of simulated sessions that went bust; it is an estimate, and more trials make it steadier.</p>
         <details class="small-note mt-1" style="display:inline-block; max-width:100%;">
           <summary style="display:inline; cursor:pointer; text-decoration:underline;">Why this matters</summary>
-          <span style="display:block; margin-top:0.4rem;">Ruin risk tells you how often the bankroll dropped below the cost of one spin before the target spins, while average RTP measures the long-run expected loss rate. You can still survive a session with a negative average RTP, but a higher ruin risk means your bankroll is more likely to run out during one normal slot session.</span>
+          <span style="display:block; margin-top:0.4rem;">Ruin risk tells you how often the bankroll dropped below the cost of one spin before the target spins, while average RTP is the share of total wagers paid back (expected loss rate = 1 - RTP). You can still survive a session when average RTP is below 100% (negative expected value), but a higher ruin risk means your bankroll is more likely to run out during one normal slot session.</span>
         </details>
-        <p class="small-note mt-1">Session RTP is a long-run average, not a guarantee for a single session. Focus on ruin risk if you want a safer bankroll path.</p>
+        <p class="small-note mt-1">Average session RTP is what these simulated sessions returned; the preset RTP is the long-run average, not a promise for one session. Focus on ruin risk if you want a safer bankroll path.</p>
         <p class="small-note mt-1">These results are based on the site’s slot model presets and calibrated payout distributions. They are illustrative of a modeled slot environment, not exact results from any specific casino machine.</p>
       </div>
     </section>
@@ -426,7 +427,7 @@
           </details>
           <details class="card glass-card">
             <summary>How can I make a slot bankroll last longer?</summary>
-            <p>Lowering bet size, reducing target spins, and avoiding high-volatility profiles can usually reduce bankroll pressure, but none of those choices removes the house edge.</p>
+            <p>Lowering bet size, reducing target spins, and, at the same RTP, choosing lower volatility usually reduce bankroll pressure. In this calculator the low-volatility preset also has a lower RTP (94%), so over very long sessions it can bust as often as the high-volatility preset. None of these choices removes the house edge.</p>
           </details>
         </div>
       </div>
@@ -479,9 +480,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html" data-track-event="responsible_gambling_click" data-track-label="Responsible Gambling Resources from Slot Survival Tool">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>

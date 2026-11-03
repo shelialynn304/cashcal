@@ -21,6 +21,25 @@
     maximumFractionDigits: 0,
   });
 
+  const oneDecimal = new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 1,
+  });
+
+  const RESULT_IDS = [
+    "result-bonus-amount",
+    "result-starting-balance",
+    "result-wagering-base",
+    "result-raw-wagering",
+    "result-adjusted-wagering",
+    "result-bets-count",
+    "result-house-edge",
+    "result-expected-loss",
+    "result-uncapped-value",
+    "result-theoretical-value",
+    "result-net-value",
+    "result-cashout-note",
+  ];
+
   function getNumber(id) {
     const el = document.getElementById(id);
     if (!el) {
@@ -37,6 +56,14 @@
   }
 
   function showError(text) {
+    // Clear old numbers so the cards never contradict the inputs on screen.
+    RESULT_IDS.forEach(function (id) {
+      setText(id, "—");
+    });
+    setText(
+      "result-explanation",
+      "Fix the input error above to see a full bonus terms breakdown."
+    );
     if (!message) return;
     message.textContent = text;
     message.className = "warning-box";
@@ -75,10 +102,10 @@
     if (fees < 0) return showError("Optional fees cannot be negative.");
     if (timeLimitHours < 0) return showError("Time limit cannot be negative.");
 
-    const bonusAmount = Math.min(
-      (depositAmount * bonusMatchPercent) / 100,
-      maxBonusAmount
-    );
+    // Max bonus 0 (or empty) means no cap, the same way max cashout 0 does.
+    const matchedBonus = (depositAmount * bonusMatchPercent) / 100;
+    const bonusAmount =
+      maxBonusAmount > 0 ? Math.min(matchedBonus, maxBonusAmount) : matchedBonus;
     const startingBalance = depositAmount + bonusAmount;
     const wageringBase =
       wageringAppliesTo === "deposit-plus-bonus"
@@ -93,28 +120,33 @@
       averageBetSize > 0
         ? Math.ceil(adjustedWageringRequired / averageBetSize)
         : 0;
-    const uncappedTheoreticalBonusValue =
-      bonusAmount - estimatedExpectedLoss;
+    // Bonus minus the expected loss if the full wagering is played.
+    const paperValue = bonusAmount - estimatedExpectedLoss;
+    // The final balance can never go below $0, so the value can never be
+    // worse than losing the whole deposit.
+    const uncappedTheoreticalBonusValue = Math.max(paperValue, -depositAmount);
+    const lossExceedsBalance =
+      startingBalance > 0 && estimatedExpectedLoss >= startingBalance;
 
     let theoreticalBonusValue = uncappedTheoreticalBonusValue;
     let cashoutLimitedProfit = null;
     let cashoutText = "No max cashout cap entered.";
     let restrictiveCashout = false;
+    const capBelowDepositText = (cap, deposit) =>
+      `Max cashout (${money.format(cap)}) is below your deposit (${money.format(deposit)}). Under this assumption you cannot withdraw even your full deposit; the best case is ${money.format(cap)} - ${money.format(deposit)} = ${money.format(cap - deposit)}.`;
 
     if (maxCashout > 0) {
+      // May be negative: the most you can withdraw is the cap itself.
       cashoutLimitedProfit = maxCashout - depositAmount;
-      if (cashoutLimitedProfit < 0) {
-        theoreticalBonusValue = Math.min(uncappedTheoreticalBonusValue, 0);
-        restrictiveCashout = true;
-        cashoutText = `Warning: max cashout (${money.format(maxCashout)}) is below your deposit (${money.format(depositAmount)}). Under this assumption, the bonus terms do not allow withdrawable profit above your original deposit.`;
-      } else {
-        theoreticalBonusValue = Math.min(
-          uncappedTheoreticalBonusValue,
-          cashoutLimitedProfit
-        );
-        restrictiveCashout = cashoutLimitedProfit < uncappedTheoreticalBonusValue;
-        cashoutText = `Assumption used: max cashout is a total withdrawal cap of ${money.format(maxCashout)}. Profit above deposit is capped at ${money.format(cashoutLimitedProfit)} (max cashout minus deposit).`;
-      }
+      theoreticalBonusValue = Math.min(
+        uncappedTheoreticalBonusValue,
+        cashoutLimitedProfit
+      );
+      restrictiveCashout = cashoutLimitedProfit < uncappedTheoreticalBonusValue;
+      cashoutText =
+        cashoutLimitedProfit < 0
+          ? capBelowDepositText(maxCashout, depositAmount)
+          : `Assumption used: max cashout is a total withdrawal cap of ${money.format(maxCashout)}. Profit above deposit is capped at ${money.format(cashoutLimitedProfit)} (max cashout minus deposit).`;
     }
 
     const netTheoreticalValue = theoreticalBonusValue - fees;
@@ -148,24 +180,36 @@
         averageBetSize > 0
           ? `At ${money.format(averageBetSize)} average bet size, that is at least ${number.format(estimatedNumberOfBets)} bets/spins.`
           : "Enter an average bet size above $0 to estimate bets/spins needed.";
+      const capCost = uncappedTheoreticalBonusValue - theoreticalBonusValue;
+      const capNote = `The cap is applied to the average result here. In real play it cuts off every session that finishes above ${money.format(maxCashout)}, so the cap costs at least this much and usually more, especially on high-volatility slots.`;
       const cashoutExplain =
         maxCashout > 0
           ? (cashoutLimitedProfit < 0
-              ? `Warning: the max cashout (${money.format(maxCashout)}) is below your deposit. Under this assumption, the bonus terms do not allow withdrawable profit above your original deposit.`
-              : `With max cashout set, displayed theoretical value is capped by max cashout − deposit (${money.format(cashoutLimitedProfit)}).`)
+              ? capBelowDepositText(maxCashout, depositAmount)
+              : `With max cashout set, displayed theoretical value is capped by max cashout − deposit (${money.format(cashoutLimitedProfit)}), which lowers it by ${money.format(capCost)}.`) +
+            ` ${capNote}`
           : "No max cashout cap was applied.";
       const feesExplain =
         fees > 0
           ? `Optional fees of ${money.format(fees)} are subtracted to show net theoretical value.`
           : "No optional fees were entered.";
-      const timeText =
-        timeLimitHours > 0
-          ? `A ${number.format(timeLimitHours)}-hour time limit was entered; compare it with required wagering pace.`
-          : "No time limit was entered.";
+      let timeText = "No time limit was entered.";
+      if (timeLimitHours > 0 && estimatedNumberOfBets > 0) {
+        const betsPerHour = estimatedNumberOfBets / timeLimitHours;
+        timeText = `A ${oneDecimal.format(timeLimitHours)}-hour time limit means about ${number.format(betsPerHour)} bets/spins per hour (${oneDecimal.format(betsPerHour / 60)} per minute) to finish the wagering in time.`;
+      } else if (timeLimitHours > 0) {
+        timeText = `A ${oneDecimal.format(timeLimitHours)}-hour time limit was entered. Enter an average bet size above $0 to estimate the required pace.`;
+      }
+      const maxBonusText =
+        maxBonusAmount > 0
+          ? `${money.format(maxBonusAmount)} max bonus`
+          : "no max bonus cap";
+      const fullWageringNote =
+        "This assumes you play the full wagering. If your balance runs out first, play stops, so the real average loss is smaller than this figure, and you can never lose more than your deposit. Higher-volatility games bust more often and spread results more widely.";
 
       explanation.textContent = `You deposit ${money.format(depositAmount)}. With a ${pct.format(
         bonusMatchPercent / 100
-      )} match and ${money.format(maxBonusAmount)} max bonus, the calculated bonus is ${money.format(
+      )} match and ${maxBonusText}, the calculated bonus is ${money.format(
         bonusAmount
       )}, so starting balance is ${money.format(
         startingBalance
@@ -179,16 +223,21 @@
         rtpPercent / 100
       )} RTP (house edge ${pct.format(
         houseEdge
-      )}), estimated expected loss is ${money.format(
+      )}), expected loss if you play the full wagering is ${money.format(
         estimatedExpectedLoss
-      )}. Uncapped theoretical bonus value is ${money.format(
+      )}. ${fullWageringNote} Uncapped theoretical bonus value is ${money.format(
         uncappedTheoreticalBonusValue
       )}. ${cashoutExplain} ${feesExplain} ${timeText} These are theoretical estimates only, not guaranteed profit, and this calculator does not predict wins.`;
     }
 
+    const lossExceedsText = lossExceedsBalance
+      ? ` Expected loss over the full wagering (${money.format(estimatedExpectedLoss)}) is at least your whole starting balance (${money.format(startingBalance)}). You would usually run out of money before clearing the terms. The value shown is floored at ${money.format(-depositAmount)}, the most this deposit can lose.`
+      : "";
+
     if (netTheoreticalValue < 0 || restrictiveCashout) {
       showNote(
-        "Warning: this offer looks restrictive or negative after wagering pressure, cap rules, and fees.",
+        "Warning: this offer looks restrictive or negative after wagering pressure, cap rules, and fees." +
+          lossExceedsText,
         true
       );
     } else if (Math.abs(netTheoreticalValue) <= 0.01) {

@@ -15,16 +15,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
 
-  <title>Roulette Simulator | House Edge, European vs American Odds | EdgeOverLuck</title>
-  <meta name="description" content="Free roulette simulator with real house edge math. Compare European (2.70%) vs American (5.26%) odds, test Martingale vs flat betting, and see variance over thousands of spins." />
+  <title>Roulette Simulator | European vs American House Edge</title>
+  <meta name="description" content="Free roulette simulator: spin European (2.70% edge) or American (5.26%) roulette, test red/black, odd/even and single-number bets, and track bankroll swings." />
 
-  <meta property="og:title" content="Roulette Simulator | House Edge, European vs American Odds | EdgeOverLuck" />
+  <meta property="og:title" content="Roulette Simulator | European vs American House Edge" />
   <meta property="og:description" content="Use this free roulette simulator to test common roulette bets, compare wheel types, and track bankroll swings before real money is involved." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://edgeoverluck.com/roulette-simulator.html" />
   <meta property="og:image" content="https://edgeoverluck.com/assets/images/edgeoverluck-casino-calculator-hero.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Roulette Simulator | House Edge, European vs American Odds | EdgeOverLuck" />
+  <meta name="twitter:title" content="Roulette Simulator | European vs American House Edge" />
   <meta name="twitter:description" content="Spin European or American roulette, test common bets, and track bankroll swings with a free educational roulette simulator." />
   <meta name="twitter:image" content="https://edgeoverluck.com/assets/images/edgeoverluck-casino-calculator-hero.webp" />
 
@@ -335,8 +335,8 @@
             <div id="rouletteWheel" class="roulette-wheel" role="img" aria-label="Roulette wheel ready to spin">
               <div id="rouletteWheelNumbers" class="roulette-wheel-numbers" aria-hidden="true"></div>
               <div class="roulette-wheel-ring"></div>
-              <div id="rouletteWheelResult" class="roulette-wheel-center">Ready</div>
             </div>
+            <div id="rouletteWheelResult" class="roulette-wheel-center" aria-hidden="true">Ready</div>
             <div class="roulette-pointer" aria-hidden="true"></div>
           </div>
 
@@ -377,11 +377,7 @@
       </div>
     </section>
 
-    <!--
-      ROULETTE SIMULATOR PAGE — CONTENT SECTION
-      Target keywords worked in naturally: house edge, roulette odds, martingale roulette,
-      roulette bankroll, european vs american roulette
-    -->
+    <!-- Roulette explainer -->
     <section class="section-tight edge-divider roulette-explainer" id="roulette-explainer" aria-labelledby="roulette-explainer-title">
       <div class="container">
         <span class="eyebrow-muted">The Math Behind The Spins</span>
@@ -399,17 +395,17 @@
 
           <p>That extra 00 pocket on the American wheel roughly doubles what you're expected to lose over time. On a $10 bet repeated many times, American roulette costs you about 53 cents per spin on average; European roulette costs about 27 cents. Neither number tells you what happens on any single spin &mdash; it's a long-run average, not a per-spin cost.</p>
 
-          <p><strong>Practical takeaway:</strong> if you have a choice of tables, European (or &ldquo;single-zero&rdquo;) roulette is mathematically the better game every time. Some European tables also offer &ldquo;La Partage&rdquo; or &ldquo;En Prison&rdquo; rules, which cut the house edge on even-money bets (red/black, odd/even, high/low) to roughly 1.35% when the ball lands on zero.</p>
+          <p><strong>Practical takeaway:</strong> if you have a choice of tables, European (or &ldquo;single-zero&rdquo;) roulette is mathematically the better game every time. Some European tables also offer &ldquo;La Partage&rdquo; or &ldquo;En Prison&rdquo; rules, which return or hold half of an even-money bet when the ball lands on zero. That cuts the house edge on those bets (red/black, odd/even, high/low) to about 1.35%. The simulator above uses standard rules, so even-money bets lose in full on 0.</p>
         </article>
 
         <article class="card glass-card-strong">
           <h3>What the Simulator Is Actually Showing You</h3>
 
-          <p>Run the simulator for a few hundred spins and you'll see results swing well above or below the &ldquo;expected&rdquo; loss. That's variance, and it's the part most people underestimate.</p>
+          <p>Run the simulator for a few hundred spins and you'll see results swing well above or below the expected loss (spins &times; bet &times; house edge). That's variance, and it's the part most people underestimate.</p>
 
           <p>House edge tells you what happens on average over thousands of spins. Variance tells you how far any individual session can wander from that average &mdash; in either direction. A short session might show a strategy winning money because it hasn't run long enough for the house edge to show up in the results. Run the same strategy for 10,000 spins instead of 100, and it converges much closer to the theoretical loss rate.</p>
 
-          <p>This is why a &ldquo;hot streak&rdquo; doesn't mean you found a better strategy &mdash; it means you're looking at a small sample. The simulator above spins one at a time, so the Total Spins and Updated Bankroll readouts let you watch that convergence at your own pace. To compare a short run against a very long one in a single click, the <a href="roulette-strategy-simulator.html">roulette strategy simulator</a> runs a full session of spins at once and repeats it across many sessions.</p>
+          <p>This is why a &ldquo;hot streak&rdquo; doesn't mean you found a better strategy &mdash; it means you're looking at a small sample. The simulator above spins one at a time, so the Total Spins and Updated Bankroll readouts let you watch that convergence at your own pace. To compare a short run against a very long one in a single click, the <a href="roulette-strategy-simulator.html">roulette strategy simulator</a> runs a full session of spins at once and repeats it across many sessions; raise its stop-win target so sessions are not cut short.</p>
         </article>
 
         <article class="card glass-card-strong">
@@ -424,7 +420,7 @@
           <h4>Flat Betting (Same Bet Every Spin)</h4>
           <p>Bet the same amount regardless of outcome. This doesn't reduce the house edge, but it removes the risk of a single bad streak causing a catastrophic loss. Your expected loss <em>per dollar wagered</em> is mathematically identical to Martingale's &mdash; 2.70% on a European wheel either way. The difference is that Martingale pushes far more money through the wheel over the same number of spins, so that identical edge is applied to a much larger total stake, and you get there with far higher variance along the way.</p>
 
-          <p><strong>Try it yourself:</strong> run both systems over the same number of spins and starting bankroll in the <a href="roulette-strategy-simulator.html">roulette strategy simulator</a>, which has flat and Martingale modes built in. Martingale will often show a smoother-looking bankroll curve with occasional sharp drops, while flat betting shows a steadier decline. Neither beats the math &mdash; they just distribute the losses differently.</p>
+          <p><strong>Try it yourself:</strong> run both systems over the same number of spins and starting bankroll in the <a href="roulette-strategy-simulator.html">roulette strategy simulator</a>, which has flat and Martingale modes built in. At the default settings, Martingale will usually show more winning sessions but a much higher bust risk and far larger peak bets, while flat betting shows fewer busts and steadier results. Neither beats the math &mdash; they just distribute the losses differently.</p>
         </article>
 
         <article class="card glass-card-strong">
@@ -432,9 +428,9 @@
 
           <ul class="check-list">
             <li><strong>Updated bankroll</strong> &mdash; where you ended up this run. Don't read too much into one run; reset and compare several.</li>
-            <li><strong>Total spins</strong> &mdash; your sample size, and the number that decides how much the rest means. Return to player should trend toward 94.74% (American) or 97.30% (European) as spin count increases. If a short run lands far from this, that's normal variance, not a broken simulator.</li>
+            <li><strong>Total spins</strong> &mdash; your sample size, and the number that decides how much the rest means. Return to player isn't shown directly, but with a flat bet your loss divided by (spins &times; bet) should trend toward 5.26% (American) or 2.70% (European) &mdash; a return to player of 94.74% or 97.30% &mdash; as spin count increases. If a short run lands far from this, that's normal variance, not a broken simulator.</li>
             <li><strong>Current streak, biggest win, biggest loss</strong> &mdash; your variance readout. Long runs in both directions are expected on a fair wheel, and are not evidence of a pattern to bet into.</li>
-            <li><strong>Bust risk</strong> &mdash; how often a given bankroll and bet size hit zero before a set number of spins. This is where table limits and starting bankroll matter more than the betting system you choose; the <a href="roulette-bankroll-calculator.html">roulette bankroll calculator</a> estimates it directly.</li>
+            <li><strong>Bust risk</strong> &mdash; this simulator doesn't calculate it. The <a href="roulette-strategy-simulator.html">roulette strategy simulator</a> reports how often a bankroll runs out across many sessions, and the <a href="roulette-bankroll-calculator.html">roulette bankroll calculator</a> gives the chance of losing a bankroll with flat bets over a set number of spins, plus a quick session-pressure rating. This is where table limits and starting bankroll matter more than the betting system you choose.</li>
           </ul>
 
           <p class="small-note">No betting system, staking plan, or pattern of bets changes the probability of a roulette spin. Past spins do not influence future spins, and the math does not guarantee wins. These tools are for education only.</p>
@@ -478,7 +474,7 @@
     <section class="section-tight">
       <div class="container warning-box disclaimer-block">
         <h2 class="section-title">Responsible gambling and 21+ notice</h2>
-        <p>21+ only where legal. This tool is for education and entertainment only. Gambling involves financial risk, and no calculator, simulator, betting system, or strategy can guarantee profit. Set limits before you play, and never risk money you cannot afford to lose. If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use your local problem gambling support service.</p>
+        <p>21+ only where legal. This tool is for education and entertainment only. Gambling involves financial risk, and no calculator, simulator, betting system, or strategy can guarantee profit. Set limits before you play, and never risk money you cannot afford to lose. If gambling is causing harm, call or text the National Problem Gambling Helpline at <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738) in the U.S., or use your local problem gambling support service.</p>
         <p class="mb-0">More help and support options are available on our <a href="responsible-gambling.html">responsible gambling resources</a> page.</p>
       </div>
     </section>
@@ -516,9 +512,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>

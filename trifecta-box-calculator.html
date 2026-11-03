@@ -14,15 +14,15 @@
   <script src="js/amplitude-init.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
-  <title>Trifecta Box Calculator | Trifecta Bet Cost by Horses &amp; Base Bet | EdgeOverLuck.com</title>
+  <title>Trifecta Box Calculator: Trifecta Bet Cost by Horses &amp; Base Bet</title>
   <meta name="description" content="Calculate trifecta box ticket cost by base bet and number of horses. See how many combinations n × (n − 1) × (n − 2) creates before you buy the ticket." />
-  <meta property="og:title" content="Trifecta Box Calculator | Trifecta Bet Cost by Horses &amp; Base Bet | EdgeOverLuck.com" />
+  <meta property="og:title" content="Trifecta Box Calculator: Trifecta Bet Cost by Horses &amp; Base Bet" />
   <meta property="og:description" content="Calculate trifecta box ticket cost by base bet and number of horses. See how many combinations n × (n − 1) × (n − 2) creates before you buy the ticket." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://edgeoverluck.com/trifecta-box-calculator.html" />
   <meta property="og:image" content="https://edgeoverluck.com/assets/images/horse-racing/Exotic_Bet_Cost_Calculator_horse.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Trifecta Box Calculator | Trifecta Bet Cost by Horses &amp; Base Bet | EdgeOverLuck.com" />
+  <meta name="twitter:title" content="Trifecta Box Calculator: Trifecta Bet Cost by Horses &amp; Base Bet" />
   <meta name="twitter:description" content="Calculate trifecta box ticket cost by base bet and number of horses. See how many combinations n × (n − 1) × (n − 2) creates before you buy the ticket." />
   <meta name="twitter:image" content="https://edgeoverluck.com/assets/images/horse-racing/Exotic_Bet_Cost_Calculator_horse.webp" />
   <link rel="canonical" href="https://edgeoverluck.com/trifecta-box-calculator.html" />
@@ -86,7 +86,7 @@
             "name": "What is the minimum trifecta box?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "The minimum trifecta box uses 3 horses, which creates 6 combinations (3 × 2 × 1 = 6). At a $1 base, the ticket costs $6."
+              "text": "The minimum trifecta box uses 3 horses, creating 6 combinations (3 × 2 × 1 = 6). At a $1 base, the ticket costs $6."
             }
           },
           {
@@ -94,7 +94,7 @@
             "name": "How is a trifecta box different from a straight trifecta?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "A straight trifecta requires one exact finishing order — first, second, third. A trifecta box covers every three-horse finishing order among your selected horses. The box costs more but pays if your horses finish in any covered order."
+              "text": "A straight trifecta requires one exact finishing order. A trifecta box covers every three-horse finishing order among your selected horses, which costs more but wins regardless of which specific order your horses finish in, as long as they fill the top three spots."
             }
           },
           {
@@ -102,7 +102,7 @@
             "name": "Why does adding one horse to a trifecta box cost so much more?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Each added horse multiplies the combination count. Going from 4 to 5 horses raises combinations from 24 to 60, and from 5 to 6 raises them to 120. This is why trifecta boxes can become expensive quickly."
+              "text": "Each added horse multiplies the combination count through all three position terms. Going from 4 to 5 horses raises combinations from 24 to 60. Going from 5 to 6 raises them to 120. This cubic growth is why trifecta boxes become expensive quickly with each added horse."
             }
           },
           {
@@ -118,7 +118,7 @@
             "name": "Does a trifecta box guarantee a return on investment?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. A trifecta box increases coverage, but the payout depends on the pari-mutuel pool, track takeout, and the number of other winning tickets. More coverage raises cost without guaranteeing a positive return."
+              "text": "No. A trifecta box increases coverage but does not guarantee a positive return. The payout depends on the pari-mutuel pool, the track takeout rate, and how many other winning tickets share the pool. More coverage raises cost without changing those underlying factors."
             }
           }
         ]
@@ -255,7 +255,7 @@
           <div class="form-row">
             <div class="field">
               <label for="ticketBase">Base unit per combination ($)</label>
-              <input id="ticketBase" type="number" min="0.01" step="0.50" value="1" inputmode="decimal" />
+              <input id="ticketBase" type="number" min="0.10" step="0.50" value="1" inputmode="decimal" />
             </div>
             <div class="field">
               <label for="horsesUsed">Horses in box</label>
@@ -272,10 +272,10 @@
           <h2 class="section-title">What this calculator does not do</h2>
           <p>
             This is a ticket cost calculator, not a payout predictor. Trifecta payouts are pari-mutuel:
-            the final pool, track takeout rate, and number of winning tickets determine what a winning trifecta pays.
+            the final pool, <a href="takeout-overlay-calculator.html">track takeout rate</a>, and number of winning tickets determine what a winning trifecta pays.
           </p>
           <p class="mb-0">
-            A larger box increases cost but does not change what the pool holds or the takeout percentage the track keeps.
+            A larger box increases cost but does not change the takeout rate or the payout on the winning combination.
           </p>
         </aside>
       </div>
@@ -287,7 +287,7 @@
         <p class="section-subtext">
           Formula: combinations = n &times; (n &minus; 1) &times; (n &minus; 2). All values below are pre-verified against the permutation formula.
         </p>
-        <div class="table-scroll">
+        <div class="table-wrap">
           <table class="data-table">
             <thead>
               <tr>
@@ -329,7 +329,7 @@
           <h2 class="section-title">Combination count accelerates fast</h2>
           <p>
             A 4-horse trifecta box costs $24 at $1 base. A 5-horse box costs $60. A 6-horse box costs $120.
-            Each additional horse adds a new multiplier term to the formula.
+            Each additional horse raises all three position terms by one, so the count climbs steeply.
           </p>
           <p class="mb-0">
             Higher-paying trifectas often involve longer-shot horses. Adding horses to capture more outcomes
@@ -362,7 +362,7 @@
           </details>
           <details class="card glass-card-strong">
             <summary>Why does adding one horse to a trifecta box cost so much more?</summary>
-            <p>Each added horse multiplies the combination count through all three position terms. Going from 4 to 5 horses raises combinations from 24 to 60. Going from 5 to 6 raises them to 120. This exponential growth is why trifecta boxes become expensive quickly with each added horse.</p>
+            <p>Each added horse multiplies the combination count through all three position terms. Going from 4 to 5 horses raises combinations from 24 to 60. Going from 5 to 6 raises them to 120. This cubic growth is why trifecta boxes become expensive quickly with each added horse.</p>
           </details>
           <details class="card glass-card-strong">
             <summary>What is a $1 trifecta box with 4 horses?</summary>
@@ -424,9 +424,9 @@
       </p>
       <p class="responsible">
         Play legally, set limits, and never risk money you cannot afford to lose.
-        If gambling is causing harm, call or text
-        <a href="tel:18004262537">1-800-GAMBLER</a>
-        where available, or use your local problem gambling support service.
+        If gambling is causing harm, call or text the National Problem Gambling Helpline at
+        <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+        in the U.S., or use your local problem gambling support service.
         See our <a href="responsible-gambling.html">responsible gambling resources</a>.
       </p>
       <p class="copyright">&copy; 2026 Edge Over Luck &mdash; Casino math tools for education and entertainment.</p>

@@ -34,6 +34,9 @@
   <link rel="apple-touch-icon" href="assets/images/logo/apple-touch-icon.png" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/roulette.css" />
+  <style>
+    .strategy-error { margin: 12px 0 0; color: #ffb4b4; font-weight: 800; }
+  </style>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -124,18 +127,26 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "Which roulette strategy is safest?",
+            "name": "Can any progression system remove house edge?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Flat betting usually produces the smallest bet-size swings. However, all standard strategies still have negative expected value in roulette."
+              "text": "No. Progression systems only change stake sizing. The house edge comes from wheel structure and payout schedule."
             }
           },
           {
             "@type": "Question",
-            "name": "Why does Martingale have high bust risk?",
+            "name": "Why compare strategies if all are negative EV?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Martingale doubles after losses, so long losing streaks make bet size grow quickly and can exhaust bankroll or hit table limits."
+              "text": "Because variance and bust risk still matter for session planning. This helps players understand risk before wagering."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Should I treat this as gambling advice?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. This is educational simulation content. It does not provide financial, legal, or gambling advice."
             }
           },
           {
@@ -148,10 +159,10 @@
           },
           {
             "@type": "Question",
-            "name": "Why compare strategies if all are negative EV?",
+            "name": "Why does Martingale feel safer than it is?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Comparing strategies helps show how bankroll risk, drawdowns, and bust probability change even when the long-run expected value remains negative."
+              "text": "Martingale often produces many small recoveries before one long losing streak demands a bet larger than your bankroll or table limit can handle."
             }
           }
         ]
@@ -280,7 +291,7 @@
     <section class="experience-strip section-divider-soft" aria-label="Roulette strategy reality checks">
       <div class="container">
         <div class="pressure-grid">
-          <article class="pressure-card is-danger"><span class="kicker">Reality Check</span><strong>Betting systems can feel powerful while losing money.</strong><p class="mb-0">The simulator shows how often the table limit or bankroll says no.</p></article>
+          <article class="pressure-card is-danger"><span class="kicker">Reality Check</span><strong>Betting systems can feel powerful while losing money.</strong><p class="mb-0">The simulator shows how often the bankroll says no (table limits are not modeled).</p></article>
           <article class="pressure-card"><span class="kicker">Scenario</span><strong>If you chase losses, variance gets more costly.</strong><p class="mb-0">Progressions make individual spins carry more bankroll risk.</p></article>
           <article class="pressure-card is-good"><span class="kicker">Quiz Tie-In</span><strong>Different styles fail for different reasons.</strong><p class="mb-0"><a href="gambler-personality-quiz.html" data-track-event="quiz_start" data-track-label="Take Quiz from Roulette Strategy Simulator">Take the quiz</a> after testing your favorite system.</p></article>
         </div>
@@ -318,7 +329,7 @@
               <input id="baseBet" type="number" min="1" step="1" value="10" />
             </div>
             <div class="field">
-              <label for="targetProfit">Stop-Win Target ($)</label>
+              <label for="targetProfit">Stop-Win Target ($, blank or 0 = none)</label>
               <input id="targetProfit" type="number" min="0" step="5" value="60" />
             </div>
           </div>
@@ -326,6 +337,9 @@
             <button id="compareBtn" type="button" class="btn btn-primary btn-cta-primary" data-track-event="tool_calculate" data-track-label="Compare Roulette System Risk">Compare System Risk</button>
             <button id="drainBtn" type="button" class="btn btn-secondary btn-outline" data-track-event="tool_calculate" data-track-label="Run Roulette Bankroll Drain Demo">Run Bankroll Drain Demo</button>
           </div>
+          <p id="strategyError" class="strategy-error" role="alert"></p>
+          <h3>How this simulator works</h3>
+          <p class="small-note mb-0">Each spin is an even-money bet (red/black, pays 1:1; 18/37 = 48.65% European, 18/38 = 47.37% American). A session ends at the spin limit, when profit reaches the stop-win target, or when the bankroll cannot cover the next bet the system requires. Martingale doubles after a loss and resets after a win; Fibonacci moves one step up the 1-1-2-3-5-8... sequence after a loss and two steps back after a win; D’Alembert adds one base unit after a loss and removes one after a win. No system changes the 2.70%/5.26% house edge.</p>
         </article>
 
         <article class="disclaimer-block">
@@ -427,7 +441,7 @@
       <div class="container disclaimer-block">
         <span class="eyebrow-danger">Before you play</span>
         <h2 class="section-title">Responsible gambling and 21+ notice</h2>
-        <p>21+ only where legal. This tool is for education and entertainment only. Gambling involves financial risk, and no calculator, simulator, betting system, or strategy can guarantee profit. Set limits before you play, and never risk money you cannot afford to lose. If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use your local problem gambling support service.</p>
+        <p>21+ only where legal. This tool is for education and entertainment only. Gambling involves financial risk, and no calculator, simulator, betting system, or strategy can guarantee profit. Set limits before you play, and never risk money you cannot afford to lose. If gambling is causing harm, call or text the National Problem Gambling Helpline at <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738) in the U.S., or use your local problem gambling support service.</p>
         <p class="mb-0">More help and support options are available on our <a href="responsible-gambling.html" data-track-event="responsible_gambling_click" data-track-label="Responsible Gambling Resources from Roulette Strategy Simulator">responsible gambling resources</a> page.</p>
       </div>
     </section>
@@ -476,9 +490,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html" data-track-event="responsible_gambling_click" data-track-label="Responsible Gambling Resources from Roulette Strategy Simulator">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>

@@ -15,9 +15,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
 
-  <title>Roulette Bankroll Calculator | Bust Risk &amp; Session Survival | EdgeOverLuck.com</title>
+  <title>Roulette Bankroll Calculator: Expected Loss &amp; Session Risk</title>
   <meta name="description" content="Estimate roulette bankroll pressure, expected loss, and session survival risk by wheel type, bet size, bankroll, and number of spins." />
-  <meta property="og:title" content="Roulette Bankroll Calculator | Bust Risk &amp; Session Survival | Edge Over Luck" />
+  <meta property="og:title" content="Roulette Bankroll Calculator: Expected Loss &amp; Session Risk" />
   <meta property="og:description" content="Estimate roulette bankroll pressure, expected loss, and session survival risk by wheel type, bet size, bankroll, and number of spins." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://edgeoverluck.com/roulette-bankroll-calculator.html" />
@@ -99,7 +99,7 @@
       {"@type": "Question", "name": "Can a roulette betting system reduce bankroll risk?", "acceptedAnswer": {"@type": "Answer", "text": "A betting system can change bet size, volatility, and the shape of a session, but it does not change the underlying house edge of the wheel. Aggressive progressions can increase bankroll pressure quickly."}},
       {"@type": "Question", "name": "What bet type is safest for a roulette bankroll?", "acceptedAnswer": {"@type": "Answer", "text": "Even-money bets usually feel smoother because they hit more often than inside bets. They are not profitable in the long run, but their lower volatility can be easier on a small session bankroll than rare-hit bets."}},
       {"@type": "Question", "name": "Why can even-money roulette bets still lose quickly?", "acceptedAnswer": {"@type": "Answer", "text": "Even-money bets can still run into normal losing streaks, and zero or double-zero pockets give the casino its edge. A lower-volatility bet does not mean a loss-free session."}},
-      {"@type": "Question", "name": "Does this calculator predict exact results?", "acceptedAnswer": {"@type": "Answer", "text": "No. This calculator shows theoretical expected loss and a simple session pressure estimate. It does not predict exact spins, exact bust probability, or future outcomes."}}
+      {"@type": "Question", "name": "Does this calculator predict exact results?", "acceptedAnswer": {"@type": "Answer", "text": "No. It calculates the exact chance of losing the whole bankroll with flat bets over the spins you enter, plus theoretical expected loss. For sessions longer than 20,000 spins it shows the exact chance within the first 20,000 spins as a minimum. It cannot predict actual spins or outcomes."}}
     ]
   }
   </script>
@@ -268,6 +268,7 @@
           <h2 class="section-title">Estimated session survival pressure</h2>
           <span id="pressureRating" class="roulette-pressure-badge">Low</span>
           <div class="result-list roulette-bankroll-list">
+            <div class="result-item glass-card"><span id="resultBustLabel">Chance of losing the bankroll within 100 spins</span><strong id="resultBustProb">0.58%</strong></div>
             <div class="result-item glass-card"><span>Wheel type</span><strong id="resultWheel">European roulette</strong></div>
             <div class="result-item glass-card"><span>Bet type</span><strong id="resultBet">Even money</strong></div>
             <div class="result-item glass-card"><span>Win probability</span><strong id="resultWinProb">48.65%</strong></div>
@@ -277,6 +278,7 @@
             <div class="result-item glass-card"><span>Bankroll units</span><strong id="resultUnits">30.0 bets</strong></div>
             <div class="result-item glass-card"><span>Spins until expected loss equals bankroll</span><strong id="resultSpinsToBankroll">1,110 spins</strong></div>
           </div>
+          <p id="resultSessionLossNote" class="roulette-bankroll-note" hidden></p>
           <div class="roulette-bankroll-explainer">
             <h3>Plain-English read</h3>
             <p id="resultExplanation" class="mb-0">This setup has manageable expected loss, but normal losing streaks can still pressure the bankroll.</p>
@@ -378,7 +380,7 @@
           </details>
           <details class="card glass-card hover-glow">
             <summary>Does this calculator predict exact results?</summary>
-            <p>No. This calculator shows theoretical expected loss and a simple session pressure estimate. It does not predict exact spins, exact bust probability, or future outcomes.</p>
+            <p>No. It calculates the exact chance of losing the whole bankroll with flat bets over the spins you enter, plus theoretical expected loss. For sessions longer than 20,000 spins it shows the exact chance within the first 20,000 spins as a minimum. It cannot predict actual spins or outcomes.</p>
           </details>
         </div>
       </div>
@@ -387,7 +389,7 @@
     <section class="section-tight">
       <div class="container disclaimer-block">
         <h2 class="section-title">Responsible gambling and 21+ notice</h2>
-        <p>21+ only where legal. This tool is for education and entertainment only. Gambling involves financial risk, and no calculator, simulator, betting system, or strategy can guarantee profit. Set limits before you play, and never risk money you cannot afford to lose. If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use your local problem gambling support service.</p>
+        <p>21+ only where legal. This tool is for education and entertainment only. Gambling involves financial risk, and no calculator, simulator, betting system, or strategy can guarantee profit. Set limits before you play, and never risk money you cannot afford to lose. If gambling is causing harm, call or text the National Problem Gambling Helpline at <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738) in the U.S., or use your local problem gambling support service.</p>
         <p class="mb-0">More help and support options are available on our <a href="responsible-gambling.html">responsible gambling resources</a> page.</p>
       </div>
     </section>
@@ -408,17 +410,20 @@
         <a href="responsible-gambling.html">Responsible Gambling</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
         <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
         <a href="editorial-policy.html">Editorial Policy</a>
         <a href="credits.html">Credits &amp; Sources</a>
       </div>
       <p class="affiliate-note"><strong>Affiliate Disclosure:</strong> This site may contain affiliate links and may earn commissions at no extra cost to you. Affiliate relationships do not change the math, odds, house edge, or editorial standards used on Edge Over Luck.</p>
       <p class="gambling-warning"><strong>21+ / Legal Gambling Notice:</strong> 21+ only where legal. Gambling involves financial risk and can be addictive. These tools are for education and entertainment only and do not guarantee profit.</p>
-      <p class="responsible">Play legally, set limits, and never risk money you cannot afford to lose. If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use your local problem gambling support service. See our <a href="responsible-gambling.html">responsible gambling resources</a>.</p>
+      <p class="responsible">Play legally, set limits, and never risk money you cannot afford to lose. If gambling is causing harm, call or text the National Problem Gambling Helpline at <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738) in the U.S., or use your local problem gambling support service. See our <a href="responsible-gambling.html">responsible gambling resources</a>.</p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>
     </div>
   </footer>
 
+  <script src="roulette-shared.js"></script>
   <script>
     (function () {
       const betTypes = {
@@ -453,35 +458,44 @@
         return value.toLocaleString("en-US", { maximumFractionDigits: digits });
       }
 
-      function pressureRating(bankrollUnits, spins, expectedSessionLoss, bankroll, betSize, winProbability) {
-        const sessionLossRatio = expectedSessionLoss / bankroll;
-        const betRatio = betSize / bankroll;
-        let score = 0;
-
-        if (bankrollUnits < 5 || sessionLossRatio >= 0.75 || betRatio >= 0.25 || spins >= bankrollUnits * 6) score = 3;
-        else if (bankrollUnits < 10 || sessionLossRatio >= 0.35 || betRatio >= 0.10 || spins >= bankrollUnits * 3) score = 2;
-        else if (bankrollUnits < 25 || sessionLossRatio >= 0.12 || betRatio >= 0.04 || spins >= bankrollUnits * 1.5) score = 1;
-
-        if (winProbability < 0.1 && spins > bankrollUnits && score < 3) score += 1;
-
+      // Badge from the exact chance of losing the bankroll (flat bets, stop when the
+      // next bet cannot be covered): <2% Low, <10% Medium, <35% High, else Extreme.
+      function pressureRating(bust, betSize, bankroll, expectedSessionLoss) {
+        const p = bust.bustProb;
+        let score = p < 0.02 ? 0 : p < 0.10 ? 1 : p < 0.35 ? 2 : 3;
+        // One bet is a quarter or more of the bankroll: never call it Low.
+        if (betSize / bankroll >= 0.25 && score < 1) score = 1;
+        // Session longer than the exact model: when the rebuy expected loss reaches the
+        // bankroll, the chance of losing it is above 50% for every standard bet.
+        if (!bust.exact && expectedSessionLoss >= bankroll) score = 3;
         return ["Low", "Medium", "High", "Extreme"][score];
       }
 
-      function explanationFor(rating, wheel, bet, bankrollUnits, expectedSessionLoss, bankroll) {
-        const lossShare = expectedSessionLoss / bankroll;
+      // Never round a near-certain bust up to 100% or a tiny one down to 0%.
+      function bustPercent(p) {
+        if (p > 0.99995 && p < 1) return "over 99.99%";
+        if (p > 0 && p < 0.00005) return "under 0.01%";
+        return percent(p);
+      }
+
+      function explanationFor(rating, wheel, bet, bust, spins, betSize, bankroll) {
         const wheelText = wheel.pockets === 37 ? "European roulette keeps the long-run edge lower than American roulette" : "American roulette adds double-zero, so the expected loss rate is higher";
         const varianceText = bet.winners <= 4 ? "This bet type hits rarely, so normal dry spells can feel brutal even when the average loss per dollar matches the wheel edge." : "This bet type hits more often than inside bets, but streaks and the zero pockets still matter.";
+        const chance = bust.exact
+          ? `With flat ${money(betSize)} bets, the chance of losing the bankroll within ${formatNumber(spins, 0)} spins is ${bustPercent(bust.bustProb)}.`
+          : `With flat ${money(betSize)} bets, the chance of losing the bankroll within the first ${formatNumber(bust.spinsModeled, 0)} spins is ${bustPercent(bust.bustProb)}, so the chance over all ${formatNumber(spins, 0)} spins is at least that.`;
+        const bigBet = betSize / bankroll >= 0.25 ? " Each bet is at least a quarter of the bankroll, so a short losing streak can end the session." : "";
 
         if (rating === "Extreme") {
-          return `Extreme pressure: ${formatNumber(bankrollUnits, 1)} bankroll units is thin for this session, and the expected loss is ${percent(lossShare)} of the bankroll. ${wheelText}. ${varianceText}`;
+          return `Extreme pressure: ${chance}${bigBet} ${wheelText}. ${varianceText}`;
         }
         if (rating === "High") {
-          return `High pressure: the bankroll can be pressured quickly by normal roulette swings. Expected session loss is ${money(expectedSessionLoss)}, before random streaks get involved. ${wheelText}. ${varianceText}`;
+          return `High pressure: ${chance}${bigBet} ${wheelText}. ${varianceText}`;
         }
         if (rating === "Medium") {
-          return `Medium pressure: the setup is not instantly reckless, but the expected loss and spin count are noticeable. ${wheelText}, but bankroll management still only controls exposure.`;
+          return `Medium pressure: ${chance}${bigBet} ${wheelText}, but bankroll management still only controls exposure.`;
         }
-        return `Low pressure estimate: this setup has more bankroll units and expected loss is modest relative to the bankroll. ${wheelText}, but this still does not predict a winning session.`;
+        return `Low pressure estimate: ${chance} ${wheelText}, but this still does not predict a winning session.`;
       }
 
       function showError(message) {
@@ -495,7 +509,6 @@
         const bankroll = Number.parseFloat(document.getElementById("startingBankroll").value);
         const betSize = Number.parseFloat(document.getElementById("betSize").value);
         const spinsRaw = Number.parseFloat(document.getElementById("spinCount").value);
-        const spins = Number.parseInt(document.getElementById("spinCount").value, 10);
         const wheel = wheelTypes[document.getElementById("wheelType").value];
         const bet = betTypes[document.getElementById("betType").value];
 
@@ -507,10 +520,11 @@
           showError("Enter a bet size greater than $0.");
           return;
         }
-        if (!Number.isFinite(spinsRaw) || !Number.isInteger(spinsRaw) || spins <= 0) {
+        if (!Number.isFinite(spinsRaw) || !Number.isInteger(spinsRaw) || spinsRaw <= 0) {
           showError("Enter a positive whole number of spins.");
           return;
         }
+        const spins = spinsRaw;
         if (betSize > bankroll) {
           showError("Bet size cannot exceed your starting bankroll. One spin should not cost more than the whole session.");
           return;
@@ -529,7 +543,12 @@
         const bankrollUnits = bankroll / betSize;
         const spinsUntilBankroll = expectedLossPerSpin > 0 ? bankroll / expectedLossPerSpin : Number.POSITIVE_INFINITY;
         const houseEdge = expectedLossPerSpin / betSize;
-        const rating = pressureRating(bankrollUnits, spins, expectedSessionLoss, bankroll, betSize, winProbability);
+        const bust = window.RouletteMath && window.RouletteMath.flatBetBustStats({ bankroll, betSize, spins, winProb: winProbability, payout: bet.payout });
+        if (!bust) {
+          showError("The inputs produced an impossible result. Check the numbers and try again.");
+          return;
+        }
+        const rating = pressureRating(bust, betSize, bankroll, expectedSessionLoss);
 
         const finiteOutputs = [winProbability, lossProbability, payoutProfit, expectedProfit, expectedLossPerSpin, expectedSessionLoss, bankrollUnits, houseEdge];
         const nonNegativeOutputs = [winProbability, lossProbability, payoutProfit, expectedLossPerSpin, expectedSessionLoss, bankrollUnits, houseEdge];
@@ -546,10 +565,19 @@
         document.getElementById("resultWinProb").textContent = percent(winProbability);
         document.getElementById("resultHouseEdge").textContent = percent(houseEdge);
         document.getElementById("resultLossPerSpin").textContent = money(expectedLossPerSpin);
-        document.getElementById("resultSessionLoss").textContent = money(expectedSessionLoss);
+        document.getElementById("resultBustLabel").textContent = bust.exact
+          ? `Chance of losing the bankroll within ${formatNumber(spins, 0)} spins`
+          : `Chance of losing the bankroll within ${formatNumber(spins, 0)} spins (exact for the first ${formatNumber(bust.spinsModeled, 0)})`;
+        const bustShown = bustPercent(bust.bustProb);
+        document.getElementById("resultBustProb").textContent = bust.exact ? bustShown : (bustShown.startsWith("over") ? "Over 99.99%" : `At least ${bustShown}`);
+        const lossAboveBankroll = expectedSessionLoss > bankroll;
+        document.getElementById("resultSessionLoss").textContent = lossAboveBankroll ? `${money(expectedSessionLoss)} (theoretical, if you kept rebuying)` : money(expectedSessionLoss);
+        const lossNote = document.getElementById("resultSessionLossNote");
+        lossNote.hidden = !lossAboveBankroll;
+        lossNote.textContent = lossAboveBankroll ? `Above your bankroll: at this pace you would expect to run out after about ${formatNumber(spinsUntilBankroll, 0)} spins.` : "";
         document.getElementById("resultUnits").textContent = `${formatNumber(bankrollUnits, 1)} bets`;
         document.getElementById("resultSpinsToBankroll").textContent = Number.isFinite(spinsUntilBankroll) ? `${formatNumber(spinsUntilBankroll, 0)} spins` : "Not applicable";
-        document.getElementById("resultExplanation").textContent = explanationFor(rating, wheel, bet, bankrollUnits, expectedSessionLoss, bankroll);
+        document.getElementById("resultExplanation").textContent = explanationFor(rating, wheel, bet, bust, spins, betSize, bankroll);
       }
 
       form.addEventListener("submit", calculate);

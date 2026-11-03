@@ -1640,7 +1640,6 @@ table td {
   text-align: left;
   appearance: none;
   font: inherit;
-  cursor: pointer;
   color: var(--text);
   background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
   border-color: var(--border);
@@ -1656,16 +1655,16 @@ table td {
   color: #fff;
 }
 
-.myth-card span::after {
+button.myth-card span::after {
   content: "+";
   color: var(--gold);
 }
 
-.myth-card[aria-expanded="true"] {
+button.myth-card[aria-expanded="true"] {
   border-color: var(--border-strong);
 }
 
-.myth-card[aria-expanded="true"] span::after {
+button.myth-card[aria-expanded="true"] span::after {
   content: "−";
 }
 
@@ -1677,12 +1676,16 @@ table td {
   line-height: 1.55;
 }
 
-.myth-card[aria-expanded="true"] small {
+button.myth-card[aria-expanded="true"] small {
   display: block;
 }
 
 .faq-grid h3 {
   color: #fff;
+}
+
+button.myth-card {
+  cursor: pointer;
 }
 
 /* FOOTER */

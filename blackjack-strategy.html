@@ -163,7 +163,7 @@
             "name": "What should I do after learning the chart?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Practice common decisions in a blackjack trainer, then check bankroll risk before playing because correct strategy can still lose in the short term."
+              "text": "Practice common decisions in the blackjack trainer, then check bankroll risk before playing because correct strategy can still lose in the short term."
             }
           }
         ]
@@ -253,7 +253,7 @@
     <div class="container page-hero-split">
       <div class="page-hero-copy">
         <span class="eyebrow-muted">Blackjack basic strategy</span>
-        <h1 class="page-hero-title">Make the boring blackjack move before variance gets loud.</h1>
+        <h1 class="page-hero-title">Blackjack Basic Strategy: make the boring move before variance gets loud</h1>
         <p class="page-hero-subtitle">
           Learn when to hit, stand, split, and double with clear decision rules — then drill the spots that usually tempt players into expensive mistakes.
         </p>
@@ -341,7 +341,7 @@
           <div class="form-row">
             <div class="field">
               <label for="drillPlayerTotal">Your hard total</label>
-              <input id="drillPlayerTotal" type="number" min="4" max="21" value="16">
+              <input id="drillPlayerTotal" type="number" min="4" max="21" step="1" value="16">
             </div>
             <div class="field">
               <label for="drillDealerUpcard">Dealer upcard</label>
@@ -374,7 +374,7 @@
       <div class="section-header">
         <span class="eyebrow-cyan">Fast chart</span>
         <h2 class="section-title">Basic blackjack strategy chart.</h2>
-        <p class="section-subtext">Use this simplified chart as a starting point for common hard totals and key pairs. Based on 6 decks with the dealer standing on soft 17. Rule variations can change edge cases, so drill before you play.</p>
+        <p class="section-subtext">Based on 6 decks, dealer stands on soft 17, double after split allowed, no surrender, blackjack pays 3:2 (the same rules the trainer uses). Rule variations change some cells.</p>
       </div>
       <p class="legend"><span class="hit">Hit</span><span class="stand">Stand</span><span class="double">Double</span><span class="split">Split</span></p>
 
@@ -390,10 +390,20 @@
           <tr><td>12</td><td class="stand">Stand vs 4–6, Hit vs 2–3</td><td class="hit">Hit</td></tr>
           <tr><td>13–16</td><td class="stand">Stand</td><td class="hit">Hit</td></tr>
           <tr><td>17+</td><td class="stand">Stand</td><td class="stand">Stand</td></tr>
+          <tr><td>A,2 or A,3</td><td class="double">Double vs 5–6, Hit vs 2–4</td><td class="hit">Hit</td></tr>
+          <tr><td>A,4 or A,5</td><td class="double">Double vs 4–6, Hit vs 2–3</td><td class="hit">Hit</td></tr>
+          <tr><td>A,6</td><td class="double">Double vs 3–6, Hit vs 2</td><td class="hit">Hit</td></tr>
+          <tr><td>A,7</td><td class="double">Double vs 3–6 (stand if you can't double), Stand vs 2</td><td class="stand">Stand vs 7–8, Hit vs 9–A</td></tr>
+          <tr><td>A,8 or A,9</td><td class="stand">Stand</td><td class="stand">Stand</td></tr>
           <tr><td>Pair of Aces</td><td class="split">Split</td><td class="split">Split</td></tr>
           <tr><td>Pair of 8s</td><td class="split">Split</td><td class="split">Split</td></tr>
           <tr><td>Pair of 10s</td><td class="stand">Stand</td><td class="stand">Stand</td></tr>
           <tr><td>Pair of 5s</td><td class="double">Double</td><td class="double">Double vs 7–9, Hit vs 10–A</td></tr>
+          <tr><td>Pair of 2s or 3s</td><td class="split">Split</td><td class="split">Split vs 7, Hit vs 8–A</td></tr>
+          <tr><td>Pair of 4s</td><td class="split">Split vs 5–6, Hit vs 2–4</td><td class="hit">Hit</td></tr>
+          <tr><td>Pair of 6s</td><td class="split">Split</td><td class="hit">Hit</td></tr>
+          <tr><td>Pair of 7s</td><td class="split">Split</td><td class="split">Split vs 7, Hit vs 8–A</td></tr>
+          <tr><td>Pair of 9s</td><td class="split">Split</td><td class="split">Split vs 8–9, Stand vs 7, 10, A</td></tr>
         </tbody>
       </table>
     </div>
@@ -403,7 +413,7 @@
     <div class="container grid grid-2">
       <article class="section-panel section-gradient-gold">
         <span class="eyebrow-muted">Quick test</span>
-        <h2 class="section-title">You have 16. Dealer shows 10.</h2>
+        <h2 class="section-title">You have hard 16 (10-6). Dealer shows 10.</h2>
         <p><strong>What do you do?</strong></p>
         <div class="cta-row">
           <button class="btn btn-outline" type="button" data-quiz-answer="stand" data-track-event="quiz_answer" data-track-label="Blackjack Strategy Quiz Stand">Stand</button>
@@ -416,7 +426,7 @@
       <article class="disclaimer-block">
         <span class="eyebrow-danger">Bankroll reminder</span>
         <h2 class="section-title">Correct moves still lose hands.</h2>
-        <p>Blackjack strategy lowers avoidable mistakes, but variance can still beat clean play in a single session. Pair your strategy work with limits and bankroll math. Blackjack at least rewards correct decisions &mdash; for a game where no decision moves the house edge at all, compare a session in the <a href="roulette-simulator.html">roulette simulator</a>.</p>
+        <p>Blackjack strategy lowers avoidable mistakes, but variance can still beat clean play in a single session. Pair your strategy work with limits and bankroll math. Blackjack at least rewards correct decisions &mdash; for a game where no betting system changes the house edge and choosing a single-zero wheel is one of the few levers you control, compare a session in the <a href="roulette-simulator.html">roulette simulator</a>.</p>
         <div class="cta-row">
           <a class="btn btn-primary btn-cta-primary" href="blackjack-bankroll-calculator.html" data-track-event="internal_link_click" data-track-label="Calculate Blackjack Bankroll Risk">Calculate Bankroll Risk</a>
           <a class="btn btn-secondary btn-outline" href="blackjack-ev-calculator.html" data-track-event="internal_link_click" data-track-label="Compare Blackjack EV">Compare EV</a>
@@ -466,8 +476,8 @@
           <span class="eyebrow-muted">Strategy reference</span>
           <h3>Blackjack Basic Strategy Card</h3>
           <p>A pocket-sized reference guide showing the mathematically correct basic-strategy decision for common blackjack situations. Useful for learning proper play and reducing costly mistakes.</p>
-           <a class="btn btn-secondary btn-outline affiliate_click" href="https://amzn.to/4gunWcG" target="_blank" rel="sponsored nofollow noopener noreferrer"
-    data-track-label="Amazon Blackjack Basic Strategy Card"
+           <a class="btn btn-secondary btn-outline" href="https://amzn.to/4gunWcG" target="_blank" rel="sponsored nofollow noopener noreferrer"
+    data-track-event="affiliate_click" data-track-label="Amazon Blackjack Basic Strategy Card"
   >
     View on Amazon
   </a>
@@ -567,9 +577,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html" data-track-event="responsible_gambling_click" data-track-label="Responsible Gambling Resources from Blackjack Strategy">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>

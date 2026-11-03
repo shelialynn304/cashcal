@@ -875,7 +875,7 @@ function getStrategyExplanation(playerHand,dealerCard,availability={}){
   if(idealMove !== move){
     const reasonBits = []
     if(availability.canDouble === false && idealMove === "Double") reasonBits.push("doubling is only available on your first two cards with enough bankroll to match the bet")
-    if(availability.canSplit === false && idealMove === "Split") reasonBits.push("splitting needs a matching bet you can cover")
+    if(availability.canSplit === false && idealMove === "Split") reasonBits.push(splitModeActive ? "this trainer does not allow resplitting" : "splitting needs a matching bet you can cover")
     const why = reasonBits.length ? ` because ${reasonBits.join(" and ")}` : ""
     detailedText += ` (${idealMove} would be the book play, but it isn't available here${why}, so ${move} is the correct available move.)`
     shortText += ` (${idealMove} unavailable → ${move})`
@@ -1156,6 +1156,7 @@ function settleNaturals(playerNatural, dealerNatural){
   }
 
   bet = 0
+  betSpot.innerHTML=""
   gameOver = true
   hideStrategyPopup()
 
@@ -1204,6 +1205,7 @@ if(handValue(player) > 21){
   const resolvedBet = bet
   splitModeActive=false
   bet = 0
+  betSpot.innerHTML=""
   gameOver = true
   hideStrategyPopup()
 
@@ -1299,6 +1301,7 @@ if(handValue(player) > 21){
   }
 
   bet = 0
+  betSpot.innerHTML=""
   gameOver = true
 
   hideStrategyPopup()
@@ -1370,6 +1373,7 @@ function doubleDown(){
   if(handValue(player) > 21){
     const resolvedBet = bet
     bet = 0
+    betSpot.innerHTML=""
     gameOver = true
     hideStrategyPopup()
      hitBtn.classList.remove("correct-glow")
@@ -1551,6 +1555,7 @@ function finishSplitRound(){
   splitHands = []
   activeSplitHand = 0
   bet = 0
+  betSpot.innerHTML=""
   gameOver = true
   hideStrategyPopup()
 

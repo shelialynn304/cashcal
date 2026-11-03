@@ -146,6 +146,17 @@
   box-shadow: 0 0 20px rgba(241,196,91,0.3);
 }
 
+/* The result label sits over the wheel but outside the rotating element, so it stays upright. */
+.roulette-wheel-wrap > .roulette-wheel,
+.roulette-wheel-wrap > .roulette-wheel-center {
+  grid-area: 1 / 1;
+}
+
+.roulette-wheel-wrap > .roulette-wheel-center {
+  width: calc((100% - 20px) * 0.34);
+  pointer-events: none;
+}
+
 .roulette-wheel-win {
   box-shadow:
     inset 0 0 0 7px rgba(255,255,255,0.08),
@@ -276,6 +287,10 @@
 
 .roulette-spin-actions {
   justify-content: center;
+}
+
+.roulette-explainer .card + .card {
+  margin-top: 18px;
 }
 
 .roulette-status,

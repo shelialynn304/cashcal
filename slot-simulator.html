@@ -131,20 +131,20 @@
             "name": "What does this slot simulator estimate?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "The simulator estimates bankroll swings, bust chance, actual RTP, best and worst run outcomes, and how volatility can affect a slot session."
+              "text": "It estimates bankroll swings, bust chance, actual RTP, best and worst run outcomes, and how volatility can affect a slot session."
             }
           },
           {
             "@type": "Question",
-            "name": "Does RTP predict what will happen in one slot session?",
+            "name": "Does RTP predict one session?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. RTP is a long-run average over a very large number of spins. A single session can finish far above or below the listed RTP because of volatility."
+              "text": "No. RTP is a long-run average over a very large number of spins. A single session can finish far above or below the listed RTP."
             }
           },
           {
             "@type": "Question",
-            "name": "Why can high-volatility slots drain a bankroll quickly?",
+            "name": "Why can high-volatility slots drain bankroll quickly?",
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "High-volatility slots often concentrate more payout into less frequent wins or bonus events. That can create long dry stretches before any large hit arrives."
@@ -152,10 +152,10 @@
           },
           {
             "@type": "Question",
-            "name": "Can this simulator tell me which slot machine will win?",
+            "name": "Can this simulator find a machine that is due?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. The tool is educational. It models risk and variance, but it cannot predict a real machine, guarantee profit, or identify a machine that is due."
+              "text": "No. The tool models risk and variance. It cannot predict a real machine, guarantee profit, or identify a machine that is due."
             }
           }
         ]
@@ -314,11 +314,11 @@
             <div class="grid grid-2">
               <div class="field">
                 <label for="simBankroll">Current bankroll ($)</label>
-                <input id="simBankroll" type="number" min="0" step="5" value="300" required />
+                <input id="simBankroll" type="number" min="0" step="0.01" value="300" required />
               </div>
               <div class="field">
                 <label for="simBetSize">Bet size per spin ($)</label>
-                <input id="simBetSize" type="number" min="0.1" step="0.1" value="2" required />
+                <input id="simBetSize" type="number" min="0.1" step="0.01" value="2" required />
               </div>
               <div class="field">
                 <label for="slotPreset">RTP + volatility preset</label>
@@ -326,7 +326,7 @@
               </div>
               <div class="field">
                 <label for="simSpins">Number of spins</label>
-                <input id="simSpins" type="number" min="25" step="25" value="500" required />
+                <input id="simSpins" type="number" min="25" max="10000" step="1" value="500" required />
               </div>
             </div>
             <div class="hero-actions">
@@ -341,10 +341,11 @@
     <section class="section-tight">
       <div class="container results section-panel section-gradient-cyan" aria-live="polite">
         <div class="result-list">
-          <div class="result-item"><span>Estimated end bankroll</span><strong id="simEndBankroll">$0.00</strong></div>
+          <div class="result-item"><span>Average end bankroll (all simulations)</span><strong id="simEndBankroll">$0.00</strong></div>
+          <div class="result-item"><span>Median end bankroll (all simulations)</span><strong id="simMedianEnd">$0.00</strong></div>
           <div class="result-item"><span>Bust chance</span><strong id="simBustChance">0%</strong></div>
-          <div class="result-item"><span>Best run (single simulation)</span><strong id="simBestRun">$0.00</strong></div>
-          <div class="result-item"><span>Worst run (single simulation)</span><strong id="simWorstRun">$0.00</strong></div>
+          <div class="result-item"><span>Highest balance in sample session</span><strong id="simBestRun">$0.00</strong></div>
+          <div class="result-item"><span>Lowest balance in sample session</span><strong id="simWorstRun">$0.00</strong></div>
           <div class="result-item"><span>Average actual RTP</span><strong id="simActualRtp">0%</strong></div>
         </div>
       </div>
@@ -656,9 +657,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>

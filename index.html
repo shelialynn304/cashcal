@@ -122,7 +122,12 @@
         "url": "https://edgeoverluck.com/",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "All",
-        "description": "Free blackjack, roulette, slots, bankroll, and horse betting tools for calculating risk before real money is on the table."
+        "description": "Free blackjack, roulette, slots, bankroll, and horse betting tools for calculating risk before real money is on the table.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
       },
       {
         "@type": "FAQPage",
@@ -265,7 +270,7 @@
             <a class="btn btn-secondary" href="gambler-personality-quiz.html" data-track-event="quiz_start" data-track-label="Take the Gambler Personality Quiz">Take the Gambler Personality Quiz</a>
           </div>
 
-          <div class="quick-tool-tabs" aria-label="Quick tool jump links">
+          <div class="quick-tool-tabs" role="group" aria-label="Quick tool jump links">
             <button class="btn btn-secondary active" type="button" data-tool-tab="bankroll" data-track-event="tool_tab_click" data-track-label="Homepage Bankroll Tab">Bankroll</button>
             <button class="btn btn-secondary" type="button" data-tool-tab="trainer" data-track-event="tool_tab_click" data-track-label="Homepage Blackjack Trainer Tab">Blackjack Trainer</button>
             <button class="btn btn-secondary" type="button" data-tool-tab="slots" data-track-event="tool_tab_click" data-track-label="Homepage Slots Tab">Slots</button>
@@ -289,13 +294,13 @@
         </aside>
       </div>
 
-      <div class="container simulation-feed-wrap" aria-label="Sample simulation feed">
+      <div class="container simulation-feed-wrap">
         <div class="sample-feed glass-card">
           <span class="sample-feed-label">Sample simulation feed</span>
           <div class="sample-feed-track">
             <span>$100 blackjack bankroll lasted 43 hands</span>
             <span>Heater Hunter hit +$380, then set a stop point</span>
-            <span>Roulette sample: 72 spins, -$48 expected loss</span>
+            <span>Roulette sample: 72 spins at $10 (American), about $38 expected loss</span>
             <span>Grinder session: 600 spins, tiny bets, slow bleed</span>
             <span>Strategist run: fewer mistakes, variance still mattered</span>
           </div>
@@ -391,7 +396,7 @@
           <div class="risk-list">
             <div><span class="tag tag-low">Lower</span><strong> Blackjack with basic strategy</strong><p>Low house edge when played correctly, but bad decisions add cost.</p></div>
             <div><span class="tag tag-mid">Medium</span><strong> Bubble craps pass/don’t pass style bets</strong><p>Some bets are reasonable; proposition bets can raise cost quickly.</p></div>
-            <div><span class="tag tag-mid">Medium</span><strong> Horse racing win/place/show basics</strong><p>No fixed casino edge, but takeout, pricing skill, and bet selection matter.</p></div>
+            <div><span class="tag tag-high">Higher</span><strong> Horse racing win/place/show (pari-mutuel)</strong><p>You bet into a pool against other players, and the track keeps roughly 15-18% <a href="takeout-overlay-calculator.html">takeout</a> on win/place/show before paying winners, so the average bettor gives up more than at roulette unless their picks beat the crowd’s prices.</p></div>
             <div><span class="tag tag-high">Higher</span><strong> Roulette and most slots</strong><p>Simple to play, but fixed edge and volatility can drain short sessions.</p></div>
           </div>
         </article>
@@ -406,7 +411,7 @@
           <ul class="check-list">
             <li>A low-edge game can still lose today if variance hits early.</li>
             <li>A high-variance slot can show big wins and long dry stretches in the same session.</li>
-            <li>Roulette systems change bet sizing, not the underlying wheel odds &mdash; watch that play out in the <a href="roulette-simulator.html">roulette simulator</a>.</li>
+            <li>Roulette systems change bet sizing, not the underlying wheel odds &mdash; watch that play out in the <a href="roulette-strategy-simulator.html">roulette strategy simulator</a>.</li>
             <li>Bankroll planning matters because short-term luck can overwhelm good expectations.</li>
           </ul>
           <div class="hero-actions">
@@ -481,7 +486,7 @@
       <div class="container">
         <h2 id="homepage-step3-title" class="section-title">Casino psychology, translated into math</h2>
         <p class="section-subtext">A good session plan is not just numbers. It also accounts for how decisions change when variance gets noisy.</p>
-        <div class="odds-display" aria-label="Core casino risk stats">
+        <div class="odds-display" role="group" aria-label="Core casino risk stats">
           <article class="card odds-display-card glass-card">
             <span class="stat-label">House edge</span>
             <strong>Slow</strong>
@@ -646,7 +651,7 @@
             </div>
             <div class="field">
               <label for="bets">Number of Bets</label>
-              <input type="number" id="bets" min="1" step="1" value="100" required />
+              <input type="number" id="bets" min="1" max="10000" step="1" value="100" required />
             </div>
           </div>
           <button type="submit" class="btn btn-primary" data-track-event="calculator_submit" data-track-label="Homepage Quick Bankroll Risk Check">Calculate</button>
@@ -659,7 +664,7 @@
         <h2 class="section-title">Results</h2>
         <div class="result-list">
           <div class="result-item"><span>Average Loss</span><strong id="expectedLoss">$0.00</strong></div>
-          <div class="result-item"><span>Average Ending Bankroll</span><strong id="endingBankroll">$0.00</strong></div>
+          <div class="result-item"><span>Average Ending Bankroll (simulated)</span><strong id="endingBankroll">$0.00</strong></div>
           <div class="result-item"><span>Bust Risk</span><strong id="bustRisk">0%</strong></div>
           <div class="result-item"><span>Chance of Profit</span><strong id="profitChance">0%</strong></div>
         </div>
@@ -729,9 +734,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>

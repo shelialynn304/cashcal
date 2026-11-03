@@ -47,6 +47,16 @@
         return;
       }
 
+      if (runners > 20) {
+        resultEl.textContent = 'This calculator supports up to 20 horses. Most race fields are much smaller; 20 is the Kentucky Derby limit.';
+        return;
+      }
+
+      if (base < 0.10) {
+        resultEl.textContent = 'Enter a base bet of at least $0.10 (the smallest common minimum, used for dime superfectas).';
+        return;
+      }
+
       if (runners < rule.legs) {
         resultEl.textContent = `${rule.label} boxes require at least ${rule.legs} horses. Add more horses or choose a smaller exotic bet type.`;
         return;

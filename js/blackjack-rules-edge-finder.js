@@ -208,6 +208,12 @@
     const expectedLossPerHour = inputs.avgBetSize * inputs.handsPerHour * houseEdge;
     const sessionExpectedLoss = totalAction * houseEdge;
     const bankrollPressure = sessionExpectedLoss / inputs.sessionBankroll;
+    // About one standard deviation of the session result with flat bets:
+    // per-hand SD is about 1.15 units with doubling (site outcome table),
+    // about 1.05 without it.
+    const sdPerHand = inputs.double === "none" ? 1.05 : 1.15;
+    const typicalSwing = sdPerHand * inputs.avgBetSize * Math.sqrt(totalHands);
+    const swingVsBankroll = typicalSwing / inputs.sessionBankroll;
 
     return {
       adjustments,
@@ -219,6 +225,8 @@
       expectedLossPerHour,
       sessionExpectedLoss,
       bankrollPressure,
+      typicalSwing,
+      swingVsBankroll,
     };
   }
 
@@ -238,6 +246,12 @@
       .sort((a, b) => b.value - a.value);
 
     if (!ranked.length) {
+      if (inputs.surrender === "none") {
+        return "Look for late surrender (about -0.07%).";
+      }
+      if (inputs.resplitAces === "no") {
+        return "Look for re-split aces (about -0.07%).";
+      }
       return "Rules are already player-friendly for this approximation.";
     }
 
@@ -278,17 +292,48 @@
         ? "dealer hits soft 17"
         : "dealer stands on soft 17";
 
-    const dasText =
-      inputs.das === "yes"
-        ? "DAS allowed"
-        : "DAS not allowed";
+    const doubleText = {
+      any: "double on any two cards",
+      "9-11": "double on 9-11 only",
+      "10-11": "double on 10-11 only",
+      none: "no doubling",
+    }[inputs.double];
+
+    let dasText = inputs.das === "yes" ? "DAS allowed" : "DAS not allowed";
+    if (inputs.double === "none") dasText = "no DAS (no doubling)";
 
     const surrenderText =
       inputs.surrender === "late"
         ? "late surrender available"
         : "no surrender";
 
-    return `${inputs.decks}-deck game, ${payoutText}, ${soft17Text}, ${dasText}, ${surrenderText}.`;
+    const clauses = [
+      `${inputs.decks}-deck game`,
+      payoutText,
+      soft17Text,
+      doubleText,
+      dasText,
+      surrenderText,
+    ];
+    if (inputs.resplitAces === "yes") clauses.push("re-split aces allowed");
+    if (inputs.peek === "no-peek") clauses.push("no-peek/ENHC");
+
+    return `${clauses.join(", ")}.`;
+  }
+
+  // Lead-in for the "estimate bust risk" link under Expected Loss vs Bankroll.
+  function pressureNote(result) {
+    const edgeAmount = Math.abs(result.sessionExpectedLoss);
+    const edgeLabel = result.sessionExpectedLoss < 0 ? "estimated gain" : "expected loss";
+    const swingText = `about ±${money.format(result.typicalSwing)}`;
+
+    if (result.typicalSwing > edgeAmount) {
+      return `This counts only the ${result.sessionExpectedLoss < 0 ? "estimated edge" : "house edge"}. Over this session, normal swings (${swingText}) are larger than the ${edgeLabel}, so`;
+    }
+
+    return `Over this many hands the house edge ${
+      result.sessionExpectedLoss < 0 ? "is worth" : "costs"
+    } more than a typical swing (${swingText}). You can still`;
   }
 
   function render(inputs, result) {
@@ -321,11 +366,19 @@
     setText("result-total-action", money.format(result.totalAction));
     setSignedResult(
       "result-bankroll-pressure",
-      "Bankroll Pressure",
+      "Expected Loss vs Bankroll",
       "Estimated Gain vs Bankroll",
       result.bankrollPressure,
       percent
     );
+    setText("result-typical-swing", `±${money.format(result.typicalSwing)}`);
+    setText(
+      "result-swing-vs-bankroll",
+      result.swingVsBankroll > 1
+        ? "That is more than your whole bankroll."
+        : `That is ${percent.format(result.swingVsBankroll)} of your bankroll.`
+    );
+    setText("result-pressure-note", pressureNote(result));
     setText("result-rule-grade", grade);
     setText("result-best-fix", bestFix);
 
@@ -351,7 +404,7 @@
         inputs.handsPerHour
       )} hands/hour, that is ${hourlyText}. Over ${
         inputs.sessionHours
-      } hours, total action is about ${money.format(
+      } ${inputs.sessionHours === 1 ? "hour" : "hours"}, total action is about ${money.format(
         result.totalAction
       )} with ${expectationText}.`
     );
@@ -409,7 +462,7 @@
         ? `session estimated player gain is ${money.format(Math.abs(result.sessionExpectedLoss))}`
         : `session expected loss is ${money.format(result.sessionExpectedLoss)}`;
 
-    return `Educational estimate only: ${explainInputs(inputs)} Estimated house edge is ${percent.format(result.houseEdge)}, player RTP is ${percent.format(result.playerRtp)}, ${hourlyText}, and ${sessionText}. These estimates do not guarantee gambling outcomes.`;
+    return `Educational estimate only: ${explainInputs(inputs)} Estimated house edge is ${percent.format(result.houseEdge)}, player RTP is ${percent.format(result.playerRtp)}, ${hourlyText}, and ${sessionText}. A typical session swing (about ±1 standard deviation, flat bets) is about ±${money.format(result.typicalSwing)}, ${result.swingVsBankroll > 1 ? "more than the whole bankroll" : `${percent.format(result.swingVsBankroll)} of the bankroll`}. These estimates do not guarantee gambling outcomes.`;
   }
 
   function registerRulesWebMcp() {
@@ -420,7 +473,7 @@
     navigator.modelContext.provideContext({
       tools: [{
         name: "evaluate-blackjack-rules",
-        description: "Evaluate blackjack rule settings and estimate house edge, RTP, expected loss, and bankroll pressure using the visible rules edge finder.",
+        description: "Evaluate blackjack rule settings and estimate house edge, RTP, expected loss, expected loss vs bankroll, and typical session swing using the visible rules edge finder.",
         inputSchema: {
           type: "object",
           properties: {

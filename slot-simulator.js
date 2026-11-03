@@ -23,6 +23,7 @@
   const bustChance = document.getElementById("simBustChance");
   const bestRun = document.getElementById("simBestRun");
   const worstRun = document.getElementById("simWorstRun");
+  const medianEnd = document.getElementById("simMedianEnd");
   const actualRtp = document.getElementById("simActualRtp");
   const narrative = document.getElementById("simNarrative");
   const bars = document.getElementById("simBalanceBars");
@@ -169,7 +170,8 @@
         return [winningSymbol, winningSymbol, winningSymbol];
       }
 
-      if (payout > betSize) {
+      if (payout > 0) {
+        // Includes partial returns (paid less than the bet): a pair, not a winning line.
         return getTwoOfAKindSymbols(symbols);
       }
     }
@@ -229,7 +231,7 @@
       preset: window.SlotsTools.getPresetById(presetSelect.value),
       bankroll: Math.max(0, Number(bankrollInput.value) || 0),
       betSize: Math.max(0, Number(betInput.value) || 0),
-      spins: Math.max(1, Number(spinsInput.value) || 1)
+      spins: Math.min(10000, Math.max(1, Math.floor(Number(spinsInput.value)) || 1))
     };
   }
 
@@ -258,33 +260,44 @@
 
     if (!spinWarning) return;
 
-    if (betSize <= 0) {
-      spinWarning.textContent = "Enter a bet size above $0 to spin.";
-    } else if (bankroll < betSize) {
-      spinWarning.textContent = `Bankroll too low: ${window.SlotsTools.toMoney(bankroll)} cannot cover a ${window.SlotsTools.toMoney(betSize)} spin.`;
-    } else {
-      spinWarning.textContent = "";
+    spinWarning.textContent = getSpinBlockMessage(bankroll, betSize);
+  }
+
+  function getSpinBlockMessage(bankroll, betSize) {
+    if (betSize <= 0) return "Enter a bet size above $0 to spin.";
+    if (bankroll < betSize) {
+      return `Bankroll too low: ${window.SlotsTools.toMoney(bankroll)} cannot cover a ${window.SlotsTools.toMoney(betSize)} spin.`;
     }
+    return "";
+  }
+
+  // Sign-aware money: -$0.16 / +$1.20 (toMoney alone prints "$-0.16").
+  function toSignedMoney(value) {
+    return `${value < 0 ? "-" : "+"}${window.SlotsTools.toMoney(Math.abs(value))}`;
   }
 
   function updateLastSpin({ betSize, symbols, payout, bankrollChange }) {
     lastSpinBet.textContent = window.SlotsTools.toMoney(betSize);
     lastSpinSymbols.textContent = symbols.join(" · ");
     lastSpinPayout.textContent = window.SlotsTools.toMoney(payout);
-    lastSpinChange.textContent = `${bankrollChange >= 0 ? "+" : ""}${window.SlotsTools.toMoney(bankrollChange)}`;
+    lastSpinChange.textContent = toSignedMoney(bankrollChange);
     lastSpinChange.classList.toggle("result-small-win", bankrollChange > 0);
     lastSpinChange.classList.toggle("result-loss", bankrollChange < 0);
   }
 
-  function describeSpin(spin, bankrollChange, newBankroll, symbolsToShow) {
-    const changeText = `${bankrollChange >= 0 ? "+" : ""}${window.SlotsTools.toMoney(bankrollChange)}`;
+  function describeSpin(spin, payout, betSize, bankrollChange, newBankroll, symbolsToShow) {
+    const changeText = toSignedMoney(bankrollChange);
 
     if (spin.resultType === "bonus") {
-      return `Bonus hit. Symbols ${symbolsToShow.join(" · ")} paid ${window.SlotsTools.toMoney(spin.payout)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
+      return `Bonus hit. Symbols ${symbolsToShow.join(" · ")} paid ${window.SlotsTools.toMoney(payout)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
     }
 
-    if (spin.payout > 0) {
-      return `Line hit. Symbols ${symbolsToShow.join(" · ")} paid ${window.SlotsTools.toMoney(spin.payout)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
+    if (payout > 0 && payout < betSize) {
+      return `Partial return: paid ${window.SlotsTools.toMoney(payout)}, less than your ${window.SlotsTools.toMoney(betSize)} bet (net ${changeText}). New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
+    }
+
+    if (payout > 0) {
+      return `Line hit. Symbols ${symbolsToShow.join(" · ")} paid ${window.SlotsTools.toMoney(payout)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
     }
 
     return `No payline. Symbols ${symbolsToShow.join(" · ")} returned ${window.SlotsTools.toMoney(0)} for a ${changeText} bankroll move. New bankroll: ${window.SlotsTools.toMoney(newBankroll)}.`;
@@ -297,6 +310,7 @@
     });
   }
 
+  // resultType "partial" (paid less than the bet) gets no win styling.
   function animateReels(finalSymbols, resultType) {
     const slotReels = getRenderedReels();
     resetReelState();
@@ -336,21 +350,51 @@
 
   function updateSimulator() {
     const { preset, bankroll, betSize, spins } = getInputs();
+    const { toMoney, toPercent } = window.SlotsTools;
+
+    // Invalid inputs: clear every result instead of showing contradictory figures.
+    if (betSize <= 0 || bankroll < betSize) {
+      [endBankroll, medianEnd, bustChance, bestRun, worstRun, actualRtp].forEach((el) => {
+        if (el) el.textContent = "-";
+      });
+      window.SlotsTools.drawBalanceBars(bars, []);
+      narrative.textContent = getSpinBlockMessage(bankroll, betSize);
+      updateSpinAvailability();
+      return;
+    }
 
     const scenario = window.SlotsTools.spinSession({ bankroll, betSize, preset, spins });
-    const monteCarlo = window.SlotsTools.runMonteCarlo({ bankroll, betSize, preset, spins, trials: 220 });
+    const n = 2000;
+    const mc = window.SlotsTools.runMonteCarlo({ bankroll, betSize, preset, spins, trials: n });
+    const p = mc.bustChance;
+    const busts = Math.round(p * n);
 
-    endBankroll.textContent = window.SlotsTools.toMoney(monteCarlo.avgEndBankroll);
-    bustChance.textContent = window.SlotsTools.toPercent(monteCarlo.bustChance, 1);
-    bestRun.textContent = window.SlotsTools.toMoney(scenario.bestRun);
-    worstRun.textContent = window.SlotsTools.toMoney(scenario.worstRun);
-    actualRtp.textContent = window.SlotsTools.toPercent(monteCarlo.avgRtp, 2);
+    let bustText;
+    if (busts === 0) {
+      // Rule of three: 0 busts in n sessions gives a 95% upper bound of about 3/n.
+      bustText = `under ${(Math.ceil(30000 / n) / 100).toFixed(2)}% (0 of ${n.toLocaleString()} sessions)`;
+    } else if (busts === n) {
+      bustText = `100% of ${n.toLocaleString()} sessions`;
+    } else if (p < 0.0005) {
+      bustText = "under 0.1%";
+    } else {
+      bustText = `${toPercent(p, 1)} (±${toPercent(1.96 * Math.sqrt(p * (1 - p) / n), 1)})`;
+    }
+
+    endBankroll.textContent = toMoney(mc.avgEndBankroll);
+    if (medianEnd) medianEnd.textContent = toMoney(mc.p50End);
+    bustChance.textContent = bustText;
+    bestRun.textContent = toMoney(scenario.bestRun);
+    worstRun.textContent = toMoney(scenario.worstRun);
+    actualRtp.textContent = toPercent(mc.avgRtp, 1);
 
     window.SlotsTools.drawBalanceBars(bars, scenario.samples);
 
-    const bustMsg = monteCarlo.bustChance > 0.35
+    const bustMsg = p >= 0.35
       ? "High bankroll failure risk. Lower bet size or spins to reduce ruin odds."
-      : "Bankroll survival is stronger, but expected value remains negative over time.";
+      : p >= 0.10
+        ? `Meaningful bust risk: about 1 in ${Math.round(1 / p)} simulated sessions ran out. Lower bet size or spins.`
+        : "Lower bust risk in this model, but expected value remains negative over time.";
 
     narrative.textContent = `${preset.note} ${bustMsg}`;
     updateSpinAvailability();
@@ -377,19 +421,22 @@
     playSpinAudio();
     activeMissStreak = spin.nextMissStreak;
 
-    const newBankroll = Math.max(0, Math.round((bankroll - betSize + spin.payout) * 100) / 100);
-    const bankrollChange = Math.round((spin.payout - betSize) * 100) / 100;
+    // The visible single spin settles in whole cents (the engine payout is unrounded for Monte Carlo math).
+    const payout = Math.round(spin.payout * 100) / 100;
+    const newBankroll = Math.max(0, Math.round((bankroll - betSize + payout) * 100) / 100);
+    const bankrollChange = Math.round((payout - betSize) * 100) / 100;
 
-    const visibleSymbols = getVisibleSymbols(spin.symbols, spin.resultType, spin.payout, betSize);
-    await animateReels(visibleSymbols, spin.resultType);
+    const visibleSymbols = getVisibleSymbols(spin.symbols, spin.resultType, payout, betSize);
+    const displayType = spin.resultType === "base" && payout < betSize ? "partial" : spin.resultType;
+    await animateReels(visibleSymbols, displayType);
 
     bankrollInput.value = newBankroll.toFixed(2);
-    updateLastSpin({ betSize, symbols: visibleSymbols, payout: spin.payout, bankrollChange });
+    updateLastSpin({ betSize, symbols: visibleSymbols, payout, bankrollChange });
 
     spinMessage.classList.toggle("result-jackpot", spin.resultType === "bonus");
-    spinMessage.classList.toggle("result-small-win", spin.payout > betSize && spin.resultType !== "bonus");
-    spinMessage.classList.toggle("result-loss", spin.payout < betSize);
-    setSlotSpinMessage(describeSpin(spin, bankrollChange, newBankroll, visibleSymbols), true);
+    spinMessage.classList.toggle("result-small-win", payout > betSize && spin.resultType !== "bonus");
+    spinMessage.classList.toggle("result-loss", payout < betSize);
+    setSlotSpinMessage(describeSpin(spin, payout, betSize, bankrollChange, newBankroll, visibleSymbols), true);
 
     isSpinning = false;
     updateSimulator();

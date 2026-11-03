@@ -5,7 +5,7 @@ const quizQuestions = [
       { type: 'chaser', text: 'Great. Now I can win back what I lost last time.' },
       { type: 'grinder', text: 'Nice. I’ll lower my bet and play for six more hours.' },
       { type: 'hunter', text: 'Beautiful. Now we press. The machine is awake.' },
-      { type: 'strategist', text: 'Lock part of it up, keep playing within the plan.' },
+      { type: 'strategist', text: 'Bank part of it, keep playing within the plan.' },
       { type: 'chaos', text: 'I don’t know, but I’m suddenly at a different machine.' }
     ]
   },
@@ -53,7 +53,7 @@ const quizQuestions = [
     question: 'How do you pick bet size?',
     answers: [
       { type: 'chaser', text: 'Based on how mad I am.' },
-      { type: 'grinder', text: 'Small enough to survive until my soul leaves.' },
+      { type: 'grinder', text: 'Small enough to last until closing time.' },
       { type: 'hunter', text: 'Big enough to feel alive.' },
       { type: 'strategist', text: 'Bankroll, edge, volatility, and session length.' },
       { type: 'chaos', text: 'Whatever number feels haunted.' }
@@ -82,7 +82,7 @@ const quizQuestions = [
   {
     question: 'When do you walk away?',
     answers: [
-      { type: 'chaser', text: 'When I’m even. Or dead. Whichever first.' },
+      { type: 'chaser', text: 'When I’m even. Or when the ATM says no.' },
       { type: 'grinder', text: 'When the casino closes or my phone dies.' },
       { type: 'hunter', text: 'After the big hit. Unless I think there’s another one.' },
       { type: 'strategist', text: 'At my preset win/loss/time limit.' },
@@ -111,7 +111,7 @@ const resultData = {
     playSmarter: 'Set a stop-loss before you start. If you win, pocket part of it immediately so the session has a clear exit.',
     links: [
       { label: 'Blackjack Bankroll Calculator', href: 'blackjack-bankroll-calculator.html' },
-      { label: 'EV Calculator', href: 'blackjack-ev-calculator.html' },
+      { label: 'Martingale vs Flat Betting Simulator', href: 'roulette-strategy-simulator.html' },
       { label: 'Responsible Gambling', href: 'responsible-gambling.html' }
     ]
   },
@@ -121,7 +121,7 @@ const resultData = {
     headline: 'Low stakes can still add up.',
     description: 'You stretch sessions with tiny bets and call it discipline. Sometimes it is. Sometimes it is just high volume with a low unit size.',
     riskLeak: 'Underestimating cumulative loss, time-on-device, and slow bankroll bleed.',
-    playSmarter: 'Track total spins, not just bet size. Tiny bets still add up when the session volume gets high.',
+    playSmarter: 'Track total spins, not just bet size. Tiny bets still add up when the session volume gets high. Bonus rounds are random on every spin; playing longer never makes one due.',
     links: [
       { label: 'Slot Simulator', href: 'slot-simulator.html' },
       { label: 'Slot Bankroll Calculator', href: 'bankroll-survival-slots.html' },
@@ -132,9 +132,9 @@ const resultData = {
     name: 'The Heater Hunter',
     image: 'assets/images/quiz/hunter.webp',
     headline: 'You are drawn to high-variance upside.',
-    description: 'You like volatility and big-hit potential. Big wins can happen, but the key is surviving dry stretches and protecting part of any win.',
+    description: 'You like volatility and big-hit potential. Big wins can happen, but the key is surviving dry stretches and protecting part of any win. A machine is never hot or awake; each spin is independent.',
     riskLeak: 'High variance, oversized bets, jackpot chasing, and pressing too hard after wins.',
-    playSmarter: 'Decide your win-lock rule before the first spin. If you hit big, protect part of it before variance asks for it back.',
+    playSmarter: 'Decide your win-protection rule before the first spin. If you hit big, protect part of it before variance asks for it back.',
     links: [
       { label: 'Slot Simulator', href: 'slot-simulator.html' },
       { label: 'Roulette Calculator', href: 'roulette-calculator.html' },
@@ -162,7 +162,7 @@ const resultData = {
     riskLeak: 'Random bet sizing, superstition, game hopping, and calling momentum a system.',
     playSmarter: 'Give yourself a hard budget and a time limit. Keep the fun, but put a clear frame around it first.',
     links: [
-      { label: 'Gambler Personality Quiz', href: 'gambler-personality-quiz.html' },
+      { label: 'Roulette Strategy Simulator', href: 'roulette-strategy-simulator.html' },
       { label: 'Bankroll Calculator', href: 'blackjack-bankroll-calculator.html' },
       { label: 'Roulette Guide', href: 'roulette.html' },
       { label: 'Responsible Gambling', href: 'responsible-gambling.html' }
@@ -193,14 +193,21 @@ function updateProgress() {
   progressBar.style.width = `${percent}%`;
 }
 
-function renderQuestion() {
+function renderQuestion(moveFocus = false) {
   const question = quizQuestions[currentQuestion];
 
   updateProgress();
   quizTitle.textContent = question.question;
   quizOptions.innerHTML = '';
 
-  question.answers.forEach((answer) => {
+  // Shuffle a copy so answer position never reveals the profile (scoring still uses answer.type).
+  const answers = question.answers.slice();
+  for (let i = answers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [answers[i], answers[j]] = [answers[j], answers[i]];
+  }
+
+  answers.forEach((answer) => {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'quiz-answer';
@@ -208,6 +215,11 @@ function renderQuestion() {
     button.addEventListener('click', () => selectAnswer(answer.type));
     quizOptions.appendChild(button);
   });
+
+  if (moveFocus) {
+    quizTitle.setAttribute('tabindex', '-1');
+    quizTitle.focus({ preventScroll: true });
+  }
 }
 
 function selectAnswer(type) {
@@ -219,7 +231,19 @@ function selectAnswer(type) {
     return;
   }
 
-  renderQuestion();
+  renderQuestion(true);
+}
+
+function getTiedTypes(winner) {
+  const highScore = Math.max(...Object.values(scores));
+  if (highScore <= 0) return [];
+  return tiePriority.filter((type) => type !== winner && scores[type] === highScore);
+}
+
+function formatNameList(names) {
+  if (names.length <= 1) return names.join('');
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  return `${names.slice(0, -1).join(', ')}, and ${names[names.length - 1]}`;
 }
 
 function getWinningType() {
@@ -237,6 +261,10 @@ function createToolLinks(links) {
 
 function showResult(type, updateUrl = true) {
   const result = resultData[type];
+  const tiedTypes = getTiedTypes(type);
+  const tieNote = tiedTypes.length
+    ? `<p class="quiz-tie-note">You tied with ${formatNameList(tiedTypes.map((t) => resultData[t].name))}; the result shows the profile with the bigger bankroll risk.</p>`
+    : '';
   const shareUrl = `${window.location.origin}${window.location.pathname}?result=${type}`;
 
   quizCard.hidden = true;
@@ -248,6 +276,7 @@ function showResult(type, updateUrl = true) {
         <h2>${result.name}</h2>
         <h3>${result.headline}</h3>
         <p>${result.description}</p>
+        ${tieNote}
       </div>
       <img class="quiz-result-image" src="${result.image}" alt="${result.name} gambling personality result" loading="eager" decoding="async" />
     </div>
@@ -281,6 +310,11 @@ function showResult(type, updateUrl = true) {
 
   document.getElementById('retake-quiz').addEventListener('click', resetQuiz);
   document.getElementById('share-result').addEventListener('click', copyResultLink);
+  const resultHeading = quizResult.querySelector('h2');
+  if (resultHeading) {
+    resultHeading.setAttribute('tabindex', '-1');
+    resultHeading.focus({ preventScroll: true });
+  }
   quizResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -311,14 +345,14 @@ function resetQuiz() {
   url.searchParams.delete('result');
   window.history.replaceState({}, '', url);
 
-  renderQuestion();
+  renderQuestion(true);
   quizCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function initQuiz() {
   const resultParam = new URLSearchParams(window.location.search).get('result');
 
-  if (resultParam && resultData[resultParam]) {
+  if (resultParam && Object.prototype.hasOwnProperty.call(resultData, resultParam)) {
     showResult(resultParam, false);
     return;
   }

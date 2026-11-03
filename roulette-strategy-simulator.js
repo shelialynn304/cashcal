@@ -2,7 +2,6 @@
   if (!window.RouletteMath || !document.getElementById('compareBtn')) return;
 
   const {
-    clampNumber,
     calculateSpinMath,
     formatMoney,
     toPercent,
@@ -20,7 +19,11 @@
     { key: 'dalembert', name: 'D’Alembert' }
   ];
 
-  const fibonacciLegacySequence = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55];
+  const MAX_SESSION_SPINS = 5000000;
+
+  function roundCents(value) {
+    return Math.round(value * 100) / 100;
+  }
 
   function nextBetState(strategy, state, won, baseBet) {
     if (strategy === 'flat') {
@@ -36,14 +39,15 @@
     }
 
     if (strategy === 'fibonacci') {
+      // fibonacciStep extends the 1, 1, 2, 3, 5... sequence as far as the losses go.
       const fibResult = fibonacciStep(baseBet, won, {
-        sequence: fibonacciLegacySequence,
+        sequence: state.seq || [1, 1],
         index: state.step - 1
       });
-      const nextStep = Math.min(fibonacciLegacySequence.length, fibResult.index + 1);
       return {
-        step: nextStep,
-        bet: baseBet * fibonacciLegacySequence[nextStep - 1]
+        step: fibResult.index + 1,
+        bet: fibResult.stake,
+        seq: fibResult.sequence
       };
     }
 
@@ -58,75 +62,144 @@
 
     let bankroll = startBankroll;
     let state = { step: 1, bet: options.baseBet };
-    let peakBet = options.baseBet;
+    let peakBet = 0;
     let spinsPlayed = 0;
+    let totalWagered = 0;
+    let stoppedShort = false;
+    let unplacedBet = 0;
 
     for (let i = 0; i < options.spins; i += 1) {
-      const currentBet = Math.max(options.baseBet, Math.round(state.bet));
-      if (bankroll < currentBet) break;
+      const currentBet = roundCents(Math.max(options.baseBet, state.bet));
+      if (bankroll < currentBet) {
+        // The system needs a bet the bankroll cannot cover: count it as a bust.
+        stoppedShort = true;
+        unplacedBet = currentBet;
+        break;
+      }
 
       const won = randomSpinWin(evenMoneyMath.winProb);
-      bankroll += won ? currentBet : -currentBet;
+      bankroll = roundCents(bankroll + (won ? currentBet : -currentBet));
       spinsPlayed += 1;
+      totalWagered += currentBet;
+      peakBet = Math.max(peakBet, currentBet);
 
-      if (bankroll - startBankroll >= options.targetProfit) break;
+      if (options.targetProfit > 0 && bankroll - startBankroll >= options.targetProfit) break;
 
       state = nextBetState(strategyKey, state, won, options.baseBet);
-      peakBet = Math.max(peakBet, state.bet);
     }
 
     return {
       endingBankroll: bankroll,
       sessionProfit: bankroll - startBankroll,
-      busted: bankroll < options.baseBet,
+      busted: stoppedShort || bankroll < options.baseBet,
+      stoppedShort,
+      unplacedBet,
       spinsPlayed,
+      totalWagered,
       peakBet
     };
   }
 
+  function readNumber(id) {
+    const raw = String(document.getElementById(id).value).trim();
+    return raw === '' ? NaN : Number(raw);
+  }
+
+  // Returns { settings } or { error }. Nothing is clamped silently.
   function getSettings() {
+    const sessions = readNumber('sessions');
+    const spins = readNumber('spins');
+    const bankroll = readNumber('bankroll');
+    const baseBet = readNumber('baseBet');
+    const targetRaw = String(document.getElementById('targetProfit').value).trim();
+    const targetProfit = targetRaw === '' ? 0 : Number(targetRaw);
+
+    if (!Number.isInteger(sessions) || sessions < 100) return { error: 'Sessions to simulate must be a whole number of at least 100.' };
+    if (!Number.isInteger(spins) || spins < 10) return { error: 'Spins per session must be a whole number of at least 10.' };
+    if (!Number.isFinite(bankroll) || bankroll < 25) return { error: 'Starting bankroll must be a number of at least $25.' };
+    if (!Number.isFinite(baseBet) || baseBet < 1) return { error: 'Base bet must be a number of at least $1.' };
+    if (baseBet > bankroll) return { error: 'Base bet cannot be larger than the starting bankroll.' };
+    if (!Number.isFinite(targetProfit)) return { error: 'Stop-win target must be a number, or leave it blank for no stop-win.' };
+    if (sessions * spins > MAX_SESSION_SPINS) return { error: 'Sessions x spins must be 5,000,000 or fewer. Lower the sessions or the spins per session.' };
+
     return {
-      wheelType: document.getElementById('wheelType').value,
-      sessions: clampNumber(document.getElementById('sessions').value, 1200, 100),
-      spins: clampNumber(document.getElementById('spins').value, 180, 10),
-      bankroll: clampNumber(document.getElementById('bankroll').value, 300, 25),
-      baseBet: clampNumber(document.getElementById('baseBet').value, 10, 1),
-      targetProfit: clampNumber(document.getElementById('targetProfit').value, 60, 0)
+      settings: {
+        wheelType: document.getElementById('wheelType').value,
+        sessions,
+        spins,
+        bankroll,
+        baseBet,
+        targetProfit: targetProfit > 0 ? targetProfit : 0
+      }
     };
   }
 
+  function readSettingsOrShowError(outputId) {
+    const errorEl = document.getElementById('strategyError');
+    const parsed = getSettings();
+    if (parsed.error) {
+      if (errorEl) errorEl.textContent = parsed.error;
+      document.getElementById(outputId).innerHTML = '';
+      return null;
+    }
+    if (errorEl) errorEl.textContent = '';
+    return parsed.settings;
+  }
+
   function compareStrategies() {
-    const settings = getSettings();
+    const settings = readSettingsOrShowError('strategyResults');
+    if (!settings) return;
     const rows = [];
+    // House edge per $1 wagered on an even-money bet: 1/37 European, 2/38 American.
+    const houseEdge = -calculateSpinMath(settings.wheelType, 'evenMoney', 1).evUnits;
 
     strategyDefs.forEach((strategy) => {
       let bustCount = 0;
       let profitCount = 0;
       let cumulative = 0;
+      let wageredTotal = 0;
+      let spinsTotal = 0;
       let peakExposure = 0;
+      let largestUnplaced = 0;
 
       for (let s = 0; s < settings.sessions; s += 1) {
         const outcome = simulateSession(settings, strategy.key);
         if (outcome.busted) bustCount += 1;
         if (outcome.sessionProfit > 0) profitCount += 1;
         cumulative += outcome.sessionProfit;
+        wageredTotal += outcome.totalWagered;
+        spinsTotal += outcome.spinsPlayed;
         peakExposure = Math.max(peakExposure, outcome.peakBet);
+        if (outcome.stoppedShort) largestUnplaced = Math.max(largestUnplaced, outcome.unplacedBet);
       }
 
       const avgProfit = cumulative / settings.sessions;
-      rows.push(`<div class="result-item"><span>${strategy.name}</span><strong>Avg Session: ${formatMoney(avgProfit)} | Profit Sessions: ${toPercent(profitCount / settings.sessions, 1)} | Bust Risk: ${toPercent(bustCount / settings.sessions, 1)} | Peak Bet Seen: ${formatMoney(peakExposure)}</strong></div>`);
+      const avgWagered = wageredTotal / settings.sessions;
+      const avgSpins = spinsTotal / settings.sessions;
+      const edgeLoss = houseEdge * avgWagered;
+      const unplacedText = largestUnplaced > peakExposure ? ` | Next bet required but not placed: up to ${formatMoney(largestUnplaced)}` : '';
+      rows.push(`<div class="result-item"><span>${strategy.name}</span><strong>Avg Session: ${formatMoney(avgProfit)} | Expected at house edge: ${formatMoney(-edgeLoss)} (${toPercent(houseEdge, 2)} x avg wagered) | Avg wagered: ${formatMoney(avgWagered)} | Avg spins played: ${avgSpins.toFixed(1)} | Profit Sessions: ${toPercent(profitCount / settings.sessions, 1)} | Bust / can't cover next bet: ${toPercent(bustCount / settings.sessions, 1)} | Peak Bet Placed: ${formatMoney(peakExposure)}${unplacedText}</strong></div>`);
     });
+
+    rows.push(`<p class="small-note mb-0">Every system loses about ${toPercent(houseEdge, 2)} of each dollar wagered. Progressions can show a smaller average session loss only because their sessions end sooner with less money wagered, not because they cut the house edge.</p>`);
 
     document.getElementById('strategyResults').innerHTML = rows.join('');
   }
 
   function runDrainDemo() {
-    const settings = getSettings();
+    const settings = readSettingsOrShowError('drainResults');
+    if (!settings) return;
     const rows = [];
 
     strategyDefs.forEach((strategy) => {
       const outcome = simulateSession(settings, strategy.key);
-      rows.push(`<div class="result-item"><span>${strategy.name}</span><strong>Spins: ${outcome.spinsPlayed}/${settings.spins} | End Bankroll: ${formatMoney(outcome.endingBankroll)} | Net: ${formatMoney(outcome.sessionProfit)} | Peak Bet: ${formatMoney(outcome.peakBet)}${outcome.busted ? ' | Bankroll Drained' : ''}</strong></div>`);
+      let endNote = '';
+      if (outcome.stoppedShort && strategy.key !== 'flat') {
+        endNote = ` | Progression stopped: next bet ${formatMoney(outcome.unplacedBet)} > bankroll ${formatMoney(outcome.endingBankroll)}`;
+      } else if (outcome.busted) {
+        endNote = ' | Bankroll Drained';
+      }
+      rows.push(`<div class="result-item"><span>${strategy.name}</span><strong>Spins: ${outcome.spinsPlayed}/${settings.spins} | End Bankroll: ${formatMoney(outcome.endingBankroll)} | Net: ${formatMoney(outcome.sessionProfit)} | Peak Bet: ${formatMoney(outcome.peakBet)}${endNote}</strong></div>`);
     });
 
     document.getElementById('drainResults').innerHTML = rows.join('');

@@ -38,7 +38,7 @@
     },
     balanced: {
       title: 'Dozens or columns fit middle risk.',
-      body: 'Dozens and columns pay about 2:1 and cover 12 numbers, so they sit between even-money bets and high-volatility inside bets.'
+      body: 'Dozens and columns pay 2:1 and cover 12 numbers, so they sit between even-money bets and high-volatility inside bets.'
     },
     longshot: {
       title: 'Straight-up numbers and splits are high-risk entertainment.',

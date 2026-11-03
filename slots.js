@@ -159,6 +159,11 @@
 
     if (resultType === "base") {
       const anchor = payoutMultiplier >= 8 ? "7" : payoutMultiplier >= 3 ? "BAR" : "🍒";
+      if (payoutMultiplier < 1) {
+        // Partial return (pays less than the bet): show only a pair so the reels do not depict a winning line.
+        const others = SLOT_SYMBOLS.filter((symbol) => symbol !== anchor).sort(() => Math.random() - 0.5).slice(0, 3);
+        return [anchor, anchor, ...others].sort(() => Math.random() - 0.5);
+      }
       const symbols = [anchor, anchor, anchor, pickDifferentSymbol([anchor]), pickDifferentSymbol([anchor])];
       return symbols.sort(() => Math.random() - 0.5);
     }
@@ -167,7 +172,7 @@
     return shuffled.slice(0, 5);
   }
 
-  function spinOnce({ betSize, preset, activeMissStreak = 0, calibratedModel = null }) {
+  function spinOnce({ betSize, preset, activeMissStreak = 0, calibratedModel = null, withSymbols = true }) {
     const calibrated = calibratedModel || getCalibratedPayoutModel(preset);
     const didBaseHit = Math.random() < preset.hitFrequency;
     const didBonusHit = Math.random() < preset.bonusRate;
@@ -186,7 +191,7 @@
       payout += betSize * bonusMultiplier;
     }
 
-    payout = Math.round(payout * 100) / 100;
+    // Payout stays unrounded so balance and RTP math match the preset; displays round via toMoney().
 
     const resultType = didBonusHit ? "bonus" : didBaseHit ? "base" : "loss";
     const nextMissStreak = didBaseHit ? 0 : activeMissStreak + 1;
@@ -194,7 +199,8 @@
     return {
       payout,
       resultType,
-      symbols: getDisplaySymbols(resultType, baseMultiplier + bonusMultiplier),
+      // Display symbols are only built for visible spins; Monte Carlo sessions skip them for speed.
+      symbols: withSymbols ? getDisplaySymbols(resultType, baseMultiplier + bonusMultiplier) : [],
       didBaseHit,
       didBonusHit,
       baseMultiplier,
@@ -226,7 +232,7 @@
       balance -= betSize;
       wagered += betSize;
 
-      const spin = spinOnce({ betSize, preset, activeMissStreak, calibratedModel: sessionModel });
+      const spin = spinOnce({ betSize, preset, activeMissStreak, calibratedModel: sessionModel, withSymbols: false });
       const payout = spin.payout;
       activeMissStreak = spin.nextMissStreak;
       longestMissStreak = Math.max(longestMissStreak, activeMissStreak);

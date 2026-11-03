@@ -8,7 +8,8 @@
     formatMoney,
     toPercent,
     randomSpinWin,
-    hasBetType
+    hasBetType,
+    flatBetBustStats
   } = window.RouletteMath;
 
   const betTypeSelect = document.getElementById('betType');
@@ -33,6 +34,7 @@
     if (betSize > bankroll) return 'Bet size must not exceed bankroll.';
     if (!Number.isFinite(spins) || spins < 1 || spins > 100000) return 'Spins must be between 1 and 100,000.';
     if (!Number.isFinite(sessions) || sessions < 200 || sessions > 50000) return 'Simulation sessions must be between 200 and 50,000.';
+    if (spins * sessions > 20000000) return 'Spins x sessions must be 20 million or fewer. Lower the spins or the simulation sessions.';
     return '';
   }
 
@@ -50,6 +52,7 @@
   function runMonteCarlo(input) {
     let profitSessions = 0;
     let bustSessions = 0;
+    let endingTotal = 0;
 
     for (let s = 0; s < input.sessions; s += 1) {
       let roll = input.bankroll;
@@ -62,11 +65,13 @@
 
       if (roll > input.bankroll) profitSessions += 1;
       if (roll < input.betSize) bustSessions += 1;
+      endingTotal += roll;
     }
 
     return {
       profitChance: profitSessions / input.sessions,
-      bustRisk: bustSessions / input.sessions
+      bustRisk: bustSessions / input.sessions,
+      avgEnding: endingTotal / input.sessions
     };
   }
 
@@ -77,8 +82,8 @@
     if (error) throw new Error(error);
 
     const math = calculateSpinMath(normalized.wheelType, normalized.betType, normalized.betSize);
-    const expectedLoss = Math.max(0, -(math.evDollars * normalized.spins));
-    const expectedEnding = normalized.bankroll - expectedLoss;
+    // Theoretical loss if every spin is played (rebuying after a bust).
+    const expectedLossAllSpins = Math.max(0, -(math.evDollars * normalized.spins));
     const sim = runMonteCarlo({
       sessions: normalized.sessions,
       spins: normalized.spins,
@@ -88,11 +93,33 @@
       payout: math.bet.payout
     });
 
-    return { ...normalized, math, expectedLoss, expectedEnding, sim };
+    // Session stops when the bankroll cannot cover the next bet.
+    // Exact: expected loss = -EV per spin x E[spins played] (Wald), with E[spins played]
+    // from the flat-bet DP. Very long sessions fall back to the simulated average
+    // ending, clamped to the bounds that always hold.
+    const dp = flatBetBustStats({
+      bankroll: normalized.bankroll,
+      betSize: normalized.betSize,
+      spins: normalized.spins,
+      winProb: math.winProb,
+      payout: math.bet.payout
+    });
+    let expectedLoss;
+    let expectedLossExact = false;
+    if (dp && dp.exact) {
+      expectedLoss = Math.max(0, -(math.evDollars * dp.expectedSpins));
+      expectedLossExact = true;
+    } else {
+      const maxLoss = Math.min(normalized.bankroll, expectedLossAllSpins);
+      expectedLoss = Math.min(maxLoss, Math.max(0, normalized.bankroll - sim.avgEnding));
+    }
+    const expectedEnding = normalized.bankroll - expectedLoss;
+
+    return { ...normalized, math, expectedLoss, expectedEnding, expectedLossAllSpins, expectedLossExact, sim };
   }
 
   function formatRouletteProbabilityText(result) {
-    return `Educational estimate only: on ${result.math.wheel.label} roulette, a ${formatMoney(result.betSize)} ${result.math.bet.label.toLowerCase()} has ${toPercent(result.math.winProb, 2)} win chance per spin and ${formatMoney(result.math.evDollars)} EV per spin. Over ${result.spins} spins, expected loss is ${formatMoney(result.expectedLoss)}, estimated bust risk is ${toPercent(result.sim.bustRisk, 1)}, and chance of any profit is ${toPercent(result.sim.profitChance, 1)}. These estimates do not guarantee gambling outcomes.`;
+    return `Educational estimate only: on ${result.math.wheel.label} roulette, a ${formatMoney(result.betSize)} ${result.math.bet.label.toLowerCase()} has ${toPercent(result.math.winProb, 2)} win chance per spin and ${formatMoney(result.math.evDollars)} EV per spin. Over up to ${result.spins} spins, stopping if the bankroll cannot cover the next bet, expected loss is ${formatMoney(result.expectedLoss)}${result.expectedLossExact ? '' : ' (simulated average)'} (${formatMoney(result.expectedLossAllSpins)} if all ${result.spins} spins are played with rebuys), estimated bust risk is ${toPercent(result.sim.bustRisk, 1)}, and chance of any profit is ${toPercent(result.sim.profitChance, 1)}. These estimates do not guarantee gambling outcomes.`;
   }
 
   function renderRouletteProbability(result, markResultReady) {
@@ -102,6 +129,8 @@
     document.getElementById('evSpin').textContent = formatMoney(result.math.evDollars);
     document.getElementById('expectedLoss').textContent = formatMoney(result.expectedLoss);
     document.getElementById('endBankroll').textContent = formatMoney(result.expectedEnding);
+    document.getElementById('expectedLossAll').textContent = formatMoney(result.expectedLossAllSpins);
+    document.getElementById('expectedLossAllLabel').textContent = `Expected loss if all ${result.spins.toLocaleString('en-US')} spins are played (with rebuys)`;
     document.getElementById('profitChance').textContent = toPercent(result.sim.profitChance, 1);
     document.getElementById('bustRisk').textContent = toPercent(result.sim.bustRisk, 1);
 
@@ -116,7 +145,19 @@
     }
   }
 
+  const outputIds = ['winChance', 'payoutRatio', 'houseEdge', 'evSpin', 'expectedLoss', 'endBankroll', 'expectedLossAll', 'profitChance', 'bustRisk'];
+
+  function clearRouletteProbability() {
+    outputIds.forEach((id) => { document.getElementById(id).textContent = '--'; });
+    const summary = document.getElementById('summary');
+    summary.textContent = '';
+    summary.dataset.resultReady = 'false';
+    const resultExplanation = document.getElementById('roulette-result-explanation');
+    if (resultExplanation) resultExplanation.textContent = 'Fix the highlighted input to see results.';
+  }
+
   function calculateOdds(markResultReady) {
+    const errorEl = document.getElementById('roulette-calc-error');
     const input = {
       wheelType: document.getElementById('wheelType').value,
       betType: document.getElementById('betType').value,
@@ -125,8 +166,14 @@
       spins: document.getElementById('spins').value,
       sessions: document.getElementById('sessions').value
     };
-    const result = calculateRouletteProbability(input);
-    renderRouletteProbability(result, markResultReady);
+    try {
+      const result = calculateRouletteProbability(input);
+      renderRouletteProbability(result, markResultReady);
+      if (errorEl) errorEl.textContent = '';
+    } catch (error) {
+      if (errorEl) errorEl.textContent = error.message;
+      clearRouletteProbability();
+    }
   }
 
   function runDemoSession() {
@@ -215,10 +262,10 @@
 
   function updateWheelLesson() {
     const isAmerican = document.getElementById('roulette-learn-wheel').value === '1';
-    const edge = isAmerican ? 5.26 : 2.7;
-    const projected = demoBankroll - (demoBet * demoSpins * (edge / 100));
+    const edge = isAmerican ? 2 / 38 : 1 / 37;
+    const projected = demoBankroll - (demoBet * demoSpins * edge);
     setText('roulette-learn-wheel-bankroll', formatMoney(projected));
-    setText('roulette-learn-wheel-edge', `${edge.toFixed(2)}%`);
+    setText('roulette-learn-wheel-edge', `${(edge * 100).toFixed(2)}%`);
     setText(
       'roulette-learn-wheel-copy',
       isAmerican
@@ -265,7 +312,7 @@
 
   function updateSessionLesson() {
     const spins = Number(document.getElementById('roulette-learn-session').value);
-    const expectedLoss = demoBet * spins * 0.027;
+    const expectedLoss = (demoBet * spins) / 37;
     const copy = spins <= 60
       ? 'Short-term wins happen constantly because luck can overpower the math for a while.'
       : spins <= 160

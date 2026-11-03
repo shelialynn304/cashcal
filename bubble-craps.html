@@ -15,9 +15,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0">
-  <meta name="description" content="Use this free Bubble Craps simulator to practice Pass Line, Don't Pass, and Field bets, learn the come-out roll and point rules, test bankroll swings, and compare beginner craps strategies.">
+  <meta name="description" content="Practice bubble craps free: Pass Line, Don't Pass and Field bets with fake money, come-out and point rules, and the exact house edge of each bet.">
 
-  <title>Bubble Craps Simulator – Rules, Bets, Strategy & Bankroll Practice | EdgeOverLuck.com</title>
+  <title>Bubble Craps Simulator: Rules, Bets & House Edge | EdgeOverLuck</title>
   <link rel="canonical" href="https://edgeoverluck.com/bubble-craps.html">
   <link rel="stylesheet" href="css/style.css">
 
@@ -176,6 +176,11 @@
       display: block;
       color: #fff;
       margin-bottom: 4px;
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .bet-comparison-table {
@@ -365,6 +370,11 @@
       margin-top: 0;
     }
 
+    .button-row button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     .roll-btn {
       background: linear-gradient(180deg, #61d898, #228b5a);
       color: #07120d;
@@ -489,7 +499,7 @@
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 8px;
       padding: 14px;
       text-align: center;
@@ -629,7 +639,7 @@
       }
 
       .stats-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .chip-btn {
@@ -691,42 +701,32 @@
       {
         "@type":"Question",
         "name":"What is bubble craps?",
-        "acceptedAnswer":{"@type":"Answer","text":"Bubble craps is an electronic version of craps where dice bounce inside a covered machine instead of being thrown by a live shooter. The betting ideas are similar to regular craps, but the pace and machine interface can feel faster."}
+        "acceptedAnswer":{"@type":"Answer","text":"Bubble craps is an electronic craps game where dice bounce inside a covered machine instead of being thrown at a live table."}
       },
       {
         "@type":"Question",
-        "name":"How does the come-out roll work?",
-        "acceptedAnswer":{"@type":"Answer","text":"The come-out roll starts a new round. On a Pass Line bet, 7 or 11 wins, 2, 3, or 12 loses, and 4, 5, 6, 8, 9, or 10 sets the point."}
+        "name":"Is bubble craps the same as regular craps?",
+        "acceptedAnswer":{"@type":"Answer","text":"The core bets are similar, but the machine interface, pace, minimum bets, and available side bets can differ from a live craps table."}
       },
       {
         "@type":"Question",
-        "name":"What does the point mean in craps?",
-        "acceptedAnswer":{"@type":"Answer","text":"The point is the number set on the come-out roll when the total is 4, 5, 6, 8, 9, or 10. After the point is set, Pass Line wants that number to roll again before a 7. Don't Pass wants a 7 before the point repeats."}
+        "name":"What is the come-out roll?",
+        "acceptedAnswer":{"@type":"Answer","text":"The come-out roll is the first roll of a new round. It can win, lose, or set a point for Pass Line and Don’t Pass bets."}
       },
       {
         "@type":"Question",
-        "name":"How does the Pass Line bet work?",
-        "acceptedAnswer":{"@type":"Answer","text":"Pass Line is the basic with-the-shooter bet. It wins on 7 or 11 on the come-out roll, loses on 2, 3, or 12, and then wins if the point repeats before a 7."}
-      },
-      {
-        "@type":"Question",
-        "name":"How does the Don't Pass bet work?",
-        "acceptedAnswer":{"@type":"Answer","text":"Don't Pass is the opposite side of the basic game. It wins on 2 or 3, loses on 7 or 11, usually pushes on 12, and after a point is set it wins if a 7 rolls before the point repeats."}
+        "name":"What does the point mean?",
+        "acceptedAnswer":{"@type":"Answer","text":"The point is 4, 5, 6, 8, 9, or 10 after the come-out roll. Pass Line wants that number again before 7. Don’t Pass wants 7 first."}
       },
       {
         "@type":"Question",
         "name":"What is the Field bet?",
-        "acceptedAnswer":{"@type":"Answer","text":"The Field is a one-roll bet. It is decided on the very next roll. Common winning Field numbers are 2, 3, 4, 9, 10, 11, and 12, but exact payouts can vary by machine or casino."}
+        "acceptedAnswer":{"@type":"Answer","text":"The Field is a one-roll bet. It wins or loses on the next dice total and does not carry into the point phase."}
       },
       {
         "@type":"Question",
-        "name":"Is the Field bet a good bet?",
-        "acceptedAnswer":{"@type":"Answer","text":"The Field is fast and simple, but it is usually more volatile than basic Pass Line or Don't Pass play. Its value depends on the pay table, especially whether 2 or 12 pays double or triple."}
-      },
-      {
-        "@type":"Question",
-        "name":"Can you beat bubble craps with strategy?",
-        "acceptedAnswer":{"@type":"Answer","text":"Craps strategy can help control risk and avoid bad bets, but it does not remove the house edge. The main things you control are bet type, bet size, session length, and when to stop."}
+        "name":"Can strategy remove the house edge in bubble craps?",
+        "acceptedAnswer":{"@type":"Answer","text":"You can make better risk decisions, but you cannot strategy your way out of the house edge. Control bet size, avoid bad habits, and know when to stop."}
       }
     ]
   }
@@ -831,7 +831,7 @@
         </div>
 
         <div class="craps-hero-card card-glass">
-          <img class="craps-probability-image" src="assets/images/craps-probability-section.webp" loading="lazy" width="1448" height="1086" alt="Craps dice probability table with gold casino math design">
+          <img class="craps-probability-image" src="assets/images/craps-probability-section.webp" loading="eager" fetchpriority="high" width="1448" height="1086" alt="Decorative gold dice and chips on a black craps layout">
           <div class="craps-hero-stats" aria-label="Simulator highlights">
             <div class="craps-hero-stat">
               <strong>3</strong>
@@ -904,8 +904,8 @@
           <h2>How this tool works</h2>
           <p>This bubble craps simulator is a practice tool for risk, payouts, and bankroll swings.</p>
           <ul>
-            <li><strong>Estimates:</strong> Bubble craps outcomes, bet risk, payout behavior, and bankroll movement by session.</li>
-            <li><strong>Assumes:</strong> Standard dice probabilities, your selected bets and stakes, plus this page's payout settings.</li>
+            <li><strong>Shows:</strong> Roll-by-roll results and how one session's bankroll moves.</li>
+            <li><strong>Assumes:</strong> Fair dice (36 equally likely combinations). Pass Line and Don't Pass pay 1:1; Don't Pass pushes on a come-out 12; Field pays 1:1 on 3, 4, 9, 10, 11 and 2:1 on 2 and 12.</li>
             <li><strong>Does not guarantee:</strong> Profit, and it cannot remove normal variance from craps.</li>
           </ul>
           <p class="small-note">For limits, warning signs, and help resources, read our <a href="responsible-gambling.html">responsible gambling guide</a>.</p>
@@ -916,11 +916,11 @@
             </p>
 
             <div class="chip-row" aria-label="Chip values">
-              <button class="chip-btn" data-value="1">$1</button>
-              <button class="chip-btn" data-value="5">$5</button>
-              <button class="chip-btn" data-value="10">$10</button>
-              <button class="chip-btn" data-value="25">$25</button>
-              <button class="chip-btn" data-value="100">$100</button>
+              <button class="chip-btn" data-value="1" aria-pressed="false">$1</button>
+              <button class="chip-btn" data-value="5" aria-pressed="false">$5</button>
+              <button class="chip-btn" data-value="10" aria-pressed="false">$10</button>
+              <button class="chip-btn" data-value="25" aria-pressed="false">$25</button>
+              <button class="chip-btn" data-value="100" aria-pressed="false">$100</button>
             </div>
 
             <div class="selected-chip-wrap">
@@ -984,8 +984,10 @@
             <div class="info-grid">
               <div class="results">
                 <h3>Results</h3>
-                <p>Dice Roll: <span id="diceResult">-</span></p>
-                <p>Result: <span id="roundResult">-</span></p>
+                <div aria-live="polite" aria-atomic="true">
+                  <p>Dice Roll: <span id="diceResult">-</span></p>
+                  <p>Result: <span id="roundResult">-</span></p>
+                </div>
                 <p>Bankroll: $<span id="bankroll">100</span></p>
                 <p>Total Bet: $<span id="betTotal">0</span></p>
               </div>
@@ -996,11 +998,15 @@
                   <span id="rollCount">0</span>
                 </div>
                 <div class="stat-box">
-                  <strong>Wins</strong>
+                  <strong>Field W/L</strong>
+                  <span id="fieldRecord">0/0</span>
+                </div>
+                <div class="stat-box">
+                  <strong>Line wins</strong>
                   <span id="winCount">0</span>
                 </div>
                 <div class="stat-box">
-                  <strong>Losses</strong>
+                  <strong>Line losses</strong>
                   <span id="lossCount">0</span>
                 </div>
               </div>
@@ -1015,7 +1021,7 @@
 
             <div class="explain-box">
               <h3>Why That Happened</h3>
-              <p id="explainText">
+              <p id="explainText" aria-live="polite">
                 Make a bet and roll the dice. This will explain what just happened.
               </p>
             </div>
@@ -1060,7 +1066,7 @@
               <ul class="bet-rule-list">
                 <li><strong>Usually wins:</strong> 2, 3, 4, 9, 10, 11, or 12.</li>
                 <li><strong>Usually loses:</strong> 5, 6, 7, or 8.</li>
-                <li><strong>Pay table warning:</strong> 2 and 12 payouts can vary by machine.</li>
+                <li><strong>Pay table warning:</strong> 2 and 12 payouts can vary by machine. This simulator pays 2:1 on 2 and 12.</li>
                 <li><strong>Beginner note:</strong> fun for action, easy to overuse.</li>
               </ul>
             </article>
@@ -1068,6 +1074,7 @@
 
           <div class="risk-note-card section-gradient-gold" style="margin-top:16px;">
             <h3>Bet comparison</h3>
+            <div class="table-scroll">
             <table class="bet-comparison-table">
               <thead>
                 <tr>
@@ -1098,6 +1105,7 @@
                 </tr>
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </section>
@@ -1126,6 +1134,10 @@
             <article class="strategy-card section-gradient">
               <h3>Small Field Bets</h3>
               <p>Some players use tiny Field bets for action. Keep them small. Fast-resolving bets can drain a bankroll before your common sense finds its shoes.</p>
+            </article>
+            <article class="strategy-card section-gradient" style="grid-column:1 / -1;">
+              <h3>Odds Bets, Where Offered</h3>
+              <p>After a point is set, some tables and machines let you add a free odds bet that pays true odds with no house edge. It lowers the combined edge (Pass + 1x odds: 0.85%; 3-4-5x: 0.37%) but puts more money on each decision, so swings get bigger. This simulator does not include odds bets.</p>
             </article>
           </div>
         </div>
@@ -1164,12 +1176,91 @@
         <div class="container">
           <div class="seo-content section-panel">
             <p class="eyebrow-muted">Craps math basics</p>
-            <h2 id="bubble-craps-guide">How This Bubble Craps Simulator Works</h2>
+            <h2 id="bubble-craps-guide">Bubble Craps Math: House Edge, Odds, and Variance</h2>
             <p>
-              This free bubble craps simulator lets you practice basic craps-style betting without risking real money. You can test Pass Line, Don’t Pass, and Field bets while watching how streaks and bankroll swings affect the session.
+              Bubble craps uses the same dice math as a live craps table. Two dice make 36 equally likely combinations, and 7 is the most common total (6 of 36, or 16.7%). What changes from machine to machine is the pay table and the list of bets offered, so check the machine's help screen before you play. The numbers below assume standard payouts.
+            </p>
+
+            <h3 id="bubble-craps-house-edge">House edge by bet</h3>
+            <p>
+              House edge is the average share of each bet the game keeps over the long run. A 1.41% edge means an average loss of about $1.41 for every $100 bet, not for every $100 you bring.
+            </p>
+            <div class="table-scroll">
+              <table class="bet-comparison-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Bet</th>
+                    <th scope="col">Pays</th>
+                    <th scope="col">House edge</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>Pass Line / Come</strong></td><td>1:1</td><td>1.41%</td></tr>
+                  <tr><td><strong>Don't Pass / Don't Come (12 pushes)</strong></td><td>1:1</td><td>1.36% per bet (1.40% if pushes are left out)</td></tr>
+                  <tr><td><strong>Free odds behind Pass Line / Come</strong></td><td>2:1 on 4/10, 3:2 on 5/9, 6:5 on 6/8 (laying odds on Don't Pass pays the reverse)</td><td>0%</td></tr>
+                  <tr><td><strong>Pass Line with 3-4-5x odds (combined)</strong></td><td></td><td>0.37%</td></tr>
+                  <tr><td><strong>Field, 2:1 on 2 and 12 (this simulator)</strong></td><td>1:1, 2:1 on 2 and 12</td><td>5.56%</td></tr>
+                  <tr><td><strong>Field, 2:1 on 2 and 3:1 on 12</strong></td><td>1:1, 2:1, 3:1</td><td>2.78%</td></tr>
+                  <tr><td><strong>Place 6 or 8</strong></td><td>7:6</td><td>1.52%</td></tr>
+                  <tr><td><strong>Place 5 or 9</strong></td><td>7:5</td><td>4.00%</td></tr>
+                  <tr><td><strong>Place 4 or 10</strong></td><td>9:5</td><td>6.67%</td></tr>
+                  <tr><td><strong>Buy 4 or 10 (5% commission on wins only)</strong></td><td>2:1 minus 5%</td><td>1.67%</td></tr>
+                  <tr><td><strong>Big 6 / Big 8</strong></td><td>1:1</td><td>9.09%</td></tr>
+                  <tr><td><strong>Hard 6 / Hard 8</strong></td><td>9:1</td><td>9.09%</td></tr>
+                  <tr><td><strong>Hard 4 / Hard 10</strong></td><td>7:1</td><td>11.11%</td></tr>
+                  <tr><td><strong>Any Craps</strong></td><td>7:1</td><td>11.11%</td></tr>
+                  <tr><td><strong>3 or 11</strong></td><td>15:1</td><td>11.11%</td></tr>
+                  <tr><td><strong>Horn (one unit each on 2, 3, 11, 12)</strong></td><td>30:1 and 15:1</td><td>12.50%</td></tr>
+                  <tr><td><strong>2 or 12</strong></td><td>30:1</td><td>13.89%</td></tr>
+                  <tr><td><strong>Any 7</strong></td><td>4:1</td><td>16.67%</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Place and Buy edges are per bet that wins or loses, and one-roll bets are per roll. Watch the wording on one-roll bets. "30 for 1" means 29 to 1 once your stake is counted, which raises the edge on a 2 or 12 from 13.89% to 16.67%.
+            </p>
+
+            <h3>Why odds bets matter</h3>
+            <p>
+              After a point is set, many tables and some machines let you add a free odds bet behind Pass Line or Don't Pass. It pays true odds, so it has no house edge. Adding odds lowers the combined edge (Pass Line alone 1.41%, with 1x odds 0.85%, with 3-4-5x odds 0.37%) because more of your money sits on a bet the house does not profit from. It also puts more money on each decision, so swings get bigger. This simulator does not include odds bets.
+            </p>
+
+            <h3>Variance: why short sessions swing so much</h3>
+            <p>
+              A Pass Line decision takes about 3.4 rolls on average, and each decision wins or loses about one full bet. The Field is settled on every roll. That difference matters more than it looks.
+            </p>
+            <p>Take 100 rolls at $5 a bet:</p>
+            <ul>
+              <li><strong>Pass Line:</strong> about 30 decisions, an expected loss of about $2.09, and a typical swing (one standard deviation) of about $27.</li>
+              <li><strong>Field, every roll:</strong> 100 decisions, an expected loss of about $27.78, and a typical swing of about $54.</li>
+            </ul>
+            <p>
+              The Field costs about 13 times more per 100 rolls because it charges 5.56% on every roll, while the Pass Line charges 1.41% about once every 3.4 rolls. In both cases the swing is much larger than the expected loss, which is why a short session can end well ahead or well behind. Over many sessions the results drift toward the house edge.
+            </p>
+
+            <h3>Why no betting system beats the edge</h3>
+            <p>
+              Every bet on the layout has a negative expected value. Your long-run expected loss is the house edge of each bet times the total amount you bet on it, added up. Betting systems such as Martingale (doubling after a loss), pressing after wins, or switching between Pass and Don't Pass change how much you bet and when. They do not change the edge on any single bet, so they cannot turn the total into a profit.
+            </p>
+            <p>
+              The dice also have no memory. Each roll is independent, so a "hot" machine, a streak of sevens, or a number that "hasn't hit in a while" tells you nothing about the next roll. You can watch a progression system run into this in the <a href="roulette-strategy-simulator.html">roulette strategy simulator</a>, where every system loses about the same share of each dollar bet.
+            </p>
+
+            <h3>What this means at the machine</h3>
+            <ul>
+              <li>Pass Line or Don't Pass, plus odds where the machine offers them, keeps the edge lowest.</li>
+              <li>Hardways and one-roll proposition bets carry 9% to 17% edges (one-roll bets alone run 11% to 17%).</li>
+              <li>The Field is simple, but at 2:1 on both 2 and 12 it costs about four times as much per bet as the Pass Line, and it settles every roll.</li>
+              <li>Pick your bet size and a loss limit before the first roll. Our <a href="bankroll-tools.html">bankroll tools</a> can help with that.</li>
+            </ul>
+            <p>
+              This is educational math, not a way to win. The house keeps its edge on every bet, gambling involves real financial risk, and you should play only where it is legal and only with money you can afford to lose.
             </p>
 
             <h2>Why Use a Craps Simulator?</h2>
+            <p>
+              This free bubble craps simulator lets you practice basic craps-style betting without risking real money. You can test Pass Line, Don’t Pass, and Field bets while watching how streaks and bankroll swings affect the session.
+            </p>
             <p>
               Craps can chew through a bankroll fast when bets get sloppy. A simulator helps you see how short-term luck, point numbers, one-roll bets, and bet sizing affect the outcome before you sit down at a real table or machine.
             </p>
@@ -1183,14 +1274,9 @@
               <li>How quickly repeated small bets add up over a session</li>
             </ul>
 
-            <h2>Important House Edge Note</h2>
-            <p>
-              Pass Line and Don’t Pass are usually among the lower-house-edge basic craps bets. Field bets depend heavily on the machine’s pay table, especially the payouts for 2 and 12. No basic strategy removes the house edge; it only helps you avoid making the game worse for yourself. Casinos already hired math. Do not volunteer as unpaid help.
-            </p>
-
             <h2>Keep Testing the Math</h2>
             <p>
-              Compare this craps session with the <a href="roulette-simulator.html">roulette simulator</a>, pressure-test a staking plan in the <a href="blackjack-bankroll-calculator.html">bankroll calculator</a>, or see variance from another angle in the <a href="slot-simulator.html">slot simulator</a>.
+              Compare this craps session with the <a href="roulette-simulator.html">roulette simulator</a>, pressure-test a staking plan in the <a href="blackjack-bankroll-calculator.html">blackjack bankroll calculator</a>, or see variance from another angle in the <a href="slot-simulator.html">slot simulator</a>.
             </p>
 
             <div class="cta-row">
@@ -1238,7 +1324,7 @@
               <p>The Field is a one-roll bet. It wins or loses on the next dice total and does not carry into the point phase.</p>
             </article>
             <article class="faq-card section-gradient">
-              <h3>Can you beat bubble craps?</h3>
+              <h3>Can strategy remove the house edge in bubble craps?</h3>
               <p>You can make better risk decisions, but you cannot strategy your way out of the house edge. Control bet size, avoid bad habits, and know when to stop.</p>
             </article>
           </div>
@@ -1278,9 +1364,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>

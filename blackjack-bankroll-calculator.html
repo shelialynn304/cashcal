@@ -161,7 +161,7 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What does the blackjack bankroll calculator estimate?",
+          "name": "What does this blackjack bankroll calculator estimate?",
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "It estimates expected loss, average ending bankroll, bust risk, profit chance, likely bankroll ranges, and a suggested maximum bet based on your bankroll, bet size, house edge, hands played, and simulation count."
@@ -177,7 +177,7 @@
         },
         {
           "@type": "Question",
-          "name": "Is this calculator a precise blackjack prediction?",
+          "name": "Is this a precise blackjack prediction?",
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "No. It simulates blackjack hands with a realistic spread of outcomes, including 3:2 blackjacks, doubles, and splits, but it does not track card composition, card counting, or table-specific rules. Use it to see bankroll pressure and variance, not to predict a specific session."
@@ -188,7 +188,7 @@
           "name": "How much bankroll do I need to play blackjack?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "There is no universal minimum bankroll. The amount you need depends on the table minimum, average bet, house edge, planned session length, and how much short-term variance you are willing to absorb."
+            "text": "There is no universal minimum. Your table minimum, average bet, house edge, planned session length, and tolerance for short-term variance all matter. Use the calculator to compare scenarios instead of relying on a fixed bankroll rule."
           }
         },
         {
@@ -430,7 +430,7 @@
               A session busts when the bankroll can no longer cover the base bet. When the bankroll cannot cover a full double or split, the simulator has the hand double or split for less (a simplification, since real tables usually require a full bet to split), so the win and the loss both shrink to what is left and the bankroll never goes below $0. Doubles and splits win more often than they lose, so making them for less costs a little extra: up to about 1.9% of the bet on a hand where only the base bet is covered. On a short bankroll, Expected Loss can therefore be a bit higher than house edge &times; bet &times; hands played, even at a 0% house edge. The simulator runs many sessions and reports distribution statistics (average ending bankroll, P10/P90, bust rate).
             </p>
             <p>
-              Limitations: no card counting, bet spreads, side bets, insurance, surrender, or table-specific rule changes. For rules like 6:5 payouts or a dealer who hits soft 17, enter a higher house edge to approximate them. It is intended to measure bankroll pressure from bet sizing and variance, not to provide precise hand-level EV for complex strategies.
+              Limitations: no card counting, bet spreads, side bets, insurance, surrender, or table-specific rule changes. For rules like 6:5 payouts or a dealer who hits soft 17, enter a higher house edge to approximate them; the <a href="blackjack-rules-edge-finder.html" data-track-event="related_tool_click" data-track-label="Rules Edge Finder from Model Details">Blackjack Rules Edge Finder</a> estimates one from your table's rules. It is intended to measure bankroll pressure from bet sizing and variance, not to provide precise hand-level EV for complex strategies.
             </p>
           </details>
         </div>
@@ -445,21 +445,21 @@
 
             <div class="field">
               <label for="betSize">Bet Size ($)</label>
-              <input type="number" id="betSize" value="5" min="0.01" step="0.01" required />
+              <input type="number" id="betSize" value="4" min="0.01" step="0.01" required />
               <p class="small-note mb-0">This is a single blackjack hand unit. Most players are safer at 1–2% of bankroll.</p>
-              <p id="riskLevel" class="small-note mb-0">Risk level will update as you change bankroll and bet size.</p>
+              <p id="riskLevel" class="small-note mb-0">Unit size vs bankroll will update as you change bankroll and bet size.</p>
             </div>
 
             <div class="field">
               <label for="houseEdge">House Edge (%)</label>
               <input type="number" id="houseEdge" value="0.5" min="0" step="0.01" required />
-              <p class="small-note mb-0">Typical blackjack house edge with decent basic strategy is near 0.5%. Higher values mean worse rules or mistakes.</p>
+              <p class="small-note mb-0">Typical blackjack house edge with decent basic strategy is near 0.5%. Higher values mean worse rules or mistakes. Not sure? <a href="blackjack-rules-edge-finder.html" data-track-event="related_tool_click" data-track-label="Rules Edge Finder from House Edge Field">Estimate your table's house edge from its rules</a>.</p>
             </div>
 
             <div class="field">
               <label for="bets">Hands Played</label>
-              <input type="number" id="bets" value="100" min="1" step="1" required />
-              <p class="small-note mb-0">How many hands you expect to play in the session.</p>
+              <input type="number" id="bets" value="100" min="1" max="10000" step="1" required />
+              <p class="small-note mb-0">How many hands you expect to play in the session. Up to 10,000, and fewer at high simulation counts so the page stays responsive (about 8,500 at 5,000 simulations).</p>
             </div>
 
             <div class="field">
@@ -550,7 +550,7 @@
           <div class="card premium-card interactive-card">
             <h3>Outcome Breakdown</h3>
             <p class="small-note">
-              Busts vs sessions that lost money vs sessions that finished ahead.
+              Busts vs sessions that lost money, broke even, or finished ahead.
             </p>
             <canvas id="resultsChart"></canvas>
           </div>
@@ -638,7 +638,7 @@
           This does not prove blackjack is beatable for normal players. It only shows how likely your bankroll is to get mauled before you stop playing.
         </p>
         <p class="mb-0">
-          Casinos are negative-EV businesses with better lighting.
+          Casino games are negative-EV for players, just with better lighting.
         </p>
       </div>
     </div>
@@ -798,9 +798,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>

@@ -17,7 +17,7 @@
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
 
   <title>Blackjack Rules Edge Finder | House Edge &amp; Bankroll Impact</title>
-  <meta name="description" content="Convert blackjack table rules into an approximate house edge, expected loss, and bankroll impact before you sit down." />
+  <meta name="description" content="Estimate blackjack house edge from table rules: decks, 3:2 vs 6:5, soft 17, doubling, DAS and surrender. See expected loss per hour and per session." />
   <link rel="canonical" href="https://edgeoverluck.com/blackjack-rules-edge-finder.html" />
 
   <meta property="og:title" content="Blackjack Rules Edge Finder | House Edge &amp; Bankroll Impact" />
@@ -148,7 +148,7 @@
         <div class="section-header">
           <span class="eyebrow eyebrow-muted">Calculator</span>
           <h2 id="rules-edge-title" class="section-title">Estimate house edge from table rules</h2>
-          <p class="section-subtext">Educational approximation for basic-strategy play, not exact combinatorial analysis.</p>
+          <p class="section-subtext">Educational approximation for basic-strategy play, not exact combinatorial analysis. It starts from a common 6-deck 3:2 S17 baseline and applies approximate rule adjustments (see <a href="#how-estimate-built">how the estimate is built</a>).</p>
         </div>
 
         <form id="blackjack-rules-form" class="calculator-card card glass-card">
@@ -179,7 +179,8 @@
           <div class="card"><h3>Expected Loss / Hour</h3><p id="result-loss-per-hour">—</p></div>
           <div class="card"><h3>Session Expected Loss</h3><p id="result-session-loss">—</p></div>
           <div class="card"><h3>Total Action</h3><p id="result-total-action">—</p></div>
-          <div class="card"><h3>Bankroll Pressure</h3><p id="result-bankroll-pressure">—</p></div>
+          <div class="card"><h3>Expected Loss vs Bankroll</h3><p id="result-bankroll-pressure">—</p><p class="small-note mb-0"><span id="result-pressure-note">This counts only the house edge, so</span> <a href="blackjack-bankroll-calculator.html">estimate bust risk with the Blackjack Bankroll Calculator</a>.</p></div>
+          <div class="card"><h3>Typical swing (about ±1 standard deviation, flat bets)</h3><p id="result-typical-swing">—</p><p id="result-swing-vs-bankroll" class="small-note mb-0"></p></div>
           <div class="card"><h3>Rule Grade</h3><p id="result-rule-grade">—</p></div>
           <div class="card"><h3>Best Rule Fix</h3><p id="result-best-fix">—</p></div>
         </section>
@@ -198,6 +199,55 @@
           <article class="card glass-card"><h3>3:2 matters most</h3><p>Changing blackjack payout from 3:2 to 6:5 is one of the largest common rule downgrades.</p></article>
           <article class="card glass-card"><h3>Soft 17 matters</h3><p>Dealer hitting soft 17 usually increases the house edge compared with standing on soft 17.</p></article>
           <article class="card glass-card"><h3>Bankroll impact is volume</h3><p>A small edge can still cost meaningful money when average bet size and hands per hour are high.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-divider" id="how-estimate-built" aria-labelledby="how-estimate-built-title">
+      <div class="container">
+        <h2 id="how-estimate-built-title" class="section-title">How the estimate is built</h2>
+        <p class="section-subtext">The tool starts from a common 6-deck baseline and adds a fixed adjustment for each rule that differs from it. These are basic-strategy estimates, not exact combinatorial results.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Rule setting</th><th>Change to house edge</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Baseline:</strong> 6 decks, 3:2 blackjack, dealer stands on soft 17, double on any two cards, double after split (DAS), no re-split aces, no surrender, dealer peeks</td><td>0.40% house edge</td></tr>
+              <tr><td>1 deck</td><td>−0.56%</td></tr>
+              <tr><td>2 decks</td><td>−0.23%</td></tr>
+              <tr><td>4 decks</td><td>−0.06%</td></tr>
+              <tr><td>8 decks</td><td>+0.03%</td></tr>
+              <tr><td>6:5 blackjack payout</td><td>+1.40%</td></tr>
+              <tr><td>Even-money (1:1) blackjack payout</td><td>+2.30%</td></tr>
+              <tr><td>Dealer hits soft 17</td><td>+0.20%</td></tr>
+              <tr><td>Double on 9–11 only</td><td>+0.10%</td></tr>
+              <tr><td>Double on 10–11 only</td><td>+0.18%</td></tr>
+              <tr><td>No double down (the DAS line then does not apply)</td><td>+1.55%</td></tr>
+              <tr><td>No double after split</td><td>+0.14%</td></tr>
+              <tr><td>Late surrender</td><td>−0.07%</td></tr>
+              <tr><td>Re-split aces allowed</td><td>−0.07%</td></tr>
+              <tr><td>No peek / ENHC-style hole card</td><td>+0.11%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small-note">Source: the baseline and rule effects follow Arnold Snyder’s house-edge tables in <cite>Blackbelt in Blackjack</cite> (3rd ed.), shifted to this tool’s 6-deck baseline. The no-double value comes from a paired 6-deck simulation.</p>
+        <div class="grid grid-2">
+          <article class="card glass-card">
+            <h3>The formulas</h3>
+            <ul>
+              <li>House edge = 0.40% + the sum of the rule adjustments</li>
+              <li>Expected loss per hour = bet × hands per hour × house edge</li>
+              <li>Session expected loss = bet × hands per hour × hours × house edge</li>
+              <li>Expected loss vs bankroll = session expected loss ÷ session bankroll</li>
+              <li>Typical swing ≈ 1.15 × bet × √(hands per hour × hours), with flat bets (about 1.05 instead of 1.15 when doubling is not allowed)</li>
+            </ul>
+          </article>
+          <article class="card glass-card">
+            <h3>Worked example</h3>
+            <p>At $25 per hand, 60 hands per hour for 2 hours, total action is $3,000. On the 3:2, S17 baseline (0.40%) the expected session loss is $25 × 60 × 2 × 0.40% = $12. The same game paying 6:5 (1.80%) costs $25 × 60 × 2 × 1.80% = $54.</p>
+            <p class="mb-0">Swings dominate short sessions. With a per-hand standard deviation of about 1.15 units, one standard deviation over those 120 hands is about 1.15 × $25 × √120 ≈ $315, far more than the $12 expected loss.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -231,7 +281,7 @@
       </div>
       <p class="affiliate-note"><strong>Affiliate Disclosure:</strong> This site may contain affiliate links and may earn commissions at no extra cost to you. Affiliate relationships do not change the math, odds, house edge, or editorial standards used on Edge Over Luck.</p>
       <p class="gambling-warning"><strong>21+ / Legal Gambling Notice:</strong> 21+ only where legal. Gambling involves financial risk and can be addictive. These tools are for education and entertainment only and do not guarantee profit.</p>
-      <p class="responsible">Play legally, set limits, and never risk money you cannot afford to lose. If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use your local problem gambling support service. See our <a href="responsible-gambling.html">responsible gambling resources</a>.</p>
+      <p class="responsible">Play legally, set limits, and never risk money you cannot afford to lose. If gambling is causing harm, call or text the National Problem Gambling Helpline at <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738) in the U.S., or use your local problem gambling support service. See our <a href="responsible-gambling.html">responsible gambling resources</a>.</p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>
     </div>
   </footer>

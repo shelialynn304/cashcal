@@ -15,10 +15,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
 
-  <title>Bankroll Tools | Gambling Bankroll Calculators &amp; Session Risk | EdgeOverLuck.com</title>
-  <meta name="description" content="Compare gambling bankroll calculators for blackjack, roulette, slots, and horse racing. Estimate session risk, bankroll pressure, expected loss, and survival before betting." />
-  <meta property="og:title" content="Bankroll Tools | Gambling Bankroll Calculators &amp; Session Risk | EdgeOverLuck.com" />
-  <meta property="og:description" content="Compare gambling bankroll calculators for blackjack, roulette, slots, and horse racing. Estimate session risk, bankroll pressure, expected loss, and survival before betting." />
+  <title>Gambling Bankroll Calculators &amp; Session Risk | Edge Over Luck</title>
+  <meta name="description" content="Compare bankroll calculators for blackjack, roulette, slots, and horse racing. Estimate session risk, expected loss, and bankroll survival before betting." />
+  <meta property="og:title" content="Gambling Bankroll Calculators &amp; Session Risk | Edge Over Luck" />
+  <meta property="og:description" content="Compare bankroll calculators for blackjack, roulette, slots, and horse racing. Estimate session risk, expected loss, and bankroll survival before betting." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://edgeoverluck.com/bankroll-tools.html" />
   <meta property="og:image" content="https://edgeoverluck.com/assets/images/edgeoverluck-casino-calculator-hero.webp" />
@@ -228,10 +228,10 @@
         <div class="result-list" aria-live="polite" style="margin-top:1rem;">
           <div class="result-item stat-card"><span>Bankroll units</span><strong id="quickUnits">30.0</strong></div>
           <div class="result-item stat-card"><span>Safer max bet (50 units)</span><strong id="quickSaferBet">$6.00</strong></div>
-          <div class="result-item stat-card"><span>Rough exposure at session length</span><strong id="quickExposure">$1,500.00</strong></div>
+          <div class="result-item stat-card"><span>Total amount wagered (bet × decisions)</span><strong id="quickExposure">$1,500.00</strong></div>
           <div class="result-item stat-card pressure-card" id="quickRiskCard"><span>Estimated pressure</span><strong id="quickRiskTag">Medium</strong></div>
         </div>
-        <p class="small-note" style="margin-top:1rem;">This is a rough unit check, not a model of expected loss, variance, or house edge. Open the matching calculator below for a fuller picture.</p>
+        <p class="small-note" style="margin-top:1rem;">This is a rough unit check, not a model of expected loss, variance, or house edge. Total amount wagered is the sum of every bet placed, not money at risk. Open the matching calculator below for a fuller picture.</p>
         <div class="hero-actions" style="margin-top:1rem;">
           <a id="quickOpenCalc" class="btn btn-secondary" href="blackjack-bankroll-calculator.html">Open the matching calculator</a>
         </div>
@@ -278,6 +278,12 @@
             <h3>Printable Bankroll Planner</h3>
             <p>Track sessions, bet size, and stop points on a printable workbook page.</p>
             <a class="btn btn-secondary" href="workbook/bankroll-planner.html">Open Bankroll Planner</a>
+          </article>
+          <article class="card premium-card interactive-card">
+            <span class="tag tag-high">Wagering turnover</span>
+            <h3>Casino Bonus Reality Check Calculator</h3>
+            <p>Bonus wagering requirements are bankroll exposure too. Estimate the turnover and expected loss before accepting the terms.</p>
+            <a class="btn btn-secondary" href="casino-bonus-calculator.html">Casino Bonus Reality Check Calculator</a>
           </article>
         </div>
       </div>
@@ -353,7 +359,7 @@
               <tr>
                 <td><strong>Horse Racing</strong></td>
                 <td>Set by track takeout, not a fixed edge</td>
-                <td>Pari-mutuel pools and takeout matter. Ticket structure can multiply cost, and exotic bets usually have high variance. See the <a href="how-we-calculate-odds.html">how we calculate odds</a> notes.</td>
+                <td>Pari-mutuel pools and takeout matter. Ticket structure can multiply cost, and exotic bets usually have high variance. See how takeout shrinks the pool with the <a href="takeout-overlay-calculator.html">horse racing takeout and overlay calculator</a>.</td>
               </tr>
             </tbody>
           </table>
@@ -542,9 +548,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>
@@ -580,7 +586,23 @@
 
       function update() {
         var bankroll = Math.max(0, parseFloat(bankrollInput.value) || 0);
-        var bet = Math.max(0.01, parseFloat(betInput.value) || 0.01);
+        var betRaw = parseFloat(betInput.value);
+
+        if (openCalcLink) {
+          openCalcLink.setAttribute('href', CALC_LINKS[gameSelect.value] || CALC_LINKS.blackjack);
+        }
+
+        // No silent $0.01 substitute: ask for a real bet instead.
+        if (!(betRaw > 0)) {
+          unitsOut.textContent = '\u2014';
+          saferBetOut.textContent = gameSelect.value === 'slots' ? 'See slot calculator' : money(bankroll / 50);
+          exposureOut.textContent = '\u2014';
+          riskCard.classList.remove('is-danger', 'is-good');
+          riskTagOut.textContent = 'Enter a bet above $0';
+          return;
+        }
+
+        var bet = Math.max(0.01, betRaw);
         var decisions = parseInt(sessionSelect.value, 10) || 150;
         var units = bankroll / bet;
         // Slot spins swing several times more than a table-game bet, so the

@@ -15,8 +15,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
-  <title>How We Calculate Gambling Odds, RTP, House Edge & EV | EdgeOverLuck.com</title>
-  <meta name="description" content="Learn how EdgeOverLuck.com explains gambling odds, RTP, house edge, variance, probability, expected value, bankroll simulations, randomness, and casino math examples." />
+  <title>How We Calculate Odds, RTP, House Edge &amp; EV | Edge Over Luck</title>
+  <meta name="description" content="Learn how EdgeOverLuck.com explains gambling odds, RTP, house edge, variance, probability, expected value, bankroll simulations, and worked examples." />
   <link rel="canonical" href="https://edgeoverluck.com/how-we-calculate-odds.html" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="assets/images/logo/favicon-192.png" />
@@ -29,7 +29,7 @@
     "headline": "How We Calculate Gambling Odds, RTP, House Edge and EV",
     "description": "A plain-English explanation of the probability models, RTP, house edge, variance, expected value, bankroll simulations, and randomness concepts used by EdgeOverLuck.com.",
     "url": "https://edgeoverluck.com/how-we-calculate-odds.html",
-    "dateModified": "2026-05-10",
+    "dateModified": "2026-11-03",
     "publisher": {
       "@type": "Organization",
       "name": "EdgeOverLuck.com",
@@ -120,7 +120,7 @@
       <div class="hero-actions">
         <a class="btn btn-primary" href="blackjack-bankroll-calculator.html">Try the Bankroll Calculator</a>
         <a class="btn btn-secondary" href="slot-simulator.html">Run a Slot Simulation</a>
-        <a class="btn btn-secondary" href="model-assumptions.html?print=1" target="_blank" rel="noopener">Download Model Assumptions (PDF)</a>
+        <a class="btn btn-secondary" href="model-assumptions.html?print=1" target="_blank" rel="noopener">Print or save Model Assumptions as PDF</a>
       </div>
     </section>
 
@@ -137,6 +137,20 @@
         </ul>
       </article>
 
+      <article class="trust-card" id="formulas">
+        <h2>Formulas We Use</h2>
+        <ul>
+          <li><strong>Expected value per $1:</strong> EV = sum of (probability &times; net result) over every outcome.</li>
+          <li><strong>Roulette straight-up EV:</strong> on a double-zero wheel, (1/38)(+35) + (37/38)(&minus;1) = &minus;2/38 = &minus;5.26% per $1. On a single-zero wheel, (1/37)(+35) + (36/37)(&minus;1) = &minus;1/37 = &minus;2.70%. <a class="trust-footer-link" href="roulette-calculator.html">Check these in the roulette calculator</a>.</li>
+          <li><strong>House edge:</strong> house edge = &minus;EV per $1, so the double-zero straight-up bet carries a 5.26% house edge.</li>
+          <li><strong>RTP:</strong> RTP = 1 &minus; house edge, so a 5.26% edge is a 94.74% RTP.</li>
+          <li><strong>Expected loss:</strong> house edge &times; total amount wagered. Example: $10 &times; 100 spins &times; 5.26% (exactly 2/38) = $52.63 on a double-zero wheel.</li>
+          <li><strong>Net profit vs. total returned:</strong> a 35-to-1 win on a $1 bet returns $36 total: $35 net profit plus your $1 stake.</li>
+          <li><strong>Craps pass line:</strong> house edge = 7/495 = 1.41%.</li>
+          <li><strong>Bonus wagering:</strong> the <a class="trust-footer-link" href="casino-bonus-calculator.html">casino bonus wagering cost</a> is wagering &times; house edge if the full wagering is completed. Example: $3,000 of wagering at 96% RTP (4% edge) = $120. If the balance runs out first, play stops and the average loss is smaller.</li>
+        </ul>
+      </article>
+
       <article class="trust-card">
         <h2>Mathematical Models and Random Number Generation</h2>
         <p>Simulations on EdgeOverLuck.com use mathematical probability models and random number generation to approximate repeated gambling outcomes. A simulation run is not a prediction; it is a sample path based on the rules, payouts, assumptions, bet sizes, and probabilities entered into the tool.</p>
@@ -150,7 +164,7 @@
 
       <article class="trust-card">
         <h2>Simple Roulette Example</h2>
-        <p>On a double-zero roulette wheel, a straight-up number bet has 1 winning number out of 38 possible pockets. The payout may be 35 to 1, but the extra zero pockets create a house edge because the payout is lower than true fair odds.</p>
+        <p>On a double-zero roulette wheel, a straight-up number bet has 1 winning number out of 38 possible pockets. The payout may be 35 to 1, but the extra zero pockets create a house edge because the payout is lower than true fair odds. Use the roulette calculator to <a class="trust-footer-link" href="roulette-calculator.html">compare every roulette bet&rsquo;s payout and house edge</a>.</p>
       </article>
 
       <article class="trust-card">
@@ -217,9 +231,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>

@@ -64,7 +64,9 @@
   }
 
   function formatMoney(value) {
-    return `$${Number(value).toFixed(2)}`;
+    const n = Number(value);
+    const fixed = Math.abs(n).toFixed(2);
+    return `${n < 0 && fixed !== '0.00' ? '-' : ''}$${fixed}`;
   }
 
   function toPercent(value, digits) {
@@ -216,6 +218,86 @@
     return Math.random() < probability;
   }
 
+  // Exact flat-bet session model (no Monte Carlo noise).
+  // State u = whole bets the bankroll can cover. Each spin moves u -> u + payout
+  // with winProb and u -> u - 1 otherwise; u = 0 means the next bet cannot be
+  // placed (bust). Mass with u above the spins remaining can never bust, so it is
+  // removed and credited with all remaining spins. Sessions longer than maxSpins
+  // are modeled for the first maxSpins spins only (exact: false). Tail mass below
+  // 1e-280 is dropped to avoid slow subnormal math; the effect is far below
+  // display precision.
+  const FLAT_BET_DP_MAX_SPINS = 20000;
+
+  function flatBetBustStats(options) {
+    const settings = options || {};
+    const bankroll = Number(settings.bankroll);
+    const betSize = Number(settings.betSize);
+    const winProb = Number(settings.winProb);
+    const payout = Math.round(Number(settings.payout));
+    const spins = Math.floor(Number(settings.spins));
+    const maxSpins = Number.isFinite(settings.maxSpins) ? Math.floor(settings.maxSpins) : FLAT_BET_DP_MAX_SPINS;
+
+    if (!(bankroll > 0) || !(betSize > 0) || !(winProb >= 0 && winProb <= 1) || !(payout >= 1) || !(spins >= 0)) {
+      return null;
+    }
+
+    const n = Math.min(spins, maxSpins);
+    const units = Math.floor((bankroll / betSize) + 1e-9);
+    const result = { units, spinsModeled: n, exact: n === spins, bustProb: 0, expectedSpins: n };
+
+    if (units < 1) {
+      result.bustProb = n > 0 ? 1 : 0;
+      result.expectedSpins = 0;
+      return result;
+    }
+    if (units > n) return result;
+
+    const lossProb = 1 - winProb;
+    let cur = new Float64Array(n + payout + 2);
+    let next = new Float64Array(n + payout + 2);
+    let lo = units;
+    let hi = units;
+    let bust = 0;
+    let expectedSpins = 0;
+    cur[units] = 1;
+
+    for (let t = 0; t < n; t += 1) {
+      const remaining = n - t;
+      while (hi > remaining) {
+        if (cur[hi] !== 0) {
+          expectedSpins += cur[hi] * remaining;
+          cur[hi] = 0;
+        }
+        hi -= 1;
+      }
+      if (hi < lo) break;
+
+      let alive = 0;
+      for (let u = lo; u <= hi; u += 1) {
+        const mass = cur[u];
+        if (mass === 0) continue;
+        cur[u] = 0;
+        if (mass < 1e-280) continue;
+        alive += mass;
+        next[u + payout] += mass * winProb;
+        next[u - 1] += mass * lossProb;
+      }
+      expectedSpins += alive;
+      bust += next[0];
+      next[0] = 0;
+
+      const swap = cur;
+      cur = next;
+      next = swap;
+      lo = Math.max(1, lo - 1);
+      hi += payout;
+    }
+
+    result.bustProb = Math.min(1, Math.max(0, bust));
+    result.expectedSpins = expectedSpins;
+    return result;
+  }
+
   global.RouletteMath = {
     ROULETTE_BET_TYPES,
     WHEEL_CONFIG,
@@ -238,6 +320,8 @@
     fibonacciStep,
     dalembertStep,
     calculateSpinMath,
-    randomSpinWin
+    randomSpinWin,
+    FLAT_BET_DP_MAX_SPINS,
+    flatBetBustStats
   };
 }(window));

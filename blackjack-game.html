@@ -13,7 +13,7 @@
   </script>
   <script src="js/amplitude-init.js" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Practice blackjack decisions with an interactive trainer. Test hit, stand, double, and split moves, track accuracy, and learn basic strategy before playing real money." />
+<meta name="description" content="Practice blackjack hit, stand, double, and split decisions in a free trainer that grades each move against basic strategy and tracks your accuracy." />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://edgeoverluck.com/blackjack-game.html" />
 <title>Blackjack Trainer | Practice Basic Strategy Decisions</title>
@@ -40,7 +40,7 @@
       "@id": "https://edgeoverluck.com/blackjack-game.html#webpage",
       "url": "https://edgeoverluck.com/blackjack-game.html",
       "name": "Blackjack Trainer | Practice Basic Strategy Decisions",
-      "description": "Practice blackjack decisions with an interactive trainer. Test hit, stand, double, and split moves, track accuracy, and learn basic strategy before playing real money.",
+      "description": "Practice blackjack hit, stand, double, and split decisions in a free trainer that grades each move against basic strategy and tracks your accuracy.",
       "isPartOf": {
         "@id": "https://edgeoverluck.com/#website"
       },
@@ -94,7 +94,7 @@
           "name": "What does this blackjack trainer teach?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The trainer helps you practice common blackjack decisions such as hit, stand, double, and split while showing feedback based on basic strategy."
+            "text": "It helps you practice hit, stand, double, and split decisions with basic strategy feedback."
           }
         },
         {
@@ -102,7 +102,7 @@
           "name": "Can a blackjack trainer guarantee profit?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. A trainer can help reduce decision mistakes, but it cannot remove variance, casino rules, or the house edge."
+            "text": "No. It can reduce decision mistakes, but it cannot remove variance, casino rules, or the house edge."
           }
         },
         {
@@ -110,7 +110,15 @@
           "name": "Why does blackjack strategy matter?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Blackjack is one of the casino games where player decisions affect the long-run cost. Basic strategy helps avoid extra edge from avoidable mistakes."
+            "text": "Blackjack decisions affect long-run cost. Better choices help avoid adding extra edge against yourself."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should I practice before playing for real?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Practicing first is cheaper than learning under pressure with real money on the table."
           }
         }
       ]
@@ -794,7 +802,8 @@ h1 {
   color: var(--casino-gold-bright);
 }
 
-.blackjack-info-panel p {
+.blackjack-info-panel p,
+.blackjack-info-panel li {
   color: #e8dec5;
   line-height: 1.55;
 }
@@ -999,6 +1008,10 @@ h1 {
     top: 5px;
   }
 
+  .bet-center::before {
+    inset: -22px 0;
+  }
+
   .chips {
     gap: 9px;
   }
@@ -1139,15 +1152,16 @@ h1 {
     </div>
   </header>
 
+<main>
 <div class="wrap blackjack-shell">
 
-<header class="trainer-hero" aria-labelledby="trainerTitle">
+<section class="trainer-hero" aria-labelledby="trainerTitle">
   <p class="brand-kicker">EdgeOverLuck.com</p>
   <h1 id="trainerTitle">Blackjack Trainer</h1>
   <p class="hero-tagline">Train before the casino trains you.</p>
-</header>
+</section>
 
-<main class="trainer-panel" aria-label="Interactive blackjack trainer">
+<section class="trainer-panel" aria-label="Interactive blackjack trainer">
   <div class="panel-topline">
     <div class="topbar game-status" aria-label="Bankroll and current bet">
       <div class="status-tile"><span class="status-label">Bankroll</span> $<span id="bankroll" class="status-value">1000</span></div>
@@ -1239,7 +1253,7 @@ h1 {
     </div>
 
   </div>
-</main>
+</section>
 </div>
 
 
@@ -1249,6 +1263,34 @@ h1 {
     <p>
       This trainer focuses on one job: helping you practice hit, stand, double, and split choices until basic strategy feels less like a chart and more like a habit.
       It cannot guarantee a win, but it can help reduce avoidable decision mistakes.
+    </p>
+  </article>
+
+  <article class="blackjack-info-panel" aria-labelledby="blackjack-rules-title">
+    <h2 id="blackjack-rules-title">Table rules and how grading works</h2>
+    <h3>Table rules</h3>
+    <ul>
+      <li>6 decks, shuffled before every hand.</li>
+      <li>The dealer stands on all 17s, including soft 17.</li>
+      <li>The dealer checks for blackjack with an Ace or 10 up, and a dealer blackjack ends the hand before you act.</li>
+      <li>Blackjack pays 3:2.</li>
+      <li>You may double on any first two cards, including after a split.</li>
+      <li>Any pair can be split once (no resplitting), and split aces get one card each (21 there pays 1:1, not 3:2).</li>
+      <li>No surrender or insurance.</li>
+    </ul>
+    <h3>How grading works</h3>
+    <p>
+      Each Hit, Stand, Double, or Split is checked against total-dependent basic strategy for these rules.
+      If the chart move isn&rsquo;t available (3+ cards, short bankroll, or a resplit), the best available move is graded instead.
+      Accuracy = correct &divide; (correct + mistakes).
+    </p>
+    <p>
+      <strong>Hints</strong> ON shows the Strategy Coach&rsquo;s recommended move before you act and highlights that button; OFF hides it, and you get the explanation after your choice.
+      <strong>Detailed</strong> ON gives full explanations; OFF gives a short one-line reason.
+    </p>
+    <p>
+      Compare your moves with the <a href="blackjack-strategy.html" data-track-event="internal_link_click" data-track-label="Full basic strategy chart from Trainer rules">full basic strategy chart</a>, or
+      <a href="blackjack-rules-edge-finder.html" data-track-event="internal_link_click" data-track-label="Rules Edge Finder from Trainer rules">see how rule changes such as H17 or 6:5 move the house edge</a>.
     </p>
   </article>
 
@@ -1296,6 +1338,7 @@ h1 {
     </div>
   </article>
 </section>
+</main>
 
 
 <div id="resultBubble" class="result-bubble hidden">WRONG!</div>
@@ -1343,9 +1386,9 @@ h1 {
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>
