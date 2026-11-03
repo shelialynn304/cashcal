@@ -70,7 +70,12 @@ for (const file of htmlFiles(REPO_ROOT)) {
   let next = original;
   const rel = path.relative(REPO_ROOT, file);
 
-  if (MODULE_BLOCK.test(next)) next = next.replace(MODULE_BLOCK, '');
+  // Repeat until nothing changes so no Amplitude module block can survive.
+  let previous;
+  do {
+    previous = next;
+    next = next.replace(MODULE_BLOCK, '');
+  } while (next !== previous);
 
   if (INIT_TAG.test(next)) {
     next = next.replace(INIT_TAG, (_m, src) => `<script src="${src}" defer></script>`);
