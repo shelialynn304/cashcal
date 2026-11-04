@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Amplitude Analytics + Session Replay -->
-  <script type="module">
-    import * as amplitude from 'https://cdn.jsdelivr.net/npm/@amplitude/unified@1/+esm';
-
-    // Amplitude ingestion key — public by design; move to an env var when you set up environments.
-    const AMPLITUDE_API_KEY = '8a4022368b20bf1e7d46632beeef889';
-
-    amplitude.initAll(AMPLITUDE_API_KEY, {"analytics":{"autocapture":true},"sessionReplay":{"sampleRate":1}});
-
-    window.amplitude = amplitude;
-  </script>
   <meta charset="UTF-8" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SLW7YE234T"></script>
@@ -22,7 +11,7 @@
 
     gtag('config', 'G-SLW7YE234T');
   </script>
-  <script src="js/amplitude-init.js"></script>
+  <script src="js/amplitude-init.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
@@ -120,6 +109,32 @@
     </section>
 
     <section class="trust-grid">
+      <article class="trust-card" id="get-help">
+        <h2>Get Help Now</h2>
+        <p>If gambling is causing harm, call or text the National Problem Gambling Helpline at <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> <span style="white-space:nowrap">(1-800-697-3738)</span> in the U.S., or use your local problem gambling support service. You can also chat with the helpline online at <a href="https://www.ncpgambling.org/chat" target="_blank" rel="noopener noreferrer">ncpgambling.org/chat</a>. The helpline is run by the National Council on Problem Gambling, is free and confidential, and is open 24/7. Family members and friends can contact it too. You can also visit <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">ncpgambling.org</a> for additional information.</p>
+        <p class="trust-small"><a href="tel:18004262537" style="white-space:nowrap">1-800-GAMBLER</a> <span style="white-space:nowrap">(1-800-426-2537)</span> is also still answered by the Council on Compulsive Gambling of New Jersey.</p>
+        <ul>
+          <li><strong>Peer support:</strong> <a href="https://gamblersanonymous.org" target="_blank" rel="noopener noreferrer">Gamblers Anonymous</a> runs free in-person, online, and phone meetings for people who want to stop gambling.</li>
+          <li><strong>Family and friends:</strong> <a href="https://gam-anon.org" target="_blank" rel="noopener noreferrer">Gam-Anon</a> is a support fellowship for people affected by someone else's gambling.</li>
+        </ul>
+        <p class="trust-note"><strong>In a crisis:</strong> if you are thinking about suicide or are in emotional crisis, call or text <a href="tel:988">988</a> to reach the 988 Suicide &amp; Crisis Lifeline in the U.S. This is a crisis line, not a gambling helpline, and it is free and available 24/7. If you are in immediate danger, call <a href="tel:911">911</a>.</p>
+        <p><strong>Outside the U.S.:</strong></p>
+        <ul>
+          <li><strong>England, Scotland and Wales:</strong> National Gambling Helpline, run by GamCare, <a href="tel:+448088020133" style="white-space:nowrap">0808 8020 133</a> (free, 24/7).</li>
+          <li><strong>Ontario, Canada:</strong> ConnexOntario, <a href="tel:18665312600" style="white-space:nowrap">1-866-531-2600</a> (free, confidential, 24/7).</li>
+          <li><strong>Australia:</strong> National Gambling Helpline, <a href="tel:1800858858" style="white-space:nowrap">1800 858 858</a> (free, confidential, 24/7), or online counselling at <a href="https://www.gamblinghelponline.org.au" target="_blank" rel="noopener noreferrer">Gambling Help Online</a>.</li>
+        </ul>
+      </article>
+      <article class="trust-card" id="self-check">
+        <h2>Quick Self-Check</h2>
+        <p>These three questions come from the Brief Biosocial Gambling Screen (BBGS), developed by the Division on Addiction at Cambridge Health Alliance, a Harvard Medical School teaching hospital. Think about the past 12 months:</p>
+        <ol>
+          <li>Have you become restless, irritable or anxious when trying to stop or cut down on gambling?</li>
+          <li>Have you tried to keep your family or friends from knowing how much you gambled?</li>
+          <li>Did you have such financial trouble as a result of your gambling that you had to get help with living expenses from family, friends or welfare?</li>
+        </ol>
+        <p class="trust-note">If you answered yes to even one question, it is worth talking to a helpline. A screen is not a diagnosis, but one yes is a good reason to get a fuller check.</p>
+      </article>
       <article class="trust-card">
         <h2>Core Safety Rules</h2>
         <p>Set a fixed entertainment budget, decide stop-loss and time limits before playing, never borrow money to gamble, and never gamble while impaired or under pressure.</p>
@@ -128,13 +143,31 @@
         <h2>Know the Warning Signs</h2>
         <p>Take a break and seek help if you hide gambling, chase losses, miss bills, gamble with money needed for essentials, or feel unable to stop.</p>
       </article>
-      <article class="trust-card">
-        <h2>Help Resources</h2>
-        <p>If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use your local problem gambling support service. You can also visit <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">ncpgambling.org</a> for additional information.</p>
+      <article class="trust-card" id="blocking-tools">
+        <h2>Tools That Put Distance Between You and the Bet</h2>
+        <ul>
+          <li><strong>Self-exclusion:</strong> many states run a voluntary self-exclusion program through the state gaming commission or regulator. Once enrolled, you are barred from the covered casinos or betting sites for the period you choose. Rules and coverage vary by state, so check your state regulator's website or ask the helpline.</li>
+          <li><strong>Account limits:</strong> licensed online casinos and sportsbooks usually let you set deposit, loss, and time limits, or take a cool-off break. Set them before you play, not in the middle of a losing run.</li>
+          <li><strong>Bank and card blocks:</strong> some banks and card issuers can block gambling transactions. Check your banking app or ask your bank.</li>
+          <li><strong>Blocking software:</strong> blocking apps and filters can stop gambling sites and apps from loading on your phone and computer.</li>
+        </ul>
+      </article>
+      <article class="trust-card" id="chasing-math">
+        <h2>Why Chasing Losses Fails, in Numbers</h2>
+        <p>Expected loss = house edge &times; total amount wagered. Chasing losses means betting more, or playing longer, to win money back. Both raise the total amount wagered, so both raise the expected loss. No betting system changes the house edge: doubling after a loss only changes how the losses arrive. You can <a href="roulette-strategy-simulator.html">see Martingale vs flat betting in the Roulette Strategy Simulator</a>.</p>
+        <p>Each spin, hand, or roll is independent. A losing streak does not make a win more likely, and a slot machine is never "due" for a bonus or a jackpot.</p>
+        <p>What it costs per hour on average (assumptions, not promises; real sessions swing far above and below these numbers):</p>
+        <ul>
+          <li><strong>Blackjack:</strong> $25 bet &times; 70 hands per hour &times; 0.5% house edge (basic strategy, good rules) = <strong>$8.75 per hour</strong>.</li>
+          <li><strong>American roulette:</strong> $10 bet &times; 40 spins per hour &times; 5.26% house edge (2/38) = <strong>$21.05 per hour</strong>.</li>
+          <li><strong>Slots:</strong> $1 spin &times; 600 spins per hour &times; 8% house edge (92% RTP) = <strong>$48.00 per hour</strong>.</li>
+        </ul>
+        <p class="trust-small">Doubling your bet or your playing time doubles these figures. Math does not guarantee wins, and the house usually has the edge.</p>
       </article>
       <article class="trust-card">
         <h2>How Our Tools Should Be Used</h2>
         <p>Use the bankroll calculator, blackjack trainer, and slot simulator to understand downside risk and make more informed decisions. Do not use any tool as a reason to bet more than you can afford.</p>
+        <p>Before a session, <a href="bankroll-tools.html">plan session limits with the Bankroll Tools</a>, and read <a href="slot-rtp-explained.html">how slot RTP and volatility work</a> before you pick a machine.</p>
       </article>
     </section>
   </main>
@@ -170,9 +203,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>

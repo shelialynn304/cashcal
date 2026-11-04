@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Amplitude Analytics + Session Replay -->
-  <script type="module">
-    import * as amplitude from 'https://cdn.jsdelivr.net/npm/@amplitude/unified@1/+esm';
-
-    // Amplitude ingestion key — public by design; move to an env var when you set up environments.
-    const AMPLITUDE_API_KEY = '8a4022368b20bf1e7d46632beeef889';
-
-    amplitude.initAll(AMPLITUDE_API_KEY, {"analytics":{"autocapture":true},"sessionReplay":{"sampleRate":1}});
-
-    window.amplitude = amplitude;
-  </script>
   <meta charset="UTF-8" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SLW7YE234T"></script>
@@ -22,12 +11,12 @@
 
     gtag('config', 'G-SLW7YE234T');
   </script>
-  <script src="js/amplitude-init.js"></script>
+  <script src="js/amplitude-init.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
-  <title>Horse Racing Takeout &amp; Overlay Calculator | Fair Odds &amp; EV Tool | EdgeOverLuck.com</title>
-  <meta name="description" content="Convert horse racing odds to implied probability, compare your win estimate to fair odds, and check whether a bet is an overlay or underlay. Free takeout and EV calculator." />
+  <title>Horse Racing Takeout &amp; Overlay Calculator: Fair Odds &amp; EV</title>
+  <meta name="description" content="Convert horse racing odds to implied probability, compare your win estimate to fair odds, and see if a bet is an overlay or underlay. Free takeout and EV tool." />
   <meta property="og:title" content="Horse Racing Takeout &amp; Overlay Calculator | Edge Over Luck" />
   <meta property="og:description" content="Convert horse racing odds to implied probability, compare your win estimate to fair odds, and check whether a bet is an overlay or underlay." />
   <meta property="og:type" content="website" />
@@ -260,7 +249,15 @@
             "name": "What is an overlay in horse racing?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "An overlay is a bet where the payout odds are higher than the fair odds implied by your estimate of the horse's true chance."
+              "text": "An overlay is a bet where the payout odds are better than the fair odds implied by your estimated win probability. If your fair price is 4-1 and the tote board offers 6-1, that is an overlay if your estimate is accurate."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is an underlay?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "An underlay is the opposite: the horse may still win, but the payout is too low compared with the estimated chance. Winning a bad price can still be a bad long-run bet."
             }
           },
           {
@@ -268,15 +265,23 @@
             "name": "Do tote odds already include takeout?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. Current tote odds are produced from the betting pool after track takeout and pool dynamics. This calculator uses posted odds for expected value and explains takeout separately so it is not double-counted."
+              "text": "Yes. Tote odds come from the pari-mutuel pool after takeout and betting activity. That is why this calculator uses posted odds for EV and explains takeout separately instead of subtracting it twice."
             }
           },
           {
             "@type": "Question",
-            "name": "How do I convert horse racing odds to probability?",
+            "name": "How do I convert 4-1 odds to probability?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Divide 1 by the odds plus 1. A 7-1 horse has an implied probability of 1 divided by 8, or 12.5 percent."
+              "text": "Use 1 ÷ (odds + 1). For 4-1, that is 1 ÷ 5 = 20%."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why do exotics need a bigger edge?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Exotic pools usually have higher takeout and more variance. That means your handicapping edge has to be stronger, and your bankroll has to survive more losing tickets."
             }
           },
           {
@@ -591,6 +596,10 @@
             <summary>Why do exotics need a bigger edge?</summary>
             <p>Exotic pools usually have higher takeout and more variance. That means your handicapping edge has to be stronger, and your bankroll has to survive more losing tickets.</p>
           </details>
+          <details class="card glass-card-strong">
+            <summary>Can an overlay calculator guarantee profit?</summary>
+            <p>No. The calculation depends on your probability estimate, final odds, and variance. Bad estimates create bad expected value, even when the math format is correct.</p>
+          </details>
         </div>
       </div>
     </section>
@@ -642,9 +651,9 @@
       </p>
       <p class="responsible">
         Play legally, set limits, and never risk money you cannot afford to lose.
-        If gambling is causing harm, call or text
-        <a href="tel:18004262537">1-800-GAMBLER</a>
-        where available, or use your local problem gambling support service.
+        If gambling is causing harm, call or text the National Problem Gambling Helpline at
+        <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+        in the U.S., or use your local problem gambling support service.
         See our <a href="responsible-gambling.html">responsible gambling resources</a>.
       </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>
@@ -689,7 +698,7 @@
 
       function selectedTakeout() {
         if (takeoutSelect.value === "custom") {
-          return Number.parseFloat(customTakeoutInput.value) || 0;
+          return Math.min(40, Math.max(0, Number.parseFloat(customTakeoutInput.value) || 0));
         }
         return Number.parseFloat(takeoutSelect.value) || 0;
       }
@@ -709,7 +718,8 @@
       function calculate() {
         const odds = Number.parseFloat(oddsInput.value);
         const userPct = Number.parseFloat(probInput.value);
-        const stake = Math.max(0, Number.parseFloat(stakeInput.value) || 0);
+        const stake = Number.parseFloat(stakeInput.value) || 0;
+        const hasStake = stake > 0;
         const takeout = selectedTakeout();
 
         customTakeoutWrap.hidden = takeoutSelect.value !== "custom";
@@ -733,14 +743,14 @@
         $("impliedProbOut").textContent = pct(impliedProb);
         $("fairOddsOut").textContent = fmtOdds(fairOdds);
         $("evDollarOut").textContent = money(evPerDollar);
-        $("evStakeOut").textContent = money(evForStake);
+        $("evStakeOut").textContent = hasStake ? money(evForStake) : "Enter a stake above $0";
         $("edgeOut").textContent = (edgePoints >= 0 ? "+" : "") + (edgePoints * 100).toFixed(1) + " pts";
         $("breakEvenOut").textContent = pct(impliedProb);
 
         if (evPerDollar > 0.02) {
           verdict.textContent = "Overlay";
           verdict.className = "overlay-verdict is-over";
-          verdictText.textContent = `If your ${userPct.toFixed(1)}% estimate is right, ${fmtOdds(odds)} pays better than your fair price of ${fmtOdds(fairOdds)}. Expected value is about ${money(evPerDollar)} per $1, or ${money(evForStake)} on a $${stake.toFixed(2)} stake.`;
+          verdictText.textContent = `If your ${userPct.toFixed(1)}% estimate is right, ${fmtOdds(odds)} pays better than your fair price of ${fmtOdds(fairOdds)}. Expected value is about ${money(evPerDollar)} per $1${hasStake ? `, or ${money(evForStake)} on a $${stake.toFixed(2)} stake` : ""}.`;
         } else if (evPerDollar < -0.02) {
           verdict.textContent = "Underlay";
           verdict.className = "overlay-verdict is-under";

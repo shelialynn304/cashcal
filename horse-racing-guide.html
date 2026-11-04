@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Amplitude Analytics + Session Replay -->
-  <script type="module">
-    import * as amplitude from 'https://cdn.jsdelivr.net/npm/@amplitude/unified@1/+esm';
-
-    // Amplitude ingestion key — public by design; move to an env var when you set up environments.
-    const AMPLITUDE_API_KEY = '8a4022368b20bf1e7d46632beeef889';
-
-    amplitude.initAll(AMPLITUDE_API_KEY, {"analytics":{"autocapture":true},"sessionReplay":{"sampleRate":1}});
-
-    window.amplitude = amplitude;
-  </script>
   <meta charset="UTF-8" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SLW7YE234T"></script>
@@ -22,7 +11,7 @@
 
     gtag('config', 'G-SLW7YE234T');
   </script>
-  <script src="js/amplitude-init.js"></script>
+  <script src="js/amplitude-init.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
   <title>Horse Racing Betting Guide | Odds, Bet Types & Bankroll Math</title>
@@ -199,7 +188,7 @@
             "name": "What is the easiest horse bet for beginners?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Win bets are usually the easiest place to start because they are simple to track and easier to compare against your estimated probability."
+              "text": "Start with Win bets. They are easiest to track, easiest to compare against your expected probability, and easier to learn bankroll discipline with."
             }
           },
           {
@@ -207,7 +196,7 @@
             "name": "What is an exacta box and why is it costly?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "An exacta box covers multiple order combinations. More coverage raises the number of ticket combinations, which can quickly increase cost and reduce value."
+              "text": "An exacta box covers multiple order combinations. More coverage means more ticket combinations, which raises cost quickly and can erase value."
             }
           },
           {
@@ -215,7 +204,7 @@
             "name": "Do longshots make more money over time?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Longshots can create larger single wins, but they also have lower hit rates and bigger drawdowns. They need a real pricing edge to be profitable over time."
+              "text": "Usually no. They create larger single wins but lower hit rates. Without pricing edge, longshot-heavy play often creates bigger drawdowns."
             }
           },
           {
@@ -223,7 +212,7 @@
             "name": "How much bankroll should I bring for a horse racing session?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Use a fixed unit size, often around 1% to 3% of bankroll, and set a race cap before the session starts."
+              "text": "Use a preset unit (often 1%–3% of bankroll) and a race cap. Your session should survive normal losing streaks without forcing bigger bets."
             }
           },
           {
@@ -231,7 +220,7 @@
             "name": "Can I win long-term just by handicapping better?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Better handicapping only helps if your probability estimates beat the market price after takeout. Accuracy alone is not enough without value discipline."
+              "text": "Only if your probability estimates beat market prices after takeout. Accuracy alone is not enough without value discipline."
             }
           }
         ]
@@ -325,7 +314,7 @@
           </p>
           <div class="brand-lockup card-glass">
             <strong>EdgeOverLuck.com</strong>
-            <span>Real Tools for Serious Players.</span>
+            <span>Smart gambling tools for real players.</span>
             <p>Interactive casino simulators, strategy trainers, bankroll tools, and gambling math explained without the false certainty.</p>
           </div>
           <div class="cta-row">
@@ -371,19 +360,19 @@
             <p class="mb-0"><span class="tag tag-low">Most conservative</span></p>
           </article>
           <article class="panel card-glass micro-lift">
-            <h3>Exacta</h3>
+            <h3><a href="exacta-box-calculator.html" data-track-event="related_tool_click" data-track-label="Exacta Box Calculator">Exacta</a></h3>
             <p><strong>Requirement:</strong> Pick 1st and 2nd in exact order.</p>
             <p><strong>Use case:</strong> Better payouts, but far lower hit rate than Win/Place/Show.</p>
             <p class="mb-0"><span class="tag tag-mid">Medium risk</span></p>
           </article>
           <article class="panel card-glass micro-lift">
-            <h3>Trifecta</h3>
+            <h3><a href="trifecta-box-calculator.html" data-track-event="related_tool_click" data-track-label="Trifecta Box Calculator">Trifecta</a></h3>
             <p><strong>Requirement:</strong> Pick top 3 in exact order.</p>
             <p><strong>Use case:</strong> High upside, heavy variance and long cold stretches.</p>
             <p class="mb-0"><span class="tag tag-high">High risk</span></p>
           </article>
           <article class="panel card-glass micro-lift">
-            <h3>Superfecta</h3>
+            <h3><a href="superfecta-box-calculator.html" data-track-event="related_tool_click" data-track-label="Superfecta Box Calculator">Superfecta</a></h3>
             <p><strong>Requirement:</strong> Pick top 4 in exact order.</p>
             <p><strong>Use case:</strong> Big headline payouts with very low hit frequency.</p>
             <p class="mb-0"><span class="tag tag-high">Very high risk</span></p>
@@ -422,8 +411,9 @@
           <article class="card card-glass micro-lift">
             <h3>Odds → Probability Calculator</h3>
             <div class="field">
-              <label for="oddsInput">Fractional odds (examples: 5/2, 7/1, 1/1)</label>
-              <input id="oddsInput" type="text" value="5/2" inputmode="decimal" />
+              <label for="oddsInput">Odds: fractional (5/2, 7/1) or decimal (3.50)</label>
+              <input id="oddsInput" type="text" value="5/2" inputmode="decimal" aria-describedby="oddsInputHint" />
+              <small id="oddsInputHint" class="small-note">For a tote-board price shown as 5, enter 5/1.</small>
             </div>
             <button id="calcOddsBtn" type="button" class="btn btn-secondary" data-track-event="tool_calculate" data-track-label="Horse Odds Probability Calculator">Convert Odds</button>
             <p id="oddsResult" class="summary result-headline" data-track-result="horse-odds-result" data-result-ready="false">Enter odds to see implied probability and decimal odds.</p>
@@ -448,7 +438,7 @@
           <div class="form-row">
             <div class="field">
               <label for="horsesUsed">Horses in box</label>
-              <input id="horsesUsed" type="number" min="2" max="12" step="1" value="4" />
+              <input id="horsesUsed" type="number" min="2" max="20" step="1" value="4" />
             </div>
           </div>
           <button id="calcTicketBtn" type="button" class="btn btn-secondary" data-track-event="tool_calculate" data-track-label="Horse Ticket Cost Estimator">Estimate Ticket</button>
@@ -460,7 +450,8 @@
             <h3>Value Edge Calculator</h3>
             <div class="field">
               <label for="edgeMarketOdds">Market odds (5/1, 3/1, or decimal)</label>
-              <input id="edgeMarketOdds" type="text" value="5/1" inputmode="decimal" />
+              <input id="edgeMarketOdds" type="text" value="5/1" inputmode="decimal" aria-describedby="edgeMarketOddsHint" />
+              <small id="edgeMarketOddsHint" class="small-note">For a tote-board price shown as 5, enter 5/1.</small>
             </div>
             <div class="field">
               <label for="edgeEstimate">Your estimated win chance (%)</label>
@@ -479,7 +470,7 @@
               </div>
               <div class="field">
                 <label for="unitInput">Bet size per race ($)</label>
-                <input id="unitInput" type="number" min="1" step="1" value="15" />
+                <input id="unitInput" type="number" min="1" step="1" value="6" />
               </div>
             </div>
             <div class="form-row">
@@ -514,13 +505,14 @@
             <div class="form-row">
               <div class="field">
                 <label for="favOdds">Favorite odds</label>
-                <input id="favOdds" type="text" value="2/1" />
+                <input id="favOdds" type="text" value="2/1" aria-describedby="raceLabOddsHint" />
               </div>
               <div class="field">
                 <label for="longOdds">Longshot odds</label>
-                <input id="longOdds" type="text" value="12/1" />
+                <input id="longOdds" type="text" value="12/1" aria-describedby="raceLabOddsHint" />
               </div>
             </div>
+            <p id="raceLabOddsHint" class="small-note">Enter fractional (2/1) or decimal (3.00) odds. For a tote-board price shown as 5, enter 5/1.</p>
             <div class="form-row">
               <div class="field">
                 <label for="simRaces">Number of races</label>
@@ -536,9 +528,10 @@
             <ul>
               <li>Favorites usually win more often, but can still lose money when short prices are too low.</li>
               <li>Longshots can show huge temporary spikes but usually have much wider swings.</li>
-              <li>Track prices are pari-mutuel, so takeout is baked into the market odds. This simulation is focused on volatility, not exact pool payouts.</li>
+              <li>Track prices are pari-mutuel, so takeout is already baked into the posted odds. This model assumes about 16.5% win-pool takeout and accurate crowd prices, so both bets have a long-run expected ROI of about -16.5%. Real win takeout varies by state, and breakage makes real returns slightly worse.</li>
+              <li>The gap between favorite and longshot in one run is mostly volatility. This simulation does not model exact pool payouts.</li>
             </ul>
-            <p class="mb-0">Use this with the <a href="blackjack-ev-calculator.html" data-track-event="related_tool_click" data-track-label="Blackjack EV Calculator">EV calculator</a> and <a href="blackjack-bankroll-calculator.html" data-track-event="related_tool_click" data-track-label="Blackjack Bankroll Calculator">bankroll calculator</a> to compare gambling variance across games.</p>
+            <p class="mb-0">Use this with the <a href="blackjack-ev-calculator.html" data-track-event="related_tool_click" data-track-label="Blackjack EV Calculator">blackjack EV calculator</a> and <a href="blackjack-bankroll-calculator.html" data-track-event="related_tool_click" data-track-label="Blackjack Bankroll Calculator">blackjack bankroll calculator</a> to compare gambling variance across games.</p>
           </article>
         </div>
       </div>
@@ -552,7 +545,7 @@
           <ul>
             <li><strong>Set a unit size:</strong> Common starting range is 1%–3% of bankroll per race.</li>
             <li><strong>Cap race exposure:</strong> Avoid firing multiple exotics in every race out of boredom.</li>
-            <li><strong>Pre-commit stops:</strong> Session loss cap and profit lock rule reduce reactive tilt.</li>
+            <li><strong>Pre-commit stops:</strong> Session loss cap and a stop-win limit reduce reactive tilt.</li>
             <li><strong>Grade your bets:</strong> Track whether losses came from bad reads or good bets at bad variance points.</li>
           </ul>
         </article>
@@ -580,7 +573,7 @@
           </article>
           <article class="tip-card pressure-card micro-lift">
             <h3>Ignoring takeout and breakage</h3>
-            <p>Pool deductions change fair odds and reduce achievable long-run returns.</p>
+            <p>Takeout is the percentage removed from the pool. Breakage is the extra rounding-down of payouts (usually to the next lower $0.10 per $1, or $0.20 per $2). Both reduce what winning tickets are paid.</p>
           </article>
           <article class="tip-card pressure-card micro-lift">
             <h3>Betting every race</h3>
@@ -715,9 +708,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html" data-track-event="responsible_gambling_click" data-track-label="Horse Guide Responsible Gambling Resources">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>

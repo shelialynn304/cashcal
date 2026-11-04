@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Amplitude Analytics + Session Replay -->
-  <script type="module">
-    import * as amplitude from 'https://cdn.jsdelivr.net/npm/@amplitude/unified@1/+esm';
-
-    // Amplitude ingestion key — public by design; move to an env var when you set up environments.
-    const AMPLITUDE_API_KEY = '8a4022368b20bf1e7d46632beeef889';
-
-    amplitude.initAll(AMPLITUDE_API_KEY, {"analytics":{"autocapture":true},"sessionReplay":{"sampleRate":1}});
-
-    window.amplitude = amplitude;
-  </script>
   <meta charset="UTF-8" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SLW7YE234T"></script>
@@ -22,18 +11,18 @@
 
     gtag('config', 'G-SLW7YE234T');
   </script>
-  <script src="js/amplitude-init.js"></script>
+  <script src="js/amplitude-init.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
-  <title>Exacta Box Calculator | Exacta Bet Cost by Horses &amp; Base Bet | EdgeOverLuck.com</title>
+  <title>Exacta Box Calculator: Exacta Bet Cost by Horses &amp; Base Bet</title>
   <meta name="description" content="Calculate exacta box ticket cost by base bet and number of horses. See how many combinations n × (n − 1) creates before you hit the ticket window." />
-  <meta property="og:title" content="Exacta Box Calculator | Exacta Bet Cost by Horses &amp; Base Bet | EdgeOverLuck.com" />
+  <meta property="og:title" content="Exacta Box Calculator: Exacta Bet Cost by Horses &amp; Base Bet" />
   <meta property="og:description" content="Calculate exacta box ticket cost by base bet and number of horses. See how many combinations n × (n − 1) creates before you hit the ticket window." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://edgeoverluck.com/exacta-box-calculator.html" />
   <meta property="og:image" content="https://edgeoverluck.com/assets/images/horse-racing/Exotic_Bet_Cost_Calculator_horse.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Exacta Box Calculator | Exacta Bet Cost by Horses &amp; Base Bet | EdgeOverLuck.com" />
+  <meta name="twitter:title" content="Exacta Box Calculator: Exacta Bet Cost by Horses &amp; Base Bet" />
   <meta name="twitter:description" content="Calculate exacta box ticket cost by base bet and number of horses. See how many combinations n × (n − 1) creates before you hit the ticket window." />
   <meta name="twitter:image" content="https://edgeoverluck.com/assets/images/horse-racing/Exotic_Bet_Cost_Calculator_horse.webp" />
   <link rel="canonical" href="https://edgeoverluck.com/exacta-box-calculator.html" />
@@ -97,7 +86,7 @@
             "name": "What is the minimum exacta box?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "The minimum exacta box uses 2 horses, which creates 2 combinations. At a $1 base, the ticket costs $2."
+              "text": "The minimum exacta box uses 2 horses, creating 2 combinations (2 × 1 = 2). At a $1 base, the ticket costs $2."
             }
           },
           {
@@ -105,7 +94,7 @@
             "name": "How is an exacta box different from a straight exacta?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "A straight exacta requires one specific finishing order. An exacta box covers every order among your selected horses, which costs more but hits if either horse finishes first or second."
+              "text": "A straight exacta requires one specific finishing order — horse A first, horse B second. An exacta box covers every order among your selected horses, so it hits whenever two of your horses finish first and second, in either order. The box costs more because it buys multiple combinations."
             }
           },
           {
@@ -113,7 +102,7 @@
             "name": "Does a larger exacta box increase my chances of winning?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "A larger box increases coverage, meaning more finishing orders are covered, but it also increases cost. It does not change the house edge or improve your underlying opinion on the race."
+              "text": "A larger box increases coverage, meaning more finishing-order combinations are covered. It does not improve the underlying edge or change the track takeout rate. You are paying more for broader coverage, not for a better mathematical return."
             }
           },
           {
@@ -121,7 +110,7 @@
             "name": "How does pari-mutuel takeout affect exacta payouts?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Track takeout is deducted from the total exacta pool before any payouts. The remaining pool is split among winning tickets. A higher-cost box does not affect takeout percentage or the pool size."
+              "text": "Track takeout is deducted from the total exacta pool before payouts, and the rest is split among winning tickets in proportion to the amount bet on the winning combination. Your box money joins the pool, but only the one winning combination is paid, at your base bet. Adding horses raises cost and coverage, not the payout on a hit."
             }
           },
           {
@@ -129,7 +118,7 @@
             "name": "Can I use this calculator for exacta keys or partial boxes?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. This calculator covers full box bets only, where every selected horse can finish in any position. Exacta keys and partial boxes require different combination counting."
+              "text": "No. This calculator covers full box bets only, where every selected horse can finish in any covered position. Exacta keys and partial boxes use different combination structures and require a separate calculation."
             }
           }
         ]
@@ -266,7 +255,7 @@
           <div class="form-row">
             <div class="field">
               <label for="ticketBase">Base unit per combination ($)</label>
-              <input id="ticketBase" type="number" min="0.01" step="0.50" value="1" inputmode="decimal" />
+              <input id="ticketBase" type="number" min="0.10" step="0.50" value="1" inputmode="decimal" />
             </div>
             <div class="field">
               <label for="horsesUsed">Horses in box</label>
@@ -283,7 +272,7 @@
           <h2 class="section-title">What this calculator does not do</h2>
           <p>
             This is a ticket cost calculator, not a payout predictor. Exacta payouts are pari-mutuel:
-            the final pool, track takeout rate, and number of winning tickets determine what a winning exacta pays.
+            the final pool, <a href="takeout-overlay-calculator.html">track takeout rate</a>, and number of winning tickets determine what a winning exacta pays.
           </p>
           <p class="mb-0">
             A lower-cost box does not mean a better return. Payout depends on pool size and competition, not ticket count.
@@ -298,7 +287,7 @@
         <p class="section-subtext">
           Formula: combinations = n &times; (n &minus; 1). All values below are pre-verified against the permutation formula.
         </p>
-        <div class="table-scroll">
+        <div class="table-wrap">
           <table class="data-table">
             <thead>
               <tr>
@@ -370,7 +359,7 @@
           </details>
           <details class="card glass-card-strong">
             <summary>How is an exacta box different from a straight exacta?</summary>
-            <p>A straight exacta requires one specific finishing order — horse A first, horse B second. An exacta box covers every order among your selected horses, so it hits regardless of which of your horses finishes first or second. The box costs more because it buys multiple combinations.</p>
+            <p>A straight exacta requires one specific finishing order — horse A first, horse B second. An exacta box covers every order among your selected horses, so it hits whenever two of your horses finish first and second, in either order. The box costs more because it buys multiple combinations.</p>
           </details>
           <details class="card glass-card-strong">
             <summary>Does a larger exacta box increase my chances of winning?</summary>
@@ -378,7 +367,7 @@
           </details>
           <details class="card glass-card-strong">
             <summary>How does pari-mutuel takeout affect exacta payouts?</summary>
-            <p>Track takeout is deducted from the total exacta pool before any payouts are calculated. The remaining pool splits among all winning tickets. A higher-cost box does not affect the takeout percentage or the size of the pool — it only determines how much of the pool you have claim to if you win.</p>
+            <p>Track takeout is deducted from the total exacta pool before payouts, and the rest is split among winning tickets in proportion to the amount bet on the winning combination. Your box money joins the pool, but only the one winning combination is paid, at your base bet. Adding horses raises cost and coverage, not the payout on a hit.</p>
           </details>
           <details class="card glass-card-strong">
             <summary>Can I use this calculator for exacta keys or partial boxes?</summary>
@@ -436,9 +425,9 @@
       </p>
       <p class="responsible">
         Play legally, set limits, and never risk money you cannot afford to lose.
-        If gambling is causing harm, call or text
-        <a href="tel:18004262537">1-800-GAMBLER</a>
-        where available, or use your local problem gambling support service.
+        If gambling is causing harm, call or text the National Problem Gambling Helpline at
+        <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+        in the U.S., or use your local problem gambling support service.
         See our <a href="responsible-gambling.html">responsible gambling resources</a>.
       </p>
       <p class="copyright">&copy; 2026 Edge Over Luck &mdash; Casino math tools for education and entertainment.</p>

@@ -477,7 +477,7 @@
     if (!resolvedBets.length) return 'Spin once to see how roulette variance treats this bet.';
     const wins = resolvedBets.filter(function (bet) { return bet.won; });
     if (wins.length) {
-      return `${wins.length} of ${resolvedBets.length} active bet${resolvedBets.length === 1 ? '' : 's'} hit on ${value}. Net result: ${net >= 0 ? '+' : '-'}${toMoney(Math.abs(net))}.`;
+      return `${wins.length} of ${resolvedBets.length} active bet${resolvedBets.length === 1 ? '' : 's'} hit on ${value}. Net result: ${net > 0 ? '+' : (net < 0 ? '-' : '')}${toMoney(Math.abs(net))}${net === 0 ? ' (push)' : ''}.`;
     }
     return `The wheel landed on ${value}. All ${resolvedBets.length} active bet${resolvedBets.length === 1 ? '' : 's'} missed, so the active stake was lost.`;
   }
@@ -501,26 +501,32 @@
       state.biggestLoss = Math.max(state.biggestLoss, Math.abs(net));
     }
 
-    const streakType = net > 0 ? 'Win Streak' : 'Loss Streak';
-    state.currentStreakCount = state.currentStreakType === streakType ? state.currentStreakCount + 1 : 1;
-    state.currentStreakType = streakType;
+    // A net result of $0 (for example $5 red + $5 black on a non-zero number) is a push:
+    // it is not a win or a loss, so it leaves the current streak unchanged.
+    const isPush = Math.abs(net) < 0.005;
+    const outcomeLabel = isPush ? 'Push' : (net > 0 ? 'Win' : 'Loss');
+    if (!isPush) {
+      const streakType = net > 0 ? 'Win Streak' : 'Loss Streak';
+      state.currentStreakCount = state.currentStreakType === streakType ? state.currentStreakCount + 1 : 1;
+      state.currentStreakType = streakType;
+    }
 
     els.winningNumber.textContent = value;
     els.winningColor.textContent = color.charAt(0).toUpperCase() + color.slice(1);
-    els.outcome.textContent = net > 0 ? 'Win' : 'Loss';
-    els.amountResult.textContent = net >= 0 ? `+${toMoney(net)}` : `-${toMoney(Math.abs(net))}`;
-    els.explanation.textContent = resultExplanation(value, resolvedBets, net);
+    els.outcome.textContent = outcomeLabel;
+    els.amountResult.textContent = isPush ? toMoney(0) : (net > 0 ? `+${toMoney(net)}` : `-${toMoney(Math.abs(net))}`);
+    els.explanation.textContent = resultExplanation(value, resolvedBets, isPush ? 0 : net);
     els.wheelResult.textContent = value;
     els.wheel.setAttribute('aria-label', `Roulette wheel landed on ${value}`);
-    els.wheel.classList.toggle('roulette-wheel-win', net > 0);
-    els.wheel.classList.toggle('roulette-wheel-loss', net <= 0);
+    els.wheel.classList.toggle('roulette-wheel-win', !isPush && net > 0);
+    els.wheel.classList.toggle('roulette-wheel-loss', !isPush && net < 0);
 
     state.lastBets = spinBets.map(cloneBet);
     state.activeBets = [];
     highlightSelection(value, spinBets[0]);
     updateDisplays();
-    setStatus(`${net > 0 ? 'Win' : 'Loss'} on ${value}. Bankroll is now ${toMoney(state.bankroll)}.`);
-    playSound(net > 0 ? 'win' : 'lose');
+    setStatus(`${outcomeLabel} on ${value}. Bankroll is now ${toMoney(state.bankroll)}.`);
+    if (!isPush) playSound(net > 0 ? 'win' : 'lose');
 
     state.spinning = false;
     els.spinButton.disabled = false;
@@ -557,7 +563,11 @@
     const numbers = wheelNumbers(els.wheelType.value);
     const pocketIndex = numbers.indexOf(value);
     const pocketDegrees = 360 / numbers.length;
-    state.rotation += 1080 + (360 - pocketIndex * pocketDegrees) + Math.random() * (pocketDegrees * 0.35);
+    // Turn from the wheel's current angle to the angle that puts this pocket under the pointer.
+    const current = ((state.rotation % 360) + 360) % 360;
+    const target = ((360 - pocketIndex * pocketDegrees) % 360 + 360) % 360;
+    const delta = (target - current + 360) % 360;
+    state.rotation += 1080 + delta + Math.random() * (pocketDegrees * 0.35);
     els.wheel.style.transform = `rotate(${state.rotation}deg)`;
 
     if (state.spinTimer) window.clearTimeout(state.spinTimer);

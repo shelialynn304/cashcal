@@ -11,13 +11,13 @@ function setPreset(game) {
 
   if (game === "blackjack") {
     houseEdgeInput.value = 0.5;
-    betSizeInput.value = 5;
+    betSizeInput.value = 4;
   } else if (game === "roulette") {
     houseEdgeInput.value = 5.26;
-    betSizeInput.value = 5;
+    betSizeInput.value = 4;
   } else if (game === "baccarat") {
     houseEdgeInput.value = 1.06;
-    betSizeInput.value = 5;
+    betSizeInput.value = 4;
   }
 
   currentGame = game;
@@ -182,11 +182,19 @@ function percentile(arr, p) {
   return sorted[lower] * (1 - weight) + sorted[upper] * weight;
 }
 
+const MAX_HANDS = 10000;
+const MAX_SIMULATED_HANDS = 3e8;
+
+// Sessions per bisection step when searching for the recommended max bet.
+function getRecommendedBetSimulations(simulations) {
+  return Math.min(5000, Math.max(500, Math.round(simulations / 2)));
+}
+
 function validateBlackjackBankrollInputs(input) {
   const bankroll = Number(input.bankroll);
   const betSize = Number(input.betSize);
   const houseEdge = Number(input.houseEdge);
-  const bets = Number.parseInt(input.bets, 10);
+  const bets = Number(input.bets);
   const simulations = Number.parseInt(input.simulations, 10);
   const riskTarget = Number(input.riskTarget);
 
@@ -194,9 +202,15 @@ function validateBlackjackBankrollInputs(input) {
   if (!Number.isFinite(betSize) || betSize < 0.01) return "Bet size must be at least $0.01.";
   if (betSize > bankroll) return "Bet size must be positive and no larger than bankroll.";
   if (!Number.isFinite(houseEdge) || houseEdge < 0 || houseEdge > 10) return "House edge must be between 0% and 10%.";
-  if (!Number.isFinite(bets) || bets < 1) return "Hands played must be at least 1.";
+  if (!Number.isInteger(bets) || bets < 1) return "Hands played must be a whole number of at least 1.";
+  if (bets > MAX_HANDS) return "Hands played must be 10,000 or fewer.";
   if (!Number.isFinite(simulations) || simulations < 500 || simulations > 50000) return "Simulations must be between 500 and 50,000.";
   if (!Number.isFinite(riskTarget) || riskTarget < 1 || riskTarget > 99) return "Target bust risk must be between 1% and 99%.";
+  // Total simulated hands: the main run plus the 12 bisection steps of
+  // findRecommendedBet. Above about 3e8 the tab can freeze for seconds.
+  if ((simulations + 12 * getRecommendedBetSimulations(simulations)) * bets > MAX_SIMULATED_HANDS) {
+    return "Too many hands × simulations; lower one of them.";
+  }
   return "";
 }
 
@@ -205,7 +219,7 @@ function normalizeBlackjackBankrollInputs(input) {
     bankroll: Number(input.bankroll),
     betSize: Number(input.betSize),
     houseEdge: Number(input.houseEdge),
-    bets: Number.parseInt(input.bets, 10),
+    bets: Number(input.bets),
     simulations: Number.parseInt(input.simulations, 10),
     riskTarget: Number(input.riskTarget)
   };
@@ -220,6 +234,7 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
   let bustCount = 0;
   let profitCount = 0;
   let lossCount = 0;
+  let evenCount = 0;
   let survivedFullSessionCount = 0;
 
   for (let i = 0; i < simulations; i++) {
@@ -242,8 +257,10 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
       // bust bucket only
     } else if (ending > bankroll) {
       profitCount++;
-    } else {
+    } else if (ending < bankroll) {
       lossCount++;
+    } else {
+      evenCount++;
     }
   }
 
@@ -273,6 +290,7 @@ function runMonteCarlo(bankroll, betSize, houseEdgePercent, bets, simulations) {
     bustCount,
     profitCount,
     lossCount,
+    evenCount,
     avgBustHand,
     medianBustHand,
     medianHandsLasted,
@@ -302,7 +320,7 @@ function calculateBlackjackBankroll(input) {
     normalized.houseEdge,
     normalized.bets,
     normalized.riskTarget,
-    Math.min(5000, Math.max(500, Math.round(normalized.simulations / 2)))
+    getRecommendedBetSimulations(normalized.simulations)
   );
 
   return { ...normalized, results, recommendedBet };
@@ -395,30 +413,33 @@ function findRecommendedBet(bankroll, houseEdgePercent, bets, riskTargetPercent,
   return Math.max(0.01, Math.min(bankroll, best));
 }
 
+// Describes unit size only. Session length drives the real risk, so each
+// tier points to the simulated Bust Risk instead of claiming a risk level.
 function getRiskLevel(bankroll, betSize) {
   if (!Number.isFinite(bankroll) || !Number.isFinite(betSize) || bankroll <= 0 || betSize <= 0) {
-    return "Risk level will update as you change bankroll and bet size.";
+    return "Unit size vs bankroll will update as you change bankroll and bet size.";
   }
 
   const ratio = betSize / bankroll;
+  const seeBustRisk = " See Bust Risk below for this session length.";
 
   if (ratio <= 0.01) {
-    return "Low risk: unit size is 1% or less of bankroll.";
+    return "Unit size is 1% or less of bankroll: at or below the 1–2% guideline." + seeBustRisk;
   }
 
   if (ratio <= 0.02) {
-    return "Moderate risk: unit size is 1–2% of bankroll.";
+    return "Unit size is 1–2% of bankroll: within the 1–2% guideline." + seeBustRisk;
   }
 
   if (ratio <= 0.03) {
-    return "High risk: unit size is 2–3% of bankroll.";
+    return "Unit size is 2–3% of bankroll: above the 1–2% guideline, so longer sessions get risky fast." + seeBustRisk;
   }
 
   if (ratio <= 0.05) {
-    return "Very high risk: unit size is 3–5% of bankroll.";
+    return "Unit size is 3–5% of bankroll: well above the 1–2% guideline, so longer sessions get risky fast." + seeBustRisk;
   }
 
-  return "Extreme risk: this bet size places heavy pressure on a session bankroll.";
+  return "Unit size is over 5% of bankroll: far above the 1–2% guideline, so bust risk climbs quickly as sessions get longer." + seeBustRisk;
 }
 
 function updateRiskLevel(bankroll, betSize) {
@@ -478,11 +499,11 @@ if (form) {
       resultsChart = new Chart(resultsCtx, {
         type: "bar",
         data: {
-          labels: ["Bust", "Lost Money", "Profit"],
+          labels: ["Bust", "Lost Money", "Broke Even", "Profit"],
           datasets: [
             {
               label: "Simulation Outcomes",
-              data: [results.bustCount, results.lossCount, results.profitCount]
+              data: [results.bustCount, results.lossCount, results.evenCount, results.profitCount]
             }
           ]
         },
@@ -550,7 +571,7 @@ function registerBlackjackBankrollWebMcp() {
           bankroll: { type: "number", minimum: 1, maximum: 1000000, description: "Starting session bankroll in dollars." },
           betSize: { type: "number", minimum: 0.01, maximum: 1000000, description: "Base bet per blackjack hand in dollars; must not exceed bankroll." },
           houseEdge: { type: "number", minimum: 0, maximum: 10, description: "Estimated blackjack house edge percentage." },
-          bets: { type: "integer", minimum: 1, maximum: 100000, description: "Planned hands played." },
+          bets: { type: "integer", minimum: 1, maximum: 10000, description: "Planned hands played (1-10,000). Rejected when (simulations + 12 x min(5000, max(500, round(simulations / 2)))) x bets exceeds 300,000,000, for example above 8,571 hands at 5,000 simulations." },
           simulations: { type: "integer", minimum: 500, maximum: 50000, description: "Simulation sessions to run." },
           riskTarget: { type: "number", minimum: 1, maximum: 99, description: "Target bust risk percentage for recommended max bet." }
         },

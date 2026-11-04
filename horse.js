@@ -1,8 +1,13 @@
 (function () {
   function parseFractionalOdds(rawValue) {
-    const cleaned = String(rawValue || '').trim();
+    let cleaned = String(rawValue || '').trim();
 
     if (!cleaned) return null;
+
+    // Accept US tote-style hyphen odds such as 5-2 as 5/2.
+    if (/^\d+(?:\.\d+)?\s*-\s*\d+(?:\.\d+)?$/.test(cleaned)) {
+      cleaned = cleaned.replace('-', '/');
+    }
 
     if (cleaned.includes('/')) {
       const [left, right] = cleaned.split('/').map((part) => Number(part.trim()));
@@ -13,7 +18,8 @@
         fractional: `${left}/${right}`,
         decimal: 1 + left / right,
         numerator: left,
-        denominator: right
+        denominator: right,
+        inputType: 'fractional'
       };
     }
 
@@ -26,8 +32,26 @@
       fractional: `${(asDecimal - 1).toFixed(2)}/1`,
       decimal: asDecimal,
       numerator: asDecimal - 1,
-      denominator: 1
+      denominator: 1,
+      inputType: 'decimal'
     };
+  }
+
+  function trimNumber(value) {
+    return String(Number(value.toFixed(2)));
+  }
+
+  function describeOddsReading(parsed) {
+    if (parsed.inputType === 'decimal') {
+      return `Read as decimal odds ${parsed.decimal.toFixed(2)} (= ${trimNumber(parsed.numerator)}/1)`;
+    }
+    return `Read as fractional odds ${trimNumber(parsed.numerator)}/${trimNumber(parsed.denominator)} (decimal ${parsed.decimal.toFixed(2)})`;
+  }
+
+  function signedFixed(value, decimals) {
+    const rounded = Number(value.toFixed(decimals));
+    if (rounded === 0) return (0).toFixed(decimals);
+    return `${rounded > 0 ? '+' : ''}${value.toFixed(decimals)}`;
   }
 
   function formatCurrency(value) {
@@ -63,9 +87,12 @@
       }
 
       const impliedProb = (1 / parsed.decimal) * 100;
-      const fairPrice = (1 - impliedProb / 100) / (impliedProb / 100);
+      // Win-pool assumption: posted odds are net of takeout, so the pool's money share is (1 - takeout) / decimal odds.
+      const assumedWinTakeout = 0.165;
+      const poolShare = ((1 - assumedWinTakeout) / parsed.decimal) * 100;
+      const noTakeoutOdds = parsed.decimal / (1 - assumedWinTakeout) - 1;
 
-      resultEl.textContent = `Implied probability: ${impliedProb.toFixed(2)}%. Decimal odds: ${parsed.decimal.toFixed(2)}. Theoretical fair odds before takeout: about ${fairPrice.toFixed(2)}/1.`;
+      resultEl.textContent = `${describeOddsReading(parsed)}. Implied probability: ${impliedProb.toFixed(2)}%. Posted tote odds are already net of takeout. If this is a win-pool price and takeout is about 16.5% (it varies by state), the pool's money share is about ${poolShare.toFixed(2)}% (about ${noTakeoutOdds.toFixed(2)}/1 with no takeout); breakage and odds rounding make this approximate.`;
     }
 
     calcButton.addEventListener('click', render);
@@ -106,6 +133,16 @@
         return;
       }
 
+      if (runners > 20) {
+        resultEl.textContent = 'This calculator supports up to 20 horses. Most race fields are much smaller; 20 is the Kentucky Derby limit.';
+        return;
+      }
+
+      if (base < 0.10) {
+        resultEl.textContent = 'Enter a base bet of at least $0.10 (the smallest common minimum, used for dime superfectas).';
+        return;
+      }
+
       if (runners < rule.legs) {
         resultEl.textContent = `${rule.label} boxes require at least ${rule.legs} horses. Add more horses or choose a smaller exotic bet type.`;
         return;
@@ -137,9 +174,10 @@
 
     function render() {
       const parsed = parseFractionalOdds(marketOddsInput.value);
-      const estimate = Number(estimateInput.value);
+      const estimateRaw = String(estimateInput.value).trim();
+      const estimate = Number(estimateRaw);
 
-      if (!parsed || !Number.isFinite(estimate) || estimate < 0 || estimate > 100) {
+      if (!parsed || estimateRaw === '' || !Number.isFinite(estimate) || estimate < 0 || estimate > 100) {
         resultEl.textContent = 'Enter valid market odds and your estimated win percentage (0–100).';
         return;
       }
@@ -147,9 +185,11 @@
       const impliedProb = (1 / parsed.decimal) * 100;
       const edgePoints = estimate - impliedProb;
       const expectedRoi = (estimate / 100) * parsed.decimal - 1;
-      const edgeLabel = edgePoints >= 0 ? 'Value bet' : 'Overpriced';
+      const isBreakEven = Math.abs(edgePoints) < 0.005;
+      const edgeLabel = isBreakEven ? 'Break-even price' : (edgePoints > 0 ? 'Value bet' : 'Overpriced');
+      const readingNote = parsed.inputType === 'decimal' ? `${describeOddsReading(parsed)}. ` : '';
 
-      resultEl.textContent = `Market implied probability: ${impliedProb.toFixed(2)}%. Your estimate: ${estimate.toFixed(2)}%. ${edgeLabel}: ${edgePoints >= 0 ? '+' : ''}${edgePoints.toFixed(2)} percentage points. Expected ROI if your estimate is correct: ${expectedRoi >= 0 ? '+' : ''}${(expectedRoi * 100).toFixed(1)}%.`;
+      resultEl.textContent = `${readingNote}Market implied probability: ${impliedProb.toFixed(2)}%. Your estimate: ${estimate.toFixed(2)}%. ${edgeLabel}: ${signedFixed(isBreakEven ? 0 : edgePoints, 2)} percentage points. Expected ROI if your estimate is correct: ${signedFixed(expectedRoi * 100, 1)}%.`;
     }
 
     calcButton.addEventListener('click', render);
@@ -178,8 +218,8 @@
       const hitRate = Number(hitRateInput.value) / 100;
       const avgNetMultiple = avgNetMultipleInput ? Number(avgNetMultipleInput.value) : 2.4;
 
-      if (!Number.isFinite(bankrollStart) || bankrollStart <= 0 || !Number.isFinite(betUnit) || betUnit <= 0 || !Number.isFinite(races) || races <= 0 || !Number.isFinite(hitRate) || hitRate <= 0 || hitRate >= 1 || !Number.isFinite(avgNetMultiple) || avgNetMultiple <= 0) {
-        resultEl.textContent = 'Use valid bankroll, bet size, race count, hit rate (1% to 99%), and average net profit multiple.';
+      if (!Number.isFinite(bankrollStart) || bankrollStart <= 0 || !Number.isFinite(betUnit) || betUnit <= 0 || !Number.isFinite(races) || races <= 0 || !Number.isInteger(races) || !Number.isFinite(hitRate) || hitRate < 0.01 || hitRate > 0.99 || !Number.isFinite(avgNetMultiple) || avgNetMultiple <= 0) {
+        resultEl.textContent = 'Use valid bankroll, bet size, whole-number race count, hit rate (1% to 99%), and average net profit multiple.';
         return;
       }
 
@@ -190,10 +230,10 @@
 
       for (let t = 0; t < trials; t += 1) {
         let bankroll = bankrollStart;
+        let busted = false;
         for (let race = 0; race < races; race += 1) {
           if (bankroll < betUnit) {
-            bustCount += 1;
-            bankroll = 0;
+            busted = true;
             break;
           }
 
@@ -201,6 +241,10 @@
           if (Math.random() < hitRate) {
             bankroll += betUnit + avgNetWin;
           }
+        }
+        // A session that ends unable to cover one more bet also counts as a bust.
+        if (busted || bankroll < betUnit) {
+          bustCount += 1;
         }
         endingBankrolls.push(bankroll);
       }
@@ -235,8 +279,15 @@
         return;
       }
 
-      const favProb = 1 / fav.decimal;
-      const longProb = 1 / longshot.decimal;
+      // Assume about 16.5% win-pool takeout and accurate crowd prices: true chance = (1 - takeout) / decimal odds.
+      const assumedWinTakeout = 0.165;
+      const favProb = (1 - assumedWinTakeout) / fav.decimal;
+      const longProb = (1 - assumedWinTakeout) / longshot.decimal;
+
+      if (favProb + longProb > 1 + 1e-9) {
+        resultEl.textContent = 'These two prices cannot come from the same win pool: at about 16.5% takeout their pool shares add up to more than 100%. Use longer odds for one or both horses.';
+        return;
+      }
 
       let favWins = 0;
       let longWins = 0;
@@ -244,14 +295,15 @@
       let longProfit = 0;
 
       for (let i = 0; i < races; i += 1) {
+        // One draw per race, so the favorite and the longshot cannot both win the same race.
+        const roll = Math.random();
+
         favProfit -= 1;
-        if (Math.random() < favProb) {
+        longProfit -= 1;
+        if (roll < favProb) {
           favWins += 1;
           favProfit += fav.decimal;
-        }
-
-        longProfit -= 1;
-        if (Math.random() < longProb) {
+        } else if (roll < favProb + longProb) {
           longWins += 1;
           longProfit += longshot.decimal;
         }
@@ -260,7 +312,7 @@
       const favRoi = (favProfit / races) * 100;
       const longRoi = (longProfit / races) * 100;
 
-      resultEl.textContent = `After ${races} races: Favorite won ${favWins} (${((favWins / races) * 100).toFixed(1)}%) with ${favProfit.toFixed(1)} units total (${favRoi.toFixed(1)}% ROI). Longshot won ${longWins} (${((longWins / races) * 100).toFixed(1)}%) with ${longProfit.toFixed(1)} units total (${longRoi.toFixed(1)}% ROI). If these are fair market prices, the average ROI should hover near 0% and the difference is mainly volatility.`;
+      resultEl.textContent = `After ${races} races: Favorite won ${favWins} (${((favWins / races) * 100).toFixed(1)}%) with ${favProfit.toFixed(1)} units total (${favRoi.toFixed(1)}% ROI). Longshot won ${longWins} (${((longWins / races) * 100).toFixed(1)}%) with ${longProfit.toFixed(1)} units total (${longRoi.toFixed(1)}% ROI). This model assumes about 16.5% win-pool takeout and accurate crowd prices, so both bets have a long-run expected ROI of about -16.5%. The gap between favorite and longshot in one run is mostly volatility.`;
     }
 
     runButton.addEventListener('click', runSimulation);

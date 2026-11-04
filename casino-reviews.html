@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Amplitude Analytics + Session Replay -->
-  <script type="module">
-    import * as amplitude from 'https://cdn.jsdelivr.net/npm/@amplitude/unified@1/+esm';
-
-    // Amplitude ingestion key — public by design; move to an env var when you set up environments.
-    const AMPLITUDE_API_KEY = '8a4022368b20bf1e7d46632beeef889';
-
-    amplitude.initAll(AMPLITUDE_API_KEY, {"analytics":{"autocapture":true},"sessionReplay":{"sampleRate":1}});
-
-    window.amplitude = amplitude;
-  </script>
   <meta charset="UTF-8" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SLW7YE234T"></script>
@@ -22,13 +11,13 @@
 
     gtag('config', 'G-SLW7YE234T');
   </script>
-  <script src="js/amplitude-init.js"></script>
+  <script src="js/amplitude-init.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
 
   <title>Casino Reviews &amp; Bonus Terms Explained | EdgeOverLuck</title>
-  <meta name="description" content="Read casino reviews that focus on licensing, rules, bonus terms, RTP transparency, responsible gambling tools, withdrawals, and bankroll risk instead of fake win claims." />
+  <meta name="description" content="Casino reviews plus a checklist for licensing, rules, bonus terms, RTP transparency, responsible gambling tools, withdrawals, and bankroll risk, not win claims." />
 
   <meta property="og:title" content="Casino Reviews &amp; Bonus Terms Explained | EdgeOverLuck" />
   <meta property="og:description" content="Compare casino reviews by rules, bonus terms, RTP transparency, responsible gambling tools, withdrawal clarity, and real bankroll risk." />
@@ -59,7 +48,7 @@
       "@id": "https://edgeoverluck.com/casino-reviews.html#webpage",
       "name": "Casino Reviews & Bonus Terms Explained",
       "url": "https://edgeoverluck.com/casino-reviews.html",
-      "description": "Casino reviews focused on rules, bonus terms, RTP transparency, responsible gambling tools, withdrawals, and bankroll risk.",
+      "description": "Casino reviews plus a checklist for rules, bonus terms, RTP transparency, responsible gambling tools, withdrawals, and bankroll risk.",
       "isPartOf": {
         "@type": "WebSite",
         "@id": "https://edgeoverluck.com/#website",
@@ -133,7 +122,7 @@
           "name": "Do casino reviews require affiliate links?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. A casino review can be useful without affiliate links. Edge Over Luck may add affiliate links, but review standards should still focus on rules, transparency, risk, and responsible gambling information."
+            "text": "No. A review can be useful without affiliate links. Review standards should still focus on rules, transparency, risk, and responsible gambling information."
           }
         },
         {
@@ -141,7 +130,7 @@
           "name": "What makes a casino mathematically better or worse?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Clearer rules, transparent RTP information, lower-house-edge options, and plain-language terms can improve the player side of the math. None of that makes casino play profitable or safe."
+            "text": "Better rules, clearer RTP disclosures, lower-house-edge game options, and plain-language terms can improve the player side of the math. None of that makes gambling profitable or safe."
           }
         },
         {
@@ -149,15 +138,15 @@
           "name": "Are bonuses always good?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. A bonus can look large while hiding wagering requirements, game restrictions, withdrawal limits, short deadlines, or other terms that reduce practical value."
+            "text": "No. A bonus can look generous while hiding wagering requirements, game restrictions, withdrawal caps, short deadlines, or other terms."
           }
         },
         {
           "@type": "Question",
-          "name": "What should players check before using an online casino bonus?",
+          "name": "What should players check before using a casino bonus?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Players should check wagering requirements, eligible games, max bet rules, expiration dates, withdrawal limits, location restrictions, and whether the bonus changes the real bankroll risk."
+            "text": "Check wagering requirements, eligible games, max bet rules, expiration dates, withdrawal limits, location restrictions, and whether the offer increases your real bankroll risk."
           }
         }
       ]
@@ -188,16 +177,16 @@
   <main class="trust-page">
     <section class="trust-hero">
       <span class="trust-eyebrow">Casino Reviews</span>
-      <h1>Casino Reviews Based on Real Math</h1>
-      <p>Edge Over Luck reviews casinos based on transparency, rules, RTP information, responsible gambling tools, withdrawal clarity, and risk — not just bonuses.</p>
+      <h1>Casino Reviews With a Math-First Checklist</h1>
+      <p>Edge Over Luck&rsquo;s casino reviews summarize what each brand offers and what to verify before you play. Use the checklist below to compare any casino on transparency, rules, RTP information, responsible gambling tools, withdrawal clarity, and risk — not just bonuses.</p>
       <p class="brand-tagline">No fake guaranteed-win garbage. The math gets a seat at the table.</p>
       <div class="hero-actions"><a class="btn btn-primary" href="responsible-gambling.html" data-track-event="cta_click" data-track-label="Casino Reviews Responsible Gambling Standards">Review Responsible Gambling Standards</a><a class="btn btn-secondary" href="blackjack-bankroll-calculator.html" data-track-event="cta_click" data-track-label="Casino Reviews Run Bankroll Check">Run a Bankroll Check</a></div>
     </section>
 
     <section class="trust-grid" aria-labelledby="review-method-title">
       <article class="trust-card">
-        <h2 id="review-method-title">How We Review Casinos</h2>
-        <p>Our review process starts with the parts players can verify: rules, payment language, RTP disclosures, licensing claims, responsible gambling controls, and bonus terms.</p>
+        <h2 id="review-method-title">What to Check in Any Casino Review</h2>
+        <p>Use this checklist with any casino review, including ours. Start with the parts players can verify themselves: rules, payment language, RTP disclosures, licensing claims, responsible gambling controls, and bonus terms.</p>
         <ul>
           <li><strong>RTP transparency:</strong> Whether games publish meaningful return-to-player information.</li>
           <li><strong>House edge clarity:</strong> Whether common bets and game versions make the casino advantage easy to understand.</li>
@@ -205,6 +194,7 @@
           <li><strong>Responsible gambling tools:</strong> Deposit limits, cooling-off periods, self-exclusion access, and help resources.</li>
           <li><strong>Bonus terms clarity:</strong> Wagering requirements, game contribution rules, expiration windows, caps, and withdrawal restrictions.</li>
         </ul>
+        <p>Rough playthrough cost = amount subject to wagering &times; wagering multiplier &divide; game contribution &times; house edge (100% minus RTP). For example, a $100 bonus with a 20x wagering requirement on a 96% RTP slot that counts 100% means $2,000 wagered and about $80 in expected loss. <a href="casino-bonus-calculator.html">Run your own numbers in the Casino Bonus Reality Check Calculator</a>.</p>
       </article>
 
       <article class="trust-card">
@@ -212,7 +202,7 @@
         <p>Each card is a short summary. Detailed reviews live on separate pages.</p>
         <div class="grid grid-2">
           <div class="card"><article class="casino-review-card"><span class="review-badge">Full Review Available</span><h3>BetMGM Casino Review</h3><p>BetMGM is a major regulated U.S. online gambling brand with common casino categories where available. State availability, game access, and offer terms vary.</p><ul class="review-card-list"><li><strong>Best for:</strong> Players comparing a large regulated brand</li><li><strong>Watch out for:</strong> Bonus terms, state availability, and game restrictions</li></ul><a href="betmgm-casino-review.html" class="btn" data-track-event="casino_review_click" data-track-label="Read BetMGM Review">Read BetMGM Review</a></article></div>
-          <div class="card"><article class="casino-review-card"><span class="review-badge">Full Review Available</span><h3>Caesars Palace Online Casino Review</h3><p>Caesars Palace Online Casino is a recognizable brand-backed option with casino games and mobile play where available. Rewards are strongest in eligible U.S. jurisdictions; Reward Credit accrual is currently unavailable for Ontario players.</p><ul class="review-card-list"><li><strong>Best for:</strong> Eligible U.S. players who value Caesars Rewards</li><li><strong>Watch out for:</strong> Bonus terms, Ontario rewards caveat, and state availability</li></ul><a href="caesars-palace-online-casino-review.html" class="btn" data-track-event="casino_review_click" data-track-label="Read Caesars Review">Read Caesars Review</a></article></div>
+          <div class="card"><article class="casino-review-card"><span class="review-badge">Full Review Available</span><h3>Caesars Palace Online Casino Review</h3><p>Caesars Palace Online Casino is a recognizable brand-backed option with casino games and mobile play where available. Rewards are strongest in eligible U.S. jurisdictions; Ontario players should check the Reward Credit caveat in the full review.</p><ul class="review-card-list"><li><strong>Best for:</strong> Eligible U.S. players who value Caesars Rewards</li><li><strong>Watch out for:</strong> Bonus terms, Ontario rewards caveat, and state availability</li></ul><a href="caesars-palace-online-casino-review.html" class="btn" data-track-event="casino_review_click" data-track-label="Read Caesars Review">Read Caesars Review</a></article></div>
           <div class="card"><article class="casino-review-card"><span class="review-badge">Full Review Available</span><h3>DraftKings Casino Review</h3><p>DraftKings Casino is a major app-first brand with a broad game lobby where online casino is legal. It is strongest for players who want a polished app and familiar brand, but bonus terms and fast-play bankroll pressure still matter.</p><ul class="review-card-list"><li><strong>Best for:</strong> App-first players in legal markets</li><li><strong>Watch out for:</strong> Bonus terms, personalized game discovery, and volatility</li></ul><a href="draftkings-casino-review.html" class="btn" data-track-event="casino_review_click" data-track-label="Read DraftKings Review">Read DraftKings Review</a></article></div>
           <div class="card"><article class="casino-review-card"><span class="review-badge">Full Review Available</span><h3>FanDuel Casino Review</h3><p>FanDuel Casino is a familiar app-first casino option in legal markets. It is strongest for players who want a simple mobile lobby and recognizable brand, but convenience can increase total wagered.</p><ul class="review-card-list"><li><strong>Best for:</strong> Simple app-first casino play</li><li><strong>Watch out for:</strong> Bonus terms, fast mobile sessions, and game volatility</li></ul><a href="fanduel-casino-review.html" class="btn" data-track-event="casino_review_click" data-track-label="Read FanDuel Review">Read FanDuel Review</a></article></div>
         </div>
@@ -220,14 +210,14 @@
 
       <article class="trust-card">
         <h2>Important Disclosure</h2>
-        <p>Edge Over Luck may earn commissions from affiliate links in the future. Reviews are educational and informational, not legal advice or a promise that any casino is safe for every player.</p>
+        <p>Edge Over Luck earns commissions from some affiliate links on the site. The casino reviews on this page do not currently include operator affiliate links; if added, they will be disclosed on the page and will not change the math or review standards. Reviews are educational and informational, not legal advice or a promise that any casino is safe for every player.</p>
         <ul><li>Gambling involves financial risk and can be addictive.</li><li>21+ where required. Follow your local laws.</li><li>No review guarantees profit, safety, approval, withdrawals, or a positive experience.</li><li>Use limits, read terms carefully, and stop if gambling causes harm.</li></ul>
       </article>
 
       <article class="trust-card">
         <h2>Use the Math Before You Play</h2>
         <p>Casino reviews are only one part of risk awareness. Compare game math and bankroll pressure with the tools below.</p>
-        <div class="hero-actions"><a class="btn btn-secondary" href="roulette-calculator.html" data-track-event="related_tool_click" data-track-label="Casino Reviews Roulette Calculator">Compare Roulette Odds</a><a class="btn btn-secondary" href="blackjack-bankroll-calculator.html" data-track-event="related_tool_click" data-track-label="Casino Reviews Blackjack Bankroll Calculator">Check Blackjack Bankroll Risk</a><a class="btn btn-secondary" href="slot-simulator.html" data-track-event="related_tool_click" data-track-label="Casino Reviews Slot Simulator">Test Slot Variance</a></div>
+        <div class="hero-actions"><a class="btn btn-secondary" href="casino-bonus-calculator.html" data-track-event="related_tool_click" data-track-label="Casino Reviews Casino Bonus Calculator">Check a bonus with the Casino Bonus Reality Check Calculator</a><a class="btn btn-secondary" href="roulette-calculator.html" data-track-event="related_tool_click" data-track-label="Casino Reviews Roulette Calculator">Compare Roulette Odds</a><a class="btn btn-secondary" href="blackjack-bankroll-calculator.html" data-track-event="related_tool_click" data-track-label="Casino Reviews Blackjack Bankroll Calculator">Check Blackjack Bankroll Risk</a><a class="btn btn-secondary" href="slot-simulator.html" data-track-event="related_tool_click" data-track-label="Casino Reviews Slot Simulator">Test Slot Variance</a></div>
       </article>
 
 
@@ -254,8 +244,25 @@
     </section>
   </main>
 
-  <footer class="site-footer"><div class="container footer-inner"><p class="footer-brand">Edge Over Luck</p><p>Edge Over Luck gives players gambling math tools, bankroll calculators, and casino simulators for understanding risk. These tools do not guarantee profit.</p><div class="footer-links"><a href="index.html">Home</a>
-        <a href="tools/">Tools</a><a href="casino-reviews.html">Casino Reviews</a><a href="responsible-gambling.html">Responsible Gambling</a><a href="affiliate-disclosure.html">Affiliate Disclosure</a><a href="editorial-policy.html">Editorial Policy</a><a href="contact.html">Contact</a></div><p class="affiliate-note"><strong>Affiliate Disclosure:</strong> This site may contain affiliate links and may earn commissions at no extra cost to you.</p><p class="gambling-warning"><strong>21+ / Legal Gambling Notice:</strong> 21+ only where legal. Gambling involves financial risk and can be addictive. These tools are for education and entertainment only and do not guarantee profit.</p><p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p></div></footer>
+  <footer class="site-footer"><div class="container footer-inner"><p class="footer-brand">Edge Over Luck</p><p>Edge Over Luck gives players gambling math tools, bankroll calculators, and casino simulators for understanding risk. These tools do not guarantee profit.</p><div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="tools/">Tools</a>
+        <a href="blackjack-game.html">Blackjack Trainer</a>
+        <a href="bankroll-tools.html">Bankroll Tools</a>
+        <a href="roulette-simulator.html">Roulette Simulator</a>
+        <a href="slot-simulator.html">Slot Simulator</a>
+        <a href="how-we-calculate-odds.html">How We Calculate Odds</a>
+        <a href="responsible-gambling.html">Responsible Gambling</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
+        <a href="editorial-policy.html">Editorial Policy</a>
+        <a href="credits.html">Credits &amp; Sources</a>
+      </div><p class="affiliate-note"><strong>Affiliate Disclosure:</strong> This site may contain affiliate links and may earn commissions at no extra cost to you.</p><p class="gambling-warning"><strong>21+ / Legal Gambling Notice:</strong> 21+ only where legal. Gambling involves financial risk and can be addictive. These tools are for education and entertainment only and do not guarantee profit.</p>
+      <p class="responsible">Play legally, set limits, and never risk money you cannot afford to lose. If gambling is causing harm, call or text the National Problem Gambling Helpline at <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738) in the U.S., or use your local problem gambling support service. See our <a href="responsible-gambling.html">responsible gambling resources</a>.</p>
+      <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p></div></footer>
   <script src="js/tracking.js" defer></script>
   <script src="nav.js" defer></script>
 </body>

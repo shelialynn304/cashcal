@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Amplitude Analytics + Session Replay -->
-  <script type="module">
-    import * as amplitude from 'https://cdn.jsdelivr.net/npm/@amplitude/unified@1/+esm';
-
-    // Amplitude ingestion key — public by design; move to an env var when you set up environments.
-    const AMPLITUDE_API_KEY = '8a4022368b20bf1e7d46632beeef889';
-
-    amplitude.initAll(AMPLITUDE_API_KEY, {"analytics":{"autocapture":true},"sessionReplay":{"sampleRate":1}});
-
-    window.amplitude = amplitude;
-  </script>
   <meta charset="UTF-8" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SLW7YE234T"></script>
@@ -22,12 +11,12 @@
 
     gtag('config', 'G-SLW7YE234T');
   </script>
-  <script src="js/amplitude-init.js"></script>
+  <script src="js/amplitude-init.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
 
-  <title>Roulette Odds Calculator, Bet Risk Guide & Strategy Simulator | EdgeOverLuck.com</title>
+  <title>Roulette Guide: Odds, House Edge, Bet Risk & Betting Systems</title>
   <meta name="description" content="Learn roulette odds, compare European vs American roulette, rank roulette bets by risk, test betting systems, and use calculators to understand bankroll swings." />
   <meta property="og:title" content="Roulette Guide | Odds, House Edge & Smart Bets | EdgeOverLuck.com" />
   <meta property="og:description" content="Learn roulette odds, payouts, and house edge math with practical tips for European vs American wheels and bankroll-friendly betting choices." />
@@ -268,6 +257,7 @@
           <h2 class="section-title">Roulette Odds, Without the Table Whispering Back</h2>
           <p><strong>Single-zero European roulette</strong> has 37 pockets: numbers 1–36 plus one green 0. Most standard bets carry about a <strong>2.70% house edge</strong>.</p>
           <p><strong>Double-zero American roulette</strong> has 38 pockets: numbers 1–36 plus 0 and 00. The extra 00 creates one more losing outcome on most bets, raising the house edge to about <strong>5.26%</strong>.</p>
+          <p>One exception on American wheels: the 0-00-1-2-3 top-line bet pays 6:1 and carries a 7.89% edge, so skip it. Triple-zero wheels raise the edge to about 7.69%. Single-zero tables with la partage or en prison cut the edge on even-money bets to about 1.35%.</p>
           <p>The house edge exists because payouts are slightly short of the true odds. A straight-up number pays 35:1, but a European wheel has 37 possible outcomes and an American wheel has 38.</p>
           <p class="mb-0">That gap is the casino's long-term advantage. Winning sessions happen; the wheel simply does not owe you a sequel.</p>
         </article>
@@ -321,7 +311,7 @@
               <tr>
                 <th>Bet Type</th>
                 <th>What It Means</th>
-                <th>Approx. Payout</th>
+                <th>Payout</th>
                 <th>Risk Level</th>
                 <th>Beginner Usefulness</th>
               </tr>
@@ -349,18 +339,18 @@
                 <td>Good for seeing inside-bet volatility without going full longshot.</td>
               </tr>
               <tr>
-                <td><strong>Street</strong></td>
-                <td>Covers one row of three numbers.</td>
-                <td>11:1</td>
-                <td>High</td>
-                <td>Mostly for players comfortable with longer losing stretches.</td>
-              </tr>
-              <tr>
                 <td><strong>Corner</strong></td>
                 <td>Covers four numbers that meet at a corner.</td>
                 <td>8:1</td>
                 <td>High</td>
                 <td>Slightly wider than a street but still swingy.</td>
+              </tr>
+              <tr>
+                <td><strong>Street</strong></td>
+                <td>Covers one row of three numbers.</td>
+                <td>11:1</td>
+                <td>High</td>
+                <td>Mostly for players comfortable with longer losing stretches.</td>
               </tr>
               <tr>
                 <td><strong>Split</strong></td>
@@ -489,7 +479,7 @@
           <div class="hero-actions">
             <a class="btn btn-primary" href="roulette-bankroll-calculator.html">Roulette Bankroll Calculator</a>
             <a class="btn btn-secondary" href="blackjack-ev-calculator.html">Blackjack EV Calculator</a>
-            <a class="btn btn-secondary" href="slots.html">Slot Simulator</a>
+            <a class="btn btn-secondary" href="slot-simulator.html">Slot Simulator</a>
             <a class="btn btn-secondary" href="index.html">Home</a>
           </div>
         </article>
@@ -572,7 +562,7 @@
           <p class="section-subtext">The comeback that never came is usually just a progression meeting a limit.</p>
         </div>
         <div class="feature-grid">
-          <article class="pressure-card streak-card is-good"><span class="streak-label">Walk-away win</span><h3>Hits early, locks profit.</h3><p>Leaving while up is not quitting. It is punctuation.</p></article>
+          <article class="pressure-card streak-card is-good"><span class="streak-label">Walk-away win</span><h3>Hits early, banks the profit.</h3><p>Leaving while up is not quitting. It is punctuation.</p></article>
           <article class="pressure-card streak-card"><span class="streak-label">Color drought</span><h3>Six wrong colors in a row.</h3><p>Annoying, common, and not a cosmic promise.</p></article>
           <article class="pressure-card streak-card is-danger"><span class="streak-label">Tilt spiral</span><h3>“Double until it works.”</h3><p>The table limit is waiting with paperwork.</p></article>
           <article class="pressure-card streak-card"><span class="streak-label">Inside-bet fever</span><h3>One hit erases the warning signs.</h3><p>Big payouts can hide long dry spells until bankroll says no.</p></article>
@@ -583,7 +573,7 @@
     <section class="section-tight">
       <div class="container disclaimer-block">
         <h2 class="section-title">Responsible gambling note</h2>
-        <p>21+ only where legal. This tool is for education and entertainment only. Gambling involves financial risk, and no calculator, simulator, betting system, or strategy can guarantee profit. Set limits before you play, and never risk money you cannot afford to lose. If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use your local problem gambling support service.</p>
+        <p>21+ only where legal. This tool is for education and entertainment only. Gambling involves financial risk, and no calculator, simulator, betting system, or strategy can guarantee profit. Set limits before you play, and never risk money you cannot afford to lose. If gambling is causing harm, call or text the National Problem Gambling Helpline at <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738) in the U.S., or use your local problem gambling support service.</p>
         <p class="mb-0">More help and support options are available on our <a href="responsible-gambling.html">responsible gambling resources</a> page.</p>
       </div>
     </section>
@@ -630,9 +620,9 @@
 </p>
       <p class="responsible">
   Play legally, set limits, and never risk money you cannot afford to lose.
-  If gambling is causing harm, call or text
-  <a href="tel:18004262537">1-800-GAMBLER</a>
-  where available, or use your local problem gambling support service.
+  If gambling is causing harm, call or text the National Problem Gambling Helpline at
+  <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+  in the U.S., or use your local problem gambling support service.
   See our <a href="responsible-gambling.html">responsible gambling resources</a>.
 </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>
@@ -642,7 +632,6 @@
 
   <script src="roulette-shared.js" defer></script>
   <script src="roulette-hub.js" defer></script>
-  <script src="roulette.js" defer></script>
   <script src="js/tracking.js" defer></script>
   <script src="nav.js" defer></script>
 </body>

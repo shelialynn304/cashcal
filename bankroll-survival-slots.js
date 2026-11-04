@@ -42,8 +42,8 @@
   function updateSurvival() {
     const bankroll = Number(bankrollInput.value);
     const betSize = Number(betInput.value);
-    const spins = Number(spinsInput.value);
-    const trials = Math.max(250, Number(trialsInput.value) || 2000);
+    const spins = Math.min(10000, Math.max(1, Math.floor(Number(spinsInput.value)) || 1));
+    const trials = Math.min(5000, Math.max(250, Math.floor(Number(trialsInput.value)) || 2000));
     const preset = window.SlotsTools.getPresetById(presetSelect.value);
 
     if (!(betSize > 0) || betSize >= bankroll) {
@@ -67,11 +67,29 @@
 
     const report = window.SlotsTools.runMonteCarlo({ bankroll, betSize, preset, spins, trials });
 
-    const survival = 1 - report.bustChance;
-    survivalOdds.textContent = window.SlotsTools.toPercent(survival, 1);
+    // Rare risks never show as exactly 0.0% ruin / 100.0% survival.
+    const n = report.trialCount;
+    const p = report.bustChance;
+    const busts = Math.round(p * n);
+    let ruinText;
+    let survivalText;
+    if (busts === 0) {
+      // Rule of three: 0 busts in n sessions gives a 95% upper bound of about 3/n.
+      const boundHundredths = Math.ceil(30000 / n);
+      ruinText = `under ${(boundHundredths / 100).toFixed(2)}% (0 of ${n} sessions)`;
+      survivalText = `over ${((10000 - boundHundredths) / 100).toFixed(2)}%`;
+    } else if (p < 0.0005) {
+      ruinText = "under 0.1%";
+      survivalText = "over 99.9%";
+    } else {
+      ruinText = window.SlotsTools.toPercent(p, 1);
+      survivalText = window.SlotsTools.toPercent(1 - p, 1);
+    }
+
+    survivalOdds.textContent = survivalText;
     avgRtp.textContent = window.SlotsTools.toPercent(report.avgRtp, 2);
     spinRange.textContent = `${report.p10Spins}-${report.p90Spins} spins`;
-    ruinRisk.textContent = window.SlotsTools.toPercent(report.bustChance, 1);
+    ruinRisk.textContent = ruinText;
     medianEnd.textContent = window.SlotsTools.toMoney(report.p50End);
     p10End.textContent = window.SlotsTools.toMoney(report.p10End);
     p90End.textContent = window.SlotsTools.toMoney(report.p90End);
@@ -82,7 +100,7 @@
       trialWarning.style.display = "block";
     }
 
-    detail.textContent = `In ${report.trialCount} simulated sessions, bust risk was ${window.SlotsTools.toPercent(report.bustChance, 1)}, average RTP was ${window.SlotsTools.toPercent(report.avgRtp, 2)}, and ending bankroll fell between ${window.SlotsTools.toMoney(report.p10End)} and ${window.SlotsTools.toMoney(report.p90End)} for the middle 80% of sessions. If your target is ${spins} spins, your bet sizing is the strongest lever.`;
+    detail.textContent = `In ${report.trialCount} simulated sessions, bust risk was ${ruinText}, average RTP was ${window.SlotsTools.toPercent(report.avgRtp, 2)}, and ending bankroll fell between ${window.SlotsTools.toMoney(report.p10End)} and ${window.SlotsTools.toMoney(report.p90End)} for the middle 80% of sessions. If your target is ${spins} spins, your bet sizing is the strongest lever.`;
   }
 
   trialPresetSelect.addEventListener("change", syncTrialPreset);

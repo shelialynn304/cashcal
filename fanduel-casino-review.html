@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Amplitude Analytics + Session Replay -->
-  <script type="module">
-    import * as amplitude from 'https://cdn.jsdelivr.net/npm/@amplitude/unified@1/+esm';
-
-    // Amplitude ingestion key — public by design; move to an env var when you set up environments.
-    const AMPLITUDE_API_KEY = '8a4022368b20bf1e7d46632beeef889';
-
-    amplitude.initAll(AMPLITUDE_API_KEY, {"analytics":{"autocapture":true},"sessionReplay":{"sampleRate":1}});
-
-    window.amplitude = amplitude;
-  </script>
   <meta charset="UTF-8" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SLW7YE234T"></script>
@@ -22,13 +11,23 @@
 
     gtag('config', 'G-SLW7YE234T');
   </script>
-  <script src="js/amplitude-init.js"></script>
+  <script src="js/amplitude-init.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
   <meta name="google-site-verification" content="II21PQDDn5AwkWgYcovjVcDu6CI7IRK8gsXeGJmuEc0" />
   <title>FanDuel Casino Review | Edge Over Luck</title>
   <meta name="description" content="FanDuel Casino review focused on app experience, game selection, bonus terms, responsible gambling tools, state availability, and casino math risk." />
   <link rel="canonical" href="https://edgeoverluck.com/fanduel-casino-review.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="FanDuel Casino Review | Edge Over Luck" />
+  <meta property="og:description" content="FanDuel Casino review focused on app experience, game selection, bonus terms, responsible gambling tools, state availability, and casino math risk." />
+  <meta property="og:url" content="https://edgeoverluck.com/fanduel-casino-review.html" />
+  <meta property="og:site_name" content="Edge Over Luck" />
+  <meta property="og:image" content="https://edgeoverluck.com/assets/images/edgeoverluck-casino-calculator-hero.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FanDuel Casino Review | Edge Over Luck" />
+  <meta name="twitter:description" content="FanDuel Casino review focused on app experience, game selection, bonus terms, responsible gambling tools, state availability, and casino math risk." />
+  <meta name="twitter:image" content="https://edgeoverluck.com/assets/images/edgeoverluck-casino-calculator-hero.webp" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="assets/images/logo/favicon-192.png" />
   <link rel="apple-touch-icon" href="assets/images/logo/apple-touch-icon.png" />
@@ -82,6 +81,23 @@
       box-shadow: 0 0 28px rgba(241, 196, 91, 0.16);
     }
 
+    .trust-hero .disclosure {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border: 1px solid rgba(241, 196, 91, 0.22);
+      border-radius: 12px;
+      background: rgba(241, 196, 91, 0.08);
+      font-size: 0.96rem;
+    }
+
+    .score-caption {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: rgba(238, 242, 247, 0.8);
+    }
+
     @media (max-width: 720px) {
       .quick-facts,
       .pros-cons-grid,
@@ -99,6 +115,8 @@
         "headline": "FanDuel Casino Review",
         "description": "Educational FanDuel Casino review focused on app experience, game selection, bonus terms, responsible gambling tools, state availability, and casino math risk.",
         "url": "https://edgeoverluck.com/fanduel-casino-review.html",
+        "mainEntityOfPage": "https://edgeoverluck.com/fanduel-casino-review.html",
+        "image": "https://edgeoverluck.com/assets/images/edgeoverluck-casino-calculator-hero.webp",
         "author": {
           "@type": "Organization",
           "name": "Edge Over Luck"
@@ -197,6 +215,7 @@
       <span class="trust-eyebrow">Casino Review</span>
       <h1>FanDuel Casino Review</h1>
       <p>FanDuel Casino is tied to one of the biggest online gambling brands in the U.S. The casino product is strongest for players who want a familiar app, a broad game lobby, and a simple mobile-first experience. The weakness is also obvious: convenience can make it very easy to play faster and longer than planned.</p>
+      <p class="disclosure">This page may contain affiliate links. If you sign up through a link, Edge Over Luck may earn a commission at no extra cost to you. Educational content only. Gambling laws vary by location. Use legal operators only. 21+ where required.</p>
       <p class="brand-tagline">Clean app. Big name. Same casino math.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="casino-reviews.html">Back to Casino Reviews</a>
@@ -246,7 +265,7 @@
 
       <article class="trust-card review-section">
         <h2>Game Selection</h2>
-        <p>FanDuel Casino generally fits the modern app-casino model: slots, blackjack, roulette, baccarat, live dealer games, and table games where available. The game mix is useful, but not all games carry the same risk. Blackjack quality depends on rules and strategy. Roulette is simple but has a fixed edge. Slots can have long dry stretches even when the listed RTP looks reasonable.</p>
+        <p>FanDuel Casino generally fits the modern app-casino model: slots, blackjack, roulette, baccarat, live dealer games, and table games where available. The game mix is useful, but not all games carry the same risk. Blackjack quality depends on rules and strategy. Roulette is simple, and its house edge is fixed by the wheel, not your betting pattern: about 2.70% on single-zero tables and 5.26% on most double-zero bets, so check which wheel a table uses (<a href="roulette-calculator.html">compare roulette wheel house edges</a>). Slots can have long dry stretches even when the listed RTP looks reasonable.</p>
       </article>
 
       <article class="trust-card review-section math-reality-check warning-box glass-panel">
@@ -256,7 +275,7 @@
 
       <article class="trust-card review-section">
         <h2>Bonuses and Promotions</h2>
-        <p>FanDuel offers can change by location, date, eligibility, and product. Do not review or choose the casino based only on a headline promotion. Read current terms for wagering requirements, eligible games, max cashout rules, expiration windows, and withdrawal restrictions.</p>
+        <p>FanDuel offers can change by location, date, eligibility, and product. Do not review or choose the casino based only on a headline promotion. Read current terms for wagering requirements, eligible games, max cashout rules, expiration windows, and withdrawal restrictions. Then <a href="casino-bonus-calculator.html">estimate wagering cost with the Casino Bonus Reality Check Calculator</a>.</p>
       </article>
 
       <article class="trust-card review-section">
@@ -267,7 +286,7 @@
       <article class="trust-card review-section">
         <h2>Final Rating</h2>
         <div class="rating-grid">
-          <div class="quick-fact"><strong>Overall</strong> 4.0 / 5</div>
+          <div class="quick-fact"><strong>Overall</strong> 4.0 / 5 <span class="score-caption">Editorial score from Edge Over Luck based on the review criteria on our <a href="casino-reviews.html#review-method-title">casino reviews page</a>, not a user rating.</span></div>
           <div class="quick-fact"><strong>Best for</strong> Simple app-first casino play in legal markets</div>
           <div class="quick-fact"><strong>Risk level</strong> Medium to high, depending on game choice and volume</div>
           <div class="quick-fact"><strong>Math warning</strong> Convenience can increase total wagered</div>
@@ -303,15 +322,23 @@
       <div class="footer-links">
         <a href="index.html">Home</a>
         <a href="tools/">Tools</a>
-        <a href="casino-reviews.html">Casino Reviews</a>
+        <a href="blackjack-game.html">Blackjack Trainer</a>
+        <a href="bankroll-tools.html">Bankroll Tools</a>
+        <a href="roulette-simulator.html">Roulette Simulator</a>
+        <a href="slot-simulator.html">Slot Simulator</a>
+        <a href="how-we-calculate-odds.html">How We Calculate Odds</a>
         <a href="responsible-gambling.html">Responsible Gambling</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
         <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
         <a href="editorial-policy.html">Editorial Policy</a>
-        <a href="contact.html">Contact</a>
+        <a href="credits.html">Credits &amp; Sources</a>
       </div>
       <p class="affiliate-note"><strong>Affiliate Disclosure:</strong> This site may contain affiliate links and may earn commissions at no extra cost to you. Affiliate relationships do not change the math, odds, house edge, or editorial standards used on Edge Over Luck.</p>
       <p class="gambling-warning"><strong>21+ / Legal Gambling Notice:</strong> 21+ only where legal. Gambling involves financial risk and can be addictive. These tools are for education and entertainment only and do not guarantee profit.</p>
-      <p class="responsible">Play legally, set limits, and never risk money you cannot afford to lose. If gambling is causing harm, call or text <a href="tel:18004262537">1-800-GAMBLER</a> where available, or use your local problem gambling support service.</p>
+      <p class="responsible">Play legally, set limits, and never risk money you cannot afford to lose. If gambling is causing harm, call or text the National Problem Gambling Helpline at <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738) in the U.S., or use your local problem gambling support service.</p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>
     </div>
   </footer>

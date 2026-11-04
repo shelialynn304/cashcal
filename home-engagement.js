@@ -6,7 +6,7 @@
   const quickLinks = document.querySelectorAll("[data-tool-tab]");
   const toolCards = document.querySelectorAll("[data-tool-card]");
   const scenarioChoices = document.querySelectorAll("[data-scenario-choice]");
-  const mythCards = document.querySelectorAll(".myth-card");
+  const mythCards = document.querySelectorAll("button.myth-card");
   const strategyAccuracyMetric = document.getElementById("strategyAccuracyMetric");
   const strategyAccuracyHelper = document.getElementById("strategyAccuracyHelper");
 
@@ -82,16 +82,29 @@
     // Each bet loses edge x bet on average, and busted sessions stop early,
     // so the average loss is edge x bet x the average number of hands played.
     const walkAway = bankroll - bet * (edge / 100) * session.expectedHands;
+    // Share of the bankroll lost on average; the pace label follows the
+    // computed loss and bust risk, not bet size alone.
+    const lossShare = ((bankroll - walkAway) / bankroll) * 100;
 
-    if (riskOutput) riskOutput.textContent = `${bustRisk.toFixed(1)}%`;
+    if (riskOutput) riskOutput.textContent = formatShare(bustRisk);
     if (walkOutput) walkOutput.textContent = `$${walkAway.toFixed(0)}`;
     if (paceOutput) {
       paceOutput.textContent = bet > bankroll
         ? "Bet is larger than bankroll"
-        : pressure >= 4 ? "High burn rate" : pressure >= 2 ? "Manageable, still finite" : "Low burn, still burning";
+        : (lossShare >= 25 || bustRisk >= 10) ? "High burn rate"
+          : (lossShare >= 10 || bustRisk >= 2) ? "Manageable, still finite"
+            : "Low burn, still burning";
     }
 
     scenarioRows.forEach((row) => row.classList.toggle("is-strong", pressure < 3.5 && bustRisk < 40));
+  }
+
+  // Percent with one decimal, without rounding a rare event to 0.0% or a
+  // near-certain one to 100.0% (same helper as the bankroll page).
+  function formatShare(percent) {
+    if (percent > 0 && percent < 0.05) return "under 0.1%";
+    if (percent >= 99.95 && percent < 100) return "over 99.9%";
+    return `${percent.toFixed(1)}%`;
   }
 
   // Exact results for a player making even-money bets (win or lose one bet,

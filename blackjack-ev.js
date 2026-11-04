@@ -299,7 +299,11 @@
   // ---------- Presentation ----------
 
   const formatEV = (ev) => `${ev > 0 ? "+" : ""}${ev.toFixed(3)}`;
-  const formatMoney = (amount) => `$${amount.toFixed(2)}`;
+  // Sign before the dollar symbol (-$13.45); amounts that round to $0.00 get no sign.
+  const formatMoney = (amount) => {
+    const fixed = Math.abs(amount).toFixed(2);
+    return `${amount < 0 && Number(fixed) !== 0 ? "-" : ""}$${fixed}`;
+  };
 
   function valueClass(ev) {
     if (ev > 0.02) return "text-gold";
@@ -341,16 +345,29 @@
   // ---------- UI wiring (element IDs unchanged) ----------
 
   function calculateEV(markResultReady) {
-    const total = clamp(Number(document.getElementById("playerTotal").value) || 16, 4, 21);
+    const totalInput = document.getElementById("playerTotal");
+    const softInput = document.getElementById("isSoft");
+    const betInput = document.getElementById("betSize");
+    const countInput = document.getElementById("trueCount");
+
+    const total = clamp(Math.round(Number(totalInput.value)) || 16, 4, 21);
     const dealerCard = Number(document.getElementById("dealerCard").value);
-    const isSoft = document.getElementById("isSoft").value === "true";
+    const isSoft = softInput.value === "true";
     const decks = Number(document.getElementById("decks").value);
     const blackjackPayout = Number(document.getElementById("blackjackPayout").value);
-    const betSize = Math.max(1, Number(document.getElementById("betSize").value) || 25);
-    const trueCount = Number(document.getElementById("trueCount").value) || 0;
+    const rawBet = Number(betInput.value);
+    const betSize = Number.isFinite(rawBet) && rawBet > 0 ? rawBet : 25;
+    const trueCount = clamp(Number(countInput.value) || 0, -10, 10);
 
     // Soft totals below 12 are not possible (A + A counts as soft 12).
     const effectiveSoft = isSoft && total >= 12;
+
+    // Show the values actually evaluated, so the result never describes a
+    // different hand or bet than the one on screen.
+    totalInput.value = total;
+    betInput.value = betSize;
+    countInput.value = trueCount;
+    if (isSoft && !effectiveSoft) softInput.value = "false";
 
     const ctx = buildContext(dealerCard, decks, trueCount);
 
@@ -419,7 +436,19 @@
   }
 
   document.getElementById("calcBtn")?.addEventListener("click", () => calculateEV(true));
-  document.getElementById("demoBtn")?.addEventListener("click", resetInputs);
+  // Demo: hard 11 vs dealer 6, a spot where doubling is clearly best.
+  function loadDemoSpot() {
+    document.getElementById("playerTotal").value = 11;
+    document.getElementById("dealerCard").value = 6;
+    document.getElementById("isSoft").value = "false";
+    document.getElementById("decks").value = 6;
+    document.getElementById("blackjackPayout").value = 1.5;
+    document.getElementById("betSize").value = 25;
+    document.getElementById("trueCount").value = 0;
+    calculateEV(true);
+  }
+
+  document.getElementById("demoBtn")?.addEventListener("click", loadDemoSpot);
   document.getElementById("resetBtn")?.addEventListener("click", resetInputs);
 
   calculateEV(false);

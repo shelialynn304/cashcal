@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Amplitude Analytics + Session Replay -->
-  <script type="module">
-    import * as amplitude from 'https://cdn.jsdelivr.net/npm/@amplitude/unified@1/+esm';
-
-    // Amplitude ingestion key — public by design; move to an env var when you set up environments.
-    const AMPLITUDE_API_KEY = '8a4022368b20bf1e7d46632beeef889';
-
-    amplitude.initAll(AMPLITUDE_API_KEY, {"analytics":{"autocapture":true},"sessionReplay":{"sampleRate":1}});
-
-    window.amplitude = amplitude;
-  </script>
   <meta charset="UTF-8" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SLW7YE234T"></script>
@@ -22,11 +11,11 @@
 
     gtag('config', 'G-SLW7YE234T');
   </script>
-  <script src="js/amplitude-init.js"></script>
+  <script src="js/amplitude-init.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
-  <title>Exotic Bet Cost Calculator | Exacta, Trifecta &amp; Superfecta Box Cost | EdgeOverLuck.com</title>
-  <meta name="description" content="Calculate exacta, trifecta, and superfecta box ticket costs by base bet and number of horses. See combination math before exotic horse racing tickets get expensive." />
+  <title>Exotic Bet Cost Calculator: Exacta, Trifecta &amp; Superfecta Box</title>
+  <meta name="description" content="Calculate exacta, trifecta, and superfecta box costs by base bet and number of horses. See the combination math before exotic tickets get expensive." />
   <link rel="canonical" href="https://edgeoverluck.com/exotic-bet-calculator.html" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="assets/images/logo/favicon-192.png" />
@@ -305,7 +294,7 @@
             </div>
             <div class="field">
               <label for="ticketBase">Base unit per combination ($)</label>
-              <input id="ticketBase" type="number" min="0.01" step="0.10" value="1" inputmode="decimal" />
+              <input id="ticketBase" type="number" min="0.10" step="0.10" value="1" inputmode="decimal" />
             </div>
           </div>
           <div class="form-row">
@@ -400,7 +389,8 @@
             <li><a href="trifecta-box-calculator.html">Trifecta Box Calculator</a> for dedicated trifecta cost math.</li>
             <li><a href="superfecta-box-calculator.html">Superfecta Box Calculator</a> for dedicated superfecta cost math.</li>
             <li><a href="horse-racing-guide.html">Horse Racing Guide</a> for odds, takeout, and beginner bet types.</li>
-            <li><a href="blackjack-bankroll-calculator.html">bankroll calculator</a> for session pressure and bet sizing.</li>
+            <li><a href="takeout-overlay-calculator.html">Takeout &amp; Overlay Calculator</a> for takeout drag and win-bet overlay EV.</li>
+            <li><a href="bankroll-tools.html">Bankroll Tools</a> for session pressure and bet sizing.</li>
             <li><a href="responsible-gambling.html">responsible gambling resources</a> for limits and support.</li>
           </ul>
         </article>
@@ -487,9 +477,9 @@
       </p>
       <p class="responsible">
         Play legally, set limits, and never risk money you cannot afford to lose.
-        If gambling is causing harm, call or text
-        <a href="tel:18004262537">1-800-GAMBLER</a>
-        where available, or use your local problem gambling support service.
+        If gambling is causing harm, call or text the National Problem Gambling Helpline at
+        <a href="tel:18006973738" style="white-space:nowrap">1-800-MY-RESET</a> (1-800-697-3738)
+        in the U.S., or use your local problem gambling support service.
         See our <a href="responsible-gambling.html">responsible gambling resources</a>.
       </p>
       <p class="copyright">© 2026 Edge Over Luck — Casino math tools for education and entertainment.</p>

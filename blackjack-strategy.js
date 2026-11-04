@@ -24,7 +24,7 @@
         : { move: "Hit", mistake: "Doubling into an Ace", reason: "With 6 decks and dealer standing on soft 17, 11 vs Ace is a hit. (Double it if the dealer hits soft 17.)" };
     }
     if (total >= 17) {
-      return { move: "Stand", mistake: "Over-hitting strong totals", reason: "Hard 17+ already wins often enough. Extra cards add unnecessary bust risk." };
+      return { move: "Stand", mistake: "Over-hitting strong totals", reason: "Hard 17+ is too likely to bust if you hit. Even when 17 is a losing hand against a strong upcard, standing loses less than hitting." };
     }
     if (total === 12) {
       return up >= 4 && up <= 6
@@ -44,6 +44,12 @@
   function updateDrill() {
     const total = Number(document.getElementById("drillPlayerTotal")?.value || 16);
     const upcard = document.getElementById("drillDealerUpcard")?.value || "10";
+    if (!Number.isInteger(total) || total < 4 || total > 21) {
+      document.getElementById("drillBestMove").textContent = "—";
+      document.getElementById("drillMistake").textContent = "—";
+      document.getElementById("drillReason").textContent = "Enter a whole-number hard total from 4 to 21.";
+      return;
+    }
     const result = recommendMove(total, upcard);
 
     document.getElementById("drillBestMove").textContent = result.move;
@@ -71,7 +77,9 @@
       if (button.dataset.quizAnswer === "hit") {
         result.textContent = "✅ Correct. 16 vs 10 is uncomfortable, but hitting is still the best long-run move.";
       } else {
-        result.textContent = "❌ Not this time. Hit is the better long-run decision in this spot.";
+        result.textContent = button.dataset.quizAnswer === "split"
+          ? "❌ You can't split 10-6. (With 8-8 you would split.) Hit is the better long-run decision."
+          : "❌ Not this time. Hit is the better long-run decision in this spot.";
       }
     });
   });
