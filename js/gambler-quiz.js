@@ -184,6 +184,18 @@ const progressText = document.getElementById('quiz-progress-text');
 const progressPercent = document.getElementById('quiz-progress-percent');
 const progressBar = document.getElementById('quiz-progress-bar');
 
+// Analytics: sends the same event to GA4 (gtag) and Amplitude when they are loaded.
+// Fails silently if either is blocked or missing so the quiz always works.
+function trackQuiz(eventName, params = {}) {
+  const payload = { quiz_name: 'gambler_personality', ...params };
+  try {
+    if (typeof window.gtag === 'function') window.gtag('event', eventName, payload);
+    if (typeof window.amplitudeTrack === 'function') window.amplitudeTrack(eventName, payload);
+  } catch (e) {
+    // Never let analytics break the quiz.
+  }
+}
+
 function updateProgress() {
   const questionNumber = Math.min(currentQuestion + 1, quizQuestions.length);
   const percent = Math.round((questionNumber / quizQuestions.length) * 100);
@@ -223,11 +235,20 @@ function renderQuestion(moveFocus = false) {
 }
 
 function selectAnswer(type) {
+  if (currentQuestion === 0) {
+    trackQuiz('quiz_start', { question_count: quizQuestions.length });
+  }
+
   scores[type] += 1;
   currentQuestion += 1;
 
+  // One event per answered question so drop-off can be charted as a funnel.
+  trackQuiz('quiz_answer', { question_number: currentQuestion, question_count: quizQuestions.length });
+
   if (currentQuestion >= quizQuestions.length) {
-    showResult(getWinningType());
+    const winner = getWinningType();
+    trackQuiz('quiz_complete', { result_type: winner, tied: getTiedTypes(winner).length > 0 });
+    showResult(winner);
     return;
   }
 
@@ -256,7 +277,7 @@ function escapeHtml(str) {
 }
 
 function createToolLinks(links) {
-  return links.map((link) => `<a class="btn btn-secondary" href="${link.href}">${link.label}</a>`).join('');
+  return links.map((link) => `<a class="btn btn-secondary" href="${link.href}" data-quiz-tool-link>${link.label}</a>`).join('');
 }
 
 function showResult(type, updateUrl = true) {
@@ -308,8 +329,23 @@ function showResult(type, updateUrl = true) {
     window.history.replaceState({}, '', url);
   }
 
-  document.getElementById('retake-quiz').addEventListener('click', resetQuiz);
-  document.getElementById('share-result').addEventListener('click', copyResultLink);
+  document.getElementById('retake-quiz').addEventListener('click', () => {
+    trackQuiz('quiz_retake', { result_type: type });
+    resetQuiz();
+  });
+  document.getElementById('share-result').addEventListener('click', (event) => {
+    trackQuiz('quiz_share_click', { result_type: type });
+    copyResultLink(event);
+  });
+  quizResult.querySelectorAll('[data-quiz-tool-link]').forEach((link) => {
+    link.addEventListener('click', () => {
+      trackQuiz('quiz_tool_click', {
+        result_type: type,
+        destination: link.getAttribute('href'),
+        cta_label: link.textContent.trim()
+      });
+    });
+  });
   const resultHeading = quizResult.querySelector('h2');
   if (resultHeading) {
     resultHeading.setAttribute('tabindex', '-1');
@@ -353,6 +389,8 @@ function initQuiz() {
   const resultParam = new URLSearchParams(window.location.search).get('result');
 
   if (resultParam && Object.prototype.hasOwnProperty.call(resultData, resultParam)) {
+    // Someone opened a shared result link (or reloaded their own result).
+    trackQuiz('quiz_shared_result_view', { result_type: resultParam });
     showResult(resultParam, false);
     return;
   }
