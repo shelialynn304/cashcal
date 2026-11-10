@@ -8,7 +8,7 @@ Use this checklist for manual QA on calculator and simulator pages before publis
 - Test on both desktop and mobile viewport sizes.
 - Record pass/fail notes and screenshots for any failed checks.
 - If a check fails, log the exact field values and output shown.
-- For math/tool accuracy reviews (formulas, simulations, EV, RTP, probability, bankroll, variance, payout logic), follow both `AGENTS.md` and `.github/agents/agentsmath.md.agent.md`.
+- For math/tool accuracy reviews (formulas, simulations, EV, RTP, probability, bankroll, variance, payout logic), follow both `AGENTS.md` and `.github/agents/Casino-Math-Calculator-Agent.md`.
 
 ## 1) Calculator/math checks
 

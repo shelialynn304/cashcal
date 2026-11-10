@@ -1,3 +1,8 @@
+---
+name: static-agent-discovery-validator
+description: Use this skill when editing Edge Over Luck agent discovery, API catalog, OpenAPI, robots.txt, .well-known, Cloudflare documentation, or static metadata files.
+---
+
 # Static Agent Discovery Validator
 
 Use this skill when editing Edge Over Luck agent discovery, API catalog, OpenAPI, robots.txt, `.well-known`, Cloudflare documentation, or static metadata files.
