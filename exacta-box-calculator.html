@@ -14,16 +14,16 @@
   <script src="js/amplitude-init.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
-  <title>Exacta Box Calculator: Exacta Bet Cost by Horses &amp; Base Bet</title>
-  <meta name="description" content="Calculate exacta box ticket cost by base bet and number of horses. See how many combinations n × (n − 1) creates before you hit the ticket window." />
-  <meta property="og:title" content="Exacta Box Calculator: Exacta Bet Cost by Horses &amp; Base Bet" />
-  <meta property="og:description" content="Calculate exacta box ticket cost by base bet and number of horses. See how many combinations n × (n − 1) creates before you hit the ticket window." />
+  <title>Exacta Box Calculator: $1, $2 &amp; $5 Exacta Box Cost</title>
+  <meta name="description" content="A $1 exacta box with 3 horses costs $6; with 4 horses it costs $12. See exacta box cost at $0.10 to $5 for 2–8 horses. Free, no signup." />
+  <meta property="og:title" content="Exacta Box Calculator: $1, $2 &amp; $5 Exacta Box Cost" />
+  <meta property="og:description" content="A $1 exacta box with 3 horses costs $6; with 4 horses it costs $12. See exacta box cost at $0.10 to $5 for 2–8 horses. Free, no signup." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://edgeoverluck.com/exacta-box-calculator.html" />
   <meta property="og:image" content="https://edgeoverluck.com/assets/images/horse-racing/Exotic_Bet_Cost_Calculator_horse.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Exacta Box Calculator: Exacta Bet Cost by Horses &amp; Base Bet" />
-  <meta name="twitter:description" content="Calculate exacta box ticket cost by base bet and number of horses. See how many combinations n × (n − 1) creates before you hit the ticket window." />
+  <meta name="twitter:title" content="Exacta Box Calculator: $1, $2 &amp; $5 Exacta Box Cost" />
+  <meta name="twitter:description" content="A $1 exacta box with 3 horses costs $6; with 4 horses it costs $12. See exacta box cost at $0.10 to $5 for 2–8 horses. Free, no signup." />
   <meta name="twitter:image" content="https://edgeoverluck.com/assets/images/horse-racing/Exotic_Bet_Cost_Calculator_horse.webp" />
   <link rel="canonical" href="https://edgeoverluck.com/exacta-box-calculator.html" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo/favicon-32.png" />
@@ -41,8 +41,13 @@
         "name": "Exacta Box Calculator",
         "url": "https://edgeoverluck.com/exacta-box-calculator.html",
         "description": "Calculate exacta box ticket cost by entering your base bet and number of horses. The formula is n × (n − 1) combinations multiplied by the base bet.",
-        "isPartOf": { "@id": "https://edgeoverluck.com/#website" },
-        "inLanguage": "en-US"
+        "isPartOf": {
+          "@id": "https://edgeoverluck.com/#website"
+        },
+        "inLanguage": "en-US",
+        "breadcrumb": {
+          "@id": "https://edgeoverluck.com/exacta-box-calculator.html#breadcrumb"
+        }
       },
       {
         "@type": "HowTo",
@@ -83,10 +88,50 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "What is the minimum exacta box?",
+            "name": "How much does a $1 exacta box cost?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "The minimum exacta box uses 2 horses, creating 2 combinations (2 × 1 = 2). At a $1 base, the ticket costs $2."
+              "text": "A $1 exacta box costs $6 with 3 horses, $12 with 4 horses, and $20 with 5 horses. An exacta box has n × (n − 1) combinations, and each one costs $1."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much does a $2 exacta box cost?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A $2 exacta box costs $12 with 3 horses and $24 with 4 horses. That is 6 and 12 combinations, each at $2."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much does a $5 exacta box cost?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A $5 exacta box costs $30 with 3 horses and $60 with 4 horses. The combination count is the same at every base bet; only the price per combination changes."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much is a 4 horse exacta box?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A 4 horse exacta box is 12 combinations (4 × 3 = 12), so it costs $12 at a $1 base and $24 at a $2 base."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much is a $1 exacta box with 5 horses?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A $1 exacta box with 5 horses costs $20, because 5 horses create 20 combinations (5 × 4 = 20) at $1 each."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is an exacta box bet?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "An exacta box is a bet on two or more horses to finish first and second in either order; a $1 box on 3 horses is 6 combinations, so it costs $6. Boxing more horses buys more coverage, but only one combination can win, and it is paid at your base bet from the pari-mutuel pool."
             }
           },
           {
@@ -99,29 +144,50 @@
           },
           {
             "@type": "Question",
-            "name": "Does a larger exacta box increase my chances of winning?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "A larger box increases coverage, meaning more finishing-order combinations are covered. It does not improve the underlying edge or change the track takeout rate. You are paying more for broader coverage, not for a better mathematical return."
-            }
-          },
-          {
-            "@type": "Question",
             "name": "How does pari-mutuel takeout affect exacta payouts?",
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "Track takeout is deducted from the total exacta pool before payouts, and the rest is split among winning tickets in proportion to the amount bet on the winning combination. Your box money joins the pool, but only the one winning combination is paid, at your base bet. Adding horses raises cost and coverage, not the payout on a hit."
             }
-          },
-          {
-            "@type": "Question",
-            "name": "Can I use this calculator for exacta keys or partial boxes?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No. This calculator covers full box bets only, where every selected horse can finish in any covered position. Exacta keys and partial boxes use different combination structures and require a separate calculation."
-            }
           }
         ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://edgeoverluck.com/exacta-box-calculator.html#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://edgeoverluck.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Exotic Bet Cost Calculator",
+            "item": "https://edgeoverluck.com/exotic-bet-calculator.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Exacta Box Calculator",
+            "item": "https://edgeoverluck.com/exacta-box-calculator.html"
+          }
+        ]
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://edgeoverluck.com/exacta-box-calculator.html#webapp",
+        "name": "Exacta Box Calculator",
+        "url": "https://edgeoverluck.com/exacta-box-calculator.html",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Any",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
       }
     ]
   }
@@ -143,6 +209,7 @@
         <div class="nav-item nav-item-dropdown">
           <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-horse-racing">Horse Racing</button>
           <div id="nav-horse-racing" class="nav-panel nav-panel-wide">
+            <a href="takeout-overlay-calculator.html">Takeout &amp; Overlay Calculator</a>
             <a href="exotic-bet-calculator.html">Exotic Bet Cost Calculator</a>
             <a href="exacta-box-calculator.html">Exacta Box Calculator</a>
             <a href="trifecta-box-calculator.html">Trifecta Box Calculator</a>
@@ -283,9 +350,9 @@
 
     <section class="section">
       <div class="container">
-        <h2 class="section-title">Exacta box combination reference</h2>
+        <h2 class="section-title">Exacta box cost chart: $0.10 to $5 base bets</h2>
         <p class="section-subtext">
-          Formula: combinations = n &times; (n &minus; 1). All values below are pre-verified against the permutation formula.
+          Formula: combinations = n &times; (n &minus; 1). All values below are pre-verified against the permutation formula. Minimum base bets vary by track and wagering platform, so check the minimum before you bet.
         </p>
         <div class="table-wrap">
           <table class="data-table">
@@ -293,18 +360,21 @@
               <tr>
                 <th>Horses in box</th>
                 <th>Combinations</th>
-                <th>$0.50 base</th>
-                <th>$1 base</th>
-                <th>$2 base</th>
+                <th>$0.10</th>
+                <th>$0.50</th>
+                <th>$1</th>
+                <th>$2</th>
+                <th>$5</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>2</td><td>2</td><td>$1.00</td><td>$2.00</td><td>$4.00</td></tr>
-              <tr><td>3</td><td>6</td><td>$3.00</td><td>$6.00</td><td>$12.00</td></tr>
-              <tr><td>4</td><td>12</td><td>$6.00</td><td>$12.00</td><td>$24.00</td></tr>
-              <tr><td>5</td><td>20</td><td>$10.00</td><td>$20.00</td><td>$40.00</td></tr>
-              <tr><td>6</td><td>30</td><td>$15.00</td><td>$30.00</td><td>$60.00</td></tr>
-              <tr><td>7</td><td>42</td><td>$21.00</td><td>$42.00</td><td>$84.00</td></tr>
+              <tr><td>2</td><td>2</td><td>$0.20</td><td>$1.00</td><td>$2.00</td><td>$4.00</td><td>$10.00</td></tr>
+              <tr><td>3</td><td>6</td><td>$0.60</td><td>$3.00</td><td>$6.00</td><td>$12.00</td><td>$30.00</td></tr>
+              <tr><td>4</td><td>12</td><td>$1.20</td><td>$6.00</td><td>$12.00</td><td>$24.00</td><td>$60.00</td></tr>
+              <tr><td>5</td><td>20</td><td>$2.00</td><td>$10.00</td><td>$20.00</td><td>$40.00</td><td>$100.00</td></tr>
+              <tr><td>6</td><td>30</td><td>$3.00</td><td>$15.00</td><td>$30.00</td><td>$60.00</td><td>$150.00</td></tr>
+              <tr><td>7</td><td>42</td><td>$4.20</td><td>$21.00</td><td>$42.00</td><td>$84.00</td><td>$210.00</td></tr>
+              <tr><td>8</td><td>56</td><td>$5.60</td><td>$28.00</td><td>$56.00</td><td>$112.00</td><td>$280.00</td></tr>
             </tbody>
           </table>
         </div>
@@ -354,24 +424,36 @@
         <h2 class="section-title">Exacta Box FAQ</h2>
         <div class="faq-list">
           <details class="card glass-card-strong" open>
-            <summary>What is the minimum exacta box?</summary>
-            <p>The minimum exacta box uses 2 horses, creating 2 combinations (2 &times; 1 = 2). At a $1 base, the ticket costs $2.</p>
+            <summary>How much does a $1 exacta box cost?</summary>
+            <p>A $1 exacta box costs $6 with 3 horses, $12 with 4 horses, and $20 with 5 horses. An exacta box has n &times; (n &minus; 1) combinations, and each one costs $1.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>How much does a $2 exacta box cost?</summary>
+            <p>A $2 exacta box costs $12 with 3 horses and $24 with 4 horses. That is 6 and 12 combinations, each at $2.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>How much does a $5 exacta box cost?</summary>
+            <p>A $5 exacta box costs $30 with 3 horses and $60 with 4 horses. The combination count is the same at every base bet; only the price per combination changes.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>How much is a 4 horse exacta box?</summary>
+            <p>A 4 horse exacta box is 12 combinations (4 &times; 3 = 12), so it costs $12 at a $1 base and $24 at a $2 base.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>How much is a $1 exacta box with 5 horses?</summary>
+            <p>A $1 exacta box with 5 horses costs $20, because 5 horses create 20 combinations (5 &times; 4 = 20) at $1 each.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>What is an exacta box bet?</summary>
+            <p>An exacta box is a bet on two or more horses to finish first and second in either order; a $1 box on 3 horses is 6 combinations, so it costs $6. Boxing more horses buys more coverage, but only one combination can win, and it is paid at your base bet from the pari-mutuel pool.</p>
           </details>
           <details class="card glass-card-strong">
             <summary>How is an exacta box different from a straight exacta?</summary>
             <p>A straight exacta requires one specific finishing order — horse A first, horse B second. An exacta box covers every order among your selected horses, so it hits whenever two of your horses finish first and second, in either order. The box costs more because it buys multiple combinations.</p>
           </details>
           <details class="card glass-card-strong">
-            <summary>Does a larger exacta box increase my chances of winning?</summary>
-            <p>A larger box increases coverage, meaning more finishing-order combinations are covered. It does not improve the underlying edge or change the track takeout rate. You are paying more for broader coverage, not for a better mathematical return.</p>
-          </details>
-          <details class="card glass-card-strong">
             <summary>How does pari-mutuel takeout affect exacta payouts?</summary>
             <p>Track takeout is deducted from the total exacta pool before payouts, and the rest is split among winning tickets in proportion to the amount bet on the winning combination. Your box money joins the pool, but only the one winning combination is paid, at your base bet. Adding horses raises cost and coverage, not the payout on a hit.</p>
-          </details>
-          <details class="card glass-card-strong">
-            <summary>Can I use this calculator for exacta keys or partial boxes?</summary>
-            <p>No. This calculator covers full box bets only, where every selected horse can finish in any covered position. Exacta keys and partial boxes use different combination structures and require a separate calculation.</p>
           </details>
         </div>
       </div>

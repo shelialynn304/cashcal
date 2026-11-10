@@ -14,16 +14,16 @@
   <script src="js/amplitude-init.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
-  <title>Trifecta Box Calculator: Trifecta Bet Cost by Horses &amp; Base Bet</title>
-  <meta name="description" content="Calculate trifecta box ticket cost by base bet and number of horses. See how many combinations n × (n − 1) × (n − 2) creates before you buy the ticket." />
-  <meta property="og:title" content="Trifecta Box Calculator: Trifecta Bet Cost by Horses &amp; Base Bet" />
-  <meta property="og:description" content="Calculate trifecta box ticket cost by base bet and number of horses. See how many combinations n × (n − 1) × (n − 2) creates before you buy the ticket." />
+  <title>Trifecta Box Calculator: $1 &amp; $2 Trifecta Box Cost</title>
+  <meta name="description" content="A $1 trifecta box with 4 horses costs $24; with 5 horses it costs $60. See trifecta box cost at $0.10 to $5 for 3–8 horses. Free, no signup." />
+  <meta property="og:title" content="Trifecta Box Calculator: $1 &amp; $2 Trifecta Box Cost" />
+  <meta property="og:description" content="A $1 trifecta box with 4 horses costs $24; with 5 horses it costs $60. See trifecta box cost at $0.10 to $5 for 3–8 horses. Free, no signup." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://edgeoverluck.com/trifecta-box-calculator.html" />
   <meta property="og:image" content="https://edgeoverluck.com/assets/images/horse-racing/Exotic_Bet_Cost_Calculator_horse.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Trifecta Box Calculator: Trifecta Bet Cost by Horses &amp; Base Bet" />
-  <meta name="twitter:description" content="Calculate trifecta box ticket cost by base bet and number of horses. See how many combinations n × (n − 1) × (n − 2) creates before you buy the ticket." />
+  <meta name="twitter:title" content="Trifecta Box Calculator: $1 &amp; $2 Trifecta Box Cost" />
+  <meta name="twitter:description" content="A $1 trifecta box with 4 horses costs $24; with 5 horses it costs $60. See trifecta box cost at $0.10 to $5 for 3–8 horses. Free, no signup." />
   <meta name="twitter:image" content="https://edgeoverluck.com/assets/images/horse-racing/Exotic_Bet_Cost_Calculator_horse.webp" />
   <link rel="canonical" href="https://edgeoverluck.com/trifecta-box-calculator.html" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo/favicon-32.png" />
@@ -41,8 +41,13 @@
         "name": "Trifecta Box Calculator",
         "url": "https://edgeoverluck.com/trifecta-box-calculator.html",
         "description": "Calculate trifecta box ticket cost by entering your base bet and number of horses. The formula is n × (n − 1) × (n − 2) combinations multiplied by the base bet.",
-        "isPartOf": { "@id": "https://edgeoverluck.com/#website" },
-        "inLanguage": "en-US"
+        "isPartOf": {
+          "@id": "https://edgeoverluck.com/#website"
+        },
+        "inLanguage": "en-US",
+        "breadcrumb": {
+          "@id": "https://edgeoverluck.com/trifecta-box-calculator.html#breadcrumb"
+        }
       },
       {
         "@type": "HowTo",
@@ -83,10 +88,42 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "What is the minimum trifecta box?",
+            "name": "How much does a $1 trifecta box cost?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "The minimum trifecta box uses 3 horses, creating 6 combinations (3 × 2 × 1 = 6). At a $1 base, the ticket costs $6."
+              "text": "A $1 trifecta box costs $6 with 3 horses, $24 with 4 horses, and $60 with 5 horses. A trifecta box has n × (n − 1) × (n − 2) combinations, and each one costs $1."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much is a $2 trifecta box?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A $2 trifecta box costs $12 with 3 horses, $48 with 4 horses, and $120 with 5 horses. The combination count is the same as at $1; the $2 base doubles the price of each one."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much is a 4 horse trifecta box?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A 4 horse trifecta box is 24 combinations (4 × 3 × 2 = 24), so it costs $24 at a $1 base and $48 at a $2 base."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much is a 5 horse trifecta box?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A 5 horse trifecta box is 60 combinations (5 × 4 × 3 = 60), so it costs $60 at a $1 base and $120 at a $2 base."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much does an 8 horse trifecta box cost?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "An 8 horse trifecta box is 336 combinations (8 × 7 × 6 = 336), so it costs $336 at a $1 base and $33.60 at a 10-cent base where the track offers one. Boxing 8 horses buys coverage, not edge: only one combination can win, and it is paid at your base bet from the pool after takeout."
             }
           },
           {
@@ -96,32 +133,45 @@
               "@type": "Answer",
               "text": "A straight trifecta requires one exact finishing order. A trifecta box covers every three-horse finishing order among your selected horses, which costs more but wins regardless of which specific order your horses finish in, as long as they fill the top three spots."
             }
-          },
-          {
-            "@type": "Question",
-            "name": "Why does adding one horse to a trifecta box cost so much more?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Each added horse multiplies the combination count through all three position terms. Going from 4 to 5 horses raises combinations from 24 to 60. Going from 5 to 6 raises them to 120. This cubic growth is why trifecta boxes become expensive quickly with each added horse."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What is a $1 trifecta box with 4 horses?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "A $1 trifecta box with 4 horses costs $24. There are 24 combinations (4 × 3 × 2 = 24), each costing $1."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Does a trifecta box guarantee a return on investment?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No. A trifecta box increases coverage but does not guarantee a positive return. The payout depends on the pari-mutuel pool, the track takeout rate, and how many other winning tickets share the pool. More coverage raises cost without changing those underlying factors."
-            }
           }
         ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://edgeoverluck.com/trifecta-box-calculator.html#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://edgeoverluck.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Exotic Bet Cost Calculator",
+            "item": "https://edgeoverluck.com/exotic-bet-calculator.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Trifecta Box Calculator",
+            "item": "https://edgeoverluck.com/trifecta-box-calculator.html"
+          }
+        ]
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://edgeoverluck.com/trifecta-box-calculator.html#webapp",
+        "name": "Trifecta Box Calculator",
+        "url": "https://edgeoverluck.com/trifecta-box-calculator.html",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Any",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
       }
     ]
   }
@@ -143,6 +193,7 @@
         <div class="nav-item nav-item-dropdown">
           <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-horse-racing">Horse Racing</button>
           <div id="nav-horse-racing" class="nav-panel nav-panel-wide">
+            <a href="takeout-overlay-calculator.html">Takeout &amp; Overlay Calculator</a>
             <a href="exotic-bet-calculator.html">Exotic Bet Cost Calculator</a>
             <a href="exacta-box-calculator.html">Exacta Box Calculator</a>
             <a href="trifecta-box-calculator.html">Trifecta Box Calculator</a>
@@ -283,9 +334,9 @@
 
     <section class="section">
       <div class="container">
-        <h2 class="section-title">Trifecta box combination reference</h2>
+        <h2 class="section-title">Trifecta box cost chart: $0.10 to $5 base bets</h2>
         <p class="section-subtext">
-          Formula: combinations = n &times; (n &minus; 1) &times; (n &minus; 2). All values below are pre-verified against the permutation formula.
+          Formula: combinations = n &times; (n &minus; 1) &times; (n &minus; 2). All values below are pre-verified against the permutation formula. Minimum base bets vary by track and wagering platform, so check the minimum before you bet.
         </p>
         <div class="table-wrap">
           <table class="data-table">
@@ -293,17 +344,20 @@
               <tr>
                 <th>Horses in box</th>
                 <th>Combinations</th>
-                <th>$0.50 base</th>
-                <th>$1 base</th>
-                <th>$2 base</th>
+                <th>$0.10</th>
+                <th>$0.50</th>
+                <th>$1</th>
+                <th>$2</th>
+                <th>$5</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>3</td><td>6</td><td>$3.00</td><td>$6.00</td><td>$12.00</td></tr>
-              <tr><td>4</td><td>24</td><td>$12.00</td><td>$24.00</td><td>$48.00</td></tr>
-              <tr><td>5</td><td>60</td><td>$30.00</td><td>$60.00</td><td>$120.00</td></tr>
-              <tr><td>6</td><td>120</td><td>$60.00</td><td>$120.00</td><td>$240.00</td></tr>
-              <tr><td>7</td><td>210</td><td>$105.00</td><td>$210.00</td><td>$420.00</td></tr>
+              <tr><td>3</td><td>6</td><td>$0.60</td><td>$3.00</td><td>$6.00</td><td>$12.00</td><td>$30.00</td></tr>
+              <tr><td>4</td><td>24</td><td>$2.40</td><td>$12.00</td><td>$24.00</td><td>$48.00</td><td>$120.00</td></tr>
+              <tr><td>5</td><td>60</td><td>$6.00</td><td>$30.00</td><td>$60.00</td><td>$120.00</td><td>$300.00</td></tr>
+              <tr><td>6</td><td>120</td><td>$12.00</td><td>$60.00</td><td>$120.00</td><td>$240.00</td><td>$600.00</td></tr>
+              <tr><td>7</td><td>210</td><td>$21.00</td><td>$105.00</td><td>$210.00</td><td>$420.00</td><td>$1,050.00</td></tr>
+              <tr><td>8</td><td>336</td><td>$33.60</td><td>$168.00</td><td>$336.00</td><td>$672.00</td><td>$1,680.00</td></tr>
             </tbody>
           </table>
         </div>
@@ -353,24 +407,28 @@
         <h2 class="section-title">Trifecta Box FAQ</h2>
         <div class="faq-list">
           <details class="card glass-card-strong" open>
-            <summary>What is the minimum trifecta box?</summary>
-            <p>The minimum trifecta box uses 3 horses, creating 6 combinations (3 &times; 2 &times; 1 = 6). At a $1 base, the ticket costs $6.</p>
+            <summary>How much does a $1 trifecta box cost?</summary>
+            <p>A $1 trifecta box costs $6 with 3 horses, $24 with 4 horses, and $60 with 5 horses. A trifecta box has n &times; (n &minus; 1) &times; (n &minus; 2) combinations, and each one costs $1.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>How much is a $2 trifecta box?</summary>
+            <p>A $2 trifecta box costs $12 with 3 horses, $48 with 4 horses, and $120 with 5 horses. The combination count is the same as at $1; the $2 base doubles the price of each one.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>How much is a 4 horse trifecta box?</summary>
+            <p>A 4 horse trifecta box is 24 combinations (4 &times; 3 &times; 2 = 24), so it costs $24 at a $1 base and $48 at a $2 base.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>How much is a 5 horse trifecta box?</summary>
+            <p>A 5 horse trifecta box is 60 combinations (5 &times; 4 &times; 3 = 60), so it costs $60 at a $1 base and $120 at a $2 base.</p>
+          </details>
+          <details class="card glass-card-strong">
+            <summary>How much does an 8 horse trifecta box cost?</summary>
+            <p>An 8 horse trifecta box is 336 combinations (8 &times; 7 &times; 6 = 336), so it costs $336 at a $1 base and $33.60 at a 10-cent base where the track offers one. Boxing 8 horses buys coverage, not edge: only one combination can win, and it is paid at your base bet from the pool after takeout.</p>
           </details>
           <details class="card glass-card-strong">
             <summary>How is a trifecta box different from a straight trifecta?</summary>
             <p>A straight trifecta requires one exact finishing order. A trifecta box covers every three-horse finishing order among your selected horses, which costs more but wins regardless of which specific order your horses finish in, as long as they fill the top three spots.</p>
-          </details>
-          <details class="card glass-card-strong">
-            <summary>Why does adding one horse to a trifecta box cost so much more?</summary>
-            <p>Each added horse multiplies the combination count through all three position terms. Going from 4 to 5 horses raises combinations from 24 to 60. Going from 5 to 6 raises them to 120. This cubic growth is why trifecta boxes become expensive quickly with each added horse.</p>
-          </details>
-          <details class="card glass-card-strong">
-            <summary>What is a $1 trifecta box with 4 horses?</summary>
-            <p>A $1 trifecta box with 4 horses costs $24. There are 24 combinations (4 &times; 3 &times; 2 = 24), each costing $1.</p>
-          </details>
-          <details class="card glass-card-strong">
-            <summary>Does a trifecta box guarantee a return on investment?</summary>
-            <p>No. A trifecta box increases coverage but does not guarantee a positive return. The payout depends on the pari-mutuel pool, the track takeout rate, and how many other winning tickets share the pool. More coverage raises cost without changing those underlying factors.</p>
           </details>
         </div>
       </div>
