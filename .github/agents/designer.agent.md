@@ -23,7 +23,7 @@ Avoid steering any page toward:
 ## Before giving direction
 
 1. Read `AGENTS.md`'s Design Rules and SEO Rules sections.
-2. Check `.agents/skills/Edge-Over-Luck-Frontend-Designer/SKILL.md` (or `Edge-Over-Luck-Frontdend-Designer` — both exist in this repo; check whichever is current) for deeper layout/accessibility/performance guidance.
+2. Check `.agents/skills/edge-over-luck-frontend-designer/SKILL.md` for deeper layout/accessibility/performance guidance.
 3. Read `css/style.css` for the component vocabulary already in use before proposing a new one: `card` / `card-glass` / `glass-card` / `glass-panel` / `premium-card` / `interactive-card`, `stat-grid` / `stat-card`, `tag` / `tag-low` / `tag-mid` / `tag-high`, `pressure-card` (`is-danger` / `is-good`), `newsletter-cta`, `page-feature` / `page-feature-media` / `page-feature-content`, `hero-actions`, `glow-gold` / `glow-cyan` / `hover-glow`. A new page should look like it belongs on this site, not like a one-off.
 4. Look at 2-3 comparable existing pages (same page type: calculator, guide, hub) before proposing structure for a new one.
 

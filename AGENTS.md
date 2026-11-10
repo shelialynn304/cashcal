@@ -1,46 +1,46 @@
 # Edge Over Luck Project Instructions
 
+This is the single source of truth for every AI agent working in this repo (Claude Code, Codex, Copilot, and others). Other instruction files point here; they do not override it.
+
 ## Site Identity
 
 EdgeOverLuck.com is an educational gambling math website.
 
-The site helps users understand:
-- Casino odds
-- House edge
-- Expected value
-- Bankroll risk
-- Blackjack
-- Roulette
-- Slots
-- Craps
-- Bubble craps
-- Horse betting
-- Responsible gambling
+The site helps users understand casino odds, house edge, expected value, bankroll risk, blackjack, roulette, slots, craps, bubble craps, horse betting, and responsible gambling.
 
-Brand line:
+Brand line: Smart gambling tools for real players.
 
-Smart gambling tools for real players.
+Main positioning: Play with the numbers before you play with your money.
 
-Main positioning:
+The site provides casino math education, bankroll calculators, game explainers, static public metadata endpoints, and downloadable educational materials.
 
-Play with the numbers before you play with your money.
+The site does NOT:
+- place bets or process gambling transactions
+- provide guaranteed winning systems or financial advice
+- provide OAuth/OIDC login
+- run an MCP server
+- expose protected APIs
+- support Agent-to-Agent protocol unless explicitly implemented later
 
 ## Tech Stack
 
-Use:
-- Static HTML
-- CSS
-- Vanilla JavaScript
+Use static HTML, CSS, and vanilla JavaScript. There is no build step and no `package.json`.
 
-Avoid:
-- React
-- Vue
-- Angular
-- Heavy frameworks
-- Unnecessary dependencies
-- Large libraries unless explicitly requested
+Avoid React, Vue, Angular, heavy frameworks, unnecessary dependencies, and large libraries unless explicitly requested.
 
 Keep the site fast, lightweight, and easy to audit.
+
+## Where to Look
+
+Read these only when the task needs them:
+
+| Task | Read |
+|---|---|
+| Calculator, simulator, odds, EV, RTP, house edge, bankroll logic | `math_sources.md` (formulas and benchmarks) and `.github/agents/Casino-Math-Calculator-Agent.md` |
+| Copy, brand voice, CTAs, visual style, UX consistency | `STYLEGUIDE.md` |
+| Manual QA and calculator test cases | `docs/tool-qa-checklist.md` |
+| Roulette code structure | `docs/roulette-architecture.md` |
+| Agent discovery files | `AGENT_DISCOVERY.md` and the `static-agent-discovery-validator` skill |
 
 ## Hosting and Agent Discovery Rules
 
@@ -84,7 +84,7 @@ Before finishing any task that touches agent discovery files, validate:
 - Preserve existing URLs.
 - Preserve canonical tags.
 - Preserve non-www canonical preference.
-- Preserve SEO metadata unless the task is specifically SEO-related.
+- Preserve SEO metadata, Open Graph tags, structured data, and existing navigation unless the task is specifically about them.
 - Preserve Google Analytics and tracking snippets.
 - Preserve responsible gambling language.
 - Preserve affiliate disclosures.
@@ -135,7 +135,7 @@ For calculator or simulator work:
 - Verify expected value formulas.
 - Distinguish net profit from total payout returned.
 - Verify house edge and RTP calculations.
-- Use known benchmark values where possible.
+- Use known benchmark values where possible (see `math_sources.md`).
 - Do not claim betting systems change house edge.
 - Label simplified blackjack calculations as estimates.
 - Do not imply slots are due for bonuses.
@@ -157,24 +157,9 @@ For SEO-related work:
 
 ## Design Rules
 
-Edge Over Luck should feel:
-- Smart
-- Sharp
-- Honest
-- Premium
-- Math-based
-- Black/gold
-- Fast
-- Mobile-friendly
+Edge Over Luck should feel smart, sharp, honest, premium, math-based, black/gold, fast, and mobile-friendly.
 
-Avoid:
-- Spammy casino visuals
-- Neon overload
-- Fake luxury
-- Clutter
-- Tiny text
-- Hover-only information
-- Unnecessary animations
+Avoid spammy casino visuals, neon overload, fake luxury, clutter, tiny text, hover-only information, and unnecessary animations.
 
 ## Preferred Workflow
 
@@ -184,93 +169,31 @@ Before editing:
 3. Avoid unrelated changes.
 
 After editing:
-1. Check for JavaScript errors when relevant.
+1. Run `bash scripts/check-all.sh` (the same checks CI runs). Do not push if it fails.
 2. Check invalid inputs for calculators.
 3. Check mobile layout when relevant.
 4. Check changed or added links.
 5. Confirm no unrelated files were changed.
-6. Summarize files changed and why.
+
+## Reporting
+
+When done, report:
+- files changed and why
+- whether formulas changed (if not, say: No formulas changed.)
+- what was intentionally not changed
+- checks and validation performed
+- any warnings
+- any manual Cloudflare steps still required
 
 ## Specialist Skills
 
-Use specialist skills when relevant:
+Skills live in `.agents/skills/` (the full versions). `.claude/skills/` holds short pointers to them so Claude Code can discover them. Edit the `.agents/skills/` copy; keep the pointer's `name` and `description` in sync.
 
-- casino-math-calculator: calculator math, EV, house edge, RTP, simulations, bankroll risk
-- edge-over-luck-frontend-designer: layout, mobile, UI, accessibility, performance
-- edge-over-luck-brand-guardian: copy tone, brand consistency, PDFs, emails, social posts
-- edge-over-luck-seo: title tags, metadata, internal links, schema, content clusters
-- edge-over-luck-aeo-foundations: robots.txt, llms.txt, AI-readability, structured content
-- edge-over-luck-devops: GitHub Actions, link checks, deployment safety, audits
-- static-agent-discovery-validator: API catalog, OpenAPI, `.well-known`, robots.txt Content Signals, Cloudflare header docs, and agent-discovery validation
+- `edge-over-luck-frontend-designer`: layout, mobile, UI, accessibility, performance
+- `edge-over-luck-product-strategist`: new tools, guides, funnels, roadmap decisions
+- `eol-devops-automator`: GitHub Actions, link checks, deployment safety, audits
+- `static-agent-discovery-validator`: API catalog, OpenAPI, `.well-known`, robots.txt Content Signals, Cloudflare header docs, and agent-discovery validation
+
+GitHub Copilot custom agents live in `.github/agents/` (math reviewer, planner, coder, designer, orchestrator, and marketing/SEO/AEO specialists in `.github/agents/marketing/`).
 
 Do not load or apply specialist guidance unless the task matches the skill or the user explicitly asks for it.
-
-# Edge Over Luck Repo Instructions for Codex
-
-## Site context
-
-This is a static educational website for Edge Over Luck.
-
-The site provides:
-- casino math education
-- bankroll calculators
-- blackjack, roulette, slots, and horse betting explainers
-- static public metadata endpoints
-- downloadable educational materials
-
-The site does NOT:
-- place bets
-- process gambling transactions
-- provide guaranteed winning systems
-- provide financial advice
-- provide OAuth/OIDC login
-- run an MCP server
-- expose protected APIs
-- support Agent-to-Agent protocol unless explicitly implemented later
-
-## Hosting context
-
-- Domain: edgeoverluck.com
-- Hosting: GitHub Pages
-- DNS/CDN: Cloudflare
-- GitHub Pages does not process `_headers`
-- Production HTTP response headers are handled by Cloudflare Snippets, not repo files
-- `.nojekyll` must exist so GitHub Pages serves `.well-known/`
-
-## Important rules
-
-1. Do not invent fake infrastructure.
-2. Do not add fake OAuth/OIDC/auth.md/MCP/WebMCP/DNS-AID support.
-3. Do not claim DNS records are live from repo changes.
-4. Do not rely on `_headers` for production behavior.
-5. Do not remove SEO, analytics, canonical, Open Graph, structured data, or existing navigation unless explicitly asked.
-6. Keep all JSON valid.
-7. Keep OpenAPI strict OpenAPI 3.1.
-8. Use `components.schemas` in OpenAPI, not top-level `$defs`.
-9. Do not invent URLs. Search the repo and use real files.
-10. Keep gambling disclaimers accurate: educational use only, no guaranteed wins, gamble responsibly, follow local laws.
-
-## Validation required before final response
-
-Before finishing any task that touches discovery files, validate:
-
-- `.nojekyll` exists
-- `.well-known/api-catalog` exists with no `.json` extension
-- `/api/tools.json` exists
-- `/api/status.json` exists
-- `/api/openapi.json` exists
-- all JSON parses
-- OpenAPI uses `components.schemas`
-- no top-level `$defs` exists in OpenAPI
-- every listed tool URL exists in the repo
-- `index.html` discovery links are inside `<head>`
-- `robots.txt` preserves sitemap and includes Content-Signal
-- no fake OAuth/OIDC/MCP/auth.md/protected-resource/WebMCP files were added
-
-## Preferred response from Codex
-
-When done, report:
-- files changed
-- validation performed
-- any warnings
-- any manual Cloudflare steps still required

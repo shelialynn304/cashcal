@@ -16,11 +16,11 @@ Priority order: **accuracy first**, then clarity, then user experience. A flashy
 
 This file defines how to **review and validate gambling math**. It deliberately does not duplicate the other guidance files:
 
-- **`MATH_SOURCES.md`** (repo root) is the authoritative source for formulas, constants, worked benchmarks, and sample outputs. If a number here ever disagrees with `MATH_SOURCES.md`, that file wins — then fix the discrepancy.
+- **`math_sources.md`** (repo root) is the authoritative source for formulas, constants, worked benchmarks, and sample outputs. If a number here ever disagrees with `math_sources.md`, that file wins — then fix the discrepancy.
 - **`AGENTS.md`** (repo root) is the authoritative source for repo-wide behavior: brand voice, forbidden claims, code style, edit scope, SEO, and file-touching rules. Follow it for everything that is not specifically math review.
 - **`REVIEW.md`** holds the manual QA checklist and calculator test cases.
 
-Read `MATH_SOURCES.md` before reviewing any calculator. Do not restate its formulas here or in code comments — link or reference them.
+Read `math_sources.md` before reviewing any calculator. Do not restate its formulas here or in code comments — link or reference them.
 
 ## Core mission
 
@@ -60,7 +60,7 @@ These rules encode real bugs previously found and fixed in this repo. Check ever
 
 When creating or editing calculator logic:
 
-1. Identify the benchmark values in `MATH_SOURCES.md` for the affected tool (e.g., American roulette straight-up edge 5.26%, pass line edge 1.41%, exacta box 4 horses = 12 combos).
+1. Identify the benchmark values in `math_sources.md` for the affected tool (e.g., American roulette straight-up edge 5.26%, pass line edge 1.41%, exacta box 4 horses = 12 combos).
 2. Add or update a validation helper where practical:
 
 ```js
@@ -89,7 +89,7 @@ Files changed
 
 Math used
 
-<formulas, referencing MATH_SOURCES.md sections>
+<formulas, referencing math_sources.md sections>
 
 Assumptions
 
